@@ -1,0 +1,46 @@
+Votes
+	Fares
+	6
+	1 2 3
+	9
+
+	Mina
+	6
+	1 2 3
+	9
+
+	Omar
+	4
+	6
+	3
+
+	Karim
+	3
+	6
+	8
+
+	Mounir
+	9
+	4
+	6
+
+Result
+Topic Number Votes
+	1			2
+	2			2
+	3			4
+	4			2
+	5			0
+	6			5
+	7			0
+	8			1
+	9			3
+	
+Text Classification
+Recommedation Website
+E-comm
+Offline Courses Reservation or Online Recuricment Or Gaming
+
+د بشير
+د سهي
+د شيري

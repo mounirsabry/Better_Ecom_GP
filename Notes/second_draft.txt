@@ -1,0 +1,8 @@
+Old Ecom -> already done.
+New Ecom -> Mina.
+Acadox -> Fares.
+Google Classroom -> Karim and Omar.
+BlackBoard -> Mounir.
+
+Idea:
+	Submission code generated to confirm that the student has submitted the deliverable.

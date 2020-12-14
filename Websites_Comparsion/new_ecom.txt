@@ -1,0 +1,65 @@
+Homepage Contains:
+	1. Navigation Bar Which Contains:
+		1.1. Messages.
+			It Conatins the received messages
+			The message is compossed of the name of the sender and the Subject then the body
+			you can delete the message
+		1.2. Courses.
+			It Contains:
+			a. Register New Course.
+			b. Registered Courses.
+				It contains all the registerd courses which decompossed into:
+					1. Credit hours.
+					2. Group.
+					3. Year.
+					4. course mark(40%).
+					5. Exam mark(60%).
+					6. Level.
+					7. Term.
+					8. Absence.
+					9. Exam Hall.
+			c. Attendance Execuse.
+				Its form contains:
+					1. Course group (Course Name - Leacture/Lab/Section)
+					2. Execuse date.
+					3. Reason.
+			d. Course remarking request. (طلب الالتماس)
+			e. Top 50.
+		1.3. Profile.
+			It contains:
+				1. ID.
+				2. Name in Arabic.
+				3. Name in English.
+				4. Level.
+				5. Bylaw (البرنامج الخاص ولا البرنامج العام والسنة اللي دخل فيها الكلية)
+				6. Address.
+				7. Phone number.
+				8. Mobile number.
+				9. GPA.
+				10. Total marks.
+				11. Sex (Male or Female)
+				12. National ID.
+				13. Nationality.
+				14. Place Birth.
+				15. Birth Date.
+		1.4. Downloads.
+			It is for downloading Schedule and program Cataloges
+		1.5. Account
+			It contains:
+				1. Setting:
+					First Name
+					Last Name
+					email
+					Language
+				2. Password (for changing it)
+				3. Sign out.
+				
+	2. Status Bar.
+		It contains:
+		a. ID.
+		b. Name.
+		c. GPA.
+		d. Program.
+		e. Level.
+		
+	3. Announcements.
