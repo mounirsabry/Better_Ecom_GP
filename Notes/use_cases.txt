@@ -10,8 +10,9 @@ From Student's View:
 	Download Course Materials (file-sync feature may be implemented).
 	Messages:
 		1. Send Message
-		2. Recieve Message
-		3. Delete Message
+		2. view messages.(sent,received)
+		3. Delete Message(received,sent before a timel limit)
+		
 	Make Poll (needs more details, require permission?).
 	Vote to a Poll.
 	View course's attendance.
@@ -59,7 +60,7 @@ From Instructor's View:
 	View Top 50.
 	Upload an Assignment.
 	View Submitted Assignments
-	View Instructor Calendar (Lectures, labs, sections, quizzes and assignments).
+	View Instructor Calender (Lectures, labs, sections, quizzes and assignments, could have filters.).
 	Edit Calendar item.
 	Add to course feed.
 	View course's feedback (can not see student specific information like ID or name).
@@ -81,6 +82,7 @@ From Admin's View:
 	View course's attendance.
 	Set Exam Locations.
 	Add to general feed.
+	mark student as not allowed to final exam?
 
 Dr vs TA:
 	1- Dr maybe be the only the one allowed to make the online midterm exam or final.
