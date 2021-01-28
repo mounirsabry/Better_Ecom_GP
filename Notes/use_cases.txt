@@ -1,0 +1,87 @@
+From Student's View:
+	Log In.
+	Log out.
+	View Registered Courses.
+	Register Course.
+	Register Course (late registration, with fee).
+	Drop Course
+	Hide Course (Make it unvisible in the Page of the Courses)
+	Un-hide course.
+	Download Course Materials (file-sync feature may be implemented).
+	Messages:
+		1. Send Message
+		2. Recieve Message
+		3. Delete Message
+	Make Poll (needs more details, require permission?).
+	Vote to a Poll.
+	View course's attendance.
+	Attendance Execuse
+	Quiz:
+		1. View quizzes.
+		2. Attend an online quiz.
+	Edit student profile.
+	Change Account Password.
+	View Top 50.
+	Assignments:
+		1. View Assignment.
+		2. Deliver Assignment (after the assignment has been delivered an optional confirmation mail will be sent to the student).
+	Check Instructor:
+		1. Check Instructors of a Specific Course
+		2. Check Instructor Profile (basic information, office hours, office location, email).
+	View Student Calendar.
+	View exam locations.
+	View course feed.
+	Course's feedback.
+	View activity stream.
+	View course's grades.
+	Grades Complains.
+	View course's discussions.
+	Create course's discussion.
+	Comment on course's discussion.
+	View course's groups.
+	Create course's group.
+	add files to course's group.
+	comment on course's group.
+
+From Instructor's View:
+	Log In.
+	Log out.
+	Add materials (files, audio, video or external links) to course.
+	Add general files (files and materials not specifc to a course, can be specified to a department or to be sent to all departments).
+	Archieve Course (make course read-only).
+	Un-Archieve Course (make course modifiable again).
+	Send messages to (all student, specific student, specifc instructor).
+	Recevie messages.
+	Delete messages.
+	Make a Poll.
+	Set Attendance of a Course.
+	Register a Quiz (online, offline).
+	View Top 50.
+	Upload an Assignment.
+	View Submitted Assignments
+	View Instructor Calendar (Lectures, labs, sections, quizzes and assignments).
+	Edit Calendar item.
+	Add to course feed.
+	View course's feedback (can not see student specific information like ID or name).
+	Upload Grades
+	View course's discussions.
+	Create course's discussion.
+	Comment on course's discussion.
+	View course's groups.
+	Create course's group.
+	add files to course's group.
+	add task to course's group.
+	comment on course's group.
+
+From Admin's View:
+	Add Accounts for the New Students and for instructors.
+	Remove accounts.
+	Add course to specific department.
+	Remove course.	
+	View course's attendance.
+	Set Exam Locations.
+	Add to general feed.
+
+Dr vs TA:
+	1- Dr maybe be the only the one allowed to make the online midterm exam or final.
+	2-
