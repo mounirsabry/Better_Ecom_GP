@@ -1,0 +1,57 @@
+Course group directories -> solution 3 -> list of owner
+Another solution every member has access list. -> access/permission matrix
+Online database is perfered.
+use case diagram and tables
+class diagram
+sequence diagram
+
+Chapter 1 -> Introduction
+Background:
+Area of web developing.
+Non detailed related work.
+
+Motivation:
+Why?
+The students do not use e-com.
+
+Problem Definition -> Chapter 1.3
+statement on what I want to solve.
+Why we need the new website?
+
+Benefit?
+-> after main application.
+
+Main application
+Overview of what we serve.
+Blends the e-comm and e-learning together.
+
+Main technolgies.
+firebase
+client server arch.
+C# asp.net ... 
+
+features list -> functional requirements.
+related work -> comparison -> E-learning. _> Chapter 2
+Old ecom and new ecom -> e-community.
+acadox, google classroom and blackboard -> e-learning.
+
+Chapter 3
+functional requirements -> calendar, online exam -> Chapter 3.1.1
+Non-functioan reqs -> usability -> does not require numbers -> Chapter 3.1.2
+response time -> numbers.
+numbers -> the acceptable range
+use case diagram -> essenitals. -> Chapter 3.2 , use case tables (few).
+System Arch -> Design -> Comps and layers -> Chapter 3.3
+Design Class diagram -> Chapter 3.4
+Sequence diagram (few) -> Chpater 3.5
+ERD -> database -> before class diagram.
+Stakeholders -> Chapter 3 -> after non functional reqs.
+
+final year -> only the done.
+
+register student -> assume any missing info.
+
+Collect histroy 
+predict how many student will register in a course. -> ML -> optional.
+
+Notification by mail is helpful.
