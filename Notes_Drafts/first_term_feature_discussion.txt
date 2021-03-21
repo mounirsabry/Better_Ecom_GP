@@ -1,0 +1,15 @@
+features that we may want to check:
+	1. course feedback forms (create, update and delete).
+		the form will be fixed for all the courses.
+		the questions will be fixed in a page with the answers stored in the database.
+	2. when the course/semester ends?
+	3. how to specify the students' department? who is responsible for that?
+	4. how do students transfer to the next year?
+	5. how do students graduate from the faculty? how does this affects the system?
+	6. the same course is changed every year, how does the system handles these changes? how does the system is set so that it does not recommend the same course to the students
+		who already took and passed the course?
+
+features to be considered to be added in the future:
+	1. semester group.
+	2. implementing AI in the messeges system.
+	3. time schedule conflict detection and solving.
