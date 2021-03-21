@@ -1,0 +1,69 @@
+Mounir Ideas.
+	Time table where we include all the student specific (lectures, sections, labs, assignments, quizzes, midterms).
+	
+	File Sync with one folder on the pc (optional manual update time), the user chooses a folder from his hard drive where we check if the user's material is up to date or not, if not the website downloads the missing files into his pc, the website does not access unnessecary data and doesn't deletes any files).
+	
+	The TA or the doctor can add an assignment or quiz to the website, he adds the name, description, time and place of that specifc quiz or assignment, the assignments can be uploaded by the student to the website.
+	
+	The student can check if he has any assignments, quizzes or projects he has to do.
+	
+	The student can see his courses, the course's specific TAs/Doctor for that course, their office hours and their profiles where he can see their mails and send them a message through the website, the student can see the TAs/Doctor office location.
+	
+	[Optional] The student can see his grades, descriped in details how much grade he got in a task, also he complain about it by providing a description.
+
+Omar Ali Ideas.
+	Home like the facebook homefeed.
+	Home can contains posts (questions, polls, etc).
+	
+
+E-comm Users
+
+Students
+Faculty Staff
+Teaching Staff (TAs, Doctors).
+
+Students Part
+
+Exisitng Features.
+	Account for each student.
+		The account is generated for the student.
+		The student can use the generated credinetals to log in into his account.
+		
+	The student can check his received messages box where he recevies messages from the Teaching staff and the faculty.
+	The student can check his received files box where he receives files from the Teaching staff and the faculty.
+	The student can send messages to the TAs and Doctors, as well as seeing his sent messages.
+
+New Features.
+	A new tab called courses.
+		Check all his registered courses.
+		Check the TAs and Teachers for that courses.
+		Check the mails and the office hours.
+		Check the TA or the Teacher Profile.
+	
+	Orginzed Material
+	Files, videos, links.
+	Categorized.
+	
+	Compose message more complete like an email.
+	Inbox needs a lot of cleaning.
+	Outbox likes the inbox.
+		Outbox -> Sent Message.
+	Received Files
+		can be removed.
+		needs more organization.
+	Polls? نسال الدكتور
+	Registrations?
+	My Profile?
+	TOP 50 خربانة..
+	Academic Advisor?
+	Courses Materials -> تتعدل
+	First and second -> generate PDF.
+	Exam Locations, Summer, Transfered -> Selective.
+	No Home Button.
+	Stupid Home Messages System.
+	No Implemented Arabic Language.
+	
+	Quiz online.
+	
+	
+
