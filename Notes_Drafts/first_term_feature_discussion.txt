@@ -9,6 +9,15 @@ features that we may want to check:
 	6. the same course is changed every year, how does the system handles these changes? how does the system is set so that it does not recommend the same course to the students
 		who already took and passed the course?
 
+features that are not analyzed:
+	1. Event Registration
+	2. Arabic Support
+	3. Send a Confirmation mail after submitting an assignmnet
+	4. Folder Sync (like git)
+	5. Help Guide
+	6. Notification System
+	7. Instructor office hours and locations
+
 features to be considered to be added in the future:
 	1. semester group.
 	2. implementing AI in the messeges system.
