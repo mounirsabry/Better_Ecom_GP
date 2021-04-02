@@ -1,0 +1,88 @@
+There is no GUI or ISO file for the offline installer of the VS 2019
+The VS 2015 had an ISO file that you can download, but this is no longer the case with VS 2019.
+We will use the command line to cache (download) the VS files into the disk for installation now and in the future.
+
+Steps.
+	1. Create a folder anywhere in your disk and give it a name, mine was called VS_2019.
+	2. Download the online installer (bootstrap) from Microsoft for the community version.
+	3. Place that installer inside the VS_2019 folder, rename it (if you want) to something like vs_community.exe
+	4. Create another folder inside the first folder for the offline files (cached files) to get downloaded into.
+	5. Give it a name, mine was Cache.
+	6. Open the CMD inside the VS_2019 folder by typing cmd in the absolute path bar in the file explorer.
+	7.  Copy and paste the following command, modify it to suit you, and press enter, I will explain the command below, also check the notes part below.
+
+vs_community.exe --layout D:\Sources\Programs\IDEs\VS_2019\Cache ^
+--add Microsoft.VisualStudio.Workload.CoreEditor ^
+--add Microsoft.VisualStudio.Workload.NetWeb --add Microsoft.VisualStudio.Workload.Node ^
+--add Microsoft.VisualStudio.Workload.ManagedDesktop -add Microsoft.VisualStudio.Workload.NetCoreTools ^
+--add Microsoft.VisualStudio.Workload.NativeDesktop ^
+--add Component.GitHub.VisualStudio --includeOptional --lang en-US
+
+	8. an installer (GUI) will launch and will download the installer files.
+	9. The installer will close and another installer (CLI) will open.
+	10. The installer will download all the required files into the folder.
+	11. When it finishes, it will tell you the setup is completed and ask you to press any key to close the launcher.
+	12. Press any key to close the launcher.
+	13. Now the offline files (cache) are downloaded into the Cache folder but the VS is not installed yet.
+	14. Open the Cache folder and locate an EXE file called vs_setup.exe
+	15. Open it, it will open the installer and the downloaded features will be automatically selected.
+	16. Select the features you want and install.
+
+Command Explanation:
+	vs_community.exe ->  The offline installer you downloaded, you should open the CMD inside the folder where it is located or give it the absolute path.
+
+	--layout -> The option controls where the files will be downloaded should be followed by the absolute path of the folder where you want to install the files (cache) inside.
+
+	D:\Sources\Programs\IDEs\VS_2019\Cache -> The absolute path of my Cache folder, replace it with your folder.
+
+	^ -> Tells the vs_community.exe or the CMD that you will continue the command in the next line, when you copy the command into the CMD, you will find that the CMD automatically append more? at the start 
+	of each line following the first line, leave it as it is.
+
+	--add -> An option to select the workload you want to download, which should be followed by the workload (package) name (ID).
+	
+	#Workload 1.
+	Microsoft.VisualStudio.Workload.CoreEditor -> The editor package contains the basic functionality of the IDE, it is automatically added to the enterprise version, however, since we are using the community 
+	version, we will (and should) specify it here.
+	
+	#Workload 2.
+	Microsoft.VisualStudio.Workload.NetWeb -> The ID for the ASP.NET and web development workload.
+
+	#Workload 3.
+	Microsoft.VisualStudio.Workload.Node -> Node.js development workload.
+
+	#Workload 4.
+	Microsoft.VisualStudio.Workload.ManagedDesktop -> .NET desktop development workload.
+
+	#Workload 5.
+	Microsoft.VisualStudio.Workload.NetCoreTools -> .NET core cross-platform development workload.
+
+	#Workload 6.
+	Microsoft.VisualStudio.Workload.NativeDesktop -> Desktop development with C++ workload, optional.
+
+	#Workload 7.
+	Component.GitHub.VisualStudio -> Github workload I think, I added it since the guide on Microsoft added it into their lines, so I assumed it is necessary, it is a small workload either way.
+
+	--includeOptional -> Option to include the optional files in each workload I think, it is better to keep it.
+
+	--lang en-US -> Specifies the language, the selected language here was English (US), there is no English (UK).
+
+Notes:
+	The console installer will download about 10 GB (about an hour if you download with speed 3 MBPS), so prepare yourself.
+	The console installer does not support pausing the download or speed control.
+	If your download failed (happened to me) you can re-run the console installer (write the command again in the CMD) and the installer will verify the downloaded files, update any necessary files, and resume downloading the remaining files.
+	The console installer supports updating the packages (files) if you run it again in the future (I think).
+
+	The offline installer (the installer you run when installing the VS after finishing downloading the files) will say that it downloads files, however, in reality, it will not and instead use the downloaded files.
+	If you choose packages (workloads) that you didn't download, the installer will attempt to download them from the Internet.
+
+	If you are using the community version, you will need to sign in with a Microsoft account within 30 days of the installation date, you can use your university Microsoft account.
+
+References:
+	Microsoft offline Installation guide.
+	https://docs.microsoft.com/en-us/visualstudio/install/create-an-offline-installation-of-visual-studio?view=vs-2019
+
+	Components (workloads) list, check it if you want to see or modify the workloads downloaded.
+	https://docs.microsoft.com/en-us/visualstudio/install/workload-component-id-vs-professional?view=vs-2019#visual-studio-core-editor-included-with-visual-studio-professional-2019
+
+	A simple video explains just installing the IDE.
+	https://www.youtube.com/watch?v=b0VYD8uQ4uE

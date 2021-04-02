@@ -1,0 +1,32 @@
+C#, .NET
+Visual Studio 2019 Community
+(You can search for a way to download the offline installer or backup the installation files for the future), optional if you want.)
+I added a folder containing the steps and figures for how to install the VS offline.
+
+From Workloads:
+	ASP.NET and web development.
+	Node.js development.
+	.NET desktop development.
+	.NET core cross-platform development.
+	Desktop development with C++ (optional if you want).
+
+NodeJS
+From the website choose the long-time support version or LTS
+At the date of this note, it was versioin 14.16.0
+
+Angular
+Install Angular CLI from the website.
+
+FireBase, bound to change.
+From their website.
+
+POSTMAN.
+Download latest.
+
+Videos and Playlists from Fares.
+C#: https://www.youtube.com/user/IAmTimCorey/featured
+Web API: https://www.youtube.com/watch?v=vN9NRqv7xmY&list=PLLWMQd6PeGY1C3YLCyAUIDJrPS9S3WdLK&index=14
+Connect to Database C#: https://youtu.be/Et2khGnrIqc?list=PLLWMQd6PeGY3b89Ni7xsNZddi9wD5Esv2
+
+
+
