@@ -1,0 +1,6 @@
+use 90z95MrFle;
+
+DROP TABLE IF EXISTS student;
+DROP TABLE IF EXISTS instructor;
+DROP TABLE IF EXISTS admin_user;
+DROP TABLE IF EXISTS system_user;

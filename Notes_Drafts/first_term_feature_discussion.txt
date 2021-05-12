@@ -8,6 +8,7 @@ features that we may want to check:
 	5. how do students graduate from the faculty? how does this affects the system?
 	6. the same course is changed every year, how does the system handles these changes? how does the system is set so that it does not recommend the same course to the students
 		who already took and passed the course?
+	7. Post-graduate students (the students who do after graduation studies) are they registered in the E-com website and system?
 
 features that are not analyzed:
 	1. Event Registration
