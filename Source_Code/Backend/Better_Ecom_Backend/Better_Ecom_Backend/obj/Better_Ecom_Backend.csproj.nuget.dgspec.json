@@ -1,31 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Mounir_Study\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj": {}
+    "D:\\lecturesMaterial\\year4\\term2\\gp\\projects\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj": {}
   },
   "projects": {
-    "D:\\Mounir_Study\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj": {
+    "D:\\lecturesMaterial\\year4\\term2\\gp\\projects\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Mounir_Study\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj",
+        "projectUniqueName": "D:\\lecturesMaterial\\year4\\term2\\gp\\projects\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj",
         "projectName": "Better_Ecom_Backend",
-        "projectPath": "D:\\Mounir_Study\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj",
-        "packagesPath": "C:\\Users\\Mounir\\.nuget\\packages\\",
-        "outputPath": "D:\\Mounir_Study\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\obj\\",
+        "projectPath": "D:\\lecturesMaterial\\year4\\term2\\gp\\projects\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj",
+        "packagesPath": "C:\\Users\\fares\\.nuget\\packages\\",
+        "outputPath": "D:\\lecturesMaterial\\year4\\term2\\gp\\projects\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Mounir\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\fares\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {}
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
@@ -42,6 +42,16 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Dapper": {
+              "target": "Package",
+              "version": "[2.0.90, )"
+            },
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[8.0.25, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -60,7 +70,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.203\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="description" content="Here the admin can register a new student into the system." />
+        <title>Register New Student</title>
+    </head>
+    <body>
+        <form>
+            <fieldset>
+                <legend>New Student Data</legend>
+                <label>Full Name</label>
+                <input type="text" name="fullName" /> <br />
+                <br />
+                <label>Address</label>
+                <input type="text" name="address" /> <br />
+                <br />
+                <label>Nationality</label>
+                <input type="text" name="nationality" /> <br />
+                <br />
+                <label>National ID</label>
+                <input type="text" name="nationalID" /> <br />
+                <br />
+                <label>Birth Date</label>
+                <input type="date" name="birthDate" /> <br />
+                <br />
+                <label>High School Type</label>
+                <input type="text" name="highScoolType" /> <br />
+                <br />
+                <label>Entrance Year</label>
+                <input type="number" name="entranceYear" />  <br />
+                <br />
+                <label>Gender</label>
+                <input type="text" name="gender" /> <br />
+                <br />
+                <input type="submit" value="Register" />
+            </fieldset>
+        </form>
+
+        <p>
+            The high school type is prefered to be a select from a drop-down list so that the admin chooses a type from the available <br />
+            or supported type to avoid the different ways of writing the same word if the user had to write the type by hand. <br />
+            <br />
+            The gender should also be a select from a drop-down list. <br />
+            <br />
+            The register button should register the new student and redirect the admin to registration and accounts  <br />
+            page if the operation was successful.
+        </p>
+    </body>
+</html>
