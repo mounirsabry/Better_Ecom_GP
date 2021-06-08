@@ -30,9 +30,5 @@ namespace Better_Ecom_Backend
             }
 
         }
-
-
-       
-
     }
 }
