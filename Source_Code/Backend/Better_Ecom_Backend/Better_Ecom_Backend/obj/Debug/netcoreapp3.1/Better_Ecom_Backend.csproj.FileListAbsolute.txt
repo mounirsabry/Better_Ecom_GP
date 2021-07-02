@@ -50,3 +50,14 @@ D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\B
 D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\netcoreapp3.1\Better_Ecom_Backend.dll
 D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\netcoreapp3.1\Better_Ecom_Backend.pdb
 D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\netcoreapp3.1\Better_Ecom_Backend.genruntimeconfig.cache
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\netcoreapp3.1\System.Net.Http.Formatting.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\netcoreapp3.1\System.Web.Http.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
