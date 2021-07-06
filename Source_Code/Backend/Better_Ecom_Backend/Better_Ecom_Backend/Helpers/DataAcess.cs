@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Dapper.Contrib.Extensions;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,15 @@ namespace Better_Ecom_Backend
                 connection.Execute(sql, parameters);
             }
 
+        }
+
+
+        public bool update<T>(T obj) where T:class
+        {
+            using (IDbConnection connection = new MySqlConnection(ConnectionString))
+            {
+                return connection.Update(obj);
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { GetProfileDataService } from '../services/get-profile-data.service';
+import { SaveProfileChangesService } from '../services/save-profile-changes.service';
 
 //"let property of user | keyvalue
 @Component({
@@ -25,7 +26,8 @@ export class ViewProfileComponent implements OnInit {
 
   constructor(
     private getProfileDataService:GetProfileDataService,
-    private activatedRoute:ActivatedRoute
+    private activatedRoute:ActivatedRoute,
+    private saveProfileChanges:SaveProfileChangesService
     ) { }
 
   ngOnInit(): void {
@@ -75,7 +77,9 @@ export class ViewProfileComponent implements OnInit {
   }
 
   saveChanges(){
-    console.log(this.profileForm.value)
+
+
+
   }
 
 

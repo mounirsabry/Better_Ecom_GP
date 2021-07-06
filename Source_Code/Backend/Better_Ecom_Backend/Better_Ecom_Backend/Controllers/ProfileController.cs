@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Better_Ecom_Backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -57,6 +58,43 @@ namespace Better_Ecom_Backend.Controllers
 
            return dataAcess.selectData<dynamic, dynamic>(sql, new { ID = id }).FirstOrDefault();
 
+
+        }
+
+        // not sure if the admin will use this to modify student/instructor profiles, will assume not till i get there.
+        [Authorize]
+        [HttpPatch("{type}")]
+        public IActionResult updateData(string type, [FromBody] dynamic data)
+        {
+            DataAcess dataAcess = new DataAcess(_config.GetConnectionString("DB"));
+
+            bool success = true;
+
+
+            if (type != "admin" || type != "student" || type != "instructor" ) {
+
+                return BadRequest();
+
+            } else {
+                System_user system_user = (System_user)data;
+                success = dataAcess.update<System_user>(system_user);
+
+                if (type == "student")
+                {
+                    Student s = (Student)data;
+                    success = dataAcess.update<Student>(s);
+                } else if (type == "instructor")
+                {
+                    Instructor instructor = (Instructor)data;
+                    success = dataAcess.update<Instructor>(instructor);
+                }
+            }
+
+
+            if (success)
+                return Ok();
+            else
+                return BadRequest();
 
         }
     }
