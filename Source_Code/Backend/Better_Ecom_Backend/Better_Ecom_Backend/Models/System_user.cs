@@ -6,17 +6,20 @@ namespace Better_Ecom_Backend.Models
 {
     public class System_user
     {
-        public int system_user_id { get; set; }
-        public string user_password { get; set; }
-        public string full_name { get; set; }
-        public string email { get; set; }
-        public string address { get; set; }
-        public string phone_number { get; set; }
-        public string mobile_number { get; set; }
-        public string nationality { get; set; }
-        public string national_id { get; set; }
-        public DateTime birth_date { get; set; }
-        public string gender { get; set; }
-        public string additional_info { get; set; }
+        public int System_user_id { get; set; }
+        public string User_password { get; set; }
+        public string Full_name { get; set; }
+        public string Email { get; set; }
+        public string Address { get; set; }
+        public string Phone_number { get; set; }
+        public string Mobile_number { get; set; }
+        public string Nationality { get; set; }
+        public string National_id { get; set; }
+        public DateTime Birth_date { get; set; }
+        public string Gender { get; set; }
+        public string Additional_info { get; set; }
+
+
+
     }
 }

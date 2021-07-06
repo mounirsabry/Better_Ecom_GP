@@ -20,11 +20,13 @@ namespace Better_Ecom_Backend.Controllers
 
         }
         
-        [HttpGet]
-        public List<System_user> get()
+        
+        
+        public IActionResult test()
         {
-            string sql = @"SELECT * FROM system_user";
-            return DataAcess.LoadData<System_user, dynamic>(sql, new {}, _configuration.GetConnectionString("Remote_MySQL_COM_DB"));
+            return Ok(new { s = "string" });
         }
+
+        
     }
 }
