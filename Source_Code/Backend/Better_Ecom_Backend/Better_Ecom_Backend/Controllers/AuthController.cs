@@ -1,4 +1,5 @@
-﻿using Better_Ecom_Backend.Models;
+﻿using Better_Ecom_Backend.Helpers;
+using Better_Ecom_Backend.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -71,7 +72,7 @@ namespace Better_Ecom_Backend.Controllers
                 password = logUser.Password,
 
             };
-            DataAcess dataAcess = new DataAcess(_config.GetConnectionString("DB"));
+            DataAcess dataAcess = new DataAcess(_config.GetConnectionString(Constants.CurrentDatabaseConnectionString));
 
             string type = logUser.Type.ToLower();
             string id_text = "";

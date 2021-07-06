@@ -1,4 +1,5 @@
-﻿using Better_Ecom_Backend.Models;
+﻿using Better_Ecom_Backend.Helpers;
+using Better_Ecom_Backend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +15,6 @@ namespace Better_Ecom_Backend.Controllers
     [ApiController]
     public class ProfileController : ControllerBase
     {
-
         private IConfiguration _config;
 
         public ProfileController(IConfiguration config)
@@ -26,7 +26,7 @@ namespace Better_Ecom_Backend.Controllers
         [HttpGet("{type}/{ID:int}")]
         public dynamic getData(string type, int id)
         {
-            DataAcess dataAcess = new DataAcess(_config.GetConnectionString("DB"));
+            DataAcess dataAcess = new DataAcess(_config.GetConnectionString(Constants.CurrentDatabaseConnectionString));
 
             // see temporary tables in sql.
             string sql = "";
@@ -66,7 +66,7 @@ namespace Better_Ecom_Backend.Controllers
         [HttpPatch("{type}")]
         public IActionResult updateData(string type, [FromBody] dynamic data)
         {
-            DataAcess dataAcess = new DataAcess(_config.GetConnectionString("DB"));
+            DataAcess dataAcess = new DataAcess(_config.GetConnectionString(Constants.CurrentDatabaseConnectionString));
 
             bool success = true;
 

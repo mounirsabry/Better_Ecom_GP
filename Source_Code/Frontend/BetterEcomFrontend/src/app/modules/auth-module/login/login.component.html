@@ -1,21 +1,20 @@
-
 <div [formGroup]="loginForm">
   <div style="color: red;">
     {{errorMessage}}
   </div>
   <br><br>
-  <label>ID  </label>
-  <input type="number" name="ID" id="ID" #ID formControlName="ID" >
+  <label>ID </label>
+  <input type="number" name="ID" id="ID" #ID formControlName="ID">
   <p *ngIf="IDget.invalid && IDget.touched" style="color: red;"> ID is required</p>
   <br><br>
 
-  <label>Password  </label>
+  <label>Password </label>
   <input type="password" name="Password" id="Password" #password formControlName="password">
   <p *ngIf="passwordGet.invalid && passwordGet.touched" style="color: red;"> password is required</p>
 
   <br><br>
 
 
-  <button type="submit"(click)="login(ID.value, password.value)" [disabled] = "loginForm.invalid"> Login </button>
+  <button type="submit" (click)="login(ID.value, password.value)" [disabled]="loginForm.invalid"> Login </button>
 
 </div>
