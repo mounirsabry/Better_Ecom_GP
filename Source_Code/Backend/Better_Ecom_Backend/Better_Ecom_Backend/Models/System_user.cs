@@ -18,8 +18,5 @@ namespace Better_Ecom_Backend.Models
         public DateTime birth_date { get; set; }
         public string gender { get; set; }
         public string additional_info { get; set; }
-
-
-
     }
 }
