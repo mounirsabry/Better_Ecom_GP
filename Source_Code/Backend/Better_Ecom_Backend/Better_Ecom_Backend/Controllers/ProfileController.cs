@@ -16,8 +16,8 @@ namespace Better_Ecom_Backend.Controllers
     [ApiController]
     public class ProfileController : ControllerBase
     {
-        private IConfiguration _config;
-        private IDataAccess _data;
+        //private IConfiguration _config;
+        //private IDataAccess _data;
 
         public ProfileController(IConfiguration config, IDataAccess data)
         {
@@ -29,7 +29,7 @@ namespace Better_Ecom_Backend.Controllers
         [HttpGet("{type}/{ID:int}")]
         public dynamic getData(string type, int id)
         {
-            DataAcess dataAcess = new DataAcess(_config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+            DataAccess dataAccess = new DataAccess();
 
             // see temporary tables in sql.
             string sql = "";
@@ -59,7 +59,7 @@ namespace Better_Ecom_Backend.Controllers
                     AND system_user.system_user_id = @ID";
 
 
-           return dataAcess.selectData<dynamic, dynamic>(sql, new { ID = id }).FirstOrDefault();
+           return dataAccess.LoadData<dynamic, dynamic>(sql, new { ID = id }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
 
 
         }
@@ -69,7 +69,7 @@ namespace Better_Ecom_Backend.Controllers
         [HttpPatch("{type}")]
         public IActionResult updateData(string type, [FromBody] dynamic data)
         {
-            DataAcess dataAcess = new DataAcess(_config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+            DataAccess dataAcess = new DataAccess();
 
             bool success = true;
 
