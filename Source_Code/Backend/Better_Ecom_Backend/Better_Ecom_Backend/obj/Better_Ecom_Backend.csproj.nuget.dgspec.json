@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\lecturesMaterial\\year4\\term2\\gp\\projects\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj": {}
+    "E:\\FCI\\Graduation Project\\Github\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj": {}
   },
   "projects": {
-    "D:\\lecturesMaterial\\year4\\term2\\gp\\projects\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj": {
+    "E:\\FCI\\Graduation Project\\Github\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\lecturesMaterial\\year4\\term2\\gp\\projects\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj",
+        "projectUniqueName": "E:\\FCI\\Graduation Project\\Github\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj",
         "projectName": "Better_Ecom_Backend",
-        "projectPath": "D:\\lecturesMaterial\\year4\\term2\\gp\\projects\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj",
-        "packagesPath": "C:\\Users\\fares\\.nuget\\packages\\",
-        "outputPath": "D:\\lecturesMaterial\\year4\\term2\\gp\\projects\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\obj\\",
+        "projectPath": "E:\\FCI\\Graduation Project\\Github\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj",
+        "packagesPath": "C:\\Users\\oh377\\.nuget\\packages\\",
+        "outputPath": "E:\\FCI\\Graduation Project\\Github\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\fares\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\oh377\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -78,7 +75,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.204\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }
