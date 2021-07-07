@@ -46,7 +46,7 @@ export class ViewProfileComponent implements OnInit {
             this.profileForm.addControl(key,formControl)
           }
 
-        },
+        }
       )
 
     })
