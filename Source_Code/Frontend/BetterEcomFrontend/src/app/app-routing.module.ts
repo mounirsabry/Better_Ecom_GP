@@ -5,6 +5,7 @@ import { InstructorHomePageComponent } from './components/instructor-home-page/i
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { StartPageComponent } from './components/start-page/start-page.component';
 import { StudentHomePageComponent } from './components/student-home-page/student-home-page.component';
+import { ChangePasswordComponent } from './modules/account-module/change-password/change-password.component';
 import { ViewProfileComponent } from './modules/account-module/view-profile/view-profile.component';
 import { LoginComponent } from './modules/auth-module/login/login.component';
 
@@ -21,6 +22,7 @@ const routes: Routes = [
   {path:'instructorHomePage',component:InstructorHomePageComponent},
   {path:'adminHomePage',component:AdminHomePageComponent},
   {path:'profile/:type', component:ViewProfileComponent},
+  {path:'changePassword',component:ChangePasswordComponent},
   {path:'**',component:PageNotFoundComponent}
 
 ];

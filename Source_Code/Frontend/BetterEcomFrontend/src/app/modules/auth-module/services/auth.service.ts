@@ -20,6 +20,7 @@ export class AuthService {
 
     // to use the ID in view profile component.
     localStorage.setItem('ID', ID +'');
+    localStorage.setItem('type', type);
     return this.httClient.post<any>('https://localhost:44361/auth/login',user)
 
   }

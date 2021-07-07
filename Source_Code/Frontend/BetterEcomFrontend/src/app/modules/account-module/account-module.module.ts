@@ -5,11 +5,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SaveProfileChangesService } from './services/save-profile-changes.service';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 
 
 @NgModule({
-  declarations: [ViewProfileComponent],
+  declarations: [ViewProfileComponent, ChangePasswordComponent],
   imports: [
     CommonModule,
     AppRoutingModule,
