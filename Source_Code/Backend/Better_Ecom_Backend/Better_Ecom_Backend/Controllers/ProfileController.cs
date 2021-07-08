@@ -27,8 +27,8 @@ namespace Better_Ecom_Backend.Controllers
         }
 
         [Authorize]
-        [HttpGet("{type}/{ID:int}")]
-        public dynamic getData(string type, int id)
+        [HttpGet("GetProfile/{ID:int}/{Type}")]
+        public dynamic GetProfile(int id, string type)
         {
             // see temporary tables in sql.
             string sql = "";
@@ -57,12 +57,10 @@ namespace Better_Ecom_Backend.Controllers
 
         // not sure if the admin will use this to modify student/instructor profiles, will assume not till i get there.
         [Authorize]
-        [HttpPatch("{type}")]
-        public IActionResult updateData(string type, [FromBody] dynamic data)
+        [HttpPatch("SaveProfileChanges/{ID:int}/{Type}")]
+        public IActionResult SaveProfileChanges(int id, string type, [FromBody] dynamic data)
         {
-            string sql = "";
-            int success = 0;
-
+            int success;
             if (type != "admin" && type != "student" && type != "instructor")
             {
 
@@ -83,11 +81,11 @@ namespace Better_Ecom_Backend.Controllers
         }
 
         [Authorize]
-        [HttpPatch("changePassword/{ID:int}")]
-        public IActionResult changePassword(int id, [FromBody] dynamic data)
+        [HttpPatch("ChangePassword/{ID:int}")]
+        public IActionResult ChangePassword(int id, [FromBody] dynamic data)
         {
             data = (JsonElement)data;
-            string sql = @$"select user_password from system_user where system_user_id = @ID";
+            string sql = "SELECT user_password FROM system_user WHERE system_user_id = @ID";
 
             string current_password = _data.LoadData<string, dynamic>(sql, new { ID = id }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName))[0];
             string sent_current_password = data.GetProperty("old_password").GetString();
@@ -95,11 +93,11 @@ namespace Better_Ecom_Backend.Controllers
 
             if (current_password != sent_current_password)
             {
-                return BadRequest("Old password is wrong");
+                return BadRequest("OLD PASSWORD IS WRONG");
             }
             else
             {
-                sql = $@"update system_user set user_password = @new_password where system_user_id = @ID";
+                sql = "UPDATE system_user SET user_password = @new_password WHERE system_user_id = @ID";
 
                 int success = _data.SaveData<dynamic>(sql, new { ID = id, new_password = new_password }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
 

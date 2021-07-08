@@ -30,7 +30,7 @@ namespace Better_Ecom_Backend.Controllers
             _data = data;
         }
 
-        [HttpPost("login")]
+        [HttpPost("Login")]
         public IActionResult Login([FromBody] dynamic loginData)
         {
             JsonElement loginDataJSON = (JsonElement)loginData;
@@ -48,6 +48,48 @@ namespace Better_Ecom_Backend.Controllers
                 response = Ok(new { token = tokenString });
             }
             return response;
+        }
+
+        [HttpPost("CreateAccountForStudent")]
+        public IActionResult CreateAccountForStudent([FromBody] dynamic inputData)
+        {
+            JsonElement inputJson = (JsonElement)inputData;
+            int studentID = inputJson.GetProperty("StudentID").GetInt32();
+
+            //Function job is the same idea as create account for instructor.
+
+            //Return the student object.
+            return Ok("Not Implemented Yet!");
+        }
+
+        [HttpPost("CreateAccountForInstructor")]
+        public IActionResult CreateAccountForInstructor([FromBody] dynamic inputData)
+        {
+            JsonElement inputJson = (JsonElement)inputData;
+            int instructorID = inputJson.GetProperty("InstructorID").GetInt32();
+
+            //Checks the ID against the database.
+            //If correct, then set the instructor password to be the national ID (previously should be null).
+            //If the instructor has already a value for the password other than the null, then the method should
+            //return account already created message.
+
+            //Return the instructor object.
+            return Ok("Not Implemented Yet!");
+        }
+
+        [HttpPatch("ResetAccountCredientials")]
+        public IActionResult ResetAccountCredientials([FromBody] dynamic userData)
+        {
+            JsonElement userJson = (JsonElement)userData;
+            int id = userJson.GetProperty("ID").GetInt32();
+            int nationalID = userJson.GetProperty("NationalID").GetInt32();
+            string type = userJson.GetProperty("Type").GetString();
+
+            //Checks the sent ID and national ID aganist the database.
+            //If correct, then reset the user's password to be the user's national ID.
+
+            //Return the user (system_user) object.
+            return Ok("Not Implemented Yet!");
         }
 
         private string GenerateJSONWebToken(int id, string password, string type)

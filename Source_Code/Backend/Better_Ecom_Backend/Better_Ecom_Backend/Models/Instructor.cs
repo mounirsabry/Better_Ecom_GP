@@ -18,10 +18,10 @@ namespace Better_Ecom_Backend.Models
 
         public Instructor(JsonElement data) : base(data)
         {
-            this.Instructor_id = data.GetProperty("instructor_id").GetInt32();
-            this.University = data.GetProperty("university").GetString();
-            this.Graduation_year = data.GetProperty("graduation_year").GetInt32();
-            this.Contact_info = data.GetProperty("contact_info").GetString();
+            this.Instructor_id = data.GetProperty("Instructor_ID").GetInt32();
+            this.University = data.GetProperty("University").GetString();
+            this.Graduation_year = data.GetProperty("Graduation_year").GetInt32();
+            this.Contact_info = data.GetProperty("Contact_info").GetString();
         }
 
         public override string GetUpdateQuery()
