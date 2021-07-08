@@ -20,8 +20,8 @@ namespace Better_Ecom_Backend.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private IConfiguration _config;
-        private IDataAccess _data;
+       private IConfiguration _config;
+       private IDataAccess _data;
 
         public AccountController(IConfiguration config, IDataAccess data)
         {
@@ -75,7 +75,7 @@ namespace Better_Ecom_Backend.Controllers
                 password = logUser.Password,
 
             };
-            DataAcess dataAcess = new DataAcess(_config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+            DataAccess dataAcess = new DataAccess();
 
             string type = logUser.Type.ToLower();
             string id_text = "";
@@ -101,7 +101,7 @@ namespace Better_Ecom_Backend.Controllers
                     WHERE {id_text} = system_user.system_user_id 
                     AND system_user.system_user_id = @ID AND system_user.user_password = @password";
 
-            List<int> rows = dataAcess.selectData<int, dynamic>(sql, parameters);
+            List<int> rows = dataAcess.LoadData<int, dynamic>(sql, parameters, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
 
             if (rows.Count > 0)
             {
