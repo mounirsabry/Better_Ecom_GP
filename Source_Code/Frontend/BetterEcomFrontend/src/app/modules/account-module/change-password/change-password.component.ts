@@ -3,7 +3,8 @@ import { GetProfileDataService } from '../services/get-profile-data.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router'
 import { AbstractControl, FormControl, FormGroup, Validator, Validators } from '@angular/forms';
 import {HttpClient} from '@angular/common/http'
-import { passwordValidator, SaveProfileChangesService } from '../services/save-profile-changes.service';
+import { SaveProfileChangesService } from '../services/save-profile-changes.service';
+import { passwordValidator } from 'src/app/validators/password-confirm-validator';
 
 @Component({
   selector: 'app-change-password',
@@ -26,11 +27,11 @@ export class ChangePasswordComponent implements OnInit {
       newPassword: new FormControl('', [Validators.required]),
       confirmPassword: new FormControl('', [Validators.required])
     }, [passwordValidator]);
-    
+
     get oldPasswordGet() {
       return this.changePasswordForm.get('oldPassword')
     }
-  
+
     get newPasswordGet() {
       return this.changePasswordForm.get('newPassword')
     }
@@ -42,7 +43,7 @@ export class ChangePasswordComponent implements OnInit {
 
   ngOnInit(): void {
     }
-    
+
 
 
   submitNewPass(oldPassword, newPassword, confirmPassword) {
@@ -50,7 +51,7 @@ export class ChangePasswordComponent implements OnInit {
 
 
     this.saveProfileService.changePassword(oldPassword, newPassword).subscribe(
-      
+
       response => {
         alert("password changed sucessfuly")
         this.router.navigate(['/profile/' + localStorage.getItem("type")])
@@ -62,7 +63,7 @@ export class ChangePasswordComponent implements OnInit {
 
     )
 
-  
+
   }
 
 
