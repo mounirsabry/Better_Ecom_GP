@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Better_Ecom_Backend.Controllers
@@ -29,7 +30,7 @@ namespace Better_Ecom_Backend.Controllers
         [HttpGet("{type}/{ID:int}")]
         public dynamic getData(string type, int id)
         {
-            DataAcess dataAcess = new DataAcess(_config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+            DataAccess dataAccess = new DataAccess();
 
             // see temporary tables in sql.
             string sql = "";
@@ -59,7 +60,7 @@ namespace Better_Ecom_Backend.Controllers
                     AND system_user.system_user_id = @ID";
 
 
-           return dataAcess.selectData<dynamic, dynamic>(sql, new { ID = id }).FirstOrDefault();
+           return dataAccess.LoadData<dynamic, dynamic>(sql, new { ID = id }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
 
 
         }
@@ -69,35 +70,64 @@ namespace Better_Ecom_Backend.Controllers
         [HttpPatch("{type}")]
         public IActionResult updateData(string type, [FromBody] dynamic data)
         {
-            DataAcess dataAcess = new DataAcess(_config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+            DataAccess dataAccess = new DataAccess();
+            string sql = "";
+            int success = 0;
 
-            bool success = true;
 
-
-            if (type != "admin" || type != "student" || type != "instructor" ) {
+            if (type != "admin" && type != "student" && type != "instructor" ) {
 
                 return BadRequest();
 
             } else {
-                System_user system_user = (System_user)data;
-                success = dataAcess.update<System_user>(system_user);
+                System_user system_user = UserFactory.getUser(data, type);
 
-                if (type == "student")
-                {
-                    Student s = (Student)data;
-                    success = dataAcess.update<Student>(s);
-                } else if (type == "instructor")
-                {
-                    Instructor instructor = (Instructor)data;
-                    success = dataAcess.update<Instructor>(instructor);
-                }
+                success = dataAccess.SaveData<System_user>(system_user.GetBaseUpdateQuery(), system_user, _config.GetConnectionString(Constants.CurrentDBConnectionStringName) );
+                success = dataAccess.SaveData<System_user>(system_user.GetUpdateQuery(), system_user, _config.GetConnectionString(Constants.CurrentDBConnectionStringName) );
+
+
+                
             }
 
 
-            if (success)
+            if (success > 0)
                 return Ok();
             else
                 return BadRequest();
+
+        }
+
+        [Authorize]
+        [HttpPatch("chngpassword/{ID:int}")]
+        public IActionResult changePassword(int id, [FromBody] dynamic data)
+        {
+            data = (JsonElement)data;
+            DataAccess dataAccess = new DataAccess();
+            string sql = @$"select user_password from system_user where system_user_id = @ID";
+
+            string current_password = dataAccess.LoadData<string, dynamic>(sql, new { ID = id }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName) )[0];
+            string sent_current_password = data.GetProperty("old_password").GetString();
+            string new_password = data.GetProperty("new_password").GetString();
+
+            if(current_password != sent_current_password )
+            {
+                return BadRequest("Old password is wrong");
+            }
+            else
+            {
+                sql = $@"update system_user set user_password = @new_password where system_user_id = @ID";
+
+                int success = dataAccess.SaveData<dynamic>(sql, new { ID = id, new_password = new_password }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+
+                if(success > 0 )
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
 
         }
     }

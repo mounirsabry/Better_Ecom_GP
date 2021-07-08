@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using MySql.Data.MySqlClient;
-
+using Dapper.Contrib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,12 +21,14 @@ namespace DataLibrary
             }
         }
 
-        public void SaveData<T>(string sql, T parameters, string connectionString)
+        public int SaveData<T>(string sql, T parameters, string connectionString)
         {
+            int state = 0;
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
-                connection.Execute(sql, parameters);
+                state = connection.Execute(sql, parameters);
             }
+            return state;
         }
     }
 }
