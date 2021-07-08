@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using MySql.Data.MySqlClient;
-using Dapper.Contrib;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -23,7 +23,6 @@ namespace Better_Ecom_Backend.Controllers
             _data = data;
         }
         
-        
         public IActionResult test()
         {
             string sql = "SELECT * FROM admin_user;";
@@ -31,7 +30,5 @@ namespace Better_Ecom_Backend.Controllers
             var admins = _data.LoadData<Admin_user, dynamic>(sql, new { }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
             return Ok(admins.ToList());
         }
-
-        
     }
 }

@@ -19,9 +19,14 @@ namespace Better_Ecom_Backend.Helpers
             {
                 return new Instructor(data);
             }
-            else 
+            else if (type == "admin")
+            {
+                return new Admin_user(data);
+            }
+            else
+            {
                 return null;
-
+            }
         }
     }
 }
