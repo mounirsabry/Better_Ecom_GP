@@ -19,18 +19,25 @@ namespace Better_Ecom_Backend.Models
 
         public Student(JsonElement data) : base(data)
         {
-            this.Student_id = data.GetProperty("Student_id").GetInt32();
-            this.High_school_type = data.GetProperty("High_school_type").GetString();
-            this.Entrance_year = data.GetProperty("Entrance_year").GetString();
-            this.GPA = data.GetProperty("GPA").GetDouble();
-            this.Department = data.GetProperty("Department").GetString();
-            this.Academic_year = data.GetProperty("Academic_year").GetInt32();
+            JsonElement temp;
+            if(data.TryGetProperty("Student_id",out temp))
+                this.Student_id = temp.GetInt32();
+
+            if (data.TryGetProperty("Entrance_year", out temp))
+                this.Entrance_year = temp.GetString();
+
+            if (data.TryGetProperty("High_school_type", out temp))
+                this.High_school_type = temp.GetString();
+
+            if (data.TryGetProperty("GPA", out temp))
+                this.GPA = temp.GetDouble();
+
+            if (data.TryGetProperty("Department", out temp))
+                this.Department = temp.GetString();
+
+            if (data.TryGetProperty("Academic_year", out temp))
+                this.Academic_year = temp.GetInt32();
         }
 
-        public override string GetUpdateQuery()
-        {
-            return @$"UPDATE student SET high_school_type = @High_school_type, entrance_year = @Entrance_year, gpa = @GPA, 
-                    department = @Department, academic_year = @Academic_year where student_id = @Student_id";
-        }
     }
 }
