@@ -23,7 +23,8 @@ const routes: Routes = [
   {path:'adminHomePage',component:AdminHomePageComponent},
   {path:'profile/:type', component:ViewProfileComponent},
   {path:'changePassword',component:ChangePasswordComponent},
-  {path:'**',component:PageNotFoundComponent}
+  {path:'pageNotFound',component:PageNotFoundComponent},// related to header don't change it.
+  {path:'**', redirectTo:'pageNotFound',pathMatch:'full'}
 
 ];
 

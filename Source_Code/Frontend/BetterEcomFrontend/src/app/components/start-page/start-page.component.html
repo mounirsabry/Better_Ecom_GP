@@ -1,8 +1,10 @@
+<div class="body">
+  <div class="main">
+      <h2> Welcome to Better E-com </h2>
+      <div class="break"></div>
+      <button type="submit" [routerLink]="['/login','student']">Login as Student</button>
+      <button type="submit" [routerLink]="['/login','instructor']">Login as Instructor</button>
 
-<div >
-  <h2> Welcome to Better E-com </h2>
-  <button type="submit" [routerLink]="['/login','student']">Login as Student</button>
-  <button type="submit" [routerLink]="['/login','instructor']">Login as Instructor</button>
-
-  <h2 style="color: red;"> {{errorMessage}}</h2>
+      <h2 style="color: red;"> {{errorMessage}}</h2>
+  </div>
 </div>

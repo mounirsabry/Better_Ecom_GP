@@ -1,2 +1,15 @@
 
+ <div *ngIf="getCurrentUrl('http://localhost:4200/startPage')  &&
+            getCurrentUrl('http://localhost:4200/login/student') &&
+            getCurrentUrl('http://localhost:4200/login/instructor') &&
+            getCurrentUrl('http://localhost:4200/login/admin')  &&
+            getCurrentUrl('http://localhost:4200/adminLogin') &&
+            getCurrentUrl('http://localhost:4200/pageNotFound') " class="wrap">
+  <div class="navbar">
+    <h1>Better E-Com</h1>
+    <app-logout></app-logout>
+  </div>
+</div>
+
+
 <router-outlet></router-outlet>
