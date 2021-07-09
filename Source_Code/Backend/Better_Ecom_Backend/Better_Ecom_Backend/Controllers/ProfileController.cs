@@ -71,13 +71,30 @@ namespace Better_Ecom_Backend.Controllers
             {
                 System_user system_user = UserFactory.getUser(data, type);
 
-                success = _data.SaveData<System_user>(system_user.GetBaseUpdateQuery(), system_user, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
-                success = _data.SaveData<System_user>(system_user.GetUpdateQuery(), system_user, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+                success = _data.SaveData<System_user>(GetBaseUserUpdateQuery(), system_user, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+                success += _data.SaveData<System_user>(GetUserUpdateQuery(type), system_user, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
             }
-            if (success > 0)
+            if (success > 1)
                 return Ok();
             else
                 return BadRequest();
+        }
+
+        private string GetUserUpdateQuery(string type)
+        {
+            if (type == "student")
+                return @$"UPDATE student SET high_school_type = @High_school_type, entrance_year = @Entrance_year, gpa = @GPA, 
+                    department = @Department, academic_year = @Academic_year where student_id = @Student_id";
+            else 
+                return @$"UPDATE instructor SET university = @University, graduation_year = @Graduation_year, contact_info = @Contact_info where instructor_id = @Instructor_id";
+
+        }
+
+        private string GetBaseUserUpdateQuery()
+        {
+            return @$"UPDATE system_user SET full_name = @Full_name, email = 'g.r33r@hotmail.com', address = @Address, phone_number = @Phone_number, 
+                mobile_number = @Mobile_number, nationality = @Nationality, national_id = @National_id, Birth_date = @Birth_date, gender = @Gender,
+                additional_info = @Additional_info  where system_user_id = @System_user_id";
         }
 
         [Authorize]
