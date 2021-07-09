@@ -12,6 +12,8 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -40,7 +42,7 @@ namespace Better_Ecom_Backend.Controllers
 
             //IActionResult
             IActionResult response = Unauthorized();
-            bool exists = AuthenticateUser(id, password, type);
+            bool exists = AuthenticateUser(id, password, type) && password != "";
 
             if (exists)
             {
@@ -49,47 +51,188 @@ namespace Better_Ecom_Backend.Controllers
             }
             return response;
         }
-
+        [Authorize]
         [HttpPost("CreateAccountForStudent")]
         public IActionResult CreateAccountForStudent([FromBody] dynamic inputData)
         {
             JsonElement inputJson = (JsonElement)inputData;
             int studentID = inputJson.GetProperty("StudentID").GetInt32();
+            string sql = @$"SELECT * FROM system_user INNER JOIN system_user
+                    WHERE student.student_id = system_user.system_user_id 
+                    AND system_user.system_user_id = @ID";
+            Student student = _data.LoadData<Student, dynamic>(sql, new { ID = studentID },
+                _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
 
-            //Function job is the same idea as create account for instructor.
+            if(student != null && student.User_password == null)
+            {
+                sql = "UPDATE system_user SET user_password = @pass where system_user_id = @id";
 
-            //Return the student object.
-            return Ok("Not Implemented Yet!");
+                string pass = student.National_id;
+                int success = _data.SaveData<dynamic>(sql, new { pass = pass, ID = student.System_user_id},
+                    _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+
+
+
+                if(success > 0)
+                {
+                    student.User_password = pass;
+                    return Ok(student);
+                }
+                else
+                {
+                    return BadRequest(new { message = "couldn't update" });
+                }
+
+            }
+            else
+            {
+                if (student == null)
+                {
+                    return NotFound(new { message = "student doesn't exist." });
+                }
+                else if (student.User_password != null)
+                {
+                    return BadRequest(new { message = "student already created." });
+                }
+
+                return BadRequest(new { message = "unknown error." });
+            }
+
+
+            
+            
+
+            
         }
-
+        [Authorize]
         [HttpPost("CreateAccountForInstructor")]
         public IActionResult CreateAccountForInstructor([FromBody] dynamic inputData)
         {
             JsonElement inputJson = (JsonElement)inputData;
             int instructorID = inputJson.GetProperty("InstructorID").GetInt32();
 
-            //Checks the ID against the database.
-            //If correct, then set the instructor password to be the national ID (previously should be null).
-            //If the instructor has already a value for the password other than the null, then the method should
-            //return account already created message.
 
-            //Return the instructor object.
-            return Ok("Not Implemented Yet!");
+            string sql = @$"SELECT * FROM instructor INNER JOIN system_user
+                    WHERE instructor.instructor_id = system_user.system_user_id 
+                    AND system_user.system_user_id = @ID";
+            Instructor instructor = _data.LoadData<Instructor, dynamic>(sql, new { ID = instructorID }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
+
+            if (instructor != null && instructor.User_password == null)
+            {
+                sql = "UPDATE system_user SET user_password = @pass where system_user_id = @id";
+
+
+                string pass = instructor.National_id;
+
+                int success = _data.SaveData<dynamic>(sql, new { pass = pass, ID = pass },
+                    _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+
+
+
+                if (success > 0)
+                {
+                    instructor.User_password = pass;
+                    return Ok(instructor);
+                }
+                else
+                {
+                    return BadRequest(new { message = "couldn't update" });
+                }
+
+            }
+            else
+            {
+                if(instructor == null)
+                {
+                    return NotFound(new { message = "instructor doesn't exist." });
+                }
+                else if (instructor.User_password != null)
+                {
+                    return BadRequest(new { message = "instructor already created." });
+                }
+
+                return BadRequest(new { message = "unknown error." });
+                
+            }
+
+
+
+
+
         }
-
+        [Authorize]
         [HttpPatch("ResetAccountCredientials")]
         public IActionResult ResetAccountCredientials([FromBody] dynamic userData)
         {
             JsonElement userJson = (JsonElement)userData;
             int id = userJson.GetProperty("ID").GetInt32();
-            int nationalID = userJson.GetProperty("NationalID").GetInt32();
+            string nationalID = userJson.GetProperty("NationalID").GetString();
             string type = userJson.GetProperty("Type").GetString();
+            System_user systemUser = null ;
 
-            //Checks the sent ID and national ID aganist the database.
-            //If correct, then reset the user's password to be the user's national ID.
+            string sql;
+            string id_text = "";
+            string table = "";
+            switch (type)
+            {
+                case "student":
+                    table = "student";
+                    id_text = "student.student_id";
+                    break;
+                case "instructor":
+                    table = "instructor";
+                    id_text = "instructor.instructor_id";
+                    break;
 
-            //Return the user (system_user) object.
-            return Ok("Not Implemented Yet!");
+            }
+            sql = @$"SELECT * FROM {table} INNER JOIN system_user
+                    WHERE {id_text} = system_user.system_user_id 
+                    AND system_user.system_user_id = @ID";
+
+            
+            switch(type)
+            {
+                case "student":
+                    systemUser = _data.LoadData<Student, dynamic>(sql, new { ID = id }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
+                    break;
+                case "instructor":
+                    systemUser = _data.LoadData<Instructor, dynamic>(sql, new { ID = id }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
+                    break;
+            }
+
+            if (systemUser != null)
+            {
+                sql = "UPDATE system_user SET user_password = @pass where system_user_id = @id";
+
+                string pass = systemUser.National_id;
+                int success = _data.SaveData<dynamic>(sql, new { pass = pass, ID = systemUser.System_user_id },
+                    _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+
+
+
+                if (success > 0)
+                {
+                    systemUser.User_password = pass;
+                    return Ok(systemUser);
+                }
+                else
+                {
+                    return BadRequest(new { message = "couldn't update" });
+                }
+
+            }
+            else
+            {
+                if (systemUser == null)
+                {
+                    return NotFound(new { message = "systemUser doesn't exist." });
+                }
+           
+                return BadRequest(new { message = "unknown error." });
+            }
+
+
+  
         }
 
         private string GenerateJSONWebToken(int id, string password, string type)

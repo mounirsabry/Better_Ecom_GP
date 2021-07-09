@@ -28,26 +28,44 @@ namespace Better_Ecom_Backend.Models
 
         public System_user(JsonElement data)
         {
-            this.System_user_id = data.GetProperty("System_user_id").GetInt32();
-            this.Full_name = data.GetProperty("Full_name").GetString();
-            this.Email = data.GetProperty("Email").GetString();
-            this.Address = data.GetProperty("Address").GetString();
-            this.Phone_number = data.GetProperty("Phone_number").GetString();
-            this.Mobile_number = data.GetProperty("Mobile_number").GetString();
-            this.Nationality = data.GetProperty("Nationality").GetString();
-            this.National_id = data.GetProperty("National_id").GetString();
-            this.Birth_date = data.GetProperty("Birth_date").GetDateTime();
-            this.Gender = data.GetProperty("Gender").GetString();
-            this.Additional_info = data.GetProperty("Additional_info").GetString();
+            JsonElement temp;
+            if (data.TryGetProperty("System_user_id", out temp))
+                this.System_user_id = temp.GetInt32();
+
+            if (data.TryGetProperty("Full_name", out temp))
+                this.Full_name = temp.GetString();
+
+            if (data.TryGetProperty("Email", out temp))
+                this.Email = temp.GetString();
+
+            if (data.TryGetProperty("Address", out temp))
+                this.Address = temp.GetString();
+
+            if (data.TryGetProperty("Phone_number", out temp))
+                this.Phone_number = temp.GetString();
+
+            if (data.TryGetProperty("Mobile_number", out temp))
+
+                this.Mobile_number = temp.GetString();
+
+            if (data.TryGetProperty("Nationality", out temp))
+                this.Nationality = temp.GetString();
+
+            if (data.TryGetProperty("National_id", out temp))
+                this.National_id = temp.GetString();
+
+            if (data.TryGetProperty("Birth_date", out temp))
+                this.Birth_date = temp.GetDateTime();
+
+            if (data.TryGetProperty("Gender", out temp))
+                this.Gender = temp.GetString();
+
+            if (data.TryGetProperty("Additional_info", out temp))
+                this.Additional_info = temp.GetString();
         }
 
-        public string GetBaseUpdateQuery()
-        {
-            return @$"UPDATE system_user SET full_name = @Full_name, email = 'g.r33r@hotmail.com', address = @Address, phone_number = @Phone_number, 
-                mobile_number = @Mobile_number, nationality = @Nationality, national_id = @National_id, Birth_date = @Birth_date, gender = @Gender,
-                additional_info = @Additional_info  where system_user_id = @System_user_id";
-        }
 
-        public abstract string GetUpdateQuery();
+
+
     }
 }
