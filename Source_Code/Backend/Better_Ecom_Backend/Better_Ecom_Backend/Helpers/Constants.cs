@@ -7,6 +7,6 @@ namespace Better_Ecom_Backend.Helpers
 {
     public static class Constants
     {
-        public static string CurrentDatabaseConnectionString { get; set; } = "Remote_MySQL_COM_DB";
+        public static string CurrentDBConnectionStringName { get; set; } = "Remote_MySQL_COM_DB";
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Better_Ecom_Backend.Helpers;
 using Better_Ecom_Backend.Models;
+using DataLibrary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Better_Ecom_Backend.Controllers
@@ -16,18 +18,18 @@ namespace Better_Ecom_Backend.Controllers
     public class ProfileController : ControllerBase
     {
         private IConfiguration _config;
+        private IDataAccess _data;
 
-        public ProfileController(IConfiguration config)
+        public ProfileController(IConfiguration config, IDataAccess data)
         {
             _config = config;
+            _data = data;
         }
 
         [Authorize]
-        [HttpGet("{type}/{ID:int}")]
-        public dynamic getData(string type, int id)
+        [HttpGet("GetProfile/{ID:int}/{Type}")]
+        public dynamic GetProfile(int id, string type)
         {
-            DataAcess dataAcess = new DataAcess(_config.GetConnectionString(Constants.CurrentDatabaseConnectionString));
-
             // see temporary tables in sql.
             string sql = "";
             string id_text = "";
@@ -46,56 +48,68 @@ namespace Better_Ecom_Backend.Controllers
                     table = "admin_user";
                     id_text = "admin_user.admin_user_id";
                     break;
-
-
-                
             }
-
             sql = @$"SELECT * FROM {table} INNER JOIN system_user
                     WHERE {id_text} = system_user.system_user_id 
                     AND system_user.system_user_id = @ID";
-
-
-           return dataAcess.selectData<dynamic, dynamic>(sql, new { ID = id }).FirstOrDefault();
-
-
+            return _data.LoadData<dynamic, dynamic>(sql, new { ID = id }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
         }
 
         // not sure if the admin will use this to modify student/instructor profiles, will assume not till i get there.
         [Authorize]
-        [HttpPatch("{type}")]
-        public IActionResult updateData(string type, [FromBody] dynamic data)
+        [HttpPatch("SaveProfileChanges/{ID:int}/{Type}")]
+        public IActionResult SaveProfileChanges(int id, string type, [FromBody] dynamic data)
         {
-            DataAcess dataAcess = new DataAcess(_config.GetConnectionString(Constants.CurrentDatabaseConnectionString));
-
-            bool success = true;
-
-
-            if (type != "admin" || type != "student" || type != "instructor" ) {
+            int success;
+            if (type != "admin" && type != "student" && type != "instructor")
+            {
 
                 return BadRequest();
 
-            } else {
-                System_user system_user = (System_user)data;
-                success = dataAcess.update<System_user>(system_user);
-
-                if (type == "student")
-                {
-                    Student s = (Student)data;
-                    success = dataAcess.update<Student>(s);
-                } else if (type == "instructor")
-                {
-                    Instructor instructor = (Instructor)data;
-                    success = dataAcess.update<Instructor>(instructor);
-                }
             }
+            else
+            {
+                System_user system_user = UserFactory.getUser(data, type);
 
-
-            if (success)
+                success = _data.SaveData<System_user>(system_user.GetBaseUpdateQuery(), system_user, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+                success = _data.SaveData<System_user>(system_user.GetUpdateQuery(), system_user, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+            }
+            if (success > 0)
                 return Ok();
             else
                 return BadRequest();
+        }
 
+        [Authorize]
+        [HttpPatch("ChangePassword/{ID:int}")]
+        public IActionResult ChangePassword(int id, [FromBody] dynamic data)
+        {
+            data = (JsonElement)data;
+            string sql = "SELECT user_password FROM system_user WHERE system_user_id = @ID";
+
+            string current_password = _data.LoadData<string, dynamic>(sql, new { ID = id }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName))[0];
+            string sent_current_password = data.GetProperty("old_password").GetString();
+            string new_password = data.GetProperty("new_password").GetString();
+
+            if (current_password != sent_current_password)
+            {
+                return BadRequest("OLD PASSWORD IS WRONG");
+            }
+            else
+            {
+                sql = "UPDATE system_user SET user_password = @new_password WHERE system_user_id = @ID";
+
+                int success = _data.SaveData<dynamic>(sql, new { ID = id, new_password = new_password }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+
+                if (success > 0)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
         }
     }
 }

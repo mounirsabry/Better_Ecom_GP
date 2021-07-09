@@ -1,3 +1,4 @@
+using DataLibrary;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -44,6 +45,7 @@ namespace Better_Ecom_Backend
                 };
             });
 
+            services.AddSingleton<IDataAccess, DataAccess>();
             services.AddControllers();
         }
 

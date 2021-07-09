@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Better_Ecom_Backend.Models;
 using Microsoft.Extensions.Configuration;
+using DataLibrary;
+using Better_Ecom_Backend.Helpers;
 
 namespace Better_Ecom_Backend.Controllers
 {
@@ -12,21 +14,21 @@ namespace Better_Ecom_Backend.Controllers
     [Route("[controller]")]
     public class testController : Controller
     {
-        IConfiguration _configuration;
+        IConfiguration _config;
+        IDataAccess _data;
 
-        public testController(IConfiguration configuration)
+        public testController(IConfiguration config, IDataAccess data)
         {
-            this._configuration = configuration;
-
+            _config = config;
+            _data = data;
         }
-        
-        
         
         public IActionResult test()
         {
-            return Ok(new { s = "string" });
-        }
+            string sql = "SELECT * FROM admin_user;";
 
-        
+            var admins = _data.LoadData<Admin_user, dynamic>(sql, new { }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+            return Ok(admins.ToList());
+        }
     }
 }
