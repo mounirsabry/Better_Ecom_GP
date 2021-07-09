@@ -11,7 +11,7 @@ export class SaveProfileChangesService {
 
   saveChanges(user:any){
 
-    this.httpClient.patch("",user);
+    return this.httpClient.patch("https://localhost:44361/profile/SaveProfileChanges/" + localStorage.getItem('ID') +"/" + localStorage.getItem('type'), user);
   }
 
   changePassword(oldPassword : string, newPassword : string)
