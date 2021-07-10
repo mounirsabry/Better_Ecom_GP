@@ -19,12 +19,12 @@ namespace Better_Ecom_Backend.Models
 
         public Student(JsonElement data) : base(data)
         {
-            this.Student_id = data.GetProperty("Student_id").GetInt32();
-            this.High_school_type = data.GetProperty("High_school_type").GetString();
-            this.Entrance_year = data.GetProperty("Entrance_year").GetString();
-            this.GPA = data.GetProperty("GPA").GetDouble();
-            this.Department = data.GetProperty("Department").GetString();
-            this.Academic_year = data.GetProperty("Academic_year").GetInt32();
+            this.Student_id = data.GetProperty("student_id").GetInt32();
+            this.High_school_type = data.GetProperty("high_school_type").GetString();
+            this.Entrance_year = data.GetProperty("entrance_year").GetString();
+            this.GPA = data.GetProperty("gpa").GetDouble();
+            this.Department = data.GetProperty("department").GetString();
+            this.Academic_year = data.GetProperty("academic_year").GetInt32();
         }
 
         public override string GetUpdateQuery()
