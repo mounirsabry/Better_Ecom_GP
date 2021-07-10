@@ -14,7 +14,7 @@ namespace Better_Ecom_Backend.Models
 
         public Admin_user(JsonElement data) : base(data)
         {
-            this.Admin_user_id = data.GetProperty("admin_user_id").GetInt32();
+            this.Admin_user_id = data.GetProperty("Admin_user_id").GetInt32();
         }
         
         public override string GetUpdateQuery()
