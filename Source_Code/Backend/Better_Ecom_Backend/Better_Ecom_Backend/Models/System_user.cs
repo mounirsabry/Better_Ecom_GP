@@ -31,6 +31,8 @@ namespace Better_Ecom_Backend.Models
             JsonElement temp;
             if (data.TryGetProperty("System_user_id", out temp))
                 this.System_user_id = temp.GetInt32();
+            else
+                this.System_user_id = -1;
 
             if (data.TryGetProperty("Full_name", out temp))
                 this.Full_name = temp.GetString();
