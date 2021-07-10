@@ -4,7 +4,6 @@ using DataLibrary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -87,17 +86,16 @@ namespace Better_Ecom_Backend.Controllers
 
                 success1 = _data.SaveDataTransaction<dynamic>(queries, parameterList, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
 
-                return BadRequest(new { Message = "operation failed." });
+                if (!success1.Contains(-1))
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest(new { Message = "operation failed." });
+                }
             }
 
-            if (!success1.Contains(-1) && !success1.Contains(0))
-            {
-                return Ok();
-            }
-            else
-            {
-                return BadRequest(new { Message = "operation failed." });
-            }
         }
 
         private string GetInstructorUpdateQuery()
@@ -130,13 +128,13 @@ namespace Better_Ecom_Backend.Controllers
             {
                 sql = "UPDATE system_user SET user_password = @new_password WHERE system_user_id = @ID;";
 
-                
-                
-                    success = _data.SaveData<dynamic>(sql, new { ID = id, new_password = new_password }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
-                
-              
 
-                if (success > 0)
+
+                success = _data.SaveData<dynamic>(sql, new { ID = id, new_password = new_password }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+
+
+
+                if (success >= 0)
                 {
                     return Ok();
                 }

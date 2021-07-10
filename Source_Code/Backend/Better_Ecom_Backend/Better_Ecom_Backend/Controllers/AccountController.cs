@@ -204,7 +204,7 @@ namespace Better_Ecom_Backend.Controllers
                 
 
 
-                if (success > 0)
+                if (success >= 0)
                 {
                     systemUser.User_password = pass;
                     return Ok(systemUser);
