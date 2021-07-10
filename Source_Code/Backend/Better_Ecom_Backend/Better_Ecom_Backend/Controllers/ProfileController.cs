@@ -72,7 +72,8 @@ namespace Better_Ecom_Backend.Controllers
                 System_user system_user = UserFactory.getUser(data, type);
 
                 success = _data.SaveData<System_user>(GetBaseUserUpdateQuery(), system_user, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
-                success += _data.SaveData<System_user>(GetUserUpdateQuery(type), system_user, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+                if(type == "instructor" || type == "student")
+                    success += _data.SaveData<System_user>(GetUserUpdateQuery(type), system_user, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
             }
             if (success > 1)
                 return Ok();
