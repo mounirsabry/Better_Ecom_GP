@@ -1,0 +1,15 @@
+.navbar {
+  background-color: #0B879A;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  padding: 2vh 1vw;
+}
+
+.wrap{
+  text-align: center;
+  width: 90vw;
+  margin: 0 auto;
+  color: white;
+  padding: 1vh 0 0 0;
+
+}

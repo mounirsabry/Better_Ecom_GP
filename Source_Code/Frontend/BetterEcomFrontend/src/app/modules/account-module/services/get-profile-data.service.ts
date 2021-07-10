@@ -10,8 +10,7 @@ export class GetProfileDataService {
 
   getProfileData(type:string){
 
-    console.log("https://localhost:44361/profile/"+ type + "/" + localStorage.getItem("ID"))
 
-    return this.httClient.get<any>("https://localhost:44361/profile/"+ type + "/" + localStorage.getItem("ID"))
+    return this.httClient.get<any>("https://localhost:44361/profile/GetProfile/"+ localStorage.getItem("ID") + "/" + type )
   }
 }

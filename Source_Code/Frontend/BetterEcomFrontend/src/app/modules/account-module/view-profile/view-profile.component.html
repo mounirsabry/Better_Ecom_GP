@@ -4,7 +4,7 @@
 
     <div *ngIf="property.key != 'system_user_id' && property.key != 'user_password'">
       <label >{{property.key}}     </label>
-
+      
       <input  type="{{inputType(property.key)}}" placeholder="{{property.value}}"
       [style.color] = "changeColor(property.key)"
       formControlName="{{property.key}}"

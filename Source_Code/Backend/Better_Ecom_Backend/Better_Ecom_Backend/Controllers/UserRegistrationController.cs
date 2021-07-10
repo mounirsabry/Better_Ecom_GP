@@ -29,6 +29,7 @@ namespace Better_Ecom_Backend.Controllers
         {
             JsonElement studentJson = (JsonElement)studentData;
             Student newStudent = new Student(studentJson);
+            Console.WriteLine(newStudent);
 
             //Adds the new student to the database.
             //The student will have the next available ID in the students table.
