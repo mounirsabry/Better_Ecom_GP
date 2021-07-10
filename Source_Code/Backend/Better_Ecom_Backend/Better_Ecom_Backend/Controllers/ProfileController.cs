@@ -59,6 +59,7 @@ namespace Better_Ecom_Backend.Controllers
             string sql = @$"SELECT * FROM {table} INNER JOIN system_user
                     WHERE {id_text} = system_user.system_user_id 
                     AND system_user.system_user_id = @ID;";
+
             return _data.LoadData<dynamic, dynamic>(sql, new { ID = id }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
         }
 
@@ -76,12 +77,23 @@ namespace Better_Ecom_Backend.Controllers
             else
             {
                 System_user system_user = UserFactory.getUser(data, type);
-
-                success1 = _data.SaveData<System_user>(GetBaseUserUpdateQuery(), system_user, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+                List<string> queries = new List<string>();
+                queries.Add(GetBaseUserUpdateQuery());
                 if (type == "instructor")
-                    success2 = _data.SaveData<System_user>(GetInstructorUpdateQuery(), system_user, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+                    queries.Add(GetInstructorUpdateQuery());
+
+                try
+                {
+
+                    success1 = _data.SaveDataTransaction<System_user>(queries, system_user, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    return BadRequest(new { Message = "operation failed." });
+                }
             }
-            if (success1 > 0 && success2 > 0)
+            if (success1 > 0)
             {
                 return Ok();
             }
@@ -98,7 +110,7 @@ namespace Better_Ecom_Backend.Controllers
 
         private string GetBaseUserUpdateQuery()
         {
-            return @$"UPDATE system_user SET email = 'g.r33r@hotmail.com', address = @Address, phone_number = @Phone_number, mobile_number = @Mobile_number,
+            return @$"UPDATE system_user SET email = @Email, address = @Address, phone_number = @Phone_number, mobile_number = @Mobile_number,
                 additional_info = @Additional_info  where system_user_id = @System_user_id;";
         }
 
@@ -108,7 +120,7 @@ namespace Better_Ecom_Backend.Controllers
         {
             data = (JsonElement)data;
             string sql = "SELECT user_password FROM system_user WHERE system_user_id = @ID;";
-
+            int success = 0;
             string current_password = _data.LoadData<string, dynamic>(sql, new { ID = id }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName))[0];
             string sent_current_password = data.GetProperty("Old_password").GetString();
             string new_password = data.GetProperty("New_password").GetString();
@@ -121,7 +133,15 @@ namespace Better_Ecom_Backend.Controllers
             {
                 sql = "UPDATE system_user SET user_password = @new_password WHERE system_user_id = @ID;";
 
-                int success = _data.SaveData<dynamic>(sql, new { ID = id, new_password = new_password }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+                try
+                {
+                    success = _data.SaveData<dynamic>(sql, new { ID = id, new_password = new_password }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    return BadRequest(new { Message = "operation failed." });
+                }
 
                 if (success > 0)
                 {

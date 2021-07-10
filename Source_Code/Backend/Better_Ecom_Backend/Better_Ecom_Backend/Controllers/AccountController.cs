@@ -59,16 +59,36 @@ namespace Better_Ecom_Backend.Controllers
             string sql = @$"SELECT * FROM student INNER JOIN system_user
                     WHERE student.student_id = system_user.system_user_id 
                     AND system_user.system_user_id = @ID;";
-            Student student = _data.LoadData<Student, dynamic>(sql, new { ID = studentID },
-                _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
+            int success = 0;
+            Student student = null;
+
+            try
+            {
+                student = _data.LoadData<Student, dynamic>(sql, new { ID = studentID },
+                    _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return BadRequest(new { Message = "operation failed." });
+            }
 
             if (student != null && student.User_password == null)
             {
                 sql = "UPDATE system_user SET user_password = @pass WHERE system_user_id = @ID;";
 
                 string pass = student.National_id;
-                int success = _data.SaveData<dynamic>(sql, new { pass = pass, ID = student.System_user_id },
-                    _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+
+                try
+                {
+                    success = _data.SaveData<dynamic>(sql, new { pass = pass, ID = student.System_user_id },
+                        _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    return BadRequest(new {Message = "operation failed." });
+                }
 
                 if (success > 0)
                 {
@@ -100,21 +120,37 @@ namespace Better_Ecom_Backend.Controllers
         {
             JsonElement inputJson = (JsonElement)inputData;
             int instructorID = inputJson.GetProperty("InstructorID").GetInt32();
-
+            Instructor instructor = null;
 
             string sql = @$"SELECT * FROM instructor INNER JOIN system_user
                     WHERE instructor.instructor_id = system_user.system_user_id 
                     AND system_user.system_user_id = @ID;";
-            Instructor instructor = _data.LoadData<Instructor, dynamic>(sql, new { ID = instructorID }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
+
+            try
+            {
+                instructor = _data.LoadData<Instructor, dynamic>(sql, new { ID = instructorID }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return BadRequest(new { Message = "operation failed." });
+            }
 
             if (instructor != null && instructor.User_password == null)
             {
                 sql = "UPDATE system_user SET user_password = @pass where system_user_id = @ID;";
-
+                int success = 0;
                 string pass = instructor.National_id;
-
-                int success = _data.SaveData<dynamic>(sql, new { pass = pass, ID = instructor.System_user_id },
-                    _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+                try
+                {
+                    success = _data.SaveData<dynamic>(sql, new { pass = pass, ID = instructor.System_user_id },
+                        _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+                }
+                catch(Exception e )
+                {
+                    Console.WriteLine(e.Message);
+                    return BadRequest(new { Message = "operation failed." });
+                }
 
                 if (success > 0)
                 {
@@ -167,28 +203,45 @@ namespace Better_Ecom_Backend.Controllers
                     break;
 
             }
+
             sql = @$"SELECT * FROM {table} INNER JOIN system_user
                     WHERE {id_text} = system_user.system_user_id 
                     AND system_user.system_user_id = @ID
                     AND system_user.national_id = @NationalID;";
 
-            switch (type)
+            try
             {
-                case "student":
-                    systemUser = _data.LoadData<Student, dynamic>(sql, new { ID = id, NationalID = nationalID }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
-                    break;
-                case "instructor":
-                    systemUser = _data.LoadData<Instructor, dynamic>(sql, new { ID = id, NationalID = nationalID }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
-                    break;
+                switch (type)
+                {
+                    case "student":
+                        systemUser = _data.LoadData<Student, dynamic>(sql, new { ID = id, NationalID = nationalID }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
+                        break;
+                    case "instructor":
+                        systemUser = _data.LoadData<Instructor, dynamic>(sql, new { ID = id, NationalID = nationalID }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
+                        break;
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return BadRequest(new { Message = "operation failed." });
             }
 
             if (systemUser != null)
             {
                 sql = "UPDATE system_user SET user_password = @pass where system_user_id = @ID;";
-
+                int success = 0;
                 string pass = systemUser.National_id;
-                int success = _data.SaveData<dynamic>(sql, new { pass = pass, ID = systemUser.System_user_id },
-                    _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+                try
+                {
+                    success = _data.SaveData<dynamic>(sql, new { pass = pass, ID = systemUser.System_user_id },
+                        _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    return BadRequest(new { Message = "operation failed." });
+                }
 
                 if (success > 0)
                 {
@@ -263,7 +316,16 @@ namespace Better_Ecom_Backend.Controllers
                     WHERE {id_text} = system_user.system_user_id 
                     AND system_user.system_user_id = @ID 
                     AND system_user.user_password = @password";
-            List<int> rows = _data.LoadData<int, dynamic>(sql, parameters, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+            List<int> rows;
+            try
+            {
+                rows = _data.LoadData<int, dynamic>(sql, parameters, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+            }
+            catch(Exception e )
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
 
             if (rows.Count > 0)
             {

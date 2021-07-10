@@ -6,5 +6,7 @@ namespace DataLibrary
     {
         List<T> LoadData<T, U>(string sql, U parameters, string connectionString);
         int SaveData<T>(string sql, T parameters, string connectionString);
+
+        int SaveDataTransaction<T>(List<string> sqlList, T parameters, string connectionString);
     }
 }

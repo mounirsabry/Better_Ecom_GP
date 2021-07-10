@@ -29,5 +29,35 @@ namespace DataLibrary
             }
             return state;
         }
+
+        public int SaveDataTransaction<T>(List<string> sqlList, T parameters, string connectionString)
+        {
+            int state = 0;
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+
+                IDbTransaction transaction = connection.BeginTransaction();
+
+                try
+                {
+                    for (int i = 0; i < sqlList.Count; i++)
+                    {
+                        state += connection.Execute(sqlList[i], parameters);
+                    }
+                    transaction.Commit();
+                }
+                catch(Exception e)
+                {
+                    transaction.Rollback();
+                    state = -1;
+                }
+                finally
+                {
+                    connection.Close();
+                }
+
+            }
+            return state;
+        }
     }
 }
