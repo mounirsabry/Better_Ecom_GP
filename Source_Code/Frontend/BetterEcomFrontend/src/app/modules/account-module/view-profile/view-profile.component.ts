@@ -27,7 +27,7 @@ export class ViewProfileComponent implements OnInit {
   constructor(
     private getProfileDataService:GetProfileDataService,
     private activatedRoute:ActivatedRoute,
-    private saveProfileChanges:SaveProfileChangesService
+    private saveProfileChangesService:SaveProfileChangesService
     ) { }
 
   ngOnInit(): void {
@@ -65,7 +65,7 @@ export class ViewProfileComponent implements OnInit {
   // ask the other bros about this.
   disable(name:string){
     return !(name == 'additional_info' || name == 'address' ||
-    name == 'email' || name == 'mobile_number' || name == 'phone_number')
+    name == 'email' || name == 'mobile_number' || name == 'phone_number' || name == 'contact_info')
   }
 
   get emailGet(){
@@ -77,9 +77,19 @@ export class ViewProfileComponent implements OnInit {
   }
 
   saveChanges(){
+    for(let key of Object.keys(this.profileForm.value)){
+      this.user[key] = this.profileForm.value[key]
+    }
 
-
-
+   // console.log(this.user)
+    this.saveProfileChangesService.saveChanges(this.user).subscribe(
+      responnse =>{
+        alert("changes saved successfully!")
+      },
+      error =>{
+        alert("failed to save changes!")
+      }
+    )
   }
 
 
