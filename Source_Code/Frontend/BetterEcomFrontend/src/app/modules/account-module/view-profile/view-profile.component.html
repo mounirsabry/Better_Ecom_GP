@@ -1,28 +1,17 @@
-
-<form [formGroup]="profileForm" (ngSubmit)="saveChanges()">
-  <div *ngFor="let property of user | keyvalue" >
-
-    <div *ngIf="property.key != 'system_user_id' && property.key != 'user_password'">
-      <label >{{property.key}}     </label>
-      
-      <input  type="{{inputType(property.key)}}" placeholder="{{property.value}}"
-      [style.color] = "changeColor(property.key)"
-      formControlName="{{property.key}}"
-
-
-      >
-      <!--property.key == email as not to repeat the message for each input-->
-      <p *ngIf="emailGet.invalid && property.key == 'email'" style="color: red;">please enter a valid email</p>
+<div class="view-profile">
+    <hr>
+    <div class="main">
+        <form [formGroup]="profileForm" (ngSubmit)="saveChanges()">
+            <div *ngFor="let property of user | keyvalue">
+                <div *ngIf="property.key != 'system_user_id' && property.key != 'user_password'" class="data">
+                    <label>{{property.key}}</label>
+                    <input type="{{inputType(property.key)}}" placeholder="{{property.value}}" [style.color]="changeColor(property.key)" formControlName="{{property.key}}">
+                    <!--property.key == email as not to repeat the message for each input-->
+                    <p *ngIf="emailGet.invalid && property.key == 'email'" style="color: red;">please enter a valid email</p>
+                </div>
+            </div>
+            <button type="submit" [disabled]="profileForm.invalid"> Save Changes </button>
+        </form>
+        <button [routerLink]="['/changePassword']">Change Password</button>
     </div>
-
-
-  </div>
-
-  <button type="submit" [disabled] = "profileForm.invalid" > save changes </button>
-
-</form>
-
-  <button [routerLink]="['/changePassword']" >change password</button>
-
-
-
+</div>
