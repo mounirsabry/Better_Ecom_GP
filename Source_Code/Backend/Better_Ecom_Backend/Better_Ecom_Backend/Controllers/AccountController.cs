@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 
-
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Better_Ecom_Backend.Controllers
@@ -57,21 +56,19 @@ namespace Better_Ecom_Backend.Controllers
         {
             JsonElement inputJson = (JsonElement)inputData;
             int studentID = inputJson.GetProperty("StudentID").GetInt32();
-            string sql = @$"SELECT * FROM system_user INNER JOIN system_user
+            string sql = @$"SELECT * FROM student INNER JOIN system_user
                     WHERE student.student_id = system_user.system_user_id 
-                    AND system_user.system_user_id = @ID";
+                    AND system_user.system_user_id = @ID;";
             Student student = _data.LoadData<Student, dynamic>(sql, new { ID = studentID },
                 _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
 
             if(student != null && student.User_password == null)
             {
-                sql = "UPDATE system_user SET user_password = @pass where system_user_id = @id";
+                sql = "UPDATE system_user SET user_password = @pass WHERE system_user_id = @ID;";
 
                 string pass = student.National_id;
                 int success = _data.SaveData<dynamic>(sql, new { pass = pass, ID = student.System_user_id},
                     _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
-
-
 
                 if(success > 0)
                 {
@@ -80,9 +77,8 @@ namespace Better_Ecom_Backend.Controllers
                 }
                 else
                 {
-                    return BadRequest(new { message = "couldn't update" });
+                    return BadRequest(new { message = "couldn't update." });
                 }
-
             }
             else
             {
@@ -92,17 +88,11 @@ namespace Better_Ecom_Backend.Controllers
                 }
                 else if (student.User_password != null)
                 {
-                    return BadRequest(new { message = "student already created." });
+                    return BadRequest(new { message = "student already has an account." });
                 }
 
                 return BadRequest(new { message = "unknown error." });
             }
-
-
-            
-            
-
-            
         }
         [Authorize]
         [HttpPost("CreateAccountForInstructor")]
@@ -114,20 +104,17 @@ namespace Better_Ecom_Backend.Controllers
 
             string sql = @$"SELECT * FROM instructor INNER JOIN system_user
                     WHERE instructor.instructor_id = system_user.system_user_id 
-                    AND system_user.system_user_id = @ID";
+                    AND system_user.system_user_id = @ID;";
             Instructor instructor = _data.LoadData<Instructor, dynamic>(sql, new { ID = instructorID }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
 
             if (instructor != null && instructor.User_password == null)
             {
-                sql = "UPDATE system_user SET user_password = @pass where system_user_id = @id";
-
+                sql = "UPDATE system_user SET user_password = @pass where system_user_id = @ID;";
 
                 string pass = instructor.National_id;
 
-                int success = _data.SaveData<dynamic>(sql, new { pass = pass, ID = pass },
+                int success = _data.SaveData<dynamic>(sql, new { pass = pass, ID = instructor.System_user_id },
                     _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
-
-
 
                 if (success > 0)
                 {
@@ -136,7 +123,7 @@ namespace Better_Ecom_Backend.Controllers
                 }
                 else
                 {
-                    return BadRequest(new { message = "couldn't update" });
+                    return BadRequest(new { message = "couldn't update." });
                 }
 
             }
@@ -148,17 +135,12 @@ namespace Better_Ecom_Backend.Controllers
                 }
                 else if (instructor.User_password != null)
                 {
-                    return BadRequest(new { message = "instructor already created." });
+                    return BadRequest(new { message = "instructor already has an account." });
                 }
 
                 return BadRequest(new { message = "unknown error." });
                 
             }
-
-
-
-
-
         }
         [Authorize]
         [HttpPatch("ResetAccountCredientials")]
@@ -187,28 +169,26 @@ namespace Better_Ecom_Backend.Controllers
             }
             sql = @$"SELECT * FROM {table} INNER JOIN system_user
                     WHERE {id_text} = system_user.system_user_id 
-                    AND system_user.system_user_id = @ID";
+                    AND system_user.system_user_id = @ID
+                    AND system_user.national_id = @NationalID;";
 
-            
             switch(type)
             {
                 case "student":
-                    systemUser = _data.LoadData<Student, dynamic>(sql, new { ID = id }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
+                    systemUser = _data.LoadData<Student, dynamic>(sql, new { ID = id, NationalID = nationalID }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
                     break;
                 case "instructor":
-                    systemUser = _data.LoadData<Instructor, dynamic>(sql, new { ID = id }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
+                    systemUser = _data.LoadData<Instructor, dynamic>(sql, new { ID = id, NationalID = nationalID }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
                     break;
             }
 
             if (systemUser != null)
             {
-                sql = "UPDATE system_user SET user_password = @pass where system_user_id = @id";
+                sql = "UPDATE system_user SET user_password = @pass where system_user_id = @ID;";
 
                 string pass = systemUser.National_id;
                 int success = _data.SaveData<dynamic>(sql, new { pass = pass, ID = systemUser.System_user_id },
                     _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
-
-
 
                 if (success > 0)
                 {
@@ -225,14 +205,11 @@ namespace Better_Ecom_Backend.Controllers
             {
                 if (systemUser == null)
                 {
-                    return NotFound(new { message = "systemUser doesn't exist." });
+                    return NotFound(new { message = "system user doesn't exist." });
                 }
            
                 return BadRequest(new { message = "unknown error." });
             }
-
-
-  
         }
 
         private string GenerateJSONWebToken(int id, string password, string type)

@@ -38,6 +38,5 @@ namespace Better_Ecom_Backend.Models
             if (data.TryGetProperty("Academic_year", out temp))
                 this.Academic_year = temp.GetInt32();
         }
-
     }
 }

@@ -30,8 +30,6 @@ namespace Better_Ecom_Backend.Controllers
         [HttpGet("GetProfile/{ID:int}/{Type}")]
         public dynamic GetProfile(int id, string type)
         {
-            // see temporary tables in sql.
-            string sql = "";
             string id_text = "";
             string table = "";
             switch (type)
@@ -48,10 +46,19 @@ namespace Better_Ecom_Backend.Controllers
                     table = "admin_user";
                     id_text = "admin_user.admin_user_id";
                     break;
+                default:
+                    table = "invalid";
+                    id_text = "invalid";
+                    break;
             }
-            sql = @$"SELECT * FROM {table} INNER JOIN system_user
+
+            if (table == "invalid")
+            {
+                return BadRequest(new { Message = "invalid user type." });
+            }
+            string sql = @$"SELECT * FROM {table} INNER JOIN system_user
                     WHERE {id_text} = system_user.system_user_id 
-                    AND system_user.system_user_id = @ID";
+                    AND system_user.system_user_id = @ID;";
             return _data.LoadData<dynamic, dynamic>(sql, new { ID = id }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
         }
 
@@ -60,39 +67,39 @@ namespace Better_Ecom_Backend.Controllers
         [HttpPatch("SaveProfileChanges/{ID:int}/{Type}")]
         public IActionResult SaveProfileChanges(int id, string type, [FromBody] dynamic data)
         {
-            int success;
-            if (type != "admin" && type != "student" && type != "instructor")
+            int success1 = 0;
+            int success2 = 0;
+            if (type != "student" && type != "instructor" && type != "admin")
             {
-
-                return BadRequest();
-
+                return BadRequest(new { Message = "invalid user type." });
             }
             else
             {
                 System_user system_user = UserFactory.getUser(data, type);
 
-                success = _data.SaveData<System_user>(GetBaseUserUpdateQuery(), system_user, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+                success1 = _data.SaveData<System_user>(GetBaseUserUpdateQuery(), system_user, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
                 if(type == "instructor")
-                    success += _data.SaveData<System_user>(GetInstructorUpdateQuery(), system_user, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+                    success2 = _data.SaveData<System_user>(GetInstructorUpdateQuery(), system_user, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
             }
-            if (success > 0)
+            if (success1 > 0 && success2 > 0)
+            { 
                 return Ok();
+            }
             else
-                return BadRequest();
+            { 
+                return BadRequest(new { Message = "operation failed." });
+            }
         }
 
         private string GetInstructorUpdateQuery()
         {
-
-             
-                return "contact_info = @Contact_info where instructor_id = @Instructor_id";
-
+            return "UPDATE instructor SET contact_info = @Contact_info where instructor_id = @Instructor_id;";
         }
 
         private string GetBaseUserUpdateQuery()
         {
             return @$"UPDATE system_user SET email = 'g.r33r@hotmail.com', address = @Address, phone_number = @Phone_number, mobile_number = @Mobile_number,
-                additional_info = @Additional_info  where system_user_id = @System_user_id";
+                additional_info = @Additional_info  where system_user_id = @System_user_id;";
         }
 
         [Authorize]
@@ -100,19 +107,19 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult ChangePassword(int id, [FromBody] dynamic data)
         {
             data = (JsonElement)data;
-            string sql = "SELECT user_password FROM system_user WHERE system_user_id = @ID";
+            string sql = "SELECT user_password FROM system_user WHERE system_user_id = @ID;";
 
             string current_password = _data.LoadData<string, dynamic>(sql, new { ID = id }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName))[0];
-            string sent_current_password = data.GetProperty("old_password").GetString();
-            string new_password = data.GetProperty("new_password").GetString();
+            string sent_current_password = data.GetProperty("Old_password").GetString();
+            string new_password = data.GetProperty("New_password").GetString();
 
             if (current_password != sent_current_password)
             {
-                return BadRequest("OLD PASSWORD IS WRONG");
+                return BadRequest("old password is wrong.");
             }
             else
             {
-                sql = "UPDATE system_user SET user_password = @new_password WHERE system_user_id = @ID";
+                sql = "UPDATE system_user SET user_password = @new_password WHERE system_user_id = @ID;";
 
                 int success = _data.SaveData<dynamic>(sql, new { ID = id, new_password = new_password }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
 
@@ -122,7 +129,7 @@ namespace Better_Ecom_Backend.Controllers
                 }
                 else
                 {
-                    return BadRequest();
+                    return BadRequest(new { Message = "password update failed."});
                 }
             }
         }

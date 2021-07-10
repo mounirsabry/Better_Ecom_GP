@@ -63,9 +63,5 @@ namespace Better_Ecom_Backend.Models
             if (data.TryGetProperty("Additional_info", out temp))
                 this.Additional_info = temp.GetString();
         }
-
-
-
-
     }
 }

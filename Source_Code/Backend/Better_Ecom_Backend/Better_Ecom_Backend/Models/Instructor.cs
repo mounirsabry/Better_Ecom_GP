@@ -31,7 +31,5 @@ namespace Better_Ecom_Backend.Models
             if (data.TryGetProperty("Contact_info", out temp))
                 this.Contact_info = temp.GetString();
         }
-
-
     }
 }
