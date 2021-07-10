@@ -11,7 +11,6 @@ namespace Better_Ecom_Backend.Helpers
         public SecurityUtilities() { }
         public static string HashPassword(string pass)
         {
-
             return BC.HashPassword(pass);
         }
 
@@ -20,6 +19,4 @@ namespace Better_Ecom_Backend.Helpers
             return BC.Verify(normalPass, hashedPass);
         }
     }
-
-  
 }

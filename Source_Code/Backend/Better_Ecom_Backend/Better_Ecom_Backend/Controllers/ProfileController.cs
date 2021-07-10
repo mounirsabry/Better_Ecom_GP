@@ -78,15 +78,15 @@ namespace Better_Ecom_Backend.Controllers
                 System_user system_user = UserFactory.getUser(data, type);
 
                 success1 = _data.SaveData<System_user>(GetBaseUserUpdateQuery(), system_user, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
-                if(type == "instructor")
+                if (type == "instructor")
                     success2 = _data.SaveData<System_user>(GetInstructorUpdateQuery(), system_user, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
             }
             if (success1 > 0 && success2 > 0)
-            { 
+            {
                 return Ok();
             }
             else
-            { 
+            {
                 return BadRequest(new { Message = "operation failed." });
             }
         }
@@ -129,7 +129,7 @@ namespace Better_Ecom_Backend.Controllers
                 }
                 else
                 {
-                    return BadRequest(new { Message = "password update failed."});
+                    return BadRequest(new { Message = "password update failed." });
                 }
             }
         }

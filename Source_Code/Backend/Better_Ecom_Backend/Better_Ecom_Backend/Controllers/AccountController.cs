@@ -62,15 +62,15 @@ namespace Better_Ecom_Backend.Controllers
             Student student = _data.LoadData<Student, dynamic>(sql, new { ID = studentID },
                 _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
 
-            if(student != null && student.User_password == null)
+            if (student != null && student.User_password == null)
             {
                 sql = "UPDATE system_user SET user_password = @pass WHERE system_user_id = @ID;";
 
                 string pass = student.National_id;
-                int success = _data.SaveData<dynamic>(sql, new { pass = pass, ID = student.System_user_id},
+                int success = _data.SaveData<dynamic>(sql, new { pass = pass, ID = student.System_user_id },
                     _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
 
-                if(success > 0)
+                if (success > 0)
                 {
                     student.User_password = pass;
                     return Ok(student);
@@ -129,7 +129,7 @@ namespace Better_Ecom_Backend.Controllers
             }
             else
             {
-                if(instructor == null)
+                if (instructor == null)
                 {
                     return NotFound(new { message = "instructor doesn't exist." });
                 }
@@ -139,7 +139,7 @@ namespace Better_Ecom_Backend.Controllers
                 }
 
                 return BadRequest(new { message = "unknown error." });
-                
+
             }
         }
         [Authorize]
@@ -150,7 +150,7 @@ namespace Better_Ecom_Backend.Controllers
             int id = userJson.GetProperty("ID").GetInt32();
             string nationalID = userJson.GetProperty("NationalID").GetString();
             string type = userJson.GetProperty("Type").GetString();
-            System_user systemUser = null ;
+            System_user systemUser = null;
 
             string sql;
             string id_text = "";
@@ -172,7 +172,7 @@ namespace Better_Ecom_Backend.Controllers
                     AND system_user.system_user_id = @ID
                     AND system_user.national_id = @NationalID;";
 
-            switch(type)
+            switch (type)
             {
                 case "student":
                     systemUser = _data.LoadData<Student, dynamic>(sql, new { ID = id, NationalID = nationalID }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
@@ -207,7 +207,7 @@ namespace Better_Ecom_Backend.Controllers
                 {
                     return NotFound(new { message = "system user doesn't exist." });
                 }
-           
+
                 return BadRequest(new { message = "unknown error." });
             }
         }

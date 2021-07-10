@@ -7,7 +7,7 @@ using System.Text.Json;
 
 namespace Better_Ecom_Backend.Models
 {
-    public class Instructor: System_user
+    public class Instructor : System_user
     {
         public int Instructor_id { get; set; }
         public string University { get; set; }
