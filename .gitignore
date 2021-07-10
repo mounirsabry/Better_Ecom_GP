@@ -6,7 +6,6 @@ Discussions/Midyear_Discussion/Final/~$cumentation_betterEcom.docx
 *.dll
 *.json
 *.pdb
-*.cache
 Source_Code/Backend/Better_Ecom_Backend/Better_Ecom_Backend/bin/Debug/net5.0/Better_Ecom_Backend.dll
 Source_Code/Backend/Better_Ecom_Backend/Better_Ecom_Backend/bin/Debug/net5.0/Better_Ecom_Backend.deps.json
 Source_Code/Backend/Better_Ecom_Backend/Better_Ecom_Backend/bin/Debug/net5.0/Better_Ecom_Backend.pdb
@@ -40,15 +39,6 @@ Source_Code/Backend/Better_Ecom_Backend/DataLibrary/obj/Debug/net5.0/DataLibrary
 Source_Code/Backend/Better_Ecom_Backend/DataLibrary/obj/Debug/net5.0/ref/DataLibrary.dll
 Source_Code/Backend/Better_Ecom_Backend/DataLibrary/obj/project.assets.json
 Source_Code/Backend/Better_Ecom_Backend/DataLibrary/obj/project.nuget.cache
-*.json
-Source_Code/Backend/Better_Ecom_Backend/DataLibrary/obj/Debug/net5.0/DataLibrary.csprojAssemblyReference.cache
-*.cache
-*.json
-*.pdb
-*.dll
-Source_Code/Backend/Better_Ecom_Backend/Better_Ecom_Backend/obj/Debug/net5.0/Better_Ecom_Backend.csprojAssemblyReference.cache
 D:/Mounir_Study/GP/Better_Ecom_GP/Source_Code/Backend/Better_Ecom_Backend/.vs/Better_Ecom_Backend/v16/*
-Source_Code/Backend/Better_Ecom_Backend/Better_Ecom_Backend/obj/Debug/net5.0/Better_Ecom_Backend.csprojAssemblyReference.cache
-Source_Code/Backend/Better_Ecom_Backend/DataLibrary/obj/Debug/net5.0/DataLibrary.csprojAssemblyReference.cache
 gp.vpp
 *.vpp
