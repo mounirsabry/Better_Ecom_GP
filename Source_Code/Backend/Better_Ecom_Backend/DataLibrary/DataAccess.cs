@@ -13,10 +13,19 @@ namespace DataLibrary
     {
         public List<T> LoadData<T, U>(string sql, U parameters, string connectionString)
         {
+            
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
-                var rows = connection.Query<T>(sql, parameters);
-                return rows.ToList();
+                try
+                {
+                    var rows = connection.Query<T>(sql, parameters);
+                    return rows.ToList();
+                }
+                catch (Exception e )
+                {
+                    Console.WriteLine(e.Message);
+                    return null;
+                }
             }
         }
 
@@ -25,7 +34,17 @@ namespace DataLibrary
             int state = 0;
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
-                state = connection.Execute(sql, parameters);
+                try
+                {
+                    state = connection.Execute(sql, parameters);
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    state = -1;
+
+
+                }
             }
             return state;
         }

@@ -2,14 +2,12 @@
 using Better_Ecom_Backend.Models;
 using DataLibrary;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Better_Ecom_Backend.Controllers
 {
@@ -60,7 +58,7 @@ namespace Better_Ecom_Backend.Controllers
         [HttpPatch("SaveProfileChanges/{ID:int}/{Type}")]
         public IActionResult SaveProfileChanges(int id, string type, [FromBody] dynamic data)
         {
-            int success1 = 0;
+            List<int> success1;
             int success2 = 0;
             if (type != "student" && type != "instructor" && type != "admin")
             {
@@ -70,20 +68,29 @@ namespace Better_Ecom_Backend.Controllers
             {
                 System_user system_user = UserFactory.getUser(data, type);
                 List<string> queries = new List<string>();
+                List<dynamic> parameterList = new List<dynamic>();
                 queries.Add(GetBaseUserUpdateQuery());
+                parameterList.Add(new
+                {
+                    Email = system_user.Email,
+                    Address = system_user.Address,
+                    Phone_number = system_user.Phone_number,
+                    Mobile_number = system_user.Mobile_number,
+                    Additional_info = system_user.Additional_info
+                });
                 if (type == "instructor")
+                {
                     queries.Add(GetInstructorUpdateQuery());
-                try
-                {
-                    success1 = _data.SaveDataTransaction<System_user>(queries, system_user, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+                    parameterList.Add(new { Contact_info = ((Instructor)system_user).Contact_info });
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                    return BadRequest(new { Message = "operation failed." });
-                }
+
+
+                success1 = _data.SaveDataTransaction<dynamic>(queries, parameterList, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+
+                return BadRequest(new { Message = "operation failed." });
             }
-            if (success1 > 0)
+
+            if (!success1.Contains(-1) && !success1.Contains(0))
             {
                 return Ok();
             }
@@ -123,15 +130,11 @@ namespace Better_Ecom_Backend.Controllers
             {
                 sql = "UPDATE system_user SET user_password = @new_password WHERE system_user_id = @ID;";
 
-                try
-                {
+                
+                
                     success = _data.SaveData<dynamic>(sql, new { ID = id, new_password = new_password }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                    return BadRequest(new { Message = "operation failed." });
-                }
+                
+              
 
                 if (success > 0)
                 {
