@@ -5,11 +5,5 @@
 
   <br>
 
-  <label>{{type}} National ID</label>
-  <input type="text" name="NationalID" id="NationalID" #NationalID formControlName = "nationalID">
-  <p *ngIf="nationalIDGet.invalid && nationalIDGet.touched" style="color: red;"> national Id is required</p>
-
-  <br>
-
   <button type="submit" [disabled]="createAccountForm.invalid">Create New Account</button>
 </form>

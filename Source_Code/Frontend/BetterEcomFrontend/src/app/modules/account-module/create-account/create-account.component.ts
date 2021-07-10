@@ -16,16 +16,11 @@ export class CreateAccountComponent implements OnInit {
               private router : Router) { }
 
   createAccountForm = new FormGroup({
-    id: new FormControl('', [Validators.required]),
-    nationalID: new FormControl('', [Validators.required])
+    id: new FormControl('', [Validators.required])
   })
 
   get idGet() {
     return this.createAccountForm.get("id")
-  }
-
-  get nationalIDGet() {
-    return this.createAccountForm.get("nationalID")
   }
 
   type:string
@@ -37,13 +32,13 @@ export class CreateAccountComponent implements OnInit {
 
   submitAccount()
   {
-    this.updateDataService.createAccount(this.createAccountForm).subscribe(
+    this.updateDataService.createAccount(this.idGet.value).subscribe(
       response => {
         alert("Account created successfully")
         this.router.navigate(['/adminHomePage/'])
       },
       error => {
-        alert("ID already exits or no match was found for the national id")
+        alert("no matching id was found")
       }
     )
   }

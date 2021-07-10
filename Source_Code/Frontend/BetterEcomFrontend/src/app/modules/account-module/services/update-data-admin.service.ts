@@ -8,8 +8,8 @@ export class UpdateDataAdminService {
 
   constructor(private httpClient:HttpClient) { }
 
-  createAccount(account : any){
-    return this.httpClient.patch<any>('', account)
+  createAccount(id : number){
+    return this.httpClient.patch<any>('', {"ID" : id})
   }
 
   resetPassword(user : any){
