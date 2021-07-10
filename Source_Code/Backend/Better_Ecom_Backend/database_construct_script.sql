@@ -2,7 +2,7 @@ use 90z95MrFle;
 
 CREATE TABLE IF NOT EXISTS system_user (
     system_user_id INT,
-    user_password VARCHAR(16) DEFAULT (NULL),
+    user_password VARCHAR(60) DEFAULT (NULL),
     full_name VARCHAR(255) NOT NULL,
     email VARCHAR(255),
     address VARCHAR(255) NOT NULL,
