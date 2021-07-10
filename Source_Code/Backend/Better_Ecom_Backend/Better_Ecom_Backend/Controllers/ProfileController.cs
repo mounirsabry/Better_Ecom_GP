@@ -30,8 +30,8 @@ namespace Better_Ecom_Backend.Controllers
         [HttpGet("GetProfile/{ID:int}/{Type}")]
         public dynamic GetProfile(int id, string type)
         {
-            string id_text = "";
-            string table = "";
+            string id_text;
+            string table;
             switch (type)
             {
                 case "student":
@@ -47,19 +47,11 @@ namespace Better_Ecom_Backend.Controllers
                     id_text = "admin_user.admin_user_id";
                     break;
                 default:
-                    table = "invalid";
-                    id_text = "invalid";
-                    break;
-            }
-
-            if (table == "invalid")
-            {
-                return BadRequest(new { Message = "invalid user type." });
+                    return BadRequest(new { Message = "invalid user type." });
             }
             string sql = @$"SELECT * FROM {table} INNER JOIN system_user
                     WHERE {id_text} = system_user.system_user_id 
                     AND system_user.system_user_id = @ID;";
-
             return _data.LoadData<dynamic, dynamic>(sql, new { ID = id }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
         }
 
@@ -81,10 +73,8 @@ namespace Better_Ecom_Backend.Controllers
                 queries.Add(GetBaseUserUpdateQuery());
                 if (type == "instructor")
                     queries.Add(GetInstructorUpdateQuery());
-
                 try
                 {
-
                     success1 = _data.SaveDataTransaction<System_user>(queries, system_user, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
                 }
                 catch (Exception e)
@@ -137,7 +127,7 @@ namespace Better_Ecom_Backend.Controllers
                 {
                     success = _data.SaveData<dynamic>(sql, new { ID = id, new_password = new_password }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                     return BadRequest(new { Message = "operation failed." });

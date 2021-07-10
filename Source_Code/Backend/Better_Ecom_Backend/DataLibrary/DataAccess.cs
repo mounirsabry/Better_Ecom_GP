@@ -30,9 +30,9 @@ namespace DataLibrary
             return state;
         }
 
-        public int SaveDataTransaction<T>(List<string> sqlList, T parameters, string connectionString)
+        public List<int> SaveDataTransaction<T>(List<string> sqlList, List<T> parameters, string connectionString)
         {
-            int state = 0;
+            List<int> states = new List<int>();
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
 
@@ -42,22 +42,22 @@ namespace DataLibrary
                 {
                     for (int i = 0; i < sqlList.Count; i++)
                     {
-                        state += connection.Execute(sqlList[i], parameters);
+                        states.Add(connection.Execute(sqlList[i], parameters[i]));
                     }
                     transaction.Commit();
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
+                    Console.WriteLine(e.Message);
                     transaction.Rollback();
-                    state = -1;
+                    states.Add(-1);
                 }
                 finally
                 {
                     connection.Close();
                 }
-
             }
-            return state;
+            return states;
         }
     }
 }

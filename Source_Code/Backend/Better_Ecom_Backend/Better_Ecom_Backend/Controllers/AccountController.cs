@@ -45,7 +45,7 @@ namespace Better_Ecom_Backend.Controllers
 
             if (exists)
             {
-                string tokenString = GenerateJSONWebToken(id, password, type);
+                string tokenString = GenerateJSONWebToken(id, type);
                 response = Ok(new { token = tokenString });
             }
             return response;
@@ -59,15 +59,15 @@ namespace Better_Ecom_Backend.Controllers
             string sql = @$"SELECT * FROM student INNER JOIN system_user
                     WHERE student.student_id = system_user.system_user_id 
                     AND system_user.system_user_id = @ID;";
-            int success = 0;
-            Student student = null;
+            int success;
+            Student student;
 
             try
             {
                 student = _data.LoadData<Student, dynamic>(sql, new { ID = studentID },
                     _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 return BadRequest(new { Message = "operation failed." });
@@ -84,10 +84,10 @@ namespace Better_Ecom_Backend.Controllers
                     success = _data.SaveData<dynamic>(sql, new { pass = pass, ID = student.System_user_id },
                         _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
-                    return BadRequest(new {Message = "operation failed." });
+                    return BadRequest(new { Message = "operation failed." });
                 }
 
                 if (success > 0)
@@ -110,8 +110,10 @@ namespace Better_Ecom_Backend.Controllers
                 {
                     return BadRequest(new { message = "student already has an account." });
                 }
-
-                return BadRequest(new { message = "unknown error." });
+                else
+                {
+                    return BadRequest(new { message = "unknown error." });
+                }
             }
         }
         [Authorize]
@@ -120,33 +122,31 @@ namespace Better_Ecom_Backend.Controllers
         {
             JsonElement inputJson = (JsonElement)inputData;
             int instructorID = inputJson.GetProperty("InstructorID").GetInt32();
-            Instructor instructor = null;
+            Instructor instructor;
 
             string sql = @$"SELECT * FROM instructor INNER JOIN system_user
                     WHERE instructor.instructor_id = system_user.system_user_id 
                     AND system_user.system_user_id = @ID;";
-
             try
             {
                 instructor = _data.LoadData<Instructor, dynamic>(sql, new { ID = instructorID }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 return BadRequest(new { Message = "operation failed." });
             }
-
             if (instructor != null && instructor.User_password == null)
             {
                 sql = "UPDATE system_user SET user_password = @pass where system_user_id = @ID;";
-                int success = 0;
+                int success;
                 string pass = instructor.National_id;
                 try
                 {
                     success = _data.SaveData<dynamic>(sql, new { pass = pass, ID = instructor.System_user_id },
                         _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
                 }
-                catch(Exception e )
+                catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                     return BadRequest(new { Message = "operation failed." });
@@ -161,7 +161,6 @@ namespace Better_Ecom_Backend.Controllers
                 {
                     return BadRequest(new { message = "couldn't update." });
                 }
-
             }
             else
             {
@@ -173,9 +172,7 @@ namespace Better_Ecom_Backend.Controllers
                 {
                     return BadRequest(new { message = "instructor already has an account." });
                 }
-
                 return BadRequest(new { message = "unknown error." });
-
             }
         }
         [Authorize]
@@ -189,8 +186,8 @@ namespace Better_Ecom_Backend.Controllers
             System_user systemUser = null;
 
             string sql;
-            string id_text = "";
-            string table = "";
+            string id_text;
+            string table;
             switch (type)
             {
                 case "student":
@@ -201,14 +198,13 @@ namespace Better_Ecom_Backend.Controllers
                     table = "instructor";
                     id_text = "instructor.instructor_id";
                     break;
-
+                default:
+                    return BadRequest(new { Message = "invalid user type." });
             }
-
             sql = @$"SELECT * FROM {table} INNER JOIN system_user
                     WHERE {id_text} = system_user.system_user_id 
                     AND system_user.system_user_id = @ID
                     AND system_user.national_id = @NationalID;";
-
             try
             {
                 switch (type)
@@ -221,7 +217,7 @@ namespace Better_Ecom_Backend.Controllers
                         break;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 return BadRequest(new { Message = "operation failed." });
@@ -229,15 +225,15 @@ namespace Better_Ecom_Backend.Controllers
 
             if (systemUser != null)
             {
-                sql = "UPDATE system_user SET user_password = @pass where system_user_id = @ID;";
-                int success = 0;
+                sql = "UPDATE system_user SET user_password = @pass WHERE system_user_id = @ID;";
+                int success;
                 string pass = systemUser.National_id;
                 try
                 {
                     success = _data.SaveData<dynamic>(sql, new { pass = pass, ID = systemUser.System_user_id },
                         _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                     return BadRequest(new { Message = "operation failed." });
@@ -250,9 +246,8 @@ namespace Better_Ecom_Backend.Controllers
                 }
                 else
                 {
-                    return BadRequest(new { message = "couldn't update" });
+                    return BadRequest(new { message = "couldn't update." });
                 }
-
             }
             else
             {
@@ -260,12 +255,11 @@ namespace Better_Ecom_Backend.Controllers
                 {
                     return NotFound(new { message = "system user doesn't exist." });
                 }
-
                 return BadRequest(new { message = "unknown error." });
             }
         }
 
-        private string GenerateJSONWebToken(int id, string password, string type)
+        private string GenerateJSONWebToken(int id, string type)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -321,7 +315,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 rows = _data.LoadData<int, dynamic>(sql, parameters, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
             }
-            catch(Exception e )
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 return false;
