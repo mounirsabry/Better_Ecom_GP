@@ -21,12 +21,16 @@ namespace Better_Ecom_Backend.Models
             JsonElement temp;
             if (data.TryGetProperty("Instructor_ID", out temp))
                 this.Instructor_id = temp.GetInt32();
+            else
+                this.Instructor_id = -1;
 
             if (data.TryGetProperty("University", out temp))
                 this.University = temp.GetString();
 
             if (data.TryGetProperty("Graduation_year", out temp))
                 this.Graduation_year = temp.GetInt32();
+            else
+                this.Graduation_year = -1;
 
             if (data.TryGetProperty("Contact_info", out temp))
                 this.Contact_info = temp.GetString();

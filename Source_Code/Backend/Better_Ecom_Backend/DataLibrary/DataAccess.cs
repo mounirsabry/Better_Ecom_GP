@@ -42,8 +42,6 @@ namespace DataLibrary
                 {
                     Console.WriteLine(e.Message);
                     state = -1;
-
-
                 }
             }
             return state;
@@ -54,9 +52,7 @@ namespace DataLibrary
             List<int> states = new List<int>();
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
-
                 IDbTransaction transaction = connection.BeginTransaction();
-
                 try
                 {
                     for (int i = 0; i < sqlList.Count; i++)

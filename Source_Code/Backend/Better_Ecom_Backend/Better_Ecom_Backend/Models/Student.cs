@@ -22,6 +22,8 @@ namespace Better_Ecom_Backend.Models
             JsonElement temp;
             if (data.TryGetProperty("Student_id", out temp))
                 this.Student_id = temp.GetInt32();
+            else
+                this.Student_id = -1;
 
             if (data.TryGetProperty("Entrance_year", out temp))
                 this.Entrance_year = temp.GetString();
@@ -37,6 +39,8 @@ namespace Better_Ecom_Backend.Models
 
             if (data.TryGetProperty("Academic_year", out temp))
                 this.Academic_year = temp.GetInt32();
+            else
+                this.Academic_year = -1;
         }
     }
 }

@@ -19,6 +19,10 @@ namespace Better_Ecom_Backend.Models
             {
                 this.Admin_user_id = temp.GetInt32();
             }
+            else
+            {
+                this.Admin_user_id = -1;
+            }
         }
     }
 }
