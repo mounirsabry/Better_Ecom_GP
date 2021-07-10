@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "xq6XbCFHIRRhr+yCsltOQXA78lbFgGhBv6p/3IOdKyt2+deFWsL5PhLN+MBfh48oU4rI2Rm+YyzuvO2+SvK/tQ==",
+  "dgSpecHash": "akcfw/F0JGgIxGB3q/EtLQmT3r7PsvhrgYnLPPu9NUkRgQSdtqg48ebZ776oOyGXszCKQFUtbpMau/65ACFT+Q==",
   "success": true,
   "projectFilePath": "D:\\Mounir_Study\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Mounir\\.nuget\\packages\\bcrypt.net-next\\4.0.2\\bcrypt.net-next.4.0.2.nupkg.sha512",
     "C:\\Users\\Mounir\\.nuget\\packages\\bouncycastle.netcore\\1.8.5\\bouncycastle.netcore.1.8.5.nupkg.sha512",
     "C:\\Users\\Mounir\\.nuget\\packages\\dapper\\2.0.90\\dapper.2.0.90.nupkg.sha512",
     "C:\\Users\\Mounir\\.nuget\\packages\\dapper.contrib\\2.0.78\\dapper.contrib.2.0.78.nupkg.sha512",
