@@ -58,8 +58,7 @@ namespace Better_Ecom_Backend.Controllers
         [HttpPatch("SaveProfileChanges/{ID:int}/{Type}")]
         public IActionResult SaveProfileChanges(int id, string type, [FromBody] dynamic data)
         {
-            List<int> success1;
-            int success2 = 0;
+            List<int> success;
             if (type != "student" && type != "instructor" && type != "admin")
             {
                 return BadRequest(new { Message = "invalid user type." });
@@ -83,14 +82,11 @@ namespace Better_Ecom_Backend.Controllers
                     queries.Add(GetInstructorUpdateQuery());
                     parameterList.Add(new { Contact_info = ((Instructor)system_user).Contact_info });
                 }
-
-
-                success1 = _data.SaveDataTransaction<dynamic>(queries, parameterList, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+                success = _data.SaveDataTransaction<dynamic>(queries, parameterList, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
 
                 return BadRequest(new { Message = "operation failed." });
             }
-
-            if (!success1.Contains(-1) && !success1.Contains(0))
+            if (!success.Contains(-1) && !success.Contains(0))
             {
                 return Ok();
             }
@@ -130,12 +126,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 sql = "UPDATE system_user SET user_password = @new_password WHERE system_user_id = @ID;";
 
-                
-                
-                    success = _data.SaveData<dynamic>(sql, new { ID = id, new_password = new_password }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
-                
-              
-
+                success = _data.SaveData<dynamic>(sql, new { ID = id, new_password = new_password }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
                 if (success > 0)
                 {
                     return Ok();
