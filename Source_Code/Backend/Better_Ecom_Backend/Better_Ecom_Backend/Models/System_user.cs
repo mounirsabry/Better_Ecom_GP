@@ -58,12 +58,31 @@ namespace Better_Ecom_Backend.Models
 
             if (data.TryGetProperty("Birth_date", out temp))
                 this.Birth_date = temp.GetDateTime();
+            else
+                this.Birth_date = DateTime.MinValue;
 
             if (data.TryGetProperty("Gender", out temp))
                 this.Gender = temp.GetString();
 
             if (data.TryGetProperty("Additional_info", out temp))
                 this.Additional_info = temp.GetString();
+        }
+
+        public virtual void Print()
+        {
+            Console.WriteLine("System User Info.");
+            Console.WriteLine($"System User ID :{ System_user_id }.");
+            Console.WriteLine($"User Password :{ User_password }.");
+            Console.WriteLine($"Full Name :{ Full_name }.");
+            Console.WriteLine($"Email :{ Email }.");
+            Console.WriteLine($"Address :{ Address }.");
+            Console.WriteLine($"Phone Number :{ Phone_number }.");
+            Console.WriteLine($"Mobile Number :{ Mobile_number }.");
+            Console.WriteLine($"Nationality :{ Nationality }.");
+            Console.WriteLine($"Nationl ID :{ National_id }.");
+            Console.WriteLine($"Birth Date :{ Birth_date }.");
+            Console.WriteLine($"Gender :{ Gender }.");
+            Console.WriteLine($"Additional Info :{ Additional_info }.");
         }
     }
 }

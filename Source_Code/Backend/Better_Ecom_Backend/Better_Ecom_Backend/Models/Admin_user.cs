@@ -24,5 +24,12 @@ namespace Better_Ecom_Backend.Models
                 this.Admin_user_id = -1;
             }
         }
+
+        public override void Print()
+        {
+            base.Print();
+            Console.WriteLine("Admin Part Info.");
+            Console.WriteLine($"Admin User ID :{ Admin_user_id }.");
+        }
     }
 }

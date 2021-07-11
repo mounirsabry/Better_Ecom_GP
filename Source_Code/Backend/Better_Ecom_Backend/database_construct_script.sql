@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS system_user (
 CREATE TABLE IF NOT EXISTS student (
     student_id INT,
     high_school_type VARCHAR(255) NOT NULL,
-    entrance_year VARCHAR(255) NOT NULL, 
+    entrance_year INT NOT NULL, 
     gpa FLOAT,
     department VARCHAR(255),
     academic_year INT,

@@ -58,7 +58,6 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult SaveProfileChanges(int id, string type, [FromBody] dynamic data)
         {
             List<int> success1;
-            int success2 = 0;
             if (type != "student" && type != "instructor" && type != "admin")
             {
                 return BadRequest(new { Message = "invalid user type." });

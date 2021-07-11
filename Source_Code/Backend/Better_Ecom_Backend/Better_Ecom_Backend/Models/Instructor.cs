@@ -35,5 +35,16 @@ namespace Better_Ecom_Backend.Models
             if (data.TryGetProperty("Contact_info", out temp))
                 this.Contact_info = temp.GetString();
         }
+
+        public override void Print()
+        {
+            base.Print();
+            Console.WriteLine("Instructor Part Info.");
+            Console.WriteLine($"Instructor ID :{ Instructor_id }.");
+            Console.WriteLine($"University :{ University }.");
+            Console.WriteLine($"Graduation Year :{ Graduation_year }.");
+            Console.WriteLine($"Contact Info :{ Contact_info }.");
+        }
     }
 }
+
