@@ -58,7 +58,6 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult SaveProfileChanges(int id, string type, [FromBody] dynamic data)
         {
             List<int> success1;
-            int success2 = 0;
             if (type != "student" && type != "instructor" && type != "admin")
             {
                 return BadRequest(new { Message = "invalid user type." });
@@ -115,7 +114,7 @@ namespace Better_Ecom_Backend.Controllers
         {
             data = (JsonElement)data;
             string sql = "SELECT user_password FROM system_user WHERE system_user_id = @ID;";
-            int success = 0;
+            int success;
             string current_password = _data.LoadData<string, dynamic>(sql, new { ID = id }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName))[0];
             string sent_current_password = data.GetProperty("Old_password").GetString();
             string new_password = data.GetProperty("New_password").GetString();

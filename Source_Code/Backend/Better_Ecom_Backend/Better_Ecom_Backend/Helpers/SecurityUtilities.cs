@@ -6,11 +6,20 @@ using BC = BCrypt.Net.BCrypt;
 
 namespace Better_Ecom_Backend.Helpers
 {
+
+
     public class SecurityUtilities
     {
+
         public SecurityUtilities() { }
+       
+         
+         
+         
+        //<param name="pass"> does nothing. </param>
         public static string HashPassword(string pass)
         {
+            
             return BC.HashPassword(pass);
         }
 
