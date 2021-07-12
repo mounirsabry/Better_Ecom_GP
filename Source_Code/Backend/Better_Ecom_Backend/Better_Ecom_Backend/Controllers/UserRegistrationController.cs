@@ -20,6 +20,7 @@ namespace Better_Ecom_Backend.Controllers
         private IDataAccess _data;
 
         private static readonly Object AddStudentLock = new Object();
+        private static readonly Object AddInstructorLock = new Object();
 
         public UserRegistrationController(IConfiguration config, IDataAccess data)
         {
@@ -68,7 +69,7 @@ namespace Better_Ecom_Backend.Controllers
                 //National ID and nationality combination alraedy exists in the database.
                 //If the user is an instructor, then the registration will continue normally.
                 //If the user is a student, then the process will halt 
-                //since you can not register two student with the same national ID and nationality combination.
+                //since you can not register two students with the same national ID and nationality combination.
                 int systemUserID = users[0].system_user_id;
                 int firstDigit = GetFirstDigit(systemUserID);
 
@@ -98,7 +99,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return BadRequest(new { Message = "unknown error." });
             }
-            
+
             return Ok(newStudent);
         }
 
@@ -109,13 +110,69 @@ namespace Better_Ecom_Backend.Controllers
             Instructor newInstructor = new(instructorJson);
             newInstructor.Print();
 
-            //Adds the new instructor to the database.
-            //The new ID should start with 3 followed by the next available number in
-            //the instructors table.
-            //Should be a transaction.
+            if (CheckSystemUserData(newInstructor) == false)
+            {
+                return BadRequest(new { Message = "data common between users part is not valid." });
+            }
+            if (CheckInstructorData(newInstructor) == false)
+            {
+                return BadRequest(new { Message = "instructor data part is not valid." });
+            }
 
-            //Should return the new added instructor object.
-            return Ok("Not Implemented Yet!");
+            string checkUserExistenceSQL = "SELECT system_user_id, nationality, national_id" + "\n"
+                                        + "FROM system_user" + "\n"
+                                        + "WHERE national_id = @NationalID" + "\n"
+                                        + "AND nationality = @Nationality;";
+            var parameters = new
+            {
+                NationalID = newInstructor.National_id,
+                newInstructor.Nationality
+            };
+
+            var users = _data.LoadData<dynamic, dynamic>(checkUserExistenceSQL, parameters, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+            //One person can not be student, instructor, admin at the same time.
+            if (users.Count >= 2)
+            {
+                return BadRequest(new { Message = "two users or more with the same natioanl id and nationality already exists." });
+            }
+            else if (users.Count == 1)
+            {
+                //National ID and nationality combination alraedy exists in the database.
+                //If the user is a student, then the registration will continue normally.
+                //If the user is an instructor, then the process will halt 
+                //since you can not register two instructors with the same national ID and nationality combination.
+                int systemUserID = users[0].system_user_id;
+                int firstDigit = GetFirstDigit(systemUserID);
+
+                //The registered data is for admin_user, the user can not be an admin and student/instructor at the same time.
+                if (firstDigit == 1)
+                {
+                    return BadRequest(new { Message = "the entered nationality and national id combination is reserved." });
+                }
+                //Another student registered with the same national ID and nationality.
+                if (firstDigit == 3)
+                {
+                    return BadRequest(new { Message = "an instructor with the same national id and nationality already exists." });
+                }
+            }
+
+
+            List<int> states;
+
+            lock (AddInstructorLock)
+            {
+                int newID = GetNextInstructorID();
+                newInstructor.System_user_id = newID;
+                newInstructor.Instructor_id = newID;
+                states = InsertNewInstructor(newInstructor);
+            }
+
+            if (states.Contains(-1))
+            {
+                return BadRequest(new { Message = "unknown error." });
+            }
+
+            return Ok(newInstructor);
         }
 
         private bool CheckSystemUserData(System_user user)
@@ -281,6 +338,26 @@ namespace Better_Ecom_Backend.Controllers
             return newID;
         }
 
+        private int GetNextInstructorID()
+        {
+            string getLastIDSQL = "SELECT MAX(instructor_id) FROM instructor;";
+            List<int> IDs = _data.LoadData<int, dynamic>(getLastIDSQL, new { }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+
+            int newID;
+            if (IDs.Count == 0)
+            {
+                //First instructor in the database, very special and simple case.
+                string newIDString = "3" + "1";
+                newID = Int32.Parse(newIDString);
+            }
+            else
+            {
+                int lastIDInserted = IDs[0];
+                newID = lastIDInserted + 1;
+            }
+            return newID;
+        }
+
         private List<int> InsertNewStudent(Student newStudent)
         {
             string systemUserInsertionSQL = "INSERT INTO system_user" + "\n"
@@ -288,7 +365,7 @@ namespace Better_Ecom_Backend.Controllers
                                        + "@Nationality, @National_id, @Birth_date, @Gender, @Additional_info);";
 
             string studentInsertionSQL = "INSERT INTO student" + "\n"
-                                + "VALUES(@Student_id, @High_school_type, @Entrance_year, @GPA, @Department, @Academic_year);";
+                                       + "VALUES(@Student_id, @High_school_type, @Entrance_year, @GPA, @Department, @Academic_year);";
 
             List<string> insertionQueries = new List<string>
             {
@@ -300,6 +377,31 @@ namespace Better_Ecom_Backend.Controllers
             {
                 newStudent,
                 newStudent
+            };
+
+            List<int> states = _data.SaveDataTransaction<dynamic>(insertionQueries, parametersList, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+            return states;
+        }
+
+        private List<int> InsertNewInstructor(Instructor newInstructor)
+        {
+            string systemUserInsertionSQL = "INSERT INTO system_user" + "\n"
+                                       + "VALUES (@System_user_id, NULL, @Full_name, @Email, @Address, @Phone_number, @Mobile_number," + "\n"
+                                       + "@Nationality, @National_id, @Birth_date, @Gender, @Additional_info);";
+
+            string instructorInsertionSQL = "INSERT INTO instructor" + "\n"
+                                       + "VALUES (@Instructor_id, @University, @Graduation_year, @Contact_info);";
+
+            List<string> insertionQueries = new List<string>
+            {
+                systemUserInsertionSQL,
+                instructorInsertionSQL
+            };
+
+            List<dynamic> parametersList = new List<dynamic>
+            {
+                newInstructor,
+                newInstructor
             };
 
             List<int> states = _data.SaveDataTransaction<dynamic>(insertionQueries, parametersList, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
