@@ -10,16 +10,25 @@ namespace Better_Ecom_Backend.Models
     {
         public int Admin_user_id { get; set; }
 
-        public Admin_user() { }
+        public Admin_user() : base()
+        {
+            Admin_user_id = -1;
+        }
 
         public Admin_user(JsonElement data) : base(data)
         {
-            this.Admin_user_id = data.GetProperty("admin_user_id").GetInt32();
+            JsonElement temp;
+            if (data.TryGetProperty("Admin_user_id", out temp))
+                this.Admin_user_id = temp.GetInt32();
+            else
+                this.Admin_user_id = -1;
         }
-        
-        public override string GetUpdateQuery()
+
+        public override void Print()
         {
-            throw new NotImplementedException();
+            base.Print();
+            Console.WriteLine("Admin Part Info.");
+            Console.WriteLine($"Admin User ID :{ Admin_user_id }.");
         }
     }
 }

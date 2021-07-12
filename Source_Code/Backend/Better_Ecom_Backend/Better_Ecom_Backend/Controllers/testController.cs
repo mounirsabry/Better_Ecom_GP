@@ -22,7 +22,7 @@ namespace Better_Ecom_Backend.Controllers
             _config = config;
             _data = data;
         }
-        
+
         public IActionResult test()
         {
             string sql = "SELECT * FROM admin_user;";
