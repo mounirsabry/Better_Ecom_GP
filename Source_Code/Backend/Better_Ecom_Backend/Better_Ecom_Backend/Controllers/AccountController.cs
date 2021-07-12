@@ -56,9 +56,9 @@ namespace Better_Ecom_Backend.Controllers
         {
             JsonElement inputJson = (JsonElement)inputData;
             int studentID = inputJson.GetProperty("StudentID").GetInt32();
-            string sql = @$"SELECT * FROM student INNER JOIN system_user
-                    WHERE student.student_id = system_user.system_user_id 
-                    AND system_user.system_user_id = @ID;";
+            string sql = "SELECT * FROM student INNER JOIN system_user" + "\n"
+                    + "WHERE student.student_id = system_user.system_user_id" + "\n"
+                    + "AND system_user.system_user_id = @ID;";
             int success;
             Student student;
 
@@ -105,9 +105,9 @@ namespace Better_Ecom_Backend.Controllers
             int instructorID = inputJson.GetProperty("InstructorID").GetInt32();
             Instructor instructor;
 
-            string sql = @$"SELECT * FROM instructor INNER JOIN system_user
-                    WHERE instructor.instructor_id = system_user.system_user_id 
-                    AND system_user.system_user_id = @ID;";
+            string sql = "SELECT * FROM instructor INNER JOIN system_user" + "\n"
+                    + "WHERE instructor.instructor_id = system_user.system_user_id" + "\n"
+                    + "AND system_user.system_user_id = @ID;";
 
             instructor = _data.LoadData<Instructor, dynamic>(sql, new { ID = instructorID }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
 
@@ -169,10 +169,10 @@ namespace Better_Ecom_Backend.Controllers
                 default:
                     return BadRequest(new { Message = "invalid user type." });
             }
-            sql = @$"SELECT * FROM {table} INNER JOIN system_user
-                    WHERE {id_text} = system_user.system_user_id 
-                    AND system_user.system_user_id = @ID
-                    AND system_user.national_id = @NationalID;";
+            sql = $"SELECT * FROM {table} INNER JOIN system_user" + "\n"
+                    + $"WHERE {id_text} = system_user.system_user_id" + "\n"
+                    + "AND system_user.system_user_id = @ID" + "\n"
+                    + "AND system_user.national_id = @NationalID;";
 
             switch (type)
             {
@@ -261,11 +261,11 @@ namespace Better_Ecom_Backend.Controllers
                     return false;
             }
 
-            string sql = @$"SELECT system_user_id 
-                    FROM {table} INNER JOIN system_user
-                    WHERE {id_text} = system_user.system_user_id 
-                    AND system_user.system_user_id = @ID 
-                    AND system_user.user_password = @password";
+            string sql = "SELECT system_user_id" + "\n"
+                    + $"FROM {table} INNER JOIN system_user" + "\n"
+                    + $"WHERE {id_text} = system_user.system_user_id" + "\n"
+                    + "AND system_user.system_user_id = @ID" + "\n"
+                    + "AND system_user.user_password = @password";
             List<int> rows;
 
             rows = _data.LoadData<int, dynamic>(sql, parameters, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));

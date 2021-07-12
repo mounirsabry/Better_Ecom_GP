@@ -19,6 +19,8 @@ namespace Better_Ecom_Backend.Controllers
         private IConfiguration _config;
         private IDataAccess _data;
 
+        private static readonly Object AddStudentLock = new Object();
+
         public UserRegistrationController(IConfiguration config, IDataAccess data)
         {
             _config = config;
@@ -30,7 +32,6 @@ namespace Better_Ecom_Backend.Controllers
         {
             JsonElement studentJson = (JsonElement)studentData;
             Student newStudent = new(studentJson);
-            newStudent.Print();
             if (CheckSystemUserData(newStudent) == false)
             {
                 return BadRequest(new { Message = "data common between users part is not valid." });
@@ -45,18 +46,18 @@ namespace Better_Ecom_Backend.Controllers
             //The combination of the nationality and national ID can only occurs twice at most 
             //at the database.
             //One of them represents a student and the other represent an instructor.
-            //Representing the case that one person can be an instructor and a student (after-graduation studies) at the same time.
-            string checkUserExistenceSQL = @"SELECT system_user_id, nationality, national_id
-                                        FROM system_user
-                                        WHERE national_id = @NationalID
-                                        AND nationality = @Nationality;";
+            //Representing the case that one person can be an instructor and a student
+            //(after-graduation studies for example) at the same time.
+            string checkUserExistenceSQL = "SELECT system_user_id, nationality, national_id" + "\n"
+                                        + "FROM system_user" + "\n"
+                                        + "WHERE national_id = @NationalID" + "\n"
+                                        + "AND nationality = @Nationality;";
             var parameters = new
             {
                 NationalID = newStudent.National_id,
-                Nationality = newStudent.Nationality
+                newStudent.Nationality
             };
-            List<System_user> users;
-            users = _data.LoadData<System_user, dynamic>(checkUserExistenceSQL, parameters, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+            var users = _data.LoadData<dynamic, dynamic>(checkUserExistenceSQL, parameters, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
             //One person can not be student, instructor, admin at the same time.
             if (users.Count >= 2)
             {
@@ -68,9 +69,14 @@ namespace Better_Ecom_Backend.Controllers
                 //If the user is an instructor, then the registration will continue normally.
                 //If the user is a student, then the process will halt 
                 //since you can not register two student with the same national ID and nationality combination.
-                int systemUserID = users[0].System_user_id;
+                int systemUserID = users[0].system_user_id;
                 int firstDigit = GetFirstDigit(systemUserID);
 
+                //The registered data is for admin_user, the user can not be an admin and student/instructor at the same time.
+                if (firstDigit == 1)
+                {
+                    return BadRequest(new { Message = "the entered nationality and national id combination is reserved." });
+                }
                 //Another student registered with the same national ID and nationality.
                 if (firstDigit == 2)
                 {
@@ -78,85 +84,22 @@ namespace Better_Ecom_Backend.Controllers
                 }
             }
 
-            //Constructing the ID.
-            int currentYear = GetCurrentYear();
-            //Gets the last inserted ID in the student table.
-            string getLastIDSQL = @"SELECT MAX(student_id) FROM student;";
-            List<int> IDs = _data.LoadData<int, dynamic>(getLastIDSQL, new { }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+            List<int> states;
 
-            int newID;
-            if (IDs.Count == 0)
+            lock (AddStudentLock)
             {
-                //First Student in the database, very special and simple case.
-                string newIDString = currentYear + "0001";
-                newID = Int32.Parse(newIDString);
-            }
-            else
-            {
-                int lastInsertedID = IDs[0];
-                string lastInsertedIDYearString = lastInsertedID.ToString().Substring(0, 4);
-                int lastInsertedIDYear = Int32.Parse(lastInsertedIDYearString);
-
-                if (lastInsertedIDYear == currentYear)
-                {
-                    newID = lastInsertedID + 1;
-                }
-                else
-                {
-                    //First student to be inserted this year, Congrats :)
-                    string newIDString = currentYear + "0001";
-                    newID = Int32.Parse(newIDString);
-                }
+                int newID = GetNextStudentID();
+                newStudent.System_user_id = newID;
+                newStudent.Student_id = newID;
+                states = InsertNewStudent(newStudent);
             }
 
-            string systemUserInsertionSQL = @"INSERT INTO system_user
-                                        VALUES (@ID, NULL, @FullName, @Email, @Address, @PhoneNumber, @MobileNumber,
-                                        @Nationality, @NationalID, @BirthDate, @Gender, @AdditionalInfo);";
-            var parameters2 = new
-            {
-                ID = newID,
-                FullName = newStudent.Full_name,
-                Email = newStudent.Email,
-                Address = newStudent.Address,
-                PhoneNumber = newStudent.Phone_number,
-                MobileNumber = newStudent.Mobile_number,
-                Nationality = newStudent.Nationality,
-                NationalID = newStudent.National_id,
-                BirthDate = newStudent.Birth_date,
-                Gender = newStudent.Gender,
-                AdditionalInfo = newStudent.Additional_info
-            };
-            int systemUserInsertionState = _data.SaveData<dynamic>(systemUserInsertionSQL, parameters2, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
-            if (systemUserInsertionState == -1)
+            if (states.Contains(-1))
             {
                 return BadRequest(new { Message = "unknown error." });
             }
-
-            string studentInsertionSQL = @"INSERT INTO student
-                                VALUES(@ID, @HighSchoolType, @EntranceYear, @GPA, @Department, @AcademicYear);";
-            var parameters3 = new
-            {
-                ID = newID,
-                HighSchoolType = newStudent.High_school_type,
-                EntranceYear = newStudent.Entrance_year,
-                GPA = newStudent.GPA,
-                Department = newStudent.Department,
-                AcademicYear = newStudent.Academic_year
-            };
-            int studentInsertionState = _data.SaveData<dynamic>(studentInsertionSQL, parameters3, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
-            if (studentInsertionState == -1)
-            {
-                return BadRequest(new { Message = "unknown error." });
-            }
-
-            //Adds the new student to the database.
-            //The student will have the next available ID in the students table.
-            //The four first digits of the ID should be the current Year.
-            //The process of adding the student to the students table and the system_users table
-            //should be a transaction, which means it should be done all or nothing.
-
-            //Should return the new added student object.
-            return Ok("Not Implemented Yet!");
+            
+            return Ok(newStudent);
         }
 
         [HttpPost("AddNewInstructor")]
@@ -181,7 +124,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return false; //The user should not specify an ID to be used.
             }
-            if (user.User_password != null || user.User_password != "")
+            if (user.User_password != null || user.User_password == "")
             {
                 return false; //The user should not specify a password at this phase.
             }
@@ -228,7 +171,7 @@ namespace Better_Ecom_Backend.Controllers
 
             //Only Male and Female are accepted, not specified or any other value is not allowed.
             //For the sake of uniqification, we foced it to be case-sensitive.
-            if (user.Gender != "Male" || user.Gender != "Female")
+            if (user.Gender != "Male" && user.Gender != "Female")
             {
                 return false;
             }
@@ -300,6 +243,67 @@ namespace Better_Ecom_Backend.Controllers
         {
             string currentYearString = DateTime.Today.ToString("yyyy");
             return Int32.Parse(currentYearString);
+        }
+
+        private int GetNextStudentID()
+        {
+            //Constructing the ID.
+            int currentYear = GetCurrentYear();
+            //Gets the last inserted ID in the student table.
+            string getLastIDSQL = @"SELECT MAX(student_id) FROM student;";
+            List<int> IDs = _data.LoadData<int, dynamic>(getLastIDSQL, new { }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+
+            int newID;
+            if (IDs.Count == 0)
+            {
+                //First Student in the database, very special and simple case.
+                string newIDString = currentYear + "0001";
+                newID = Int32.Parse(newIDString);
+            }
+            else
+            {
+                int lastInsertedID = IDs[0];
+                string lastInsertedIDYearString = lastInsertedID.ToString().Substring(0, 4);
+                int lastInsertedIDYear = Int32.Parse(lastInsertedIDYearString);
+
+                if (lastInsertedIDYear == currentYear)
+                {
+                    newID = lastInsertedID + 1;
+                }
+                else
+                {
+                    //First student to be inserted this year, Congrats :)
+                    string newIDString = currentYear + "0001";
+                    newID = Int32.Parse(newIDString);
+                }
+            }
+
+            return newID;
+        }
+
+        private List<int> InsertNewStudent(Student newStudent)
+        {
+            string systemUserInsertionSQL = "INSERT INTO system_user" + "\n"
+                                       + "VALUES (@System_user_id, NULL, @Full_name, @Email, @Address, @Phone_number, @Mobile_number," + "\n"
+                                       + "@Nationality, @National_id, @Birth_date, @Gender, @Additional_info);";
+
+            string studentInsertionSQL = "INSERT INTO student" + "\n"
+                                + "VALUES(@Student_id, @High_school_type, @Entrance_year, @GPA, @Department, @Academic_year);";
+
+            List<string> insertionQueries = new List<string>
+            {
+                systemUserInsertionSQL,
+                studentInsertionSQL
+            };
+
+            List<dynamic> parametersList = new List<dynamic>
+            {
+                newStudent,
+                newStudent
+            };
+
+            List<int> states = _data.SaveDataTransaction<dynamic>(insertionQueries, parametersList, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+            return states;
         }
     }
 }
