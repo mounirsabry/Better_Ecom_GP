@@ -108,7 +108,6 @@ namespace Better_Ecom_Backend.Controllers
         {
             JsonElement instructorJson = (JsonElement)instructorData;
             Instructor newInstructor = new(instructorJson);
-            newInstructor.Print();
 
             if (CheckSystemUserData(newInstructor) == false)
             {
@@ -138,8 +137,8 @@ namespace Better_Ecom_Backend.Controllers
             else if (users.Count == 1)
             {
                 //National ID and nationality combination alraedy exists in the database.
-                //If the user is a student, then the registration will continue normally.
-                //If the user is an instructor, then the process will halt 
+                //If the already registered user is a student, then the registration will continue normally.
+                //If the already registered user is an instructor, then the process will halt 
                 //since you can not register two instructors with the same national ID and nationality combination.
                 int systemUserID = users[0].system_user_id;
                 int firstDigit = GetFirstDigit(systemUserID);
@@ -149,7 +148,7 @@ namespace Better_Ecom_Backend.Controllers
                 {
                     return BadRequest(new { Message = "the entered nationality and national id combination is reserved." });
                 }
-                //Another student registered with the same national ID and nationality.
+                //Another instructor registered with the same national ID and nationality.
                 if (firstDigit == 3)
                 {
                     return BadRequest(new { Message = "an instructor with the same national id and nationality already exists." });
@@ -347,8 +346,7 @@ namespace Better_Ecom_Backend.Controllers
             if (IDs.Count == 0)
             {
                 //First instructor in the database, very special and simple case.
-                string newIDString = "3" + "1";
-                newID = Int32.Parse(newIDString);
+                newID = 31;
             }
             else
             {
