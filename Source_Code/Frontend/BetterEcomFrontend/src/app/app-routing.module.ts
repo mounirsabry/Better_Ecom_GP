@@ -3,10 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminHomePageComponent } from './components/admin-home-page/admin-home-page.component';
 import { InstructorHomePageComponent } from './components/instructor-home-page/instructor-home-page.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { RegisterationsAndAccountsManagementComponent } from './components/registerations-and-accounts-management/registerations-and-accounts-management.component';
+import { RegisterationsAndAccountsManagementComponent } from './modules/account-module/registerations-and-accounts-management/registerations-and-accounts-management.component';
 import { StartPageComponent } from './components/start-page/start-page.component';
 import { StudentHomePageComponent } from './components/student-home-page/student-home-page.component';
 import { ChangePasswordComponent } from './modules/account-module/change-password/change-password.component';
+import { RegisterNewStudentOrInstructorComponent } from './modules/account-module/register-new-student-or-instructor/register-new-student-or-instructor.component';
 import { ViewProfileComponent } from './modules/account-module/view-profile/view-profile.component';
 import { LoginComponent } from './modules/auth-module/login/login.component';
 
@@ -26,6 +27,7 @@ const routes: Routes = [
   {path:'changePassword',component:ChangePasswordComponent},
   {path:'pageNotFound',component:PageNotFoundComponent},// related to header don't change it.
   {path:'registerationsAndAccountsManagements',component:RegisterationsAndAccountsManagementComponent},
+  {path:'registerNewStudentOrInstructor/:type',component:RegisterNewStudentOrInstructorComponent},
   {path:'**', redirectTo:'pageNotFound',pathMatch:'full'}
 
 ];

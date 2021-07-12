@@ -6,11 +6,12 @@ import { AppRoutingModule } from 'src/app/app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SaveProfileChangesService } from './services/save-profile-changes.service';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { RegisterNewStudentOrInstructorComponent } from './register-new-student-or-instructor/register-new-student-or-instructor.component';
 
 
 
 @NgModule({
-  declarations: [ViewProfileComponent, ChangePasswordComponent],
+  declarations: [ViewProfileComponent, ChangePasswordComponent, RegisterNewStudentOrInstructorComponent],
   imports: [
     CommonModule,
     AppRoutingModule,

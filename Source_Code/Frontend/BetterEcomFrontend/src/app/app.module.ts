@@ -14,7 +14,7 @@ import { InstructorHomePageComponent } from './components/instructor-home-page/i
 import { StudentHomePageComponent } from './components/student-home-page/student-home-page.component';
 import { AccountModuleModule } from './modules/account-module/account-module.module';
 import {InterceptorService} from './services/interceptors/interceptor.service';
-import { RegisterationsAndAccountsManagementComponent } from './components/registerations-and-accounts-management/registerations-and-accounts-management.component'
+import { RegisterationsAndAccountsManagementComponent } from './modules/account-module/registerations-and-accounts-management/registerations-and-accounts-management.component'
 @NgModule({
 
   declarations: [
@@ -24,6 +24,7 @@ import { RegisterationsAndAccountsManagementComponent } from './components/regis
     InstructorHomePageComponent,
     StudentHomePageComponent,
     RegisterationsAndAccountsManagementComponent,
+
   ],
   imports: [
     BrowserModule,

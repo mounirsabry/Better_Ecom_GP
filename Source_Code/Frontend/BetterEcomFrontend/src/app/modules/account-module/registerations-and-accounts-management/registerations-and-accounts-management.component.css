@@ -1,0 +1,6 @@
+
+/*not to let the global style make the button invisible*/
+button{
+  border: black;
+  color: black;
+}
