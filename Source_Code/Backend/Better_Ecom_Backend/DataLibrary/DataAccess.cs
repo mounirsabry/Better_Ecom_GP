@@ -53,6 +53,7 @@ namespace DataLibrary
             List<int> states = new List<int>();
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
+                connection.Open();
                 IDbTransaction transaction = connection.BeginTransaction();
                 try
                 {

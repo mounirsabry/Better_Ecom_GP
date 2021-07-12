@@ -15,7 +15,15 @@ namespace Better_Ecom_Backend.Models
         public string Department { get; set; }
         public int Academic_year { get; set; }
 
-        public Student() { }
+        public Student() : base()
+        {
+            Student_id = -1;
+            High_school_type = null;
+            Entrance_year = -1;
+            GPA = 0.0;
+            Department = null;
+            Academic_year = -1;
+        }
 
         public Student(JsonElement data) : base(data)
         {
@@ -27,6 +35,8 @@ namespace Better_Ecom_Backend.Models
 
             if (data.TryGetProperty("High_school_type", out temp))
                 this.High_school_type = temp.GetString();
+            else
+                this.High_school_type = null;
 
             if (data.TryGetProperty("Entrance_year", out temp))
                 this.Entrance_year = temp.GetInt32();
@@ -40,6 +50,8 @@ namespace Better_Ecom_Backend.Models
 
             if (data.TryGetProperty("Department", out temp))
                 this.Department = temp.GetString();
+            else
+                this.Department = null;
 
             if (data.TryGetProperty("Academic_year", out temp))
                 this.Academic_year = temp.GetInt32();

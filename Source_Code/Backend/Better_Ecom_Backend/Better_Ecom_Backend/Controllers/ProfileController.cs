@@ -46,9 +46,9 @@ namespace Better_Ecom_Backend.Controllers
                 default:
                     return BadRequest(new { Message = "invalid user type." });
             }
-            string sql = @$"SELECT * FROM {table} INNER JOIN system_user
-                    WHERE {id_text} = system_user.system_user_id 
-                    AND system_user.system_user_id = @ID;";
+            string sql = $"SELECT * FROM {table} INNER JOIN system_user" + "\n"
+                    + $"WHERE {id_text} = system_user.system_user_id" + "\n"
+                    + "AND system_user.system_user_id = @ID;";
             return _data.LoadData<dynamic, dynamic>(sql, new { ID = id }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
         }
 
@@ -104,8 +104,8 @@ namespace Better_Ecom_Backend.Controllers
 
         private string GetBaseUserUpdateQuery()
         {
-            return @$"UPDATE system_user SET email = @Email, address = @Address, phone_number = @Phone_number, mobile_number = @Mobile_number,
-                additional_info = @Additional_info  where system_user_id = @System_user_id;";
+            return "UPDATE system_user SET email = @Email, address = @Address, phone_number = @Phone_number, mobile_number = @Mobile_number," + "\n"
+                + "additional_info = @Additional_info  where system_user_id = @System_user_id;";
         }
 
         [Authorize]
