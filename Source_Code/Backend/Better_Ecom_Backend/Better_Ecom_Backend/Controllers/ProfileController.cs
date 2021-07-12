@@ -70,6 +70,7 @@ namespace Better_Ecom_Backend.Controllers
                 queries.Add(GetBaseUserUpdateQuery());
                 parameterList.Add(new
                 {
+                    System_user_id = system_user.System_user_id,
                     Email = system_user.Email,
                     Address = system_user.Address,
                     Phone_number = system_user.Phone_number,
