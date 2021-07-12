@@ -23,6 +23,7 @@ D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\B
 D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\ref\DataLibrary.dll
 D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\DataLibrary.pdb
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 C:\Users\gkari\OneDrive\Documents\GitHub\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\bin\Debug\net5.0\DataLibrary.deps.json
 C:\Users\gkari\OneDrive\Documents\GitHub\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\bin\Debug\net5.0\DataLibrary.dll
 C:\Users\gkari\OneDrive\Documents\GitHub\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\bin\Debug\net5.0\ref\DataLibrary.dll
@@ -36,6 +37,8 @@ C:\Users\gkari\OneDrive\Documents\GitHub\Better_Ecom_GP\Source_Code\Backend\Bett
 C:\Users\gkari\OneDrive\Documents\GitHub\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\ref\DataLibrary.dll
 C:\Users\gkari\OneDrive\Documents\GitHub\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\DataLibrary.pdb
 =======
+=======
+>>>>>>> Stashed changes
 D:\Mounir_Study\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\bin\Debug\net5.0\DataLibrary.deps.json
 D:\Mounir_Study\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\bin\Debug\net5.0\DataLibrary.dll
 D:\Mounir_Study\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\bin\Debug\net5.0\ref\DataLibrary.dll
@@ -48,4 +51,7 @@ D:\Mounir_Study\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLi
 D:\Mounir_Study\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\DataLibrary.dll
 D:\Mounir_Study\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\ref\DataLibrary.dll
 D:\Mounir_Study\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\DataLibrary.pdb
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
