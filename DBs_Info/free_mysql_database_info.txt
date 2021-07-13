@@ -1,0 +1,11 @@
+Your account number is: 531115
+
+Your new database is now ready to use.
+
+To connect to your database use these details;
+
+Host: sql4.freesqldatabase.com
+Database name: sql4424940
+Database user: sql4424940
+Database password: kw5dt7mFXI
+Port number: 3306

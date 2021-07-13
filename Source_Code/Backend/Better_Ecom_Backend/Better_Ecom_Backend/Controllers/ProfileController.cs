@@ -49,7 +49,7 @@ namespace Better_Ecom_Backend.Controllers
             string sql = $"SELECT * FROM {table} INNER JOIN system_user" + "\n"
                     + $"WHERE {id_text} = system_user.system_user_id" + "\n"
                     + "AND system_user.system_user_id = @ID;";
-            return _data.LoadData<dynamic, dynamic>(sql, new { ID = id }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
+            return _data.LoadData<dynamic, dynamic>(sql, new { ID = id }, _config.GetConnectionString("Default")).FirstOrDefault();
         }
 
         // not sure if the admin will use this to modify student/instructor profiles, will assume not till i get there.
@@ -83,8 +83,7 @@ namespace Better_Ecom_Backend.Controllers
                     parameterList.Add(new { Contact_info = ((Instructor)system_user).Contact_info });
                 }
 
-
-                success1 = _data.SaveDataTransaction<dynamic>(queries, parameterList, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+                success1 = _data.SaveDataTransaction<dynamic>(queries, parameterList, _config.GetConnectionString("Default"));
 
                 if (!success1.Contains(-1))
                 {

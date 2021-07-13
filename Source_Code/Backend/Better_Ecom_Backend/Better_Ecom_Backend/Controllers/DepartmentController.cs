@@ -35,11 +35,6 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return Ok(departments);
             }
-
-            //Fetch all the departments from the database.
-            //And return them, department code and name both.
-
-    
         }
 
         [Authorize]
@@ -49,9 +44,9 @@ namespace Better_Ecom_Backend.Controllers
             JsonElement jsonData = (JsonElement)inputData;
 
             if (!SetPriorityListRequiredDataExist(jsonData))
-                return BadRequest(new { Message = "you haven't sent all requred data." });
+                return BadRequest(new { Message = "you have not sent all required data." });
 
-            int studentID = jsonData.GetProperty("studentID").GetInt32();
+            int studentID = jsonData.GetProperty("StudentID").GetInt32();
             List<string> sqlList = new List<string>();
             List<dynamic> parameterList = new List<dynamic>();
 
@@ -105,12 +100,12 @@ namespace Better_Ecom_Backend.Controllers
 
             string sql = "SELECT department_code, priority FROM student_department_priority_list WHERE student_id = @id ";
 
-            dynamic rows = _data.LoadData<dynamic, int>(sql, id, _config.GetConnectionString("Defauld"));
+            dynamic rows = _data.LoadData<dynamic, int>(sql, id, _config.GetConnectionString("Default"));
 
             if (rows == null)
                 return BadRequest(new { Message = "operation failed." });
             else if (rows.Count == 0)
-                return Ok(new { Message = "student haven't submitted any priority list." });
+                return Ok(new { Message = "student have not submitted any priority list." });
             else
                 return Ok(rows);
         }
@@ -122,7 +117,7 @@ namespace Better_Ecom_Backend.Controllers
             JsonElement jsonData = (JsonElement)inputData;
 
             if (!SetDepartmentForStudentDataExist(jsonData))
-                return BadRequest(new { Message = "you haven't sent all requred data." });
+                return BadRequest(new { Message = "you have not sent all required data." });
 
             int studentID = jsonData.GetProperty("StudentID").GetInt32();
             string departmentCode = jsonData.GetProperty("DepartmentCode").GetString();
@@ -132,10 +127,11 @@ namespace Better_Ecom_Backend.Controllers
                     + "AND system_user.system_user_id = @ID;";
 
             Student student = _data.LoadData<Student, dynamic>(sql, new { ID = studentID }, _config.GetConnectionString("Default")).FirstOrDefault();
+            student.Department_code = departmentCode;
 
             if (student != null)
             {
-                string studentUpdateSql = "UPDATE student SET department_code = @Department_code";
+                string studentUpdateSql = "UPDATE student SET department_code = @Department_code WHERE student_id = @Student_id;";
                 int state = _data.SaveData<Student>(studentUpdateSql, student, _config.GetConnectionString("Default"));
 
                 if(state > 0)
@@ -149,32 +145,24 @@ namespace Better_Ecom_Backend.Controllers
             }
             else
             {
-                return BadRequest(new { Message = "id doesn't exist." });
+                return BadRequest(new { Message = "id does not exist." });
             }
-
-            //update query for table student.
-            //Optional, return the student object.
-
         }
-
 
         private bool SetDepartmentForStudentDataExist(JsonElement sentData)
         {
-            JsonElement temp;
-            return sentData.TryGetProperty("StudentID", out temp)
-            && sentData.TryGetProperty("DepartmentCode", out temp);
+            return sentData.TryGetProperty("StudentID", out _)
+            && sentData.TryGetProperty("DepartmentCode", out _);
         }
 
         private bool SetPriorityListRequiredDataExist(JsonElement sentData)
         {
-            JsonElement temp;
-            return sentData.TryGetProperty("StudentID", out temp)
-            && sentData.TryGetProperty("DepartmentCode1", out temp)
-            && sentData.TryGetProperty("DepartmentCode2", out temp)
-            && sentData.TryGetProperty("DepartmentCode3", out temp)
-            && sentData.TryGetProperty("DepartmentCode4", out temp)
-            && sentData.TryGetProperty("DepartmentCode5", out temp);
-
+            return sentData.TryGetProperty("StudentID", out _)
+            && sentData.TryGetProperty("DepartmentCode1", out _)
+            && sentData.TryGetProperty("DepartmentCode2", out _)
+            && sentData.TryGetProperty("DepartmentCode3", out _)
+            && sentData.TryGetProperty("DepartmentCode4", out _)
+            && sentData.TryGetProperty("DepartmentCode5", out _);
         }
     }
 }
