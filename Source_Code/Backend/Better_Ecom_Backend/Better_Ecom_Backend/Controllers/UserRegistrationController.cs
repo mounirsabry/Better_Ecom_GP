@@ -258,7 +258,7 @@ namespace Better_Ecom_Backend.Controllers
                 return false;
             }
             //Should be modified to reflect the availabe departments in the database.
-            if (student.Department == null || student.Department == "")
+            if (student.Department_code == null || student.Department_code == "")
             {
                 return false;
             }
