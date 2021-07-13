@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS student_department_priority_list (
 	PRIMARY KEY (student_id, department_code)
 );
 
-INSERT INTO dpeartment VALUES ("GE", "General", NULL);
+INSERT INTO department VALUES ("GE", "General", NULL);
 INSERT INTO department VALUES ("CS", "Computer Science", NULL);
 INSERT INTO department VALUES ("IS", "Information Systems", NULL);
 INSERT INTO department VALUES ("IT", "Information Technology", NULL);
