@@ -22,8 +22,8 @@ namespace Better_Ecom_Backend.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private IConfiguration _config;
-        private IDataAccess _data;
+        private readonly IConfiguration _config;
+        private readonly IDataAccess _data;
 
         public AccountController(IConfiguration config, IDataAccess data)
         {
@@ -63,14 +63,14 @@ namespace Better_Ecom_Backend.Controllers
             Student student;
 
             student = _data.LoadData<Student, dynamic>(sql, new { ID = studentID },
-                _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
+                _config.GetConnectionString("Default")).FirstOrDefault();
             if (student != null && student.User_password == null)
             {
                 sql = "UPDATE system_user SET user_password = @pass WHERE system_user_id = @ID;";
                 string pass = student.National_id;
 
-                success = _data.SaveData<dynamic>(sql, new { pass = pass, ID = student.System_user_id },
-                    _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+                success = _data.SaveData<dynamic>(sql, new { pass, ID = student.System_user_id },
+                    _config.GetConnectionString("Default"));
                 if (success > 0)
                 {
                     student.User_password = pass;
@@ -109,7 +109,7 @@ namespace Better_Ecom_Backend.Controllers
                     + "WHERE instructor.instructor_id = system_user.system_user_id" + "\n"
                     + "AND system_user.system_user_id = @ID;";
 
-            instructor = _data.LoadData<Instructor, dynamic>(sql, new { ID = instructorID }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
+            instructor = _data.LoadData<Instructor, dynamic>(sql, new { ID = instructorID }, _config.GetConnectionString("Default")).FirstOrDefault();
 
             if (instructor != null && instructor.User_password == null)
             {
@@ -117,8 +117,8 @@ namespace Better_Ecom_Backend.Controllers
                 int success;
                 string pass = instructor.National_id;
 
-                success = _data.SaveData<dynamic>(sql, new { pass = pass, ID = instructor.System_user_id },
-                    _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+                success = _data.SaveData<dynamic>(sql, new { pass, ID = instructor.System_user_id },
+                    _config.GetConnectionString("Default"));
 
                 if (success > 0)
                 {
@@ -177,10 +177,10 @@ namespace Better_Ecom_Backend.Controllers
             switch (type)
             {
                 case "student":
-                    systemUser = _data.LoadData<Student, dynamic>(sql, new { ID = id, NationalID = nationalID }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
+                    systemUser = _data.LoadData<Student, dynamic>(sql, new { ID = id, NationalID = nationalID }, _config.GetConnectionString("Default")).FirstOrDefault();
                     break;
                 case "instructor":
-                    systemUser = _data.LoadData<Instructor, dynamic>(sql, new { ID = id, NationalID = nationalID }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName)).FirstOrDefault();
+                    systemUser = _data.LoadData<Instructor, dynamic>(sql, new { ID = id, NationalID = nationalID }, _config.GetConnectionString("Default")).FirstOrDefault();
                     break;
             }
             if (systemUser != null)
@@ -189,8 +189,8 @@ namespace Better_Ecom_Backend.Controllers
                 int success;
                 string pass = systemUser.National_id;
 
-                success = _data.SaveData<dynamic>(sql, new { pass = pass, ID = systemUser.System_user_id },
-                    _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+                success = _data.SaveData<dynamic>(sql, new { pass, ID = systemUser.System_user_id },
+                    _config.GetConnectionString("Default"));
 
                 if (success >= 0)
                 {
@@ -237,7 +237,7 @@ namespace Better_Ecom_Backend.Controllers
             var parameters = new
             {
                 ID = id,
-                password = password,
+                password,
             };
             type = type.ToLower();
 
@@ -268,7 +268,7 @@ namespace Better_Ecom_Backend.Controllers
                     + "AND system_user.user_password = @password";
             List<int> rows;
 
-            rows = _data.LoadData<int, dynamic>(sql, parameters, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+            rows = _data.LoadData<int, dynamic>(sql, parameters, _config.GetConnectionString("Default"));
             
             if (rows != null && rows.Count > 0)
             {

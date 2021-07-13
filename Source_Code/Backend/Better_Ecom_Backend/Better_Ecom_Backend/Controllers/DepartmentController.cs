@@ -16,8 +16,14 @@ namespace Better_Ecom_Backend.Controllers
     [ApiController]
     public class DepartmentController : ControllerBase
     {
-        private IConfiguration _config;
-        private IDataAccess _data;
+        private readonly IConfiguration _config;
+        private readonly IDataAccess _data;
+
+        public DepartmentController(IConfiguration config, IDataAccess data)
+        {
+            _config = config;
+            _data = data;
+        }
 
         [HttpGet("GetDepartments")]
         [Authorize]
@@ -35,11 +41,6 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return Ok(departments);
             }
-
-            //Fetch all the departments from the database.
-            //And return them, department code and name both.
-
-    
         }
 
         [Authorize]
@@ -49,12 +50,11 @@ namespace Better_Ecom_Backend.Controllers
             JsonElement jsonData = (JsonElement)inputData;
 
             if (!SetPriorityListRequiredDataExist(jsonData))
-                return BadRequest(new { Message = "you haven't sent all requred data." });
+                return BadRequest(new { Message = "you have not sent all required data." });
 
-            int studentID = jsonData.GetProperty("studentID").GetInt32();
-            List<string> sqlList = new List<string>();
-            List<dynamic> parameterList = new List<dynamic>();
-
+            int studentID = jsonData.GetProperty("StudentID").GetInt32();
+            List<string> sqlList = new();
+            List<dynamic> parameterList = new();
 
             string sql = "SELECT * FROM student INNER JOIN system_user" + "\n"
             + "WHERE student.student_id = system_user.system_user_id" + "\n"
@@ -62,12 +62,14 @@ namespace Better_Ecom_Backend.Controllers
 
             Student student = _data.LoadData<Student, dynamic>(sql, new { ID = studentID }, _config.GetConnectionString("Default")).FirstOrDefault();
             if (student == null)
-                return BadRequest(new { Message = "id doesn't exist or not a student." });
+            {
+                return BadRequest(new { Message = "id does not exist or not a student." });
+            }
 
             for (int i = 1; i <= 5; i++)
             {
                 sqlList.Add($"INSERT INTO student_department_priority_list VALUES(@studentID, @department_code, @priority)");
-                parameterList.Add(new { studentID = studentID, department_code = jsonData.GetProperty($"DepartmentCode{i}").GetString(), priority = i });
+                parameterList.Add(new { studentID, department_code = jsonData.GetProperty($"DepartmentCode{i}").GetString(), priority = i });
             }
 
             List<int> states = _data.SaveDataTransaction(sqlList, parameterList, _config.GetConnectionString("Default"));
@@ -80,37 +82,29 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return Ok();
             }
-
-
-
-
-
             // to departmentCode5, departmentCode1 represents the highest while departmentCode5 represent the lowest.
-
             //Pack those variables into a list of student department priority class.
-
             //Save to database.
-
             //Return message successful, other option return a list of those options.
-
-        
         }
 
         [Authorize]
         [HttpGet("GetStudentPriorityList/{ID:int}")]
         public IActionResult GetStudentPriorityList(int id)
         {
-            //ADMIN ONLY FUNCTION.
+            //ADMIN, STUDENT FUNCTION.
+            //Admin enters any student ID, get the priority list.
+            //Student enters his ID, get the priority list that he entered.
             //Get the list from the database and return it.
 
-            string sql = "SELECT department_code, priority FROM student_department_priority_list WHERE student_id = @id ";
+            string sql = "SELECT department_code, priority FROM student_department_priority_list WHERE student_id = @id;";
 
-            dynamic rows = _data.LoadData<dynamic, int>(sql, id, _config.GetConnectionString("Defauld"));
+            dynamic rows = _data.LoadData<dynamic, int>(sql, id, _config.GetConnectionString("Default"));
 
             if (rows == null)
-                return BadRequest(new { Message = "operation failed." });
+                return BadRequest(new { Message = "unknown error, maybe database server is down." });
             else if (rows.Count == 0)
-                return Ok(new { Message = "student haven't submitted any priority list." });
+                return Ok(new { Message = "student did not sumbit any priority list." });
             else
                 return Ok(rows);
         }
@@ -122,7 +116,7 @@ namespace Better_Ecom_Backend.Controllers
             JsonElement jsonData = (JsonElement)inputData;
 
             if (!SetDepartmentForStudentDataExist(jsonData))
-                return BadRequest(new { Message = "you haven't sent all requred data." });
+                return BadRequest(new { Message = "some data is missing." });
 
             int studentID = jsonData.GetProperty("StudentID").GetInt32();
             string departmentCode = jsonData.GetProperty("DepartmentCode").GetString();
@@ -132,10 +126,11 @@ namespace Better_Ecom_Backend.Controllers
                     + "AND system_user.system_user_id = @ID;";
 
             Student student = _data.LoadData<Student, dynamic>(sql, new { ID = studentID }, _config.GetConnectionString("Default")).FirstOrDefault();
+            student.Department_code = departmentCode;
 
             if (student != null)
             {
-                string studentUpdateSql = "UPDATE student SET department_code = @Department_code";
+                string studentUpdateSql = "UPDATE student SET department_code = @Department_code WHERE student_id = @Student_id;";
                 int state = _data.SaveData<Student>(studentUpdateSql, student, _config.GetConnectionString("Default"));
 
                 if(state > 0)
@@ -149,32 +144,24 @@ namespace Better_Ecom_Backend.Controllers
             }
             else
             {
-                return BadRequest(new { Message = "id doesn't exist." });
+                return BadRequest(new { Message = "id does not exist." });
             }
-
-            //update query for table student.
-            //Optional, return the student object.
-
         }
 
-
-        private bool SetDepartmentForStudentDataExist(JsonElement sentData)
+        private static bool SetDepartmentForStudentDataExist(JsonElement sentData)
         {
-            JsonElement temp;
-            return sentData.TryGetProperty("StudentID", out temp)
-            && sentData.TryGetProperty("DepartmentCode", out temp);
+            return sentData.TryGetProperty("StudentID", out _)
+            && sentData.TryGetProperty("DepartmentCode", out _);
         }
 
-        private bool SetPriorityListRequiredDataExist(JsonElement sentData)
+        private static bool SetPriorityListRequiredDataExist(JsonElement sentData)
         {
-            JsonElement temp;
-            return sentData.TryGetProperty("StudentID", out temp)
-            && sentData.TryGetProperty("DepartmentCode1", out temp)
-            && sentData.TryGetProperty("DepartmentCode2", out temp)
-            && sentData.TryGetProperty("DepartmentCode3", out temp)
-            && sentData.TryGetProperty("DepartmentCode4", out temp)
-            && sentData.TryGetProperty("DepartmentCode5", out temp);
-
+            return sentData.TryGetProperty("StudentID", out _)
+            && sentData.TryGetProperty("DepartmentCode1", out _)
+            && sentData.TryGetProperty("DepartmentCode2", out _)
+            && sentData.TryGetProperty("DepartmentCode3", out _)
+            && sentData.TryGetProperty("DepartmentCode4", out _)
+            && sentData.TryGetProperty("DepartmentCode5", out _);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Better_Ecom_Backend.Controllers
         {
             string sql = "SELECT * FROM admin_user;";
 
-            var admins = _data.LoadData<Admin_user, dynamic>(sql, new { }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+            var admins = _data.LoadData<Admin_user, dynamic>(sql, new { }, _config.GetConnectionString("Default"));
             return Ok(admins.ToList());
         }
     }
