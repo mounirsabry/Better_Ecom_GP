@@ -69,7 +69,7 @@ namespace Better_Ecom_Backend.Controllers
                 sql = "UPDATE system_user SET user_password = @pass WHERE system_user_id = @ID;";
                 string pass = student.National_id;
 
-                success = _data.SaveData<dynamic>(sql, new { pass = pass, ID = student.System_user_id },
+                success = _data.SaveData<dynamic>(sql, new { pass, ID = student.System_user_id },
                     _config.GetConnectionString("Default"));
                 if (success > 0)
                 {
@@ -117,7 +117,7 @@ namespace Better_Ecom_Backend.Controllers
                 int success;
                 string pass = instructor.National_id;
 
-                success = _data.SaveData<dynamic>(sql, new { pass = pass, ID = instructor.System_user_id },
+                success = _data.SaveData<dynamic>(sql, new { pass, ID = instructor.System_user_id },
                     _config.GetConnectionString("Default"));
 
                 if (success > 0)
@@ -189,7 +189,7 @@ namespace Better_Ecom_Backend.Controllers
                 int success;
                 string pass = systemUser.National_id;
 
-                success = _data.SaveData<dynamic>(sql, new { pass = pass, ID = systemUser.System_user_id },
+                success = _data.SaveData<dynamic>(sql, new { pass, ID = systemUser.System_user_id },
                     _config.GetConnectionString("Default"));
 
                 if (success >= 0)
@@ -237,7 +237,7 @@ namespace Better_Ecom_Backend.Controllers
             var parameters = new
             {
                 ID = id,
-                password = password,
+                password,
             };
             type = type.ToLower();
 
