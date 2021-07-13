@@ -269,7 +269,8 @@ namespace Better_Ecom_Backend.Controllers
             List<int> rows;
 
             rows = _data.LoadData<int, dynamic>(sql, parameters, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
-            if (rows.Count > 0)
+            
+            if (rows != null && rows.Count > 0)
             {
                 return true;
             }
