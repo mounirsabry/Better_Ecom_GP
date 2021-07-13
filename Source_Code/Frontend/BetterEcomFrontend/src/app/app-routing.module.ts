@@ -7,9 +7,9 @@ import { RegisterationsAndAccountsManagementComponent } from './modules/account-
 import { StartPageComponent } from './components/start-page/start-page.component';
 import { StudentHomePageComponent } from './components/student-home-page/student-home-page.component';
 import { ChangePasswordComponent } from './modules/account-module/change-password/change-password.component';
-import { RegisterNewStudentOrInstructorComponent } from './modules/account-module/register-new-student-or-instructor/register-new-student-or-instructor.component';
 import { ViewProfileComponent } from './modules/account-module/view-profile/view-profile.component';
 import { LoginComponent } from './modules/auth-module/login/login.component';
+import { RegisterNewStudentOrInstructorComponent } from './modules/account-module/register-new-student-or-instructor/register-new-student-or-instructor.component';
 
 const routes: Routes = [
   // i did redirecto to startPage instead of normal cuz you can't pass optional paramters to '' url.
@@ -26,8 +26,8 @@ const routes: Routes = [
   {path:'profile/:type', component:ViewProfileComponent},
   {path:'changePassword',component:ChangePasswordComponent},
   {path:'pageNotFound',component:PageNotFoundComponent},// related to header don't change it.
-  {path:'registerationsAndAccountsManagements',component:RegisterationsAndAccountsManagementComponent},
   {path:'registerNewStudentOrInstructor/:type',component:RegisterNewStudentOrInstructorComponent},
+  {path:'registerationsAndAccountsManagements',component:RegisterationsAndAccountsManagementComponent},
   {path:'**', redirectTo:'pageNotFound',pathMatch:'full'}
 
 ];

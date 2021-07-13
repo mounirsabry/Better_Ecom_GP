@@ -77,12 +77,18 @@ export class ViewProfileComponent implements OnInit {
   }
 
   saveChanges(){
+
+
+    // convert first letters to capital
+    let obj = {}
     for(let key of Object.keys(this.profileForm.value)){
-      this.user[key] = this.profileForm.value[key]
+      let captitalKey = key.charAt(0).toUpperCase() + key.slice(1);
+
+      obj[captitalKey] = this.profileForm.value[key]
     }
 
    // console.log(this.user)
-    this.saveProfileChangesService.saveChanges(this.user).subscribe(
+    this.saveProfileChangesService.saveChanges(obj).subscribe(
       responnse =>{
         alert("changes saved successfully!")
       },
