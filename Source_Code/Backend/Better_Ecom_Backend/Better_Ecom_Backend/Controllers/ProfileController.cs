@@ -115,7 +115,7 @@ namespace Better_Ecom_Backend.Controllers
             data = (JsonElement)data;
             string sql = "SELECT user_password FROM system_user WHERE system_user_id = @ID;";
             int success;
-            string current_password = _data.LoadData<string, dynamic>(sql, new { ID = id }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName))[0];
+            string current_password = _data.LoadData<string, dynamic>(sql, new { ID = id }, _config.GetConnectionString("Default"))[0];
             string sent_current_password = data.GetProperty("Old_password").GetString();
             string new_password = data.GetProperty("New_password").GetString();
 
@@ -129,7 +129,7 @@ namespace Better_Ecom_Backend.Controllers
 
 
 
-                success = _data.SaveData<dynamic>(sql, new { ID = id, new_password = new_password }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+                success = _data.SaveData<dynamic>(sql, new { ID = id, new_password = new_password }, _config.GetConnectionString("Default"));
 
 
 

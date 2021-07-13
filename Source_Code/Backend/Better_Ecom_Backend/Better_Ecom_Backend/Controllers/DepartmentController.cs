@@ -19,6 +19,12 @@ namespace Better_Ecom_Backend.Controllers
         private IConfiguration _config;
         private IDataAccess _data;
 
+        public DepartmentController(IConfiguration config, IDataAccess data)
+        {
+            _config = config;
+            _data = data;
+        }
+
         [HttpGet("GetDepartments")]
         [Authorize]
         public IActionResult GetDepartments()

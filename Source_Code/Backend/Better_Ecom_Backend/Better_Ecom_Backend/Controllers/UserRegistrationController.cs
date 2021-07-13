@@ -58,7 +58,7 @@ namespace Better_Ecom_Backend.Controllers
                 NationalID = newStudent.National_id,
                 newStudent.Nationality
             };
-            var users = _data.LoadData<dynamic, dynamic>(checkUserExistenceSQL, parameters, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+            var users = _data.LoadData<dynamic, dynamic>(checkUserExistenceSQL, parameters, _config.GetConnectionString("Default"));
             //One person can not be student, instructor, admin at the same time.
             if (users.Count >= 2)
             {
@@ -128,7 +128,7 @@ namespace Better_Ecom_Backend.Controllers
                 newInstructor.Nationality
             };
 
-            var users = _data.LoadData<dynamic, dynamic>(checkUserExistenceSQL, parameters, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+            var users = _data.LoadData<dynamic, dynamic>(checkUserExistenceSQL, parameters, _config.GetConnectionString("Default"));
             //One person can not be student, instructor, admin at the same time.
             if (users.Count >= 2)
             {
@@ -307,7 +307,7 @@ namespace Better_Ecom_Backend.Controllers
             int currentYear = GetCurrentYear();
             //Gets the last inserted ID in the student table.
             string getLastIDSQL = @"SELECT MAX(student_id) FROM student;";
-            List<int> IDs = _data.LoadData<int, dynamic>(getLastIDSQL, new { }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+            List<int> IDs = _data.LoadData<int, dynamic>(getLastIDSQL, new { }, _config.GetConnectionString("Default"));
 
             int newID;
             if (IDs.Count == 0)
@@ -340,7 +340,7 @@ namespace Better_Ecom_Backend.Controllers
         private int GetNextInstructorID()
         {
             string getLastIDSQL = "SELECT MAX(instructor_id) FROM instructor;";
-            List<int> IDs = _data.LoadData<int, dynamic>(getLastIDSQL, new { }, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+            List<int> IDs = _data.LoadData<int, dynamic>(getLastIDSQL, new { }, _config.GetConnectionString("Default"));
 
             int newID;
             if (IDs.Count == 0)
@@ -377,7 +377,7 @@ namespace Better_Ecom_Backend.Controllers
                 newStudent
             };
 
-            List<int> states = _data.SaveDataTransaction<dynamic>(insertionQueries, parametersList, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+            List<int> states = _data.SaveDataTransaction<dynamic>(insertionQueries, parametersList, _config.GetConnectionString("Default"));
             return states;
         }
 
@@ -402,7 +402,7 @@ namespace Better_Ecom_Backend.Controllers
                 newInstructor
             };
 
-            List<int> states = _data.SaveDataTransaction<dynamic>(insertionQueries, parametersList, _config.GetConnectionString(Constants.CurrentDBConnectionStringName));
+            List<int> states = _data.SaveDataTransaction<dynamic>(insertionQueries, parametersList, _config.GetConnectionString("Default"));
             return states;
         }
     }
