@@ -55,6 +55,15 @@ namespace Better_Ecom_Backend.Controllers
             List<string> sqlList = new List<string>();
             List<dynamic> parameterList = new List<dynamic>();
 
+
+            string sql = "SELECT * FROM student INNER JOIN system_user" + "\n"
+            + "WHERE student.student_id = system_user.system_user_id" + "\n"
+            + "AND system_user.system_user_id = @ID;";
+
+            Student student = _data.LoadData<Student, dynamic>(sql, new { ID = studentID }, _config.GetConnectionString("Default")).FirstOrDefault();
+            if (student == null)
+                return BadRequest(new { Message = "id doesn't exist or not a student." });
+
             for (int i = 1; i <= 5; i++)
             {
                 sqlList.Add($"INSERT INTO student_department_priority_list VALUES(@studentID, @department_code, @priority)");
