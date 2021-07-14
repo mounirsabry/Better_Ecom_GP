@@ -1,0 +1,9 @@
+<form [formGroup]="createAccountForm" (ngSubmit)="submitAccount()">
+  <label>{{type}} ID</label>
+  <input type="number" name="NewID" id="NewID" #NewID formControlName = "id">
+  <p *ngIf="idGet.invalid && idGet.touched" style="color: red;"> id is required</p>
+
+  <br>
+
+  <button type="submit" [disabled]="createAccountForm.invalid">Create New Account</button>
+</form>
