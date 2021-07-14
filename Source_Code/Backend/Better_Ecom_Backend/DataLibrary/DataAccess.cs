@@ -65,7 +65,7 @@ namespace DataLibrary
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e.InnerException);
                     transaction.Rollback();
                     states.Add(-1);
                 }
