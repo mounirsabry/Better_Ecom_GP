@@ -60,7 +60,7 @@ namespace Better_Ecom_Backend.Controllers
         // not sure if the admin will use this to modify student/instructor profiles, will assume not till i get there.
         [Authorize]
         [HttpPatch("SaveProfileChanges/{ID:int}/{Type}")]
-        public IActionResult SaveProfileChanges(string type, [FromBody] dynamic data)
+        public IActionResult SaveProfileChanges(int ID, string type, [FromBody] dynamic data)
         {
             List<int> success1;
             if (type != "student" && type != "instructor" && type != "admin")
@@ -69,13 +69,14 @@ namespace Better_Ecom_Backend.Controllers
             }
             else
             {
+                int System_user_id = ID;
                 System_user system_user = UserFactory.getUser(data, type);
                 List<string> queries = new();
                 List<dynamic> parameterList = new();
                 queries.Add(GetBaseUserUpdateQuery());
                 parameterList.Add(new
                 {
-                    system_user.System_user_id,
+                    System_user_id,
                     system_user.Email,
                     system_user.Address,
                     system_user.Phone_number,
