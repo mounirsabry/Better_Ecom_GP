@@ -59,6 +59,10 @@ namespace Better_Ecom_Backend.Controllers
                 newStudent.Nationality
             };
             var users = _data.LoadData<dynamic, dynamic>(checkUserExistenceSQL, parameters, _config.GetConnectionString("Default"));
+
+            if (users is null)
+                return BadRequest(new { Message = "unknown error, maybe database server is down." });
+
             //One person can not be student, instructor, admin at the same time.
             if (users.Count >= 2)
             {
@@ -363,7 +367,7 @@ namespace Better_Ecom_Backend.Controllers
                                        + "@Nationality, @National_id, @Birth_date, @Gender, @Additional_info);";
 
             string studentInsertionSQL = "INSERT INTO student" + "\n"
-                                       + "VALUES(@Student_id, @High_school_type, @Entrance_year, @GPA, @Department, @Academic_year);";
+                                       + "VALUES(@Student_id, @Department_code, @High_school_type, @Entrance_year, @GPA, @Academic_year);";
 
             List<string> insertionQueries = new()
             {
@@ -388,7 +392,7 @@ namespace Better_Ecom_Backend.Controllers
                                        + "@Nationality, @National_id, @Birth_date, @Gender, @Additional_info);";
 
             string instructorInsertionSQL = "INSERT INTO instructor" + "\n"
-                                       + "VALUES (@Instructor_id, @University, @Graduation_year, @Contact_info);";
+                                       + "VALUES (@Instructor_id, @Department_code, @University, @Graduation_year, @Contact_info);";
 
             List<string> insertionQueries = new()
             {

@@ -49,13 +49,18 @@ namespace Better_Ecom_Backend.Controllers
             string sql = $"SELECT * FROM {table} INNER JOIN system_user" + "\n"
                     + $"WHERE {id_text} = system_user.system_user_id" + "\n"
                     + "AND system_user.system_user_id = @ID;";
-            return _data.LoadData<dynamic, dynamic>(sql, new { ID = id }, _config.GetConnectionString("Default")).FirstOrDefault();
+            var dbResult = _data.LoadData<dynamic, dynamic>(sql, new { ID = id }, _config.GetConnectionString("Default"));
+            
+            if (dbResult != null)
+                return dbResult.FirstOrDefault();
+            else
+                return BadRequest(new { Message = "unknown error, maybe database server is down." });
         }
 
         // not sure if the admin will use this to modify student/instructor profiles, will assume not till i get there.
         [Authorize]
         [HttpPatch("SaveProfileChanges/{ID:int}/{Type}")]
-        public IActionResult SaveProfileChanges(int id, string type, [FromBody] dynamic data)
+        public IActionResult SaveProfileChanges(string type, [FromBody] dynamic data)
         {
             List<int> success1;
             if (type != "student" && type != "instructor" && type != "admin")
@@ -113,11 +118,23 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult ChangePassword(int id, [FromBody] dynamic data)
         {
             data = (JsonElement)data;
-            string sql = "SELECT user_password FROM system_user WHERE system_user_id = @ID;";
             int success;
-            string current_password = _data.LoadData<string, dynamic>(sql, new { ID = id }, _config.GetConnectionString("Default"))[0];
+
+            if (!ChangePasswordDataExist(data))
+                return BadRequest(new { Message = "sent data not complete." });
+
             string sent_current_password = data.GetProperty("Old_password").GetString();
             string new_password = data.GetProperty("New_password").GetString();
+            string current_password;
+
+
+            string sql = "SELECT user_password FROM system_user WHERE system_user_id = @ID;";
+            var dbResult = _data.LoadData<string, dynamic>(sql, new { ID = id }, _config.GetConnectionString("Default"));
+            if (dbResult != null)
+                current_password = dbResult.FirstOrDefault();
+            else
+                return BadRequest(new { Message = "unknown error, maybe database server is down." });
+
 
             if (current_password != sent_current_password)
             {
@@ -137,6 +154,14 @@ namespace Better_Ecom_Backend.Controllers
                     return BadRequest(new { Message = "password update failed." });
                 }
             }
+        }
+
+#pragma warning disable CA1822 // Mark members as static
+        private bool ChangePasswordDataExist(JsonElement sentData)
+#pragma warning restore CA1822 // Mark members as static
+        {
+            return sentData.TryGetProperty("Old_password", out _)
+                && sentData.TryGetProperty("New_password", out _);
         }
     }
 }
