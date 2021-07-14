@@ -96,7 +96,7 @@ namespace Better_Ecom_Backend.Controllers
             //Student enters his ID, get the priority list that he entered.
             //Get the list from the database and return it.
 
-            string sql = "SELECT department_code, priority FROM student_department_priority_list WHERE student_id = @id;";
+            string sql = "SELECT student_id, department_code, priority FROM student_department_priority_list WHERE student_id = @id;";
 
             dynamic rows = _data.LoadData<dynamic, int>(sql, id, _config.GetConnectionString("Default"));
 

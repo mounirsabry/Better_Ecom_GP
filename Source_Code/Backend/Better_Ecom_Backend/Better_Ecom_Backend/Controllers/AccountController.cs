@@ -55,6 +55,10 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult CreateAccountForStudent([FromBody] dynamic inputData)
         {
             JsonElement inputJson = (JsonElement)inputData;
+
+            if (!CreateAccountForStudentDataExist(inputJson))
+                return BadRequest(new { Message = "sent data is not complete." });
+
             int studentID = inputJson.GetProperty("StudentID").GetInt32();
             string sql = "SELECT user_password, national_id FROM student INNER JOIN system_user" + "\n"
                     + "WHERE student.student_id = system_user.system_user_id" + "\n"
@@ -97,11 +101,21 @@ namespace Better_Ecom_Backend.Controllers
                 }
             }
         }
+
+        private bool CreateAccountForStudentDataExist(JsonElement sentData)
+        {
+            return sentData.TryGetProperty("StudentID", out _);
+        }
+
         [Authorize]
         [HttpPost("CreateAccountForInstructor")]
         public IActionResult CreateAccountForInstructor([FromBody] dynamic inputData)
         {
             JsonElement inputJson = (JsonElement)inputData;
+
+            if (CreateAccountForInstructorDataExist(inputJson))
+                return BadRequest(new { Message = "sent data is not complete." });
+
             int instructorID = inputJson.GetProperty("InstructorID").GetInt32();
             List<Instructor> instructor;
 
@@ -145,6 +159,12 @@ namespace Better_Ecom_Backend.Controllers
                 return BadRequest(new { Message = "unknown error, maybe database server is down." });
             }
         }
+
+        private bool CreateAccountForInstructorDataExist(JsonElement sentData)
+        {
+            return sentData.TryGetProperty("InstructorID", out _);
+        }
+
         [Authorize]
         [HttpPatch("ResetAccountCredientials")]
         public IActionResult ResetAccountCredientials([FromBody] dynamic userData)
@@ -171,7 +191,7 @@ namespace Better_Ecom_Backend.Controllers
                 default:
                     return BadRequest(new { Message = "invalid user type." });
             }
-            sql = $"SELECT user_password, nationa_id FROM {table} INNER JOIN system_user" + "\n"
+            sql = $"SELECT system_user_id, user_password, national_id FROM {table} INNER JOIN system_user" + "\n"
                     + $"WHERE {id_text} = system_user.system_user_id" + "\n"
                     + "AND system_user.system_user_id = @ID" + "\n"
                     + "AND system_user.national_id = @NationalID;";
@@ -181,15 +201,16 @@ namespace Better_Ecom_Backend.Controllers
             switch (type)
             {
                 case "student":
-                    dbResult = _data.LoadData<Student, dynamic>(sql, new { ID = id, NationalID = nationalID }, _config.GetConnectionString("Default")).FirstOrDefault();
+                    dbResult = _data.LoadData<Student, dynamic>(sql, new { ID = id, NationalID = nationalID }, _config.GetConnectionString("Default"));
                     break;
                 case "instructor":
-                    dbResult = _data.LoadData<Instructor, dynamic>(sql, new { ID = id, NationalID = nationalID }, _config.GetConnectionString("Default")).FirstOrDefault();
+                    dbResult = _data.LoadData<Instructor, dynamic>(sql, new { ID = id, NationalID = nationalID }, _config.GetConnectionString("Default"));
                     break;
             }
+            
+            if (dbResult != null && dbResult.Count > 0)
 
-            if (dbResult != null)
-                systemUser = dbResult.FirstOrDefault();
+                systemUser = dbResult[0];
             
 
             if (systemUser != null)
