@@ -21,9 +21,9 @@ export class AdminResetPasswordComponent implements OnInit {
               private router : Router) { }
 
   resetPasswordForm = new FormGroup({
-    type : new FormControl('', [Validators.required]),
-    id: new FormControl('', [Validators.required]),
-    nationalID: new FormControl('', [Validators.required])
+    Type : new FormControl('', [Validators.required]),
+    ID: new FormControl('', [Validators.required]),
+    NationalID: new FormControl('', [Validators.required])
   })
 
   get typeGet() {
@@ -42,10 +42,10 @@ export class AdminResetPasswordComponent implements OnInit {
   }
 
   submit(){
-    this.updateDataService.resetPassword(this.resetPasswordForm).subscribe(
+    this.updateDataService.resetPassword(this.resetPasswordForm.value).subscribe(
       response => {
         alert("Password has been reset to the user national id")
-        this.router.navigate(['/adminHomePage/'])
+        //this.router.navigate(['/adminHomePage/'])
       },
       error => {
         alert("ID doesn't exit or no match was found for the national id")

@@ -8,11 +8,16 @@ export class UpdateDataAdminService {
 
   constructor(private httpClient:HttpClient) { }
 
-  createAccount(id : number){
-    return this.httpClient.patch<any>('https://localhost:44361/createAccount/' + localStorage.getItem('type'), {"ID" : id})
+  createAccount(id : number, type:string){
+    let idToSend = (type == 'student')? 'StudentID' : 'InstructorID'
+
+    let idObj = {}
+
+    idObj[idToSend] = id
+    return this.httpClient.post<any>('https://localhost:44361/account/createAccountFor' + type, idObj)
   }
 
   resetPassword(user : any){
-    return this.httpClient.patch<any>('https://localhost:44361/ResetAccountCredientials', user)
+    return this.httpClient.patch<any>('https://localhost:44361/account/ResetAccountCredientials', user)
   }
 }

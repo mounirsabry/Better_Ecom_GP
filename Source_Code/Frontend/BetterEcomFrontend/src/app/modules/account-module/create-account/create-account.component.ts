@@ -32,10 +32,10 @@ export class CreateAccountComponent implements OnInit {
 
   submitAccount()
   {
-    this.updateDataService.createAccount(this.idGet.value).subscribe(
+    this.updateDataService.createAccount(this.idGet.value,this.type).subscribe(
       response => {
         alert("Account created successfully")
-        this.router.navigate(['/adminHomePage/'])
+       // this.router.navigate(['/adminHomePage/'])
       },
       error => {
         alert("no matching id was found")

@@ -16,6 +16,7 @@ namespace DataLibrary
             
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
+                connection.Open();
                 try
                 {
                     var rows = connection.Query<T>(sql, parameters);
@@ -35,6 +36,7 @@ namespace DataLibrary
             int state = 0;
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
+                connection.Open();
                 try
                 {
                     state = connection.Execute(sql, parameters);

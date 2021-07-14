@@ -60,7 +60,7 @@ namespace Better_Ecom_Backend.Controllers
                 return BadRequest(new { Message = "sent data is not complete." });
 
             int studentID = inputJson.GetProperty("StudentID").GetInt32();
-            string sql = "SELECT user_password, national_id FROM student INNER JOIN system_user" + "\n"
+            string sql = "SELECT user_password, national_id, system_user_id FROM student INNER JOIN system_user" + "\n"
                     + "WHERE student.student_id = system_user.system_user_id" + "\n"
                     + "AND system_user.system_user_id = @ID;";
             int success;
@@ -113,13 +113,13 @@ namespace Better_Ecom_Backend.Controllers
         {
             JsonElement inputJson = (JsonElement)inputData;
 
-            if (CreateAccountForInstructorDataExist(inputJson))
+            if (!CreateAccountForInstructorDataExist(inputJson))
                 return BadRequest(new { Message = "sent data is not complete." });
 
             int instructorID = inputJson.GetProperty("InstructorID").GetInt32();
             List<Instructor> instructor;
 
-            string sql = "SELECT user_password, national_id FROM instructor INNER JOIN system_user" + "\n"
+            string sql = "SELECT user_password, national_id, system_user_id FROM instructor INNER JOIN system_user" + "\n"
                     + "WHERE instructor.instructor_id = system_user.system_user_id" + "\n"
                     + "AND system_user.system_user_id = @ID;";
 
