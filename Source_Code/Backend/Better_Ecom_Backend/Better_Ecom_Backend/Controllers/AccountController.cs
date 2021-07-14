@@ -41,7 +41,7 @@ namespace Better_Ecom_Backend.Controllers
 
             //IActionResult
             IActionResult response = Unauthorized();
-            bool exists = AuthenticateUser(id, password, type) && password != "";
+            bool exists = AuthenticateUser(id, password, type) && !string.IsNullOrEmpty(password);
 
             if (exists)
             {
@@ -50,6 +50,8 @@ namespace Better_Ecom_Backend.Controllers
             }
             return response;
         }
+
+
         [Authorize]
         [HttpPost("CreateAccountForStudent")]
         public IActionResult CreateAccountForStudent([FromBody] dynamic inputData)
@@ -72,7 +74,7 @@ namespace Better_Ecom_Backend.Controllers
             if (student != null && student.Count > 0 && student[0].User_password == null)
             {
                 sql = "UPDATE system_user SET user_password = @pass WHERE system_user_id = @ID;";
-                string pass = student[0].National_id;
+                string pass = SecurityUtilities.HashPassword(student[0].National_id);
 
                 success = _data.SaveData<dynamic>(sql, new { pass, ID = student[0].System_user_id },
                     _config.GetConnectionString("Default"));
@@ -131,7 +133,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 sql = "UPDATE system_user SET user_password = @pass where system_user_id = @ID;";
                 int success;
-                string pass = instructor[0].National_id;
+                string pass = SecurityUtilities.HashPassword(instructor[0].National_id);
 
                 success = _data.SaveData<dynamic>(sql, new { pass, ID = instructor[0].System_user_id },
                     _config.GetConnectionString("Default"));
@@ -217,7 +219,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 sql = "UPDATE system_user SET user_password = @pass WHERE system_user_id = @ID;";
                 int success;
-                string pass = systemUser.National_id;
+                string pass = SecurityUtilities.HashPassword(systemUser.National_id);
 
                 success = _data.SaveData<dynamic>(sql, new { pass, ID = systemUser.System_user_id },
                     _config.GetConnectionString("Default"));
@@ -266,9 +268,10 @@ namespace Better_Ecom_Backend.Controllers
             var parameters = new
             {
                 ID = id,
-                password,
             };
             type = type.ToLower();
+            //	{ ID = 20210001, password = "AD/vTWQ57+9RDQSZUTsPvgeYbRkALGbAKoLVXJnpWbHYh7WsCq7k84sald7oNKcLSQ==" }
+            //  { ID = 20210001, password = "AMJZAoX3Gb2wssEHqaJZbm244NH1oKAJ2xxTjH1vb+B2mpMZQ/ZH54fvNvuBLGU3dQ==" }
 
             string table;
             string id_text;
@@ -290,18 +293,17 @@ namespace Better_Ecom_Backend.Controllers
                     return false;
             }
 
-            string sql = "SELECT system_user_id" + "\n"
+            string sql = "SELECT system_user_id, user_password" + "\n"
                     + $"FROM {table} INNER JOIN system_user" + "\n"
                     + $"WHERE {id_text} = system_user.system_user_id" + "\n"
-                    + "AND system_user.system_user_id = @ID" + "\n"
-                    + "AND system_user.user_password = @password";
-            List<int> rows;
+                    + "AND system_user.system_user_id = @ID";
+            dynamic rows;
 
-            rows = _data.LoadData<int, dynamic>(sql, parameters, _config.GetConnectionString("Default"));
+            rows = _data.LoadData<dynamic, dynamic>(sql, parameters, _config.GetConnectionString("Default"));
             
             if (rows != null && rows.Count > 0)
             {
-                return true;
+                return SecurityUtilities.Verify(password,rows[0].user_password);
             }
             else
             {
