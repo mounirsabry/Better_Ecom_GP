@@ -50,9 +50,14 @@ namespace Better_Ecom_Backend.Controllers
                     + $"WHERE {id_text} = system_user.system_user_id" + "\n"
                     + "AND system_user.system_user_id = @ID;";
             var dbResult = _data.LoadData<dynamic, dynamic>(sql, new { ID = id }, _config.GetConnectionString("Default"));
-            
+
             if (dbResult != null)
-                return dbResult.FirstOrDefault();
+            {
+
+                var user = dbResult.FirstOrDefault();
+                user.user_password = null;
+                return user;
+            }
             else
                 return BadRequest(new { Message = "unknown error, maybe database server is down." });
         }
