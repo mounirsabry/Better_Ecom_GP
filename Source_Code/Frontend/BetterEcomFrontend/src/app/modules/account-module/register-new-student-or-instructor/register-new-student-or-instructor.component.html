@@ -1,0 +1,89 @@
+
+<form [formGroup]="registerForm"  (ngSubmit)="register()">
+
+
+  <label>Full Name</label>
+  <input type="text" formControlName="Full_name">
+  <p *ngIf="fullNameGet.invalid && fullNameGet.touched" style="color: red;"> Full Name is required</p>
+
+  <br>
+  <label>Address</label>
+  <input type="text" formControlName="Address">
+  <p *ngIf="addressGet.invalid && addressGet.touched" style="color: red;"> Address is required</p>
+
+  <br>
+
+
+  <label>Nationality</label>
+  <input type="text" formControlName="Nationality">
+
+  <p *ngIf="nationalityGet.invalid && nationalityGet.touched" style="color: red;"> Nationality is required</p>
+
+  <br>
+
+  <label>National ID</label>
+  <input type="number" formControlName="National_id">
+  <p *ngIf="nationalIDGet.invalid && nationalIDGet.touched" style="color: red;"> National ID is required</p>
+
+  <br>
+
+
+  <label>Birth Date</label>
+  <input type="date" formControlName="Birth_date">
+
+  <p *ngIf="birthDateGet.invalid && birthDateGet.touched" style="color: red;"> Birth Date is required</p>
+
+  <br>
+
+
+  <div *ngIf="type == 'student' ">
+    <label>High School Type</label>
+    <input type="text" formControlName="High_school_type">
+    <p *ngIf="highSchoolTypeGet.invalid && highSchoolTypeGet.touched" style="color: red;"> highSchool type is required</p>
+
+  </div>
+
+  <br>
+
+  <div *ngIf="type == 'student'">
+    <label>Entrance Year</label>
+    <input type="number" formControlName="Entrance_year">
+    <p *ngIf="entranceYearGet.invalid && entranceYearGet.touched" style="color: red;"> Entrance Year is required</p>
+
+  </div>
+
+  <br>
+
+
+  <div *ngIf="type == 'instructor'">
+    <label>University</label>
+    <input type="text" formControlName="University">
+    <p *ngIf="universityGet.invalid && universityGet.touched" style="color: red;"> universtiy is required</p>
+
+  </div>
+  <br>
+
+
+  <div *ngIf="type == 'instructor'">
+    <label>Graduation Year</label>
+    <input type="number" formControlName="Graduation_year">
+    <p *ngIf="graduationYearGet.invalid && graduationYearGet.touched" style="color: red;"> Graduation Year is required</p>
+
+  </div>
+
+  <br>
+
+
+  <label>Gender</label>
+  <select formControlName="Gender" >
+    <option >Male</option>
+    <option >Female</option>
+  </select>
+  <p *ngIf="genderGet.invalid && genderGet.touched" style="color: red;"> Gender is required</p>
+
+
+  <br>
+
+  <button type="submit" [disabled] = "registerForm.invalid"> register </button>
+
+</form>

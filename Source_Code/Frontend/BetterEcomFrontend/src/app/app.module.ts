@@ -13,7 +13,7 @@ import { AdminHomePageComponent } from './components/admin-home-page/admin-home-
 import { InstructorHomePageComponent } from './components/instructor-home-page/instructor-home-page.component';
 import { StudentHomePageComponent } from './components/student-home-page/student-home-page.component';
 import { AccountModuleModule } from './modules/account-module/account-module.module';
-import {InterceptorService} from './services/interceptors/interceptor.service'
+import {InterceptorService} from './services/interceptors/interceptor.service';
 @NgModule({
 
   declarations: [
@@ -22,6 +22,8 @@ import {InterceptorService} from './services/interceptors/interceptor.service'
     AdminHomePageComponent,
     InstructorHomePageComponent,
     StudentHomePageComponent,
+
+
   ],
   imports: [
     BrowserModule,

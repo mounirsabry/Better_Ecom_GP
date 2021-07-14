@@ -8,11 +8,24 @@ import { SaveProfileChangesService } from './services/save-profile-changes.servi
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { CreateAccountComponent } from './create-account/create-account.component';
 import { AdminResetPasswordComponent } from './admin-reset-password/admin-reset-password.component';
+import { RegisterationsAndAccountsManagementComponent } from './registerations-and-accounts-management/registerations-and-accounts-management.component';
+import { RegisterNewStudentOrInstructorService } from './services/register-new-student-or-instructor.service';
+import { RegisterNewStudentOrInstructorComponent } from './register-new-student-or-instructor/register-new-student-or-instructor.component';
 
 
 
 @NgModule({
-  declarations: [ViewProfileComponent, ChangePasswordComponent, CreateAccountComponent, AdminResetPasswordComponent],
+  declarations: [
+    ViewProfileComponent,
+     ChangePasswordComponent,
+      RegisterationsAndAccountsManagementComponent,
+      RegisterNewStudentOrInstructorComponent,
+      CreateAccountComponent,
+      AdminResetPasswordComponent
+
+
+
+    ],
   imports: [
     CommonModule,
     AppRoutingModule,
@@ -20,8 +33,9 @@ import { AdminResetPasswordComponent } from './admin-reset-password/admin-reset-
     ReactiveFormsModule
   ],
   exports:[
-    ViewProfileComponent
+    ViewProfileComponent,
+    RegisterationsAndAccountsManagementComponent
   ],
-  providers:[SaveProfileChangesService]
+  providers:[SaveProfileChangesService,RegisterNewStudentOrInstructorService]
 })
 export class AccountModuleModule { }
