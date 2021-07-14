@@ -13,6 +13,6 @@ export class UpdateDataAdminService {
   }
 
   resetPassword(user : any){
-    return this.httpClient.patch<any>('https://localhost:44361/adminResetPassword', user)
+    return this.httpClient.patch<any>('https://localhost:44361/ResetAccountCredientials', user)
   }
 }

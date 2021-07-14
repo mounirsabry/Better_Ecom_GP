@@ -27,15 +27,15 @@ export class AdminResetPasswordComponent implements OnInit {
   })
 
   get typeGet() {
-    return this.resetPasswordForm.get("type")
+    return this.resetPasswordForm.get("Type")
   }
 
   get idGet() {
-    return this.resetPasswordForm.get("id")
+    return this.resetPasswordForm.get("ID")
   }
 
   get nationalIDGet() {
-    return this.resetPasswordForm.get("nationalID")
+    return this.resetPasswordForm.get("NationalID")
   }
 
   ngOnInit(): void {
