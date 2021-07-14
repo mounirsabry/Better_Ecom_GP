@@ -142,14 +142,14 @@ namespace Better_Ecom_Backend.Controllers
                 return BadRequest(new { Message = "unknown error, maybe database server is down." });
 
 
-            if (current_password != sent_current_password)
+            if (!SecurityUtilities.Verify(  sent_current_password,current_password ))
             {
                 return BadRequest("old password is wrong.");
             }
             else
             {
                 sql = "UPDATE system_user SET user_password = @new_password WHERE system_user_id = @ID;";
-                success = _data.SaveData<dynamic>(sql, new { ID = id, new_password }, _config.GetConnectionString("Default"));
+                success = _data.SaveData<dynamic>(sql, new { ID = id, new_password = SecurityUtilities.HashPassword( new_password) }, _config.GetConnectionString("Default"));
 
                 if (success >= 0)
                 {
