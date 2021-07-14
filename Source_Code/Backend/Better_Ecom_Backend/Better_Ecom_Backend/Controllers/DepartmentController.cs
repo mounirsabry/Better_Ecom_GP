@@ -56,15 +56,14 @@ namespace Better_Ecom_Backend.Controllers
             List<string> sqlList = new();
             List<dynamic> parameterList = new();
 
-            string sql = "SELECT * FROM student INNER JOIN system_user" + "\n"
-            + "WHERE student.student_id = system_user.system_user_id" + "\n"
-            + "AND system_user.system_user_id = @ID;";
+            string sql = "SELECT student_id FROM student WHERE student.student_id = @ID;";
 
-            Student student = _data.LoadData<Student, dynamic>(sql, new { ID = studentID }, _config.GetConnectionString("Default")).FirstOrDefault();
+            List<int> student = _data.LoadData<int, dynamic>(sql, new { ID = studentID }, _config.GetConnectionString("Default"));
             if (student == null)
-            {
+                return BadRequest(new { Message = "unknown error, maybe database server is down." });
+            else if (student.Count == 0)
                 return BadRequest(new { Message = "id does not exist or not a student." });
-            }
+            
 
             for (int i = 1; i <= 5; i++)
             {
@@ -120,22 +119,30 @@ namespace Better_Ecom_Backend.Controllers
 
             int studentID = jsonData.GetProperty("StudentID").GetInt32();
             string departmentCode = jsonData.GetProperty("DepartmentCode").GetString();
+            Student student;
 
-            string sql = "SELECT * FROM student INNER JOIN system_user" + "\n"
-                    + "WHERE student.student_id = system_user.system_user_id" + "\n"
-                    + "AND system_user.system_user_id = @ID;";
+            string sql = "SELECT student_id FROM student WHERE student.student_id = @ID";
 
-            Student student = _data.LoadData<Student, dynamic>(sql, new { ID = studentID }, _config.GetConnectionString("Default")).FirstOrDefault();
+            var dbResult = _data.LoadData<Student, dynamic>(sql, new { ID = studentID }, _config.GetConnectionString("Default"));
+
+            if (dbResult != null)
+                student = dbResult.FirstOrDefault();
+            else
+                return BadRequest(new { Message = "unknown error, maybe database server is down." });
+
             student.Department_code = departmentCode;
+
+
+             
 
             if (student != null)
             {
                 string studentUpdateSql = "UPDATE student SET department_code = @Department_code WHERE student_id = @Student_id;";
-                int state = _data.SaveData<Student>(studentUpdateSql, student, _config.GetConnectionString("Default"));
+                int state = _data.SaveData(studentUpdateSql, student, _config.GetConnectionString("Default"));
 
                 if(state > 0)
                 {
-                    return Ok(student);
+                    return Ok();
                 }
                 else
                 {
