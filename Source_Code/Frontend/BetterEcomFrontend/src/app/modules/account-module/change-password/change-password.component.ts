@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GetProfileDataService } from '../services/get-profile-data.service';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router'
-import { AbstractControl, FormControl, FormGroup, Validator, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router'
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {HttpClient} from '@angular/common/http'
 import { SaveProfileChangesService } from '../services/save-profile-changes.service';
 import { passwordValidator } from 'src/app/validators/password-confirm-validator';
@@ -16,10 +16,7 @@ export class ChangePasswordComponent implements OnInit {
   password:string
   misMatch: boolean = false
 
-  constructor(private getProfileDataService:GetProfileDataService,
-              private activatedRoute:ActivatedRoute,
-              private router: Router,
-              private httClient:HttpClient,
+  constructor(private router: Router,
               private saveProfileService : SaveProfileChangesService) {}
 
     changePasswordForm = new FormGroup({

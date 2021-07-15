@@ -1,0 +1,14 @@
+<form [formGroup]="chooseDepartmentForm" (ngSubmit)="submitDepartments()">
+    <label>Departments</label>
+    <select name="Departments" id="Departments" #Departments formControlName="DepartmentList">
+        <option value="Artifical Intelligence">Artifical Intelligence</option>
+        <option value="Computer Science">Computer Science</option>
+        <option value="Decision Support">Decision Support</option>
+        <option value="Information Systems">Information Systems</option>
+        <option value="Information Technology">Information Technology</option>
+        <!--<option *ngFor="let department of departments">{{ department }}</option>-->
+    </select>
+    <p *ngIf="departmentGet.invalid && departmentGet.touched" style="color: red;">please select a department</p>
+
+</form>
+
