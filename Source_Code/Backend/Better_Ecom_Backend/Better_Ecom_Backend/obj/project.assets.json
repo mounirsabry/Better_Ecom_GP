@@ -162,11 +162,11 @@
           "lib/netstandard2.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll": {}
         }
       },
-      "Microsoft.IdentityModel.Tokens/6.11.1": {
+      "Microsoft.IdentityModel.Tokens/6.7.1": {
         "type": "package",
         "dependencies": {
           "Microsoft.CSharp": "4.5.0",
-          "Microsoft.IdentityModel.Logging": "6.11.1",
+          "Microsoft.IdentityModel.Logging": "6.7.1",
           "System.Security.Cryptography.Cng": "4.5.0"
         },
         "compile": {
@@ -622,7 +622,7 @@
       ]
     },
     "Microsoft.CSharp/4.5.0": {
-      "sha512": "EGoBmf3Na2ppbhPePDE9PlX81r1HuOZH5twBrq7couJZiPTjUnD3648balerQJO6EJ8Sj+43+XuRwQ7r+3tE3w==",
+      "sha512": "kaj6Wb4qoMuH3HySFJhxwQfe8R/sJsNJnANrvv8WdFPMoNbKY5htfNscv+LHCu5ipz+49m2e+WQXpLXr9XYemQ==",
       "type": "package",
       "path": "microsoft.csharp/4.5.0",
       "files": [
@@ -759,10 +759,10 @@
         "microsoft.identitymodel.protocols.openidconnect.nuspec"
       ]
     },
-    "Microsoft.IdentityModel.Tokens/6.11.1": {
-      "sha512": "B7vWX+WevuluZDjsf4Br2Zb7k20ps1D3RMX/J8DKsrkzJ4F3fcsLIEknI98JNYKPlN9VcqEZ1qeeEKEuwU3XcA==",
+    "Microsoft.IdentityModel.Tokens/6.7.1": {
+      "sha512": "Td9Vn9d/0eM1zlUUvaVQzjqdBkBLJ2oGtGL/LYPuiCUAALMeAHVDtpXGk8eYI8Gbduz5n+o7ifldsCIca4MWew==",
       "type": "package",
-      "path": "microsoft.identitymodel.tokens/6.11.1",
+      "path": "microsoft.identitymodel.tokens/6.7.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -770,11 +770,9 @@
         "lib/net45/Microsoft.IdentityModel.Tokens.xml",
         "lib/net461/Microsoft.IdentityModel.Tokens.dll",
         "lib/net461/Microsoft.IdentityModel.Tokens.xml",
-        "lib/net472/Microsoft.IdentityModel.Tokens.dll",
-        "lib/net472/Microsoft.IdentityModel.Tokens.xml",
         "lib/netstandard2.0/Microsoft.IdentityModel.Tokens.dll",
         "lib/netstandard2.0/Microsoft.IdentityModel.Tokens.xml",
-        "microsoft.identitymodel.tokens.6.11.1.nupkg.sha512",
+        "microsoft.identitymodel.tokens.6.7.1.nupkg.sha512",
         "microsoft.identitymodel.tokens.nuspec"
       ]
     },
@@ -1056,7 +1054,7 @@
       ]
     },
     "System.Security.Cryptography.Cng/4.5.0": {
-      "sha512": "O4tqXxWCD8y1IU1VTgzbuBFwoRahrADhDUxHjwezhHCsqyFNyQ5EytjWBxu0EsZuH14b4UO2pFkG063K2h/9Ug==",
+      "sha512": "WG3r7EyjUe9CMPFSs6bty5doUqT+q9pbI80hlNzo2SkPkZ4VTuZkGWjpp77JB8+uaL4DFPRdBsAY+DX3dBK92A==",
       "type": "package",
       "path": "system.security.cryptography.cng/4.5.0",
       "files": [
@@ -1322,28 +1320,24 @@
       "Dapper.Contrib >= 2.0.78",
       "DataLibrary >= 1.0.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 5.0.7",
-      "Microsoft.IdentityModel.Tokens >= 6.11.1",
+      "Microsoft.IdentityModel.Logging >= 6.11.1",
       "MySql.Data >= 8.0.25"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\gkari\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\oh377\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\gkari\\OneDrive\\Documents\\GitHub\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj",
+      "projectUniqueName": "E:\\FCI\\Graduation Project\\Github\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj",
       "projectName": "Better_Ecom_Backend",
-      "projectPath": "C:\\Users\\gkari\\OneDrive\\Documents\\GitHub\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj",
-      "packagesPath": "C:\\Users\\gkari\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\gkari\\OneDrive\\Documents\\GitHub\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\obj\\",
+      "projectPath": "E:\\FCI\\Graduation Project\\Github\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj",
+      "packagesPath": "C:\\Users\\oh377\\.nuget\\packages\\",
+      "outputPath": "E:\\FCI\\Graduation Project\\Github\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\gkari\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\oh377\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1357,8 +1351,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Users\\gkari\\OneDrive\\Documents\\GitHub\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj": {
-              "projectPath": "C:\\Users\\gkari\\OneDrive\\Documents\\GitHub\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj"
+            "E:\\FCI\\Graduation Project\\Github\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj": {
+              "projectPath": "E:\\FCI\\Graduation Project\\Github\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj"
             }
           }
         }
@@ -1389,7 +1383,7 @@
             "target": "Package",
             "version": "[5.0.7, )"
           },
-          "Microsoft.IdentityModel.Tokens": {
+          "Microsoft.IdentityModel.Logging": {
             "target": "Package",
             "version": "[6.11.1, )"
           },
