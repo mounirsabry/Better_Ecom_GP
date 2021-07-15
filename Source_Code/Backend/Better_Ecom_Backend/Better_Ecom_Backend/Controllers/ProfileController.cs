@@ -55,7 +55,8 @@ namespace Better_Ecom_Backend.Controllers
             {
 
                 var user = dbResult.FirstOrDefault();
-                user.user_password = null;
+                if(user is not null)
+                    user.user_password = null;
                 return user;
             }
             else

@@ -190,6 +190,10 @@ namespace Better_Ecom_Backend.Controllers
                     table = "instructor";
                     id_text = "instructor.instructor_id";
                     break;
+                case "admin":
+                    table = "admin_user";
+                    id_text = "admin_user.admin_user_id";
+                    break;
                 default:
                     return BadRequest(new { Message = "invalid user type." });
             }
@@ -207,6 +211,9 @@ namespace Better_Ecom_Backend.Controllers
                     break;
                 case "instructor":
                     dbResult = _data.LoadData<Instructor, dynamic>(sql, new { ID = id, NationalID = nationalID }, _config.GetConnectionString("Default"));
+                    break;
+                case "admin":
+                    dbResult = _data.LoadData<Admin_user, dynamic>(sql, new { ID = id, NationalID = nationalID }, _config.GetConnectionString("Default"));
                     break;
             }
             
