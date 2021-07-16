@@ -16,7 +16,7 @@ export class ChooseDepartmentComponent implements OnInit {
               private activateRoute:ActivatedRoute) { }
 
   chooseDepartmentForm = new FormGroup({
-    Departments : new FormControl('', [Validators.required])
+    DepartmentList : new FormControl('', [Validators.required])
   })
 
   departmentGet(){
