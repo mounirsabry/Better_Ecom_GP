@@ -12,18 +12,18 @@ namespace Better_Ecom_Backend.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class testController : Controller
+    public class TestController : Controller
     {
-        IConfiguration _config;
-        IDataAccess _data;
+        private readonly IConfiguration _config;
+        private readonly IDataAccess _data;
 
-        public testController(IConfiguration config, IDataAccess data)
+        public TestController(IConfiguration config, IDataAccess data)
         {
             _config = config;
             _data = data;
         }
 
-        public IActionResult test()
+        public IActionResult Test()
         {
             string sql = "SELECT * FROM admin_user;";
 

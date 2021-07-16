@@ -163,9 +163,7 @@ namespace Better_Ecom_Backend.Controllers
             }
         }
 
-#pragma warning disable CA1822 // Mark members as static
-        private bool ChangePasswordDataExist(JsonElement sentData)
-#pragma warning restore CA1822 // Mark members as static
+        private static bool ChangePasswordDataExist(JsonElement sentData)
         {
             return sentData.TryGetProperty("Old_password", out _)
                 && sentData.TryGetProperty("New_password", out _);
