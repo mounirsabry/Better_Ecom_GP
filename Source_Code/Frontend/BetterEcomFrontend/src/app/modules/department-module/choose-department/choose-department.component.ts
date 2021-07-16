@@ -16,11 +16,11 @@ export class ChooseDepartmentComponent implements OnInit {
               private activateRoute:ActivatedRoute) { }
 
   chooseDepartmentForm = new FormGroup({
-    Departments : new FormControl('', [Validators.required])
+    department : new FormControl('', [Validators.required])
   })
 
-  departmentGet(){
-    return this.chooseDepartmentForm.get("DepartmentList")
+  get departmentGet(){
+    return this.chooseDepartmentForm.get("department")
   }
 
 
