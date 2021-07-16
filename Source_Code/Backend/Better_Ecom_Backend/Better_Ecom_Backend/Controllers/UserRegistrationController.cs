@@ -1,6 +1,7 @@
 ﻿using Better_Ecom_Backend.Helpers;
 using Better_Ecom_Backend.Models;
 using DataLibrary;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -28,6 +29,7 @@ namespace Better_Ecom_Backend.Controllers
             _data = data;
         }
 
+        [Authorize(Roles ="admin")]
         [HttpPost("AddNewStudent")]
         public IActionResult AddNewStudent([FromBody] dynamic studentData)
         {
@@ -107,6 +109,7 @@ namespace Better_Ecom_Backend.Controllers
             return Ok(newStudent);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost("AddNewInstructor")]
         public IActionResult AddNewInstructor([FromBody] dynamic instructorData)
         {

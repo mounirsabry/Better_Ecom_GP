@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Better_Ecom_Backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class DepartmentController : ControllerBase
     {

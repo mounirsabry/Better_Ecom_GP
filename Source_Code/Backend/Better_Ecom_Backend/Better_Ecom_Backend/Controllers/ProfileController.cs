@@ -50,9 +50,15 @@ namespace Better_Ecom_Backend.Controllers
                     + $"WHERE {id_text} = system_user.system_user_id" + "\n"
                     + "AND system_user.system_user_id = @ID;";
             var dbResult = _data.LoadData<dynamic, dynamic>(sql, new { ID = id }, _config.GetConnectionString("Default"));
-            
+
             if (dbResult != null)
-                return dbResult.FirstOrDefault();
+            {
+
+                var user = dbResult.FirstOrDefault();
+                if(user is not null)
+                    user.user_password = null;
+                return user;
+            }
             else
                 return BadRequest(new { Message = "unknown error, maybe database server is down." });
         }
@@ -137,14 +143,14 @@ namespace Better_Ecom_Backend.Controllers
                 return BadRequest(new { Message = "unknown error, maybe database server is down." });
 
 
-            if (current_password != sent_current_password)
+            if (!SecurityUtilities.Verify(  sent_current_password,current_password ))
             {
                 return BadRequest("old password is wrong.");
             }
             else
             {
                 sql = "UPDATE system_user SET user_password = @new_password WHERE system_user_id = @ID;";
-                success = _data.SaveData<dynamic>(sql, new { ID = id, new_password }, _config.GetConnectionString("Default"));
+                success = _data.SaveData<dynamic>(sql, new { ID = id, new_password = SecurityUtilities.HashPassword( new_password) }, _config.GetConnectionString("Default"));
 
                 if (success >= 0)
                 {
