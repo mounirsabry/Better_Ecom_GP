@@ -221,3 +221,13 @@ E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_
 E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.csproj.CopyComplete
 E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.csproj.CoreCompileInputs.cache
 E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.MvcApplicationPartsAssemblyInfo.cache
+E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\appsettings.Development.json
+E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\appsettings.json
+E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.exe
+E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.deps.json
+E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.runtimeconfig.json
+E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.runtimeconfig.dev.json
+E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.dll
+E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\ref\Better_Ecom_Backend.dll
+E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.pdb
+E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.genruntimeconfig.cache
