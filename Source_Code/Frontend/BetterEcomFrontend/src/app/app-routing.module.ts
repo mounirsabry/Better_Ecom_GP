@@ -12,6 +12,7 @@ import { CreateAccountComponent } from './modules/account-module/create-account/
 import { ViewProfileComponent } from './modules/account-module/view-profile/view-profile.component';
 import { LoginComponent } from './modules/auth-module/login/login.component';
 import { RegisterNewStudentOrInstructorComponent } from './modules/account-module/register-new-student-or-instructor/register-new-student-or-instructor.component';
+import { ChooseDepartmentComponent } from './modules/department-module/choose-department/choose-department.component';
 
 const routes: Routes = [
   // i did redirecto to startPage instead of normal cuz you can't pass optional paramters to '' url.
@@ -32,6 +33,7 @@ const routes: Routes = [
   {path:'adminResetPassword', component:AdminResetPasswordComponent},
   {path:'registerNewStudentOrInstructor/:type',component:RegisterNewStudentOrInstructorComponent},
   {path:'registerationsAndAccountsManagements',component:RegisterationsAndAccountsManagementComponent},
+  {path:'chooseDepartment',component:ChooseDepartmentComponent},
   {path:'**', redirectTo:'pageNotFound',pathMatch:'full'}
 
 ];
