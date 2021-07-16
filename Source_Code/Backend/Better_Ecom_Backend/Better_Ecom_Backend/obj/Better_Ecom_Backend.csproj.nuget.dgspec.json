@@ -64,7 +64,7 @@
               "target": "Package",
               "version": "[5.0.7, )"
             },
-            "Microsoft.IdentityModel.Tokens": {
+            "Microsoft.IdentityModel.Logging": {
               "target": "Package",
               "version": "[6.11.1, )"
             },

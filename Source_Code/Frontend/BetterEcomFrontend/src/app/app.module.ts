@@ -14,6 +14,7 @@ import { InstructorHomePageComponent } from './components/instructor-home-page/i
 import { StudentHomePageComponent } from './components/student-home-page/student-home-page.component';
 import { AccountModuleModule } from './modules/account-module/account-module.module';
 import {InterceptorService} from './services/interceptors/interceptor.service';
+import { ChooseDepartmentComponent } from './modules/department-module/choose-department/choose-department.component';
 @NgModule({
 
   declarations: [
@@ -22,6 +23,7 @@ import {InterceptorService} from './services/interceptors/interceptor.service';
     AdminHomePageComponent,
     InstructorHomePageComponent,
     StudentHomePageComponent,
+    ChooseDepartmentComponent,
 
 
   ],
@@ -32,7 +34,7 @@ import {InterceptorService} from './services/interceptors/interceptor.service';
     HttpClientModule,
     ReactiveFormsModule,
     AccountModuleModule,
-
+    
   ],
   providers: [{
     provide:HTTP_INTERCEPTORS,
