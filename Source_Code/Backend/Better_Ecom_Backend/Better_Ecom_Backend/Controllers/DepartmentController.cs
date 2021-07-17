@@ -280,7 +280,7 @@ namespace Better_Ecom_Backend.Controllers
         private bool CheckCourseData(Course course)
         {
             return course.Academic_year > 0
-                && (course.Department_code is null || GetDepartmentsCodes().Contains(course.Department_code))
+                && (course.Department_code is not null && GetDepartmentsCodes().Contains(course.Department_code))
                 && course.Course_code is not null
                 && course.Course_name is not null
                 && course.Course_year > 0
