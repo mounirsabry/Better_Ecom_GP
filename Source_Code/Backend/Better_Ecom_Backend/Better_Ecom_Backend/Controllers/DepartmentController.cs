@@ -210,7 +210,7 @@ namespace Better_Ecom_Backend.Controllers
             //ADMIN ONLY FUNCTION.
             int courseID;
             if (!jsonData.TryGetProperty("UserID", out JsonElement temp) || !CheckAdminExists(temp.GetInt32()))
-                return BadRequest(new { Message = "user id was not provided." });
+                return BadRequest(new { Message = "user id is invalid." });
       
             if (jsonData.TryGetProperty("CourseID", out temp))
             {
