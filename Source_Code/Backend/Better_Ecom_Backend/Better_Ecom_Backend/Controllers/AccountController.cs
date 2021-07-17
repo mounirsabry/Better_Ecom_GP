@@ -115,12 +115,7 @@ namespace Better_Ecom_Backend.Controllers
             return BadRequest(new { Message = "sent data is not complete." });
         }
 
-        private static bool CreateAccountForStudentDataExist(JsonElement sentData)
-        {
-            return sentData.TryGetProperty("StudentID", out _);
-        }
-
-        [Authorize(Roles ="admin")]
+        [Authorize(Roles = "admin")]
         [HttpPost("CreateAccountForInstructor")]
         public IActionResult CreateAccountForInstructor([FromBody] dynamic inputData)
         {
@@ -171,11 +166,6 @@ namespace Better_Ecom_Backend.Controllers
                 }
                 return BadRequest(new { Message = "unknown error, maybe database server is down." });
             }
-        }
-
-        private static bool CreateAccountForInstructorDataExist(JsonElement sentData)
-        {
-            return sentData.TryGetProperty("InstructorID", out _);
         }
 
         /// <summary>
@@ -232,11 +222,11 @@ namespace Better_Ecom_Backend.Controllers
                     dbResult = _data.LoadData<Admin_user, dynamic>(sql, new { ID = id, NationalID = nationalID }, _config.GetConnectionString("Default"));
                     break;
             }
-            
-            if (dbResult != null && dbResult.Count > 0)
 
+            if (dbResult != null && dbResult.Count > 0)
+            {
                 systemUser = dbResult[0];
-            
+            }
 
             if (systemUser != null)
             {
@@ -253,9 +243,6 @@ namespace Better_Ecom_Backend.Controllers
                 }
                 else
                 {
-
-                    
-
                     return BadRequest(new { Message = "couldn't update." });
                 }
             }
@@ -267,6 +254,16 @@ namespace Better_Ecom_Backend.Controllers
                 }
                 return BadRequest(new { Message = "unknown error, maybe database server is down." });
             }
+        }
+
+        private static bool CreateAccountForStudentDataExist(JsonElement sentData)
+        {
+            return sentData.TryGetProperty("StudentID", out _);
+        }
+
+        private static bool CreateAccountForInstructorDataExist(JsonElement sentData)
+        {
+            return sentData.TryGetProperty("InstructorID", out _);
         }
 
         private string GenerateJSONWebToken(int id, string type)

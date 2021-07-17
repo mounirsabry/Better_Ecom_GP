@@ -22,10 +22,11 @@ namespace Better_Ecom_Backend.Models
         public int Course_year { get; set; }
         public Course_Term Course_term { get; set; }
         public int Academic_year { get; set; }
+        public int Credit_hours { get; set; }
         public string Course_description { get; set; }
         public bool Is_archived { get; set; }
 
-        public Course(int course_id, string department_code, string course_code, string course_name, int course_year, Course_Term course_term, int academic_year, string course_description, bool is_archived)
+        public Course(int course_id, string department_code, string course_code, string course_name, int course_year, Course_Term course_term, int academic_year, int credit_hours, string course_description, bool is_archived)
         {
             Course_id = course_id;
             Department_code = department_code;
@@ -34,11 +35,12 @@ namespace Better_Ecom_Backend.Models
             Course_year = course_year;
             Course_term = course_term;
             Academic_year = academic_year;
+            Credit_hours = credit_hours;
             Course_description = course_description;
             Is_archived = is_archived;
         }
 
-        public Course() : this(-1, null, null, null, -1, Course_Term.Other, -1, "", false)
+        public Course() : this(-1, null, null, null, -1, Course_Term.Other, -1, 0, "", false)
         { }
 
         public Course(JsonElement jsonData)
@@ -78,6 +80,11 @@ namespace Better_Ecom_Backend.Models
                 Academic_year = temp.GetInt32();
             else
                 Academic_year = -1;
+
+            if (jsonData.TryGetProperty(nameof(Credit_hours), out temp))
+                Credit_hours = temp.GetInt32();
+            else
+                Credit_hours = 0;
 
             if (jsonData.TryGetProperty(nameof(Course_description), out temp))
                 Course_description = temp.GetString();

@@ -113,7 +113,7 @@ namespace Better_Ecom_Backend.Controllers
 
             string sql = "SELECT department_code, priority FROM student_department_priority_list WHERE student_id = @id;";
 
-            dynamic rows = _data.LoadData<dynamic, int>(sql, id, _config.GetConnectionString("Default"));
+            dynamic rows = _data.LoadData<dynamic, dynamic>(sql, new { id }, _config.GetConnectionString("Default"));
 
             if (rows == null)
                 return BadRequest(new { Message = "unknown error, maybe database server is down." });
@@ -169,8 +169,8 @@ namespace Better_Ecom_Backend.Controllers
         /// <param name="jsonData">a json object contains course data.</param>
         /// <returns>Created and course object if course is created BadRequest if failed</returns>
         [Authorize(Roles = "admin")]
-        [HttpPost("AddCourse")]
-        public IActionResult AddCourse([FromBody] dynamic jsonData)
+        [HttpPost("AddCourseToDepartment")]
+        public IActionResult AddCourseToDepartment([FromBody] dynamic jsonData)
         {
             //ADMIN ONLY FUNCTION.
             if (!jsonData.TryGetProperty("UserID", out JsonElement temp) || !CheckAdminExists(temp.GetInt32()))
@@ -286,8 +286,6 @@ namespace Better_Ecom_Backend.Controllers
                 && course.Course_year > 0
                 && course.Is_archived is false;
         }
-
-
 
         private List<Course> CheckCourseStatus(int ID)
         {
