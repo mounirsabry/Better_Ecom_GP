@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { GetDepartmentsService } from '../services/get-departments.service';
+import { GetDepartmentsService } from '../services/departments.service';
 
 @Component({
   selector: 'app-choose-department',
