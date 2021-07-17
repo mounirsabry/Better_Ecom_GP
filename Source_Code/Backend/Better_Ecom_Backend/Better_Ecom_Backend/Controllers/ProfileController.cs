@@ -23,6 +23,12 @@ namespace Better_Ecom_Backend.Controllers
             _data = data;
         }
 
+        /// <summary>
+        /// Get user profile.
+        /// </summary>
+        /// <param name="id">the user id.</param>
+        /// <param name="type">the user type</param>
+        /// <returns>Ok with user profile if successful BadRequest otherwise.</returns>
         [Authorize]
         [HttpGet("GetProfile/{ID:int}/{Type}")]
         public dynamic GetProfile(int id, string type)
@@ -55,7 +61,8 @@ namespace Better_Ecom_Backend.Controllers
             {
 
                 var user = dbResult.FirstOrDefault();
-                user.user_password = null;
+                if(user is not null)
+                    user.user_password = null;
                 return user;
             }
             else
@@ -119,6 +126,12 @@ namespace Better_Ecom_Backend.Controllers
                 + "additional_info = @Additional_info  where system_user_id = @System_user_id;";
         }
 
+        /// <summary>
+        /// User wants to change password.
+        /// </summary>
+        /// <param name="id">user id</param>
+        /// <param name="data">json object contains current password and new password.</param>
+        /// <returns>Ok if successful BadRequest otherwise.</returns>
         [Authorize]
         [HttpPatch("ChangePassword/{ID:int}")]
         public IActionResult ChangePassword(int id, [FromBody] dynamic data)
@@ -162,9 +175,7 @@ namespace Better_Ecom_Backend.Controllers
             }
         }
 
-#pragma warning disable CA1822 // Mark members as static
-        private bool ChangePasswordDataExist(JsonElement sentData)
-#pragma warning restore CA1822 // Mark members as static
+        private static bool ChangePasswordDataExist(JsonElement sentData)
         {
             return sentData.TryGetProperty("Old_password", out _)
                 && sentData.TryGetProperty("New_password", out _);

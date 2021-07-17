@@ -31,6 +31,11 @@ namespace Better_Ecom_Backend.Controllers
             _data = data;
         }
 
+        /// <summary>
+        /// The client provides id, password and type that is checked if they are valid the client is authorized to use the api.
+        /// </summary>
+        /// <param name="loginData">json object contains id, password and type.</param>
+        /// <returns>authorization token if provided data is valid BadRequest otherwise.</returns>
         [HttpPost("Login")]
         public IActionResult Login([FromBody] dynamic loginData)
         {
@@ -51,65 +56,71 @@ namespace Better_Ecom_Backend.Controllers
             return response;
         }
 
-
-        [Authorize]
+        /// <summary>
+        /// This function creates account for already existing student.
+        /// </summary>
+        /// <param name="inputData">json object contains required data.</param>
+        /// <returns></returns>
+        [Authorize(Roles = "admin")]
         [HttpPost("CreateAccountForStudent")]
         public IActionResult CreateAccountForStudent([FromBody] dynamic inputData)
         {
             JsonElement inputJson = (JsonElement)inputData;
 
-            if (!CreateAccountForStudentDataExist(inputJson))
-                return BadRequest(new { Message = "sent data is not complete." });
-
-            int studentID = inputJson.GetProperty("StudentID").GetInt32();
-            string sql = "SELECT user_password, national_id, system_user_id FROM student INNER JOIN system_user" + "\n"
-                    + "WHERE student.student_id = system_user.system_user_id" + "\n"
-                    + "AND system_user.system_user_id = @ID;";
-            int success;
-            List<Student> student;
-
-            student = _data.LoadData<Student, dynamic>(sql, new { ID = studentID },
-                _config.GetConnectionString("Default"));
-
-            if (student != null && student.Count > 0 && student[0].User_password == null)
+            if (CreateAccountForStudentDataExist(inputJson))
             {
-                sql = "UPDATE system_user SET user_password = @pass WHERE system_user_id = @ID;";
-                string pass = SecurityUtilities.HashPassword(student[0].National_id);
+                int studentID = inputJson.GetProperty("StudentID").GetInt32();
+                string sql = "SELECT user_password, national_id, system_user_id FROM student INNER JOIN system_user" + "\n"
+                        + "WHERE student.student_id = system_user.system_user_id" + "\n"
+                        + "AND system_user.system_user_id = @ID;";
+                int success;
+                List<Student> student;
 
-                success = _data.SaveData<dynamic>(sql, new { pass, ID = student[0].System_user_id },
+                student = _data.LoadData<Student, dynamic>(sql, new { ID = studentID },
                     _config.GetConnectionString("Default"));
-                if (success > 0)
+
+                if (student != null && student.Count > 0 && student[0].User_password == null)
                 {
-                    return Ok();
+                    sql = "UPDATE system_user SET user_password = @pass WHERE system_user_id = @ID;";
+                    string pass = SecurityUtilities.HashPassword(student[0].National_id);
+
+                    success = _data.SaveData<dynamic>(sql, new { pass, ID = student[0].System_user_id },
+                        _config.GetConnectionString("Default"));
+                    if (success > 0)
+                    {
+                        return Ok();
+                    }
+                    else
+                    {
+                        return BadRequest(new { message = "couldn't update." });
+                    }
                 }
                 else
                 {
-                    return BadRequest(new { message = "couldn't update." });
+                    if (student.Count == 0)
+                    {
+                        return NotFound(new { message = "student doesn't exist." });
+                    }
+                    else if (student[0].User_password != null)
+                    {
+                        return BadRequest(new { message = "student already has an account." });
+                    }
+                    else
+                    {
+                        return BadRequest(new { message = "unknown error, maybe database server is down." });
+                    }
                 }
             }
-            else
-            {
-                if (student.Count == 0)
-                {
-                    return NotFound(new { message = "student doesn't exist." });
-                }
-                else if (student[0].User_password != null)
-                {
-                    return BadRequest(new { message = "student already has an account." });
-                }
-                else
-                {
-                    return BadRequest(new { message = "unknown error, maybe database server is down." });
-                }
-            }
+
+            return BadRequest(new { Message = "sent data is not complete." });
         }
 
-        private bool CreateAccountForStudentDataExist(JsonElement sentData)
+        private static bool CreateAccountForStudentDataExist(JsonElement sentData)
         {
             return sentData.TryGetProperty("StudentID", out _);
         }
 
-        [Authorize]
+        [Authorize(Roles ="admin")]
         [HttpPost("CreateAccountForInstructor")]
         public IActionResult CreateAccountForInstructor([FromBody] dynamic inputData)
         {
@@ -162,11 +173,16 @@ namespace Better_Ecom_Backend.Controllers
             }
         }
 
-        private bool CreateAccountForInstructorDataExist(JsonElement sentData)
+        private static bool CreateAccountForInstructorDataExist(JsonElement sentData)
         {
             return sentData.TryGetProperty("InstructorID", out _);
         }
 
+        /// <summary>
+        /// Reset password of account to the national id of the user
+        /// </summary>
+        /// <param name="userData">json object containing id national_id and type.</param>
+        /// <returns>Ok if successful BadRequest otherwise.</returns>
         [Authorize]
         [HttpPatch("ResetAccountCredientials")]
         public IActionResult ResetAccountCredientials([FromBody] dynamic userData)
@@ -190,6 +206,10 @@ namespace Better_Ecom_Backend.Controllers
                     table = "instructor";
                     id_text = "instructor.instructor_id";
                     break;
+                case "admin":
+                    table = "admin_user";
+                    id_text = "admin_user.admin_user_id";
+                    break;
                 default:
                     return BadRequest(new { Message = "invalid user type." });
             }
@@ -207,6 +227,9 @@ namespace Better_Ecom_Backend.Controllers
                     break;
                 case "instructor":
                     dbResult = _data.LoadData<Instructor, dynamic>(sql, new { ID = id, NationalID = nationalID }, _config.GetConnectionString("Default"));
+                    break;
+                case "admin":
+                    dbResult = _data.LoadData<Admin_user, dynamic>(sql, new { ID = id, NationalID = nationalID }, _config.GetConnectionString("Default"));
                     break;
             }
             
@@ -255,7 +278,7 @@ namespace Better_Ecom_Backend.Controllers
                 new Claim(ClaimTypes.Role, type),
                 new Claim("ID", "" + id)
             };
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
+            JwtSecurityToken token = new(_config["Jwt:Issuer"],
               null,
               claims,
               expires: DateTime.Now.AddMinutes(120),
@@ -270,8 +293,6 @@ namespace Better_Ecom_Backend.Controllers
                 ID = id,
             };
             type = type.ToLower();
-            //	{ ID = 20210001, password = "AD/vTWQ57+9RDQSZUTsPvgeYbRkALGbAKoLVXJnpWbHYh7WsCq7k84sald7oNKcLSQ==" }
-            //  { ID = 20210001, password = "AMJZAoX3Gb2wssEHqaJZbm244NH1oKAJ2xxTjH1vb+B2mpMZQ/ZH54fvNvuBLGU3dQ==" }
 
             string table;
             string id_text;

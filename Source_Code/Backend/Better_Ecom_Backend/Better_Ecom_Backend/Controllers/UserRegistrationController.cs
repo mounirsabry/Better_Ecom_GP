@@ -1,6 +1,7 @@
 ﻿using Better_Ecom_Backend.Helpers;
 using Better_Ecom_Backend.Models;
 using DataLibrary;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -28,6 +29,12 @@ namespace Better_Ecom_Backend.Controllers
             _data = data;
         }
 
+        /// <summary>
+        /// Register new student to database.
+        /// </summary>
+        /// <param name="studentData">json object containing new student data.</param>
+        /// <returns>Created and new student object if successful BadRequest otherwise.</returns>
+        [Authorize(Roles ="admin")]
         [HttpPost("AddNewStudent")]
         public IActionResult AddNewStudent([FromBody] dynamic studentData)
         {
@@ -104,9 +111,15 @@ namespace Better_Ecom_Backend.Controllers
                 return BadRequest(new { Message = "unknown error." });
             }
 
-            return Ok(newStudent);
+            return Created("/UserRegistration/AddNewStudent", newStudent);
         }
-
+        
+        /// <summary>
+        /// Add new Instructor to database.
+        /// </summary>
+        /// <param name="instructorData">Json object containing instructor data</param>
+        /// <returns>Created and new instructor object, BadRequest otherwise.</returns>
+        [Authorize(Roles = "admin")]
         [HttpPost("AddNewInstructor")]
         public IActionResult AddNewInstructor([FromBody] dynamic instructorData)
         {
@@ -175,7 +188,7 @@ namespace Better_Ecom_Backend.Controllers
                 return BadRequest(new { Message = "unknown error." });
             }
 
-            return Ok(newInstructor);
+            return Created("/UserRegistration/AddNewInstructor",newInstructor);
         }
 
         private static bool CheckSystemUserData(System_user user)
