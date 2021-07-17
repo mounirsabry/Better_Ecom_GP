@@ -15,6 +15,9 @@ import { StudentHomePageComponent } from './components/student-home-page/student
 import { AccountModuleModule } from './modules/account-module/account-module.module';
 import {InterceptorService} from './services/interceptors/interceptor.service';
 import { ChooseDepartmentComponent } from './modules/department-module/choose-department/choose-department.component';
+import { ViewDepartmentsCoursesComponent } from './modules/department-module/view-departments-courses/view-departments-courses.component';
+import { AddCourseToDepartmentComponent } from './modules/department-module/add-course-to-department/add-course-to-department.component';
+import { ChangeCourseDepartmentComponent } from './modules/department-module/change-course-department/change-course-department.component';
 @NgModule({
 
   declarations: [
@@ -24,6 +27,9 @@ import { ChooseDepartmentComponent } from './modules/department-module/choose-de
     InstructorHomePageComponent,
     StudentHomePageComponent,
     ChooseDepartmentComponent,
+    ViewDepartmentsCoursesComponent,
+    AddCourseToDepartmentComponent,
+    ChangeCourseDepartmentComponent,
 
 
   ],
