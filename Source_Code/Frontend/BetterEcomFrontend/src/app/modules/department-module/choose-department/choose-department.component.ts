@@ -14,6 +14,7 @@ export class ChooseDepartmentComponent implements OnInit {
   department_selected_name:Array<any> = []
   department_code_list:Array<any> = []
   department_selected_code:Array<any> = []
+  department_priority_list:Array<any> = []
 
   /*courses = [
     {'natural language processing' : {'prequisteCourses' : ['machine learning', 'algorithm', 'data structure']}}
@@ -47,17 +48,27 @@ export class ChooseDepartmentComponent implements OnInit {
     this.departmentService.getStudentPriorityList().subscribe(
       priority_list =>{
         console.log(priority_list);
-      }
-    )
 
-    this.departmentService.getDepartmentsData().subscribe(
-      data =>{
-        var department_names = data.map(function(obj) {return obj.department_name});
-        this.department_name_list = department_names;
-        this.department_name_list.splice(3,1); // removes the general department
-        var department_code = data.map(function(obj) {return obj.department_code});
-        this.department_code_list = department_code;
-        this.department_code_list.splice(3, 1);
+        if(priority_list === null){
+
+          this.departmentService.getDepartmentsData().subscribe(
+            data =>{
+              var department_names = data.map(function(obj) {return obj.department_name});
+              this.department_name_list = department_names;
+              this.department_name_list.splice(3,1); // removes the general department
+              var department_code = data.map(function(obj) {return obj.department_code});
+              this.department_code_list = department_code;
+              this.department_code_list.splice(3, 1);
+            }
+          )
+        }
+        else{
+          var list = priority_list.sort(function(a, b){
+            return a.priority - b.priority;
+          })
+          this.department_priority_list = list.map(function(obj) {return obj.department_code});
+          this.mapCodeToName();
+        }
       }
     )
   }
@@ -110,4 +121,33 @@ export class ChooseDepartmentComponent implements OnInit {
     )
   }
 
+  mapCodeToName(){
+    for(let dep of this.department_priority_list){
+      if(dep === 'CS') {
+        this.department_selected_name.push('Computer Science');
+        this.department_selected_code.push('CS');
+      }
+      else if(dep === 'IT') {
+        this.department_selected_name.push('Information Technology');
+        this.department_selected_code.push('IT');
+      }
+      else if(dep === 'AI') {
+        this.department_selected_name.push('Artifical Intelligence');
+        this.department_selected_code.push('AI');
+      }
+      else if(dep === 'IS') {
+        this.department_selected_name.push('Information Systems');
+        this.department_selected_code.push('IS');
+      }
+      else if(dep === 'DS') {
+        this.department_selected_name.push('Decision Support');
+        this.department_selected_code.push('DS');
+      }
+    }
+  }
+
+  isEmpty(list : Array<any>){
+    if(list.length > 0) {return false;}
+    else {return true;}
+  }
 }
