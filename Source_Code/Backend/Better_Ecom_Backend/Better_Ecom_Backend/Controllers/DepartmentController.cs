@@ -159,7 +159,7 @@ namespace Better_Ecom_Backend.Controllers
             return sentData.TryGetProperty("StudentID", out _)
             && sentData.TryGetProperty("DepartmentCode1", out _)
             && sentData.TryGetProperty("DepartmentCode2", out _)
-            && sentData.TryGetProperty("DepartmentCode3", out _)
+            && sentData.TryGetProperty("DepartmentCode3", out _)    
             && sentData.TryGetProperty("DepartmentCode4", out _)
             && sentData.TryGetProperty("DepartmentCode5", out _);
         }

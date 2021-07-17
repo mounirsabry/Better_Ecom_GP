@@ -15,14 +15,16 @@ export class ChangePasswordComponent implements OnInit {
 
   password:string
   misMatch: boolean = false
+  passError: boolean = false
+  //passwordRegex : string = "([a-z]+[0-9]+[a-zA-Z]+[0-9]+)[0-9]*"
 
   constructor(private router: Router,
               private saveProfileService : SaveProfileChangesService) {}
 
     changePasswordForm = new FormGroup({
       oldPassword: new FormControl('', [Validators.required]),
-      newPassword: new FormControl('', [Validators.required]),
-      confirmPassword: new FormControl('', [Validators.required])
+    newPassword: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(32)/*, Validators.pattern(this.passwordRegex)*/]),
+      confirmPassword: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(32)])
     }, [passwordValidator]);
 
     get oldPasswordGet() {
@@ -61,6 +63,15 @@ export class ChangePasswordComponent implements OnInit {
     )
 
 
+  }
+
+  checkPassLength(){
+    if(this.newPasswordGet.value.length >= 6 && this.newPasswordGet.value.length <= 32){
+      this.passError = false
+    }
+    else{
+      this.passError = true
+    }
   }
 
 
