@@ -58,9 +58,6 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult ChooseDepartments([FromBody] dynamic inputData)
         {
             //STUDENT ONLY FUNCTION.
-            //The student can use it to enter the priority list for the first time, then we should insert the priority list
-            //into the database.
-            //The student can use to overwrite the old choices, then we can delete the old records and insert or update the old records.
             JsonElement jsonData = (JsonElement)inputData;
 
             if (!SetPriorityListRequiredDataExist(jsonData))
@@ -96,10 +93,6 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return Ok();
             }
-            // to departmentCode5, departmentCode1 represents the highest while departmentCode5 represent the lowest.
-            //Pack those variables into a list of student department priority class.
-            //Save to database.
-            //Return message successful, other option return a list of those options.
         }
 
         /// <summary>
@@ -180,20 +173,11 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult AddCourse([FromBody] dynamic jsonData)
         {
             //ADMIN ONLY FUNCTION.
-            int userID;
-            if (jsonData.TryGetProperty("UserID", out JsonElement temp) && CheckAdminExists(temp.GetInt32()))
-            {
-                userID = temp.GetInt32();
-            }
-            else
-            {
+            if (!jsonData.TryGetProperty("UserID", out JsonElement temp) || !CheckAdminExists(temp.GetInt32()))
                 return BadRequest(new { Message = "user id was not provided or is invalid." });
-            }
-
-
             Course newCourse = new(jsonData);
 
-    
+            
             if (!CheckCourseData(newCourse))
             {
                 return BadRequest(new { Message = "course data is not valid." });
@@ -246,14 +230,29 @@ namespace Better_Ecom_Backend.Controllers
 
             List<Course> course = CheckCourseStatus(courseID);
 
-            if (course is null)
-                return BadRequest(new { Message = "unknown error, maybe database server is down." });
-            else if (course.Count == 0)
-                return BadRequest(new { Message = "course does not exist." });
-            else if (course.First().Is_archived)
-                return BadRequest(new { Message = "course already archived." });
-            else
-                return Ok(new { Message = "course archived." });
+
+
+            if (course is not null && course.Count > 0 && !course.First().Is_archived)
+            {
+                string archiveCourseSql = "UPDATE course SET is_archived = 1 WHERE course_id = @courseID;";
+                int status = _data.SaveData(archiveCourseSql, new { courseID }, _config.GetConnectionString("Default"));
+                if (status > 0)
+                    return Ok(new { Message = "course archived." });
+                else
+                    return BadRequest(new { Message = "unknown error, maybe database server is down." });
+            }
+            else {
+                if (course is null)
+                    return BadRequest(new { Message = "unknown error, maybe database server is down." });
+                else if (course.Count == 0)
+                    return BadRequest(new { Message = "course does not exist." });
+                else if (course.First().Is_archived)
+                    return BadRequest(new { Message = "course already archived." });
+                
+                
+            }
+  
+            return BadRequest();
 
         }
 
@@ -290,8 +289,8 @@ namespace Better_Ecom_Backend.Controllers
             return course.Academic_year > 0
                 && (course.Department_code is null || GetDepartmentsCodes().Contains(course.Department_code))
                 && course.Course_code is not null
+                && course.Course_name is not null
                 && course.Course_year > 0
-                && course.Course_term != Course.Course_Term.Other
                 && course.Is_archived is false;
         }
 
