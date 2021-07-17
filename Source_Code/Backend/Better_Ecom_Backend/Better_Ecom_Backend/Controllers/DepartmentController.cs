@@ -208,17 +208,10 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult ArchiveCourse([FromBody] dynamic jsonData)
         {
             //ADMIN ONLY FUNCTION.
-            int userID;
             int courseID;
-            if (jsonData.TryGetProperty("UserID", out JsonElement temp) && CheckAdminExists(temp.GetInt32()))
-            {
-                userID = temp.GetInt32();
-            }
-            else
-            {
+            if (!jsonData.TryGetProperty("UserID", out JsonElement temp) || !CheckAdminExists(temp.GetInt32()))
                 return BadRequest(new { Message = "user id was not provided." });
-            }
-
+      
             if (jsonData.TryGetProperty("CourseID", out temp))
             {
                 courseID = temp.GetInt32();
