@@ -6,11 +6,8 @@ using System.Text.Json;
 
 namespace Better_Ecom_Backend.Models
 {
-
-
     public class Student : System_user
     {
-
         public int Student_id { get; set; }
         public string Department_code { get; set; }
         public string High_school_type { get; set; }
