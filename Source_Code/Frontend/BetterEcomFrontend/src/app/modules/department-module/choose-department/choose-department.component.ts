@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, ParamMap } from '@angular/router';
 import { DepartmentsService } from '../services/departments.service';
 
 @Component({
@@ -20,8 +19,7 @@ export class ChooseDepartmentComponent implements OnInit {
     {'natural language processing' : {'prequisteCourses' : ['machine learning', 'algorithm', 'data structure']}}
   ]*/
 
-  constructor(private departmentService : DepartmentsService,
-              private activateRoute:ActivatedRoute) { }
+  constructor(private departmentService : DepartmentsService) { }
 
   chooseDepartmentForm = new FormGroup({
     department : new FormControl('', [Validators.required])
@@ -45,7 +43,9 @@ export class ChooseDepartmentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.departmentService.getStudentPriorityList().subscribe(
+    var stringID = localStorage.getItem('ID');
+    var numID : number = +stringID; // changes the type of the ID from string to integer
+    this.departmentService.getStudentPriorityList(numID).subscribe(
       priority_list =>{
         console.log(priority_list);
 
@@ -114,9 +114,11 @@ export class ChooseDepartmentComponent implements OnInit {
     this.departmentService.submitDepartmentPriorityList(this.department_selected_code).subscribe(
       (response) =>{
         console.log(response);
+        alert("Department List Submited");
       },
       (error) =>{
         console.log(error.error);
+        alert("failed");
       }
     )
   }
