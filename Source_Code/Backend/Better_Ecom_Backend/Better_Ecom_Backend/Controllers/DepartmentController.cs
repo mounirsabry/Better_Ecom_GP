@@ -29,6 +29,7 @@ namespace Better_Ecom_Backend.Controllers
         [Authorize]
         public IActionResult GetDepartments()
         {
+            //ALL USERS FUNCTION.
             string sql = "SELECT * FROM department;";
 
             List<Department> departments = _data.LoadData<Department, dynamic>(sql, new { }, _config.GetConnectionString("Default"));
@@ -47,6 +48,10 @@ namespace Better_Ecom_Backend.Controllers
         [HttpPost("ChooseDepartments")]
         public IActionResult ChooseDepartments([FromBody] dynamic inputData)
         {
+            //STUDENT ONLY FUNCTION.
+            //The student can use it to enter the priority list for the first time, then we should insert the priority list
+            //into the database.
+            //The student can use to overwrite the old choices, then we can delete the old records and insert or update the old records.
             JsonElement jsonData = (JsonElement)inputData;
 
             if (!SetPriorityListRequiredDataExist(jsonData))
@@ -148,6 +153,77 @@ namespace Better_Ecom_Backend.Controllers
             }
         }
 
+        [HttpPost("AddCourse")]
+        public IActionResult AddCourse([FromBody] dynamic jsonData)
+        {
+            //ADMIN ONLY FUNCTION.
+            int userID;
+            if (jsonData.TryGetProperty("UserID", out JsonElement temp))
+            {
+                userID = temp.GetInt32();
+            }
+            else
+            {
+                return BadRequest(new { Message = "user id was not provided." });
+            }
+            Course newCourse = new(jsonData);
+
+            //Check the given id against the admin table, if not valid
+            //then the function should return a bad request saying that the user id entered does not exist.
+
+            //Check the entered data.
+            //Maybe check the course id, if provided, then refuse, or don't check.
+            //Department code can be null, but if provided, it should be a valid code from the database.
+            //Course code, course name should not be null.
+            //Course year should not be -1 or any value less than zero.
+            //Do not check the course term, academic year, course description.
+            //Is_archived must be false.
+            if (!CheckCourseData(newCourse))
+            {
+                return BadRequest(new { Message = "course data is not valid." });
+            }
+
+            //Insert course.
+
+            //Return the inserted course, should return the course with the updated course id from the database.
+            return Ok(new { Message = "not implemented yet." });
+        }
+
+        [HttpDelete("ArchiveCourse")]
+        public IActionResult ArchiveCourse([FromBody] dynamic jsonData)
+        {
+            //ADMIN ONLY FUNCTION.
+            JsonElement temp;
+            int userID;
+            int courseID;
+            if (jsonData.TryGetProperty("UserID", out temp))
+            {
+                userID = temp.GetInt32();
+            }
+            else
+            {
+                return BadRequest(new { Message = "user id was not provided." });
+            }
+            if (jsonData.TryGetProperty("CourseID", out temp))
+            {
+                courseID = temp.GetInt32();
+            }
+            else
+            {
+                return BadRequest(new { Message = "course id was not provided." });
+            }
+            //Check the given id against the admin table, if not valid
+            //then the function should return a bad request saying that the user id entered does not exist.
+
+            //Archive the course by setting the value of is_archive to true in the database.
+
+
+            //IF course is archived, return a message :the course is archived.
+            //IF the course is already archived, return a message :the course is already archived.
+            //If course was not successfully archived, return a bad request with a message :the course id was not found.
+            return Ok(new { Messgae = "not implemented yet." });
+        }
+
         private static bool SetDepartmentForStudentDataExist(JsonElement sentData)
         {
             return sentData.TryGetProperty("StudentID", out _)
@@ -162,6 +238,11 @@ namespace Better_Ecom_Backend.Controllers
             && sentData.TryGetProperty("DepartmentCode3", out _)
             && sentData.TryGetProperty("DepartmentCode4", out _)
             && sentData.TryGetProperty("DepartmentCode5", out _);
+        }
+
+        private static bool CheckCourseData(Course course)
+        {
+            return true;
         }
     }
 }

@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS course (
     course_year INT NOT NULL,
     course_term ENUM('First', 'Second', 'Summer', 'Other') NOT NULL,
     academic_year INT,
-    description TEXT,
+    course_description TEXT,
     is_archived BOOL DEFAULT FALSE,
     CONSTRAINT same_year_combination_unique UNIQUE (course_name , course_year , course_term),
     CONSTRAINT course_department_foreign_key FOREIGN KEY (department_code)

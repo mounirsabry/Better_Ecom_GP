@@ -104,7 +104,7 @@ namespace Better_Ecom_Backend.Controllers
             }
         }
 
-        private bool CreateAccountForStudentDataExist(JsonElement sentData)
+        private static bool CreateAccountForStudentDataExist(JsonElement sentData)
         {
             return sentData.TryGetProperty("StudentID", out _);
         }
@@ -162,7 +162,7 @@ namespace Better_Ecom_Backend.Controllers
             }
         }
 
-        private bool CreateAccountForInstructorDataExist(JsonElement sentData)
+        private static bool CreateAccountForInstructorDataExist(JsonElement sentData)
         {
             return sentData.TryGetProperty("InstructorID", out _);
         }
@@ -262,7 +262,7 @@ namespace Better_Ecom_Backend.Controllers
                 new Claim(ClaimTypes.Role, type),
                 new Claim("ID", "" + id)
             };
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
+            JwtSecurityToken token = new(_config["Jwt:Issuer"],
               null,
               claims,
               expires: DateTime.Now.AddMinutes(120),
