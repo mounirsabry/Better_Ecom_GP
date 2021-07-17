@@ -28,6 +28,12 @@ export class DepartmentsService {
     return this.httpclient.post<any>('https://localhost:44361/department/ChooseDepartments', result);
   }
 
+  getStudentPriorityList(){
+    var stringID = localStorage.getItem('ID');
+    var numID : number = +stringID; // changes the type of the ID from string to integer
+    return this.httpclient.get<any>("https://localhost:44361/department/GetStudentPriorityList/" + numID);
+  }
+
   handleError(error : HttpErrorResponse){
     return throwError(error);
   }

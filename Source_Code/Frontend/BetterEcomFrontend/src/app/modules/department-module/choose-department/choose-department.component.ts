@@ -15,6 +15,10 @@ export class ChooseDepartmentComponent implements OnInit {
   department_code_list:Array<any> = []
   department_selected_code:Array<any> = []
 
+  /*courses = [
+    {'natural language processing' : {'prequisteCourses' : ['machine learning', 'algorithm', 'data structure']}}
+  ]*/
+
   constructor(private departmentService : DepartmentsService,
               private activateRoute:ActivatedRoute) { }
 
@@ -40,7 +44,12 @@ export class ChooseDepartmentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    var array;
+    this.departmentService.getStudentPriorityList().subscribe(
+      priority_list =>{
+        console.log(priority_list);
+      }
+    )
+
     this.departmentService.getDepartmentsData().subscribe(
       data =>{
         var department_names = data.map(function(obj) {return obj.department_name});
