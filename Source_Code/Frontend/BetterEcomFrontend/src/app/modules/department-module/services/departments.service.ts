@@ -5,9 +5,13 @@ import { throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class SubmitDepartmentPriorityListService {
+export class DepartmentsService {
 
-  constructor(private httpClient:HttpClient) { }
+  constructor(private httpclient:HttpClient) { }
+
+  getDepartmentsData(){
+    return this.httpclient.get<any>("https://localhost:44361/department/GetDepartments")
+  }
 
   submitDepartmentPriorityList(department_list : Array<any>){
     var stringID = localStorage.getItem('ID');
@@ -15,19 +19,17 @@ export class SubmitDepartmentPriorityListService {
 
     var newDep_list = [numID].concat(department_list);
     var department_code = ['StudentID','DepartmentCode1', 'DepartmentCode2', 'DepartmentCode3', 'DepartmentCode4', 'DepartmentCode5'];
-    var result = newDep_list.reduce(function(result, field, index){
-      result[department_code[index]] = field;
+    var result = department_code.reduce(function(result, field, index){
+      result[newDep_list[index]] = field;
       return result;
     }, {})
-    var temp = {}
-    var finalResult = [];
     
     console.log(result);
-    return this.httpClient.post<any>('https://localhost:44361/department/ChooseDepartments', result);
+    return this.httpclient.post<any>('https://localhost:44361/department/ChooseDepartments', result);
   }
 
   handleError(error : HttpErrorResponse){
     return throwError(error);
   }
-}
 
+}

@@ -3,8 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { element } from 'protractor';
-import { GetDepartmentsService } from '../services/get-departments.service';
-import { SubmitDepartmentPriorityListService } from '../services/submit-department-priority-list.service';
+import { DepartmentsService } from '../services/departments.service';
 
 @Component({
   selector: 'app-choose-department',
@@ -16,9 +15,8 @@ export class ChooseDepartmentComponent implements OnInit {
   departmentList:Array<String> = []
   departmentSelected:Array<any> = []
 
-  constructor(private getDepartmentService:GetDepartmentsService,
-              private activateRoute:ActivatedRoute,
-              private submitDepartmentService:SubmitDepartmentPriorityListService) { }
+  constructor(private departmentService : DepartmentsService,
+              private activateRoute:ActivatedRoute) { }
 
   chooseDepartmentForm = new FormGroup({
     department : new FormControl('', [Validators.required])
@@ -43,7 +41,7 @@ export class ChooseDepartmentComponent implements OnInit {
 
   ngOnInit(): void {
     var array;
-    this.getDepartmentService.getDepartmentsData().subscribe(
+    this.departmentService.getDepartmentsData().subscribe(
       data =>{
         var department_names = data.map(function(obj) {return obj.department_name});
         this.departmentList = department_names;
@@ -80,7 +78,7 @@ export class ChooseDepartmentComponent implements OnInit {
   }
 
   submitDepartments(){
-    this.submitDepartmentService.submitDepartmentPriorityList(this.departmentSelected).subscribe(
+    this.departmentService.submitDepartmentPriorityList(this.departmentSelected).subscribe(
       (response) =>{
         console.log(response);
       },

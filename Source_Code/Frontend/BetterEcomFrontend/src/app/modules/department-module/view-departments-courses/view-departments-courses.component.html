@@ -1,0 +1,23 @@
+
+<form>
+  <label>select department Name</label>
+  <select>
+    <option>AI</option>
+    <option>CS</option>
+    <option>DS</option>
+    <option>GE</option>
+    <option>IS</option>
+    <option>IT</option>
+  </select>
+
+  <!--courses are displayed here-->
+  <div >
+
+
+  </div>
+
+
+  <!-- make cs dynamic, according to chosen department-->
+  <button type="submit" *ngIf="type == 'admin'" [routerLink]="['/addCourseToDepartment/cs']" >add course</button>
+  <button *ngIf="type == 'admin'" [routerLink]="['/changeCourseDepartment']" >Change Course Department</button>
+</form>
