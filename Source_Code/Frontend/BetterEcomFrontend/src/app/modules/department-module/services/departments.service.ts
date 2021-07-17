@@ -16,11 +16,11 @@ export class DepartmentsService {
   submitDepartmentPriorityList(department_list : Array<any>){
     var stringID = localStorage.getItem('ID');
     var numID : number = +stringID; // changes the type of the ID from string to integer
-
+    console.log(department_list);
     var newDep_list = [numID].concat(department_list);
     var department_code = ['StudentID','DepartmentCode1', 'DepartmentCode2', 'DepartmentCode3', 'DepartmentCode4', 'DepartmentCode5'];
-    var result = department_code.reduce(function(result, field, index){
-      result[newDep_list[index]] = field;
+    var result = newDep_list.reduce(function(result, field, index){
+      result[department_code[index]] = field;
       return result;
     }, {})
     
