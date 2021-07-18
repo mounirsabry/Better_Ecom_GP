@@ -1,4 +1,5 @@
-﻿using Better_Ecom_Backend.Models;
+﻿using Better_Ecom_Backend.Helpers;
+using Better_Ecom_Backend.Models;
 using DataLibrary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -194,6 +195,8 @@ namespace Better_Ecom_Backend.Controllers
             if (!jsonData.TryGetProperty("UserID", out JsonElement temp) || !CheckAdminExists(temp.GetInt32()))
                 return BadRequest(new { Message = "user id was not provided or is invalid." });
             Course newCourse = new(jsonData);
+            List<string> coursePrerequisities;
+            List<string> courseDepartmentApplicabilityList;
 
             if (!CheckCourseData(newCourse))
             {
@@ -265,6 +268,20 @@ namespace Better_Ecom_Backend.Controllers
             return BadRequest();
         }
 
+        [HttpPost("AddCourseInstance")]
+        public IActionResult AddCourseInstance([FromBody] dynamic jsonData)
+        {
+            //ADMIN ONLY FUNCTION.
+            int userID;
+            string courseCode;
+            int currentYear = TimeUtilities.GetCurrentYear();
+            Term courseInstanceTerm;
+            int creditHours;
+            
+
+            return Ok("not implemented yet.");
+        }
+
         private bool CheckUserHasPriorities(int studentID)
         {
             string loadPrioritiesSql = "SELECT * FROM student_department_priority_list WHERE student_id = @studentID;";
@@ -323,6 +340,7 @@ namespace Better_Ecom_Backend.Controllers
 
             return courses;
         }
+
         private List<string> GetDepartmentsCodes()
         {
             string sql = "SELECT department_code FROM department;";
