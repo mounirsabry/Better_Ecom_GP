@@ -18,6 +18,7 @@ import { ChooseDepartmentComponent } from './modules/department-module/choose-de
 import { ViewDepartmentsCoursesComponent } from './modules/department-module/view-departments-courses/view-departments-courses.component';
 import { AddCourseToDepartmentComponent } from './modules/department-module/add-course-to-department/add-course-to-department.component';
 import { ChangeCourseDepartmentComponent } from './modules/department-module/change-course-department/change-course-department.component';
+import { AdminDepartmentComponent } from './modules/department-module/admin-department/admin-department.component';
 @NgModule({
 
   declarations: [
@@ -30,6 +31,7 @@ import { ChangeCourseDepartmentComponent } from './modules/department-module/cha
     ViewDepartmentsCoursesComponent,
     AddCourseToDepartmentComponent,
     ChangeCourseDepartmentComponent,
+    AdminDepartmentComponent,
 
 
   ],
