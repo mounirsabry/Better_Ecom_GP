@@ -4,6 +4,7 @@ using DataLibrary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -213,15 +214,16 @@ namespace Better_Ecom_Backend.Controllers
         [HttpPost("AddCourseToDepartment")]
         public IActionResult AddCourseToDepartment([FromBody] Course newCourse)
         {
-            
+
             //ADMIN ONLY FUNCTION.
-           // if (!jsonData.TryGetProperty("UserID", out JsonElement temp) || !CheckAdminExists(temp.GetInt32()))
+            // if (!jsonData.TryGetProperty("UserID", out JsonElement temp) || !CheckAdminExists(temp.GetInt32()))
             //    return BadRequest(new { Message = "user id was not provided or is invalid." });
-            
+
             if (!CheckCourseData(newCourse))
-            {
                 return BadRequest(new { Message = "course data is not valid." });
-            }
+
+            if (CheckCourseExist(newCourse))
+                return BadRequest(new { Message = "course already exist." });
 
             //Insert course.
             string insertCourseSql = "INSERT INTO course(department_code, course_code, course_name, academic_year, course_description) " +
@@ -256,6 +258,7 @@ namespace Better_Ecom_Backend.Controllers
                 return BadRequest("unknown error, maybe database server is down.");
 
         }
+
 
         /// <summary>
         /// Archives a course.
@@ -339,6 +342,12 @@ namespace Better_Ecom_Backend.Controllers
             && sentData.TryGetProperty("DepartmentCode", out _);
         }
 
+        private bool CheckCourseExist(Course newCourse)
+        {
+            List<string> codes = _data.LoadData<string, dynamic>("SELECT course_code from course WHERE course_code = @code;", new { code = newCourse.Course_code }, _config.GetConnectionString("Default"));
+
+            return codes == null || codes.Count == 0;
+        }
         private static bool SetPriorityListRequiredDataExist(JsonElement sentData)
         {
             return sentData.TryGetProperty("StudentID", out _)
