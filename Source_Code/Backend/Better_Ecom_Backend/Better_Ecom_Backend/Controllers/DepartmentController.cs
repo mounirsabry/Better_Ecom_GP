@@ -185,6 +185,15 @@ namespace Better_Ecom_Backend.Controllers
 
             List<Course> courses = _data.LoadData<Course, dynamic>(getDepartmentCoursesSql, new { departmentCode }, _config.GetConnectionString("Default"));
 
+            for(int i = 0; i < courses.Count; i++)
+            {
+                string departmentApplicabilitiySql = "SELECT department_code FROM course_department_applicability WHERE course_code = @code;";
+                courses[i].departmentApplicability = _data.LoadData<string, dynamic>(departmentApplicabilitiySql, new { code = courses[i].Course_code }, _config.GetConnectionString("Default"));
+
+                string coursePrerequisiteSql = "SELECT prerequisite_course_code FROM course_prerequisite WHERE course_code = @code;";
+                courses[i].prerequisites = _data.LoadData<string, dynamic>(coursePrerequisiteSql, new { code = courses[i].Course_code }, _config.GetConnectionString("Default"));
+            }
+
             if (courses is not null)
                 return Ok(courses);
             else
