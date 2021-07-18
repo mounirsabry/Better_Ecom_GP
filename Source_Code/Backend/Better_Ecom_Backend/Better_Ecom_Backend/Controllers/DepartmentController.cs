@@ -60,7 +60,9 @@ namespace Better_Ecom_Backend.Controllers
             JsonElement jsonData = (JsonElement)inputData;
 
             if (!SetPriorityListRequiredDataExist(jsonData))
+            {
                 return BadRequest(new { Message = "you have not sent all required data." });
+            }
 
             int studentID = jsonData.GetProperty("StudentID").GetInt32();
             List<string> sqlList = new();
@@ -70,7 +72,9 @@ namespace Better_Ecom_Backend.Controllers
 
             List<int> students = _data.LoadData<int, dynamic>(sql, new { ID = studentID }, _config.GetConnectionString("Default"));
             if (students is null)
+            {
                 return BadRequest(new { Message = "operation failed." });
+            }
             if (students.Count == 0)
             {
                 return BadRequest(new { Message = "id does not exist or not a student." });
@@ -94,7 +98,6 @@ namespace Better_Ecom_Backend.Controllers
             }
 
             List<int> states = _data.SaveDataTransaction(sqlList, parameterList, _config.GetConnectionString("Default"));
-
             if (states.Contains(-1))
             {
                 return BadRequest(new { Message = "operation failed." });
@@ -124,13 +127,18 @@ namespace Better_Ecom_Backend.Controllers
             string sql = "SELECT department_code, priority FROM student_department_priority_list WHERE student_id = @id;";
 
             dynamic rows = _data.LoadData<dynamic, dynamic>(sql, new { id }, _config.GetConnectionString("Default"));
-
             if (rows == null)
+            {
                 return BadRequest(new { Message = "unknown error, maybe database server is down." });
+            }
             else if (rows.Count == 0)
+            {
                 return Ok(new { Message = "student did not sumbit any priority list." });
+            }
             else
+            {
                 return Ok(rows);
+            }
         }
 
         [Authorize(Roles = "admin")]
@@ -141,7 +149,9 @@ namespace Better_Ecom_Backend.Controllers
             JsonElement jsonData = (JsonElement)inputData;
 
             if (!SetDepartmentForStudentDataExist(jsonData))
+            {
                 return BadRequest(new { Message = "some data is missing." });
+            }
 
             int studentID = jsonData.GetProperty("StudentID").GetInt32();
             string departmentCode = jsonData.GetProperty("DepartmentCode").GetString();
@@ -173,36 +183,50 @@ namespace Better_Ecom_Backend.Controllers
             }
         }
 
-
-
         [Authorize]
         [HttpGet("GetDepartmentCourses/{DepartmentCode}")]
         public IActionResult GetDepartmentCourses(string departmentCode)
         {
             //Availabe for all users.
-
-
             string getDepartmentCoursesSql = "SELECT * FROM course WHERE department_code = @departmentCode;";
-
             List<Course> courses = _data.LoadData<Course, dynamic>(getDepartmentCoursesSql, new { departmentCode }, _config.GetConnectionString("Default"));
 
             for(int i = 0; i < courses.Count; i++)
             {
                 string departmentApplicabilitiySql = "SELECT department_code FROM course_department_applicability WHERE course_code = @code;";
-                courses[i].departmentApplicability = _data.LoadData<string, dynamic>(departmentApplicabilitiySql, new { code = courses[i].Course_code }, _config.GetConnectionString("Default"));
+                courses[i].DepartmentApplicability = _data.LoadData<string, dynamic>(departmentApplicabilitiySql, new { code = courses[i].Course_code }, _config.GetConnectionString("Default"));
 
                 string coursePrerequisiteSql = "SELECT prerequisite_course_code FROM course_prerequisite WHERE course_code = @code;";
-                courses[i].prerequisites = _data.LoadData<string, dynamic>(coursePrerequisiteSql, new { code = courses[i].Course_code }, _config.GetConnectionString("Default"));
+                courses[i].Prerequisites = _data.LoadData<string, dynamic>(coursePrerequisiteSql, new { code = courses[i].Course_code }, _config.GetConnectionString("Default"));
             }
 
             if (courses is not null)
+            {
                 return Ok(courses);
+            }
             else
+            {
                 return BadRequest(new { Message = "unknown error, maybe database server is down." });
-           
-            
+            }
+        }
 
-            //Return all courses from the course table that matches the specified department code.
+        [HttpGet("GetCourseInfoByCode/{CourseCode}")]
+        public IActionResult GetCourseInfoByCode(string courseCode)
+        {
+            //ALL USERS FUNCTION.
+
+            //Returns one course, if the course code was not found, return an error.
+            return Ok(new { Message = "not implemented yet." });
+        }
+
+        [HttpGet("GetCourseInfoByName/{CourseName}")]
+        public IActionResult GetCourseInfoByName(string courseName)
+        {
+            //ALL USERS FUNCTION.
+
+
+            //May return zero course, one course, or more than one course.
+            return Ok(new { Message = "not implemented yet." });
         }
 
         /// <summary>
@@ -214,17 +238,19 @@ namespace Better_Ecom_Backend.Controllers
         [HttpPost("AddCourseToDepartment")]
         public IActionResult AddCourseToDepartment([FromBody] Course newCourse)
         {
-
             //ADMIN ONLY FUNCTION.
             // if (!jsonData.TryGetProperty("UserID", out JsonElement temp) || !CheckAdminExists(temp.GetInt32()))
-            //    return BadRequest(new { Message = "user id was not provided or is invalid." });
+            //    return BadRequest(new { Message = "user id was not provided or is invalid." })
 
             if (!CheckCourseData(newCourse))
+            {
                 return BadRequest(new { Message = "course data is not valid." });
+            }
 
             if (CheckCourseExist(newCourse))
+            {
                 return BadRequest(new { Message = "course already exist." });
-
+            }
             //Insert course.
             string insertCourseSql = "INSERT INTO course(department_code, course_code, course_name, academic_year, course_description) " +
                 "VALUES( @department_code, @course_code, @course_name, @academic_year, @course_description)";
@@ -234,31 +260,58 @@ namespace Better_Ecom_Backend.Controllers
             sqlList.Add(insertCourseSql);
             parameterList.Add(newCourse);
 
-            for (int i = 0; i < newCourse.prerequisites.Count; i++)
+            for (int i = 0; i < newCourse.Prerequisites.Count; i++)
             {
                 sqlList.Add($"INSERT INTO course_prerequisite VALUES(@course_code, @prerequisite_course);");
-                parameterList.Add(new { newCourse.Course_code, prerequisite_course = newCourse.prerequisites[i] });
+                parameterList.Add(new { newCourse.Course_code, prerequisite_course = newCourse.Prerequisites[i] });
             }
 
-            for (int i = 0; i < newCourse.departmentApplicability.Count; i++)
+            for (int i = 0; i < newCourse.DepartmentApplicability.Count; i++)
             {
                 sqlList.Add($"INSERT INTO course_department_applicability VALUES(@course_code, @department_code);");
-                parameterList.Add(new { newCourse.Course_code, department_code = newCourse.departmentApplicability[i] });
+                parameterList.Add(new { newCourse.Course_code, department_code = newCourse.DepartmentApplicability[i] });
             }
             
-
-
             List<int> status = _data.SaveDataTransaction<dynamic>(sqlList, parameterList, _config.GetConnectionString("Default"));
-
             if (!status.Contains(-1))
             {
                 return Created("/Department/AddCourse", newCourse);
             }
             else
-                return BadRequest("unknown error, maybe database server is down.");
-
+            { 
+                return BadRequest(new { Message = "unknown error, maybe database server is down." });
+            }
         }
 
+        [HttpPatch("UpdateCourseInfo")]
+        public IActionResult UpdateCourseInfo([FromBody] dynamic jsonData)
+        {
+            //ADMIN ONLY.
+            int userID;
+
+            //Return the course info after update.
+            return Ok(new { Message = "not implemeneted yet." });
+        }
+
+        [HttpPatch("UpdateCoursePrerequisities")]
+        public IActionResult UpdateCoursePrerequisities([FromBody] dynamic jsonData)
+        {
+            //ADMIN ONLY.
+            int userID;
+
+            //Return the course prerequisities after update.
+            return Ok(new { Message = "not implemented yet." });
+        }
+
+        [HttpPatch("UpdateCourseDepartmentApplicability")]
+        public IActionResult UpdateCourseDepartmentApplicability()
+        {
+            //ADMIN ONLY.
+            int userID;
+
+            //Return the course department applicabilities after update.
+            return Ok(new { Message = "not implemented yet." });
+        }
 
         /// <summary>
         /// Archives a course.
@@ -293,21 +346,57 @@ namespace Better_Ecom_Backend.Controllers
                 string archiveCourseSql = "UPDATE course SET is_archived = TRUE WHERE course_code = @courseCode;";
                 int status = _data.SaveData(archiveCourseSql, new { courseCode }, _config.GetConnectionString("Default"));
                 if (status > 0)
+                {
                     return Ok(new { Message = "course archived." });
+                }
                 else
+                {
                     return BadRequest(new { Message = "unknown error, maybe database server is down." });
+                }
             }
             else
             {
                 if (course is null)
+                {
                     return BadRequest(new { Message = "unknown error, maybe database server is down." });
+                }
                 else if (course.Count == 0)
+                {
                     return BadRequest(new { Message = "course does not exist." });
+                }
                 else if (course.First().Is_archived)
+                {
                     return BadRequest(new { Message = "course already archived." });
+                }
             }
 
-            return BadRequest();
+            return BadRequest(new { Message = "unknown error." });
+        }
+
+        [HttpGet("GetAvailableTerms")]
+        public IActionResult GetAvailableTerms()
+        {
+            //ALL USERS FUNCTION.
+            List<Term> availableTerms = TimeUtilities.GetAvailableTerms();
+            return Ok(availableTerms);
+        }
+
+        [HttpGet("GetCourseInstancesFromCourse/{CourseCode}")]
+        public IActionResult GetCourseInstancesFromCourse(string courseCode)
+        {
+            //ALL USERS FUNCTION.
+
+            //Returns all course instances matches the course code.
+            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+        }
+
+        [HttpGet("GetCourseInstanceByID/{InstanceID:int}")]
+        public IActionResult GetCourseInstanceByID(int instanceID)
+        {
+            //ALL USERS FUNCTION.
+
+            //Returns the course instance info corresponding to the entered ID.
+            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
         }
 
         [HttpPost("AddCourseInstance")]
@@ -320,8 +409,7 @@ namespace Better_Ecom_Backend.Controllers
             Term courseInstanceTerm;
             int creditHours;
             
-
-            return Ok("not implemented yet.");
+            return Ok(new { Message = "not implemented yet." });
         }
 
         private bool CheckUserHasPriorities(int studentID)
@@ -330,10 +418,13 @@ namespace Better_Ecom_Backend.Controllers
             List<StudentDepartmentPriority> priorities = _data.LoadData<StudentDepartmentPriority, dynamic>(loadPrioritiesSql, new { studentID }, _config.GetConnectionString("Default"));
 
             if (priorities is null || priorities.Count == 0)
+            {
                 return false;
+            }
             else
+            {
                 return true;
-
+            }
         }
 
         private static bool SetDepartmentForStudentDataExist(JsonElement sentData)
@@ -365,10 +456,13 @@ namespace Better_Ecom_Backend.Controllers
             List<int> ids = _data.LoadData<int, dynamic>(checkAdminSql, new { ID }, _config.GetConnectionString("Default"));
 
             if (ids is null || ids.Count == 0)
+            {
                 return false;
+            }
             else
+            {
                 return true;
-
+            }
         }
         private bool CheckCourseData(Course course)
         {
@@ -383,7 +477,6 @@ namespace Better_Ecom_Backend.Controllers
         private List<Course> CheckCourseStatus(string code)
         {
             string checkCourseSql = "SELECT course_code, is_archived FROM course  where course_code = @code";
-
             List<Course> courses = _data.LoadData<Course, dynamic>(checkCourseSql, new { code }, _config.GetConnectionString("Default"));
 
             return courses;
@@ -392,7 +485,6 @@ namespace Better_Ecom_Backend.Controllers
         private List<string> GetDepartmentsCodes()
         {
             string sql = "SELECT department_code FROM department;";
-
             List<string> departments = _data.LoadData<string, dynamic>(sql, new { }, _config.GetConnectionString("Default"));
 
             if (departments == null)

@@ -90,14 +90,16 @@ CREATE TABLE IF NOT EXISTS course (
 );
 
 CREATE TABLE IF NOT EXISTS course_instance (
+	instance_id INT AUTO_INCREMENT,
     course_code VARCHAR(20) NOT NULL,
     course_year INT NOT NULL,
     course_term ENUM('First', 'Second', 'Summer', 'Other') NOT NULL,
     credit_hours INT NOT NULL DEFAULT 0,
+    CONSTRAINT course_instance_code_year_term_combination_unique UNIQUE (course_code , course_year , course_term),
     CONSTRAINT course_instance_course_code FOREIGN KEY (course_code)
         REFERENCES course (course_code)
         ON UPDATE CASCADE ON DELETE CASCADE,
-    PRIMARY KEY (course_code , course_year , course_term)
+    PRIMARY KEY (instance_id)
 );
 
 CREATE TABLE IF NOT EXISTS course_department_applicability (
@@ -150,7 +152,7 @@ INSERT INTO course
 VALUES ('GE101', 'GE', 'Math 1', 1, 'First course of math', FALSE, FALSE);
 
 INSERT INTO course_instance
-VALUES ('GE101', 2021, 'First', 3); 
+VALUES (NULL, 'GE101', 2021, 'First', 3); 
 
 INSERT INTO course_department_applicability
 VALUES ('GE101', 'GE');
