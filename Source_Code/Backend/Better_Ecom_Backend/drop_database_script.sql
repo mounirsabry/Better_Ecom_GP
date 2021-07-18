@@ -1,5 +1,9 @@
 -- do not forget to use the specific database you want to execute the script on.
 
+DROP TABLE IF EXISTS course_prerequisite;
+DROP TABLE IF EXISTS course_department_applicability;
+DROP TABLE IF EXISTS course_instance;
+DROP TABLE IF EXISTS course;
 DROP TABLE IF EXISTS student_department_priority_list;
 DROP TABLE IF EXISTS student;
 DROP TABLE IF EXISTS instructor;

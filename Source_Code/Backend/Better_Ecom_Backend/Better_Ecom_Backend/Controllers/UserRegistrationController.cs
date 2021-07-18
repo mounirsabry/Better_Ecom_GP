@@ -312,16 +312,10 @@ namespace Better_Ecom_Backend.Controllers
             return (int)number.ToString()[0] - 48;
         }
 
-        private static int GetCurrentYear()
-        {
-            string currentYearString = DateTime.Today.ToString("yyyy");
-            return Int32.Parse(currentYearString);
-        }
-
         private int GetNextStudentID()
         {
             //Constructing the ID.
-            int currentYear = GetCurrentYear();
+            int currentYear = TimeUtilities.GetCurrentYear();
             //Gets the last inserted ID in the student table.
             string getLastIDSQL = @"SELECT MAX(student_id) FROM student;";
             List<int> IDs = _data.LoadData<int, dynamic>(getLastIDSQL, new { }, _config.GetConnectionString("Default"));
