@@ -15,8 +15,6 @@ namespace Better_Ecom_Backend.Models
         public string Course_description { get; set; }
         public bool Is_read_only { get; set; }
         public bool Is_archived { get; set; }
-        public List<string> Prerequisites { get; set; }
-        public List<string> DepartmentApplicability { get; set; }
         public Course(string courseCode, string departmentCode, string courseName, int academicYear, string courseDescription, bool isReadOnly, bool isArchived)
         {
             Course_code = courseCode;
