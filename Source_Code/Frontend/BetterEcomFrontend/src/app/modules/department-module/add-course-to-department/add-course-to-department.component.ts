@@ -107,8 +107,8 @@ export class AddCourseToDepartmentComponent implements OnInit {
       'Department_code' : this.department_code_get.value,
       'Course_code' : this.course_code_get.value,
       'Course_name' : this.course_name_get.value,
-      'academic_year' : +this.academic_year_get.value,
-      'course_description' : this.course_description_get.value,
+      'Academic_year' : +this.academic_year_get.value,
+      'Course_description' : this.course_description_get.value,
       'prerequisites' : this.prerequisites_list,
       'departmentApplicability' : this.departmentApplicability_list
     }
