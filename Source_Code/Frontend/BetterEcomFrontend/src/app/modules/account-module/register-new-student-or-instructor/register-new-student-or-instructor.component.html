@@ -1,89 +1,112 @@
+<div class="container-fluid gradient">
 
-<form [formGroup]="registerForm"  (ngSubmit)="register()">
+    <div class="row">
+        <hr>
+    </div>
+
+    <div class="row">
+        <form [formGroup]="registerForm" (ngSubmit)="register()">
+
+            <div class="container-fluid my-2">
+                <div class="row">
+                    <label class="col-3">Full Name</label>
+                    <input class="col-9" type="text" formControlName="Full_name">
+                </div>
+
+                <div class="row">
+                    <p class="text-danger" *ngIf="fullNameGet.invalid && fullNameGet.touched"> Full Name is required</p>
+                </div>
+            </div>
+
+            <div class="container-fluid my-2">
+                <div class="row">
+                    <label class="col-3">Address</label>
+                    <input class="col-9" type="text" formControlName="Address"></div>
+                <div class="row">
+                    <p class="text-danger" *ngIf="addressGet.invalid && addressGet.touched"> Address is required</p>
+                </div>
+            </div>
+
+            <div class="container-fluid my-2">
+                <div class="row">
+                    <label class="col-3">Nationality</label>
+                    <input class="col-9" type="text" formControlName="Nationality"></div>
+                <div class="row">
+                    <p class="text-danger" *ngIf="nationalityGet.invalid && nationalityGet.touched"> Nationality is required</p>
+                </div>
+            </div>
+
+            <div class="container-fluid my-2">
+                <div class="row">
+                    <label class="col-3">National ID</label>
+                    <input class="col-9" type="number" formControlName="National_id"></div>
+                <div class="row">
+                    <p class="text-danger" *ngIf="nationalIDGet.invalid && nationalIDGet.touched"> National ID is required</p>
+                </div>
+            </div>
+
+            <div class="container-fluid my-2">
+                <div class="row">
+                    <label class="col-3">Birth Date</label>
+                    <input class="col-9" type="date" formControlName="Birth_date"></div>
+                <div class="row">
+                    <p class="text-danger" *ngIf="birthDateGet.invalid && birthDateGet.touched"> Birth Date is required</p>
+                </div>
+            </div>
+
+            <div class="container-fluid my-2" *ngIf="type == 'student' ">
+                <div class="row">
+                    <label class="col-3">High School Type</label>
+                    <input class="col-9" type="text" formControlName="High_school_type"></div>
+                <div class="row">
+                    <p class="text-danger" *ngIf="highSchoolTypeGet.invalid && highSchoolTypeGet.touched"> highSchool type is required</p>
+                </div>
+            </div>
+
+            <div class="container-fluid my-2" *ngIf="type == 'student' ">
+                <div class="row">
+                    <label class="col-3">Entrance Year</label>
+                    <input class="col-9" type="number" formControlName="Entrance_year"></div>
+                <div class="row">
+                    <p class="text-danger" *ngIf="entranceYearGet.invalid && entranceYearGet.touched"> Entrance Year is required</p>
+                </div>
+            </div>
+
+            <div class="container-fluid my-2" *ngIf="type == 'instructor'">
+                <div class="row">
+                    <label class="col-3">University</label>
+                    <input class="col-9" type="text" formControlName="University"></div>
+                <div class="row">
+                    <p class="text-danger" *ngIf="universityGet.invalid && universityGet.touched"> universtiy is required</p>
+                </div>
+            </div>
+
+            <div class="container-fluid my-2" *ngIf="type == 'instructor'">
+                <div class="row">
+                    <label class="col-3">Graduation Year</label>
+                    <input class="col-9" type="number" formControlName="Graduation_year"></div>
+                <div class="row">
+                    <p class="text-danger" *ngIf="graduationYearGet.invalid && graduationYearGet.touched"> Graduation Year is required</p>
+                </div>
+            </div>
+
+            <div class="container-fluid my-2">
+                <div class="row">
+                    <label class="col-3">Gender</label>
+                    <div class="col-9">
+                        <select formControlName="Gender">
+                      <option >Male</option>F
+                      <option >Female</option>
+                    </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <p class="text-danger" *ngIf="genderGet.invalid && genderGet.touched"> Gender is required</p>
+                </div>
+            </div>
 
 
-  <label>Full Name</label>
-  <input type="text" formControlName="Full_name">
-  <p *ngIf="fullNameGet.invalid && fullNameGet.touched" style="color: red;"> Full Name is required</p>
-
-  <br>
-  <label>Address</label>
-  <input type="text" formControlName="Address">
-  <p *ngIf="addressGet.invalid && addressGet.touched" style="color: red;"> Address is required</p>
-
-  <br>
-
-
-  <label>Nationality</label>
-  <input type="text" formControlName="Nationality">
-
-  <p *ngIf="nationalityGet.invalid && nationalityGet.touched" style="color: red;"> Nationality is required</p>
-
-  <br>
-
-  <label>National ID</label>
-  <input type="number" formControlName="National_id">
-  <p *ngIf="nationalIDGet.invalid && nationalIDGet.touched" style="color: red;"> National ID is required</p>
-
-  <br>
-
-
-  <label>Birth Date</label>
-  <input type="date" formControlName="Birth_date">
-
-  <p *ngIf="birthDateGet.invalid && birthDateGet.touched" style="color: red;"> Birth Date is required</p>
-
-  <br>
-
-
-  <div *ngIf="type == 'student' ">
-    <label>High School Type</label>
-    <input type="text" formControlName="High_school_type">
-    <p *ngIf="highSchoolTypeGet.invalid && highSchoolTypeGet.touched" style="color: red;"> highSchool type is required</p>
-
-  </div>
-
-  <br>
-
-  <div *ngIf="type == 'student'">
-    <label>Entrance Year</label>
-    <input type="number" formControlName="Entrance_year">
-    <p *ngIf="entranceYearGet.invalid && entranceYearGet.touched" style="color: red;"> Entrance Year is required</p>
-
-  </div>
-
-  <br>
-
-
-  <div *ngIf="type == 'instructor'">
-    <label>University</label>
-    <input type="text" formControlName="University">
-    <p *ngIf="universityGet.invalid && universityGet.touched" style="color: red;"> universtiy is required</p>
-
-  </div>
-  <br>
-
-
-  <div *ngIf="type == 'instructor'">
-    <label>Graduation Year</label>
-    <input type="number" formControlName="Graduation_year">
-    <p *ngIf="graduationYearGet.invalid && graduationYearGet.touched" style="color: red;"> Graduation Year is required</p>
-
-  </div>
-
-  <br>
-
-
-  <label>Gender</label>
-  <select formControlName="Gender" >
-    <option >Male</option>
-    <option >Female</option>
-  </select>
-  <p *ngIf="genderGet.invalid && genderGet.touched" style="color: red;"> Gender is required</p>
-
-
-  <br>
-
-  <button type="submit" [disabled] = "registerForm.invalid"> register </button>
-
-</form>
+            <button class="btn btn-outline-dark col-12 my-5" type="submit" [disabled]="registerForm.invalid">Register </button>
+        </form>
+    </div>
+</div>

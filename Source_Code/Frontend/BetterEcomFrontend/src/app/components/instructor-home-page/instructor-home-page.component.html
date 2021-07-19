@@ -1,38 +1,37 @@
-<div class="homepage">
+<div class="homepage container-fluid text-center gradient p-3">
 
-    <div class="student-info">
-        <div class="info">
+    <div class="row container-fluid p-3 row justify-content-between">
+        <div class="col-11">
             <span>Instructor Name | </span>
             <span>ID</span>
         </div>
-        <div>
-            <button [routerLink]="['../profile/instructor']">view profile</button>
-        </div>
-        <div class="hr">
-            <hr>
-        </div>
+        <button class="col-1 btn btn-outline-light" [routerLink]="['../profile/instructor']">View Profile</button>
     </div>
-    <div class="navigations">
-        <div class="sidebar">
-            <a href="#">Courses</a>
-            <a href="#">General Material</a>
-            <a href="#">Messages</a>
-            <a href="#">Activity Stream</a>
-            <a href="#">Polls</a>
-            <a href="#">Final Exams</a>
-            <a href="#">Calendar</a>
-            <a href="#">Top 50</a>
-            <a href="#">Event Registration</a>
-            <a [routerLink]="['/viewDepartmentCourses/instructor']"> View Department Courses</a>
 
+    <div class="row">
+        <hr>
+    </div>
+
+    <div class="row container-fluid">
+        <div class="col-4 container-fluid">
+            <a class="row my-2" href="#">Courses</a>
+            <a class="row my-2" href="#">General Material</a>
+            <a class="row my-2" href="#">Messages</a>
+            <a class="row my-2" href="#">Activity Stream</a>
+            <a class="row my-2" href="#">Polls</a>
+            <a class="row my-2" href="#">Final Exams</a>
+            <a class="row my-2" href="#">Calendar</a>
+            <a class="row my-2" href="#">Top 50</a>
+            <a class="row my-2" href="#">Event Registration</a>
         </div>
-        <div class="general-feeds">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+
+        <div class="col-8 container-fluid">
+            <p class="row my-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
                 irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+            <p class="row my-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
                 irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+            <p class="row my-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
                 irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
         </div>
     </div>
-  </div>
+</div>
