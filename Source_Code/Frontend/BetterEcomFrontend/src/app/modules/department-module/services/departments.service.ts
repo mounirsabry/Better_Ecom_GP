@@ -10,7 +10,7 @@ export class DepartmentsService {
   constructor(private httpclient:HttpClient) { }
 
   getDepartmentsData(){
-    return this.httpclient.get<any>("https://localhost:44361/department/GetDepartments")
+    return this.httpclient.get<any>("https://localhost:44361/department/GetDepartments");
   }
 
   submitDepartmentPriorityList(department_list : Array<any>){

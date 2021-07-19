@@ -1,23 +1,33 @@
 
-<form>
+<form [formGroup]="viewDepartmentCoursesForm" (ngSubmit)="viewCourses()">
   <label>select department Name</label>
-  <select>
-    <option>AI</option>
-    <option>CS</option>
-    <option>DS</option>
-    <option>GE</option>
-    <option>IS</option>
-    <option>IT</option>
+  <select name="DepartmentCourses" id="DepartmentCourses" #Departments formControlName="DepartmentCode">
+    <option *ngFor="let dep of department_code_list; let i = index" 
+    value="{{ dep }}">{{ dep }}</option>
   </select>
+  <p *ngIf="departmentGet.invalid && departmentGet.touched" style="color: red;">please select a department</p>
+  <br>
+  <button type="submit" [disabled]="viewDepartmentCoursesForm.invalid" style="color: black;">View Courses</button>
+</form>
 
   <!--courses are displayed here-->
-  <div >
+  <table style="width: 100%;">
+        <tr>
+          <th>Course Code</th>
+          <th>Department Code</th>
+          <th>Course Name</th>
+          <th>Academic Year</th>
+          <th>Course Description</th>
+          <th>Read only</th>
+          <th>Arhcived</th>
+        </tr>
+        <tr *ngFor="let course of objectValues(courses)">
+          <td *ngFor="let value of objectValues(course)">{{ value }}</td>
+        </tr>
+  </table>
 
-
-  </div>
-
-
+<form>
   <!-- make cs dynamic, according to chosen department-->
-  <button type="submit" *ngIf="type == 'admin'" [routerLink]="['/addCourseToDepartment/cs']" >add course</button>
-  <button *ngIf="type == 'admin'" [routerLink]="['/changeCourseDepartment']" >Change Course Department</button>
+  <a *ngIf="type == 'admin'" [routerLink]="['/addCourseToDepartment/cs']" >add course</a>
+  <a *ngIf="type == 'admin'" [routerLink]="['/changeCourseDepartment']" >Change Course Department</a>
 </form>
