@@ -17,6 +17,7 @@ import { ViewDepartmentsCoursesComponent } from './modules/department-module/vie
 import { AddCourseToDepartmentComponent } from './modules/department-module/add-course-to-department/add-course-to-department.component';
 import { ChangeCourseDepartmentComponent } from './modules/department-module/change-course-department/change-course-department.component';
 import { AdminDepartmentComponent } from './modules/department-module/admin-department/admin-department.component';
+import { CourseInfoComponent } from './modules/department-module/course-info/course-info.component';
 
 const routes: Routes = [
   // i did redirecto to startPage instead of normal cuz you can't pass optional paramters to '' url.
@@ -42,6 +43,7 @@ const routes: Routes = [
   {path:'addCourseToDepartment/:departmentCode',component:AddCourseToDepartmentComponent},
   {path:'changeCourseDepartment',component:ChangeCourseDepartmentComponent},
   {path:'adminDepartment',component:AdminDepartmentComponent},
+  {path:'courseInfo',component:CourseInfoComponent},
   {path:'**', redirectTo:'pageNotFound',pathMatch:'full'}
 
 ];

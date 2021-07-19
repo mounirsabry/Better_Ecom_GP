@@ -12,4 +12,20 @@ export class DepartmentCoursesService {
   getDepartmentCourses(departmentCode : string){
     return this.httpclient.get<any>("https://localhost:44361/department/GetDepartmentCourses/" + departmentCode);
   }
+
+  getCourseInfoByCode(courseCode : string){
+    return this.httpclient.get<any>("https://localhost:44361/department/GetCourseInfoByCode/" + courseCode);
+  }
+
+  getCourseInfoByName(courseName : string){
+    return this.httpclient.get<any>("https://localhost:44361/department/GetCourseInfoByName/" + courseName);
+  }
+
+  addCourse(course : any){
+    return this.httpclient.post<any>("https://localhost:44361/department/AddCourseToDepartment" , course);
+  }
+
+  handleError(error : HttpErrorResponse){
+    return throwError(error);
+  }
 }

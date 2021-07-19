@@ -48,19 +48,11 @@ export class ViewDepartmentsCoursesComponent implements OnInit {
     this.departmentCoursesService.getDepartmentCourses(this.departmentGet.value).subscribe(
       data =>{
         this.courses = data;
-        /*for(const [key, value] of Object.entries(data)) {
-          //console.log(key, value);
-          this.courses.push(value);
-        }*/
         console.log(Object.values(data));
-        for(let value of Object.values(data)){
-          //console.log(value);
-          //this.courses.push(value);
-          for(let valuee of Object.values(value)){
-            console.log(valuee);
-          }
-        }
-        //console.log(this.courses);
+      },
+      error =>{
+        console.log(error.error);
+        alert("failed");
       }
     )
   }

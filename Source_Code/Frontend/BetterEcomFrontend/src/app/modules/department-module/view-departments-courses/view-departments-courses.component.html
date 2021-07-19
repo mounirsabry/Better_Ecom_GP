@@ -11,6 +11,7 @@
 </form>
 
   <!--courses are displayed here-->
+  <!--
   <table style="width: 100%;">
         <tr>
           <th>Course Code</th>
@@ -25,9 +26,20 @@
           <td *ngFor="let value of objectValues(course)">{{ value }}</td>
         </tr>
   </table>
+-->
+<div *ngFor="let course of objectValues(courses)">
+  <div *ngFor="let info of course | keyvalue">
+      <label>{{ info.key }}: </label>
+      <label>{{ info.value }}</label>
+  </div>
+  <hr>
+</div>
 
 <form>
   <!-- make cs dynamic, according to chosen department-->
   <a *ngIf="type == 'admin'" [routerLink]="['/addCourseToDepartment/cs']" >add course</a>
+  <br>
   <a *ngIf="type == 'admin'" [routerLink]="['/changeCourseDepartment']" >Change Course Department</a>
+  <br>
+  <a [routerLink]="['/courseInfo']">Search for Course</a>
 </form>
