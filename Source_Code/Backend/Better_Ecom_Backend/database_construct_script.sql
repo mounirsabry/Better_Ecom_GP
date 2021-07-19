@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS admin_user (
         
 CREATE TABLE IF NOT EXISTS student_department_priority_list (
     student_id INT,
-    department_code CHAR(2),
+    department_code CHAR(2) NOT NULL,
     priority INT NOT NULL,
     CONSTRAINT priority_list_student_id FOREIGN KEY (student_id)
         REFERENCES student (student_id)
@@ -124,6 +124,22 @@ CREATE TABLE IF NOT EXISTS course_prerequisite (
         REFERENCES course (course_code)
         ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY (course_code , prerequisite_course_code)
+);
+
+CREATE TABLE IF NOT EXISTS student_course_registration (
+	registration_instance_id INT AUTO_INCREMENT,
+    student_id INT NOT NULL,
+    course_instance_id INT NOT NULL,
+    registration_date DATE NOT NULL,
+    student_course_status ENUM('Undertaking', 'Passed', 'Failed'),
+    CONSTRAINT student_course_instance_combination_unique UNIQUE (student_id, course_instance_id),
+    CONSTRAINT student_course_registration_student_id FOREIGN KEY (student_id)
+		REFERENCES student (student_id)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT student_course_registration_instance_id FOREIGN KEY (course_instance_id)
+		REFERENCES course_instance (instance_id)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+	PRIMARY KEY (registration_instance_id)
 );
 
 INSERT INTO department VALUES ('GE', 'General');

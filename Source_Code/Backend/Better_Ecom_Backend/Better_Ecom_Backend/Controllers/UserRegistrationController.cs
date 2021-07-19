@@ -34,7 +34,7 @@ namespace Better_Ecom_Backend.Controllers
         /// </summary>
         /// <param name="studentData">json object containing new student data.</param>
         /// <returns>Created and new student object if successful BadRequest otherwise.</returns>
-        [Authorize(Roles ="admin")]
+        [Authorize(Roles = "admin")]
         [HttpPost("AddNewStudent")]
         public IActionResult AddNewStudent([FromBody] dynamic studentData)
         {
@@ -44,18 +44,23 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return BadRequest(new { Message = "data common between users part is not valid." });
             }
-            if (CheckStudentData(newStudent) == false)
+            else if (CheckStudentData(newStudent) == false)
             {
                 return BadRequest(new { Messsgae = "student data part is not valid." });
             }
-
-            //Checks if a student (system_user) with the same national ID and nationality
-            //exists in the database.
-            //The combination of the nationality and national ID can only occurs twice at most 
-            //at the database.
-            //One of them represents a student and the other represent an instructor.
-            //Representing the case that one person can be an instructor and a student
-            //(after-graduation studies for example) at the same time.
+            else if(HelperFunctions.IsDepartmentCodeValid(_config, _data, newStudent.Department_code) == false)
+            {
+                return BadRequest(new { Message = "department code is not valid." });
+            }
+            /*
+            Checks if a student(system_user) with the same national ID and nationality
+            exists in the database.
+            The combination of the nationality and national ID can only occurs twice at most
+            at the database.
+            One of them represents a student and the other represent an instructor.
+            Representing the case that one person can be an instructor and a student
+            (after-graduation studies for example) at the same time.
+            */
             string checkUserExistenceSQL = "SELECT system_user_id, nationality, national_id" + "\n"
                                         + "FROM system_user" + "\n"
                                         + "WHERE national_id = @NationalID" + "\n"
@@ -68,21 +73,24 @@ namespace Better_Ecom_Backend.Controllers
             var users = _data.LoadData<dynamic, dynamic>(checkUserExistenceSQL, parameters, _config.GetConnectionString("Default"));
 
             if (users is null)
+            { 
                 return BadRequest(new { Message = "unknown error, maybe database server is down." });
-
+            }
             //One person can not be student, instructor, admin at the same time.
             if (users.Count >= 2)
             {
-                return BadRequest(new { Message = "two users or more with the same natioanl id and nationality already exists." });
+                return BadRequest(new { Message = "two users or more with the same natioanl id and nationality combination already exists." });
             }
             else if (users.Count == 1)
             {
-                //National ID and nationality combination alraedy exists in the database.
-                //If the user is an instructor, then the registration will continue normally.
-                //If the user is a student, then the process will halt 
-                //since you can not register two students with the same national ID and nationality combination.
+                /*
+                National ID and nationality combination alraedy exists in the database.
+                If the user is an instructor, then the registration will continue normally.
+                If the user is a student, then the process will halt
+                since you can not register two students with the same national ID and nationality combination.
+                */
                 int systemUserID = users[0].system_user_id;
-                int firstDigit = GetFirstDigit(systemUserID);
+                int firstDigit = HelperFunctions.GetFirstDigit(systemUserID);
 
                 //The registered data is for admin_user, the user can not be an admin and student/instructor at the same time.
                 if (firstDigit == 1)
@@ -92,7 +100,7 @@ namespace Better_Ecom_Backend.Controllers
                 //Another student registered with the same national ID and nationality.
                 if (firstDigit == 2)
                 {
-                    return BadRequest(new { Message = "a student with the same national id and nationality already exists." });
+                    return BadRequest(new { Message = "a student with the same national id and nationality combination already exists." });
                 }
             }
 
@@ -134,6 +142,10 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return BadRequest(new { Message = "instructor data part is not valid." });
             }
+            if (HelperFunctions.IsDepartmentCodeValid(_config, _data, newInstructor.Department_code) == false)
+            {
+                return BadRequest(new { Message = "department code is not valid." });
+            }
 
             string checkUserExistenceSQL = "SELECT system_user_id, nationality, national_id" + "\n"
                                         + "FROM system_user" + "\n"
@@ -149,16 +161,18 @@ namespace Better_Ecom_Backend.Controllers
             //One person can not be student, instructor, admin at the same time.
             if (users.Count >= 2)
             {
-                return BadRequest(new { Message = "two users or more with the same natioanl id and nationality already exists." });
+                return BadRequest(new { Message = "two users or more with the same natioanl id and nationality combination already exists." });
             }
             else if (users.Count == 1)
             {
-                //National ID and nationality combination alraedy exists in the database.
-                //If the already registered user is a student, then the registration will continue normally.
-                //If the already registered user is an instructor, then the process will halt 
-                //since you can not register two instructors with the same national ID and nationality combination.
+                /*
+                National ID and nationality combination alraedy exists in the database.
+                If the already registered user is a student, then the registration will continue normally.
+                If the already registered user is an instructor, then the process will halt
+                since you can not register two instructors with the same national ID and nationality combination.
+                */
                 int systemUserID = users[0].system_user_id;
-                int firstDigit = GetFirstDigit(systemUserID);
+                int firstDigit = HelperFunctions.GetFirstDigit(systemUserID);
 
                 //The registered data is for admin_user, the user can not be an admin and student/instructor at the same time.
                 if (firstDigit == 1)
@@ -168,10 +182,9 @@ namespace Better_Ecom_Backend.Controllers
                 //Another instructor registered with the same national ID and nationality.
                 if (firstDigit == 3)
                 {
-                    return BadRequest(new { Message = "an instructor with the same national id and nationality already exists." });
+                    return BadRequest(new { Message = "an instructor with the same national id and nationality combination already exists." });
                 }
             }
-
 
             List<int> states;
 
@@ -305,11 +318,6 @@ namespace Better_Ecom_Backend.Controllers
             }
 
             return true;
-        }
-
-        private static int GetFirstDigit(int number)
-        {
-            return (int)number.ToString()[0] - 48;
         }
 
         private int GetNextStudentID()

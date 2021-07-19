@@ -26,13 +26,23 @@ namespace Better_Ecom_Backend.Controllers
         /// <summary>
         /// Get user profile.
         /// </summary>
-        /// <param name="id">the user id.</param>
+        /// <param name="userID">the user id.</param>
         /// <param name="type">the user type</param>
         /// <returns>Ok with user profile if successful BadRequest otherwise.</returns>
         [Authorize]
-        [HttpGet("GetProfile/{ID:int}/{Type}")]
-        public dynamic GetProfile(int id, string type)
+        [HttpGet("GetProfile/{UserID:int}/{Type}")]
+        public dynamic GetProfile(int userID, string type)
         {
+            string deducedType = HelperFunctions.GetUserTypeFromID(userID);
+            if (type != deducedType || deducedType == "invalid")
+            {
+                return BadRequest(new { Message = "invalid id." });
+            }
+            else if (type != "student" && type != "instructor" && type != "admin")
+            {
+                return BadRequest(new { Message = "invalid user type." });
+            }
+
             string id_text;
             string table;
             switch (type)
@@ -55,64 +65,154 @@ namespace Better_Ecom_Backend.Controllers
             string sql = $"SELECT * FROM {table} INNER JOIN system_user" + "\n"
                     + $"WHERE {id_text} = system_user.system_user_id" + "\n"
                     + "AND system_user.system_user_id = @ID;";
-            var dbResult = _data.LoadData<dynamic, dynamic>(sql, new { ID = id }, _config.GetConnectionString("Default"));
+            var dbResult = _data.LoadData<dynamic, dynamic>(sql, new { ID = userID }, _config.GetConnectionString("Default"));
 
-            if (dbResult != null)
+            if (dbResult == null)
             {
-
-                var user = dbResult.FirstOrDefault();
-                if(user is not null)
-                    user.user_password = null;
-                return user;
+                return BadRequest(new { Message = "unknown error, maybe database server is down." });
+            }
+            else if (dbResult.Count == 0)
+            {
+                return BadRequest(new { Messsage = "no user found with such id." });
             }
             else
-                return BadRequest(new { Message = "unknown error, maybe database server is down." });
+            {
+                var user = dbResult[0];
+                user.user_password = null;
+                return user;
+            }
         }
 
         // not sure if the admin will use this to modify student/instructor profiles, will assume not till i get there.
         [Authorize]
-        [HttpPatch("SaveProfileChanges/{ID:int}/{Type}")]
-        public IActionResult SaveProfileChanges(int ID, string type, [FromBody] dynamic data)
+        [HttpPatch("SaveProfileChanges")]
+        public IActionResult SaveProfileChanges([FromBody] dynamic data)
         {
-            List<int> success1;
-            if (type != "student" && type != "instructor" && type != "admin")
+            int userID;
+            string type;
+
+            JsonElement temp;
+            if (data.TryGetProperty("UserID", out temp))
             {
-                return BadRequest(new { Message = "invalid user type." });
+                userID = temp.GetInt32();
             }
             else
             {
-                int System_user_id = ID;
-                System_user system_user = UserFactory.getUser(data, type);
-                List<string> queries = new();
-                List<dynamic> parameterList = new();
-                queries.Add(GetBaseUserUpdateQuery());
-                parameterList.Add(new
-                {
-                    System_user_id,
-                    system_user.Email,
-                    system_user.Address,
-                    system_user.Phone_number,
-                    system_user.Mobile_number,
-                    system_user.Additional_info
-                });
-                if (type == "instructor")
-                {
-                    queries.Add(GetInstructorUpdateQuery());
-                    parameterList.Add(new { ((Instructor)system_user).Contact_info });
-                }
+                return BadRequest(new { Message = "user id was not provided." });
+            }
 
-                success1 = _data.SaveDataTransaction<dynamic>(queries, parameterList, _config.GetConnectionString("Default"));
+            if (data.TryGetProperty("Type", out temp))
+            {
+                type = temp.GetString();
+            }
+            else
+            {
+                return BadRequest(new { Message = "user type was not provided." });
+            }
 
-                if (!success1.Contains(-1))
+            string deducedType = HelperFunctions.GetUserTypeFromID(userID);
+            if (type != deducedType || deducedType == "invalid")
+            {
+                return BadRequest(new { Message = "invalid id." });
+            }
+            else if (type != "student" && type != "instructor" && type != "admin")
+            {
+                return BadRequest(new { Message = "invalid user type." });
+            }
+
+            int System_user_id = userID;
+            System_user system_user = UserFactory.getUser(data, type);
+            List<string> queries = new();
+            List<dynamic> parameterList = new();
+            queries.Add(GetBaseUserUpdateQuery());
+            parameterList.Add(new
+            {
+                System_user_id,
+                system_user.Email,
+                system_user.Address,
+                system_user.Phone_number,
+                system_user.Mobile_number,
+                system_user.Additional_info
+            });
+            if (type == "instructor")
+            {
+                queries.Add(GetInstructorUpdateQuery());
+                parameterList.Add(new { ((Instructor)system_user).Contact_info });
+            }
+
+            List<int> success;
+            success = _data.SaveDataTransaction<dynamic>(queries, parameterList, _config.GetConnectionString("Default"));
+
+            if (!success.Contains(-1))
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(new { Message = "unknown error, maybe database is down." });
+            }
+        }
+
+        /// <summary>
+        /// User wants to change password.
+        /// </summary>
+        /// <param name="id">user id</param>
+        /// <param name="data">json object contains current password and new password.</param>
+        /// <returns>Ok if successful BadRequest otherwise.</returns>
+        [Authorize]
+        [HttpPatch("ChangePassword")]
+        public IActionResult ChangePassword([FromBody] dynamic data)
+        {
+            data = (JsonElement)data;
+
+            if (!ChangePasswordDataExist(data))
+            {
+                return BadRequest(new { Message = "sent data not complete." });
+            }
+
+            int userID = data.GetProperty("UserID").GetInt32();
+            string sent_current_password = data.GetProperty("Old_password").GetString();
+            string new_password = data.GetProperty("New_password").GetString();
+            string current_password;
+
+            if (HelperFunctions.GetUserTypeFromID(userID) == "invalid")
+            {
+                return BadRequest(new { Message = "invalid id." });
+            }
+            else if (sent_current_password == new_password)
+            {
+                return BadRequest(new { Message = "new password can not be the same as old password." });
+            }
+
+            string sql = "SELECT user_password FROM system_user WHERE system_user_id = @ID;";
+            var dbResult = _data.LoadData<string, dynamic>(sql, new { ID = userID }, _config.GetConnectionString("Default"));
+            if (dbResult != null)
+            {
+                current_password = dbResult.FirstOrDefault();
+            }
+            else
+            {
+                return BadRequest(new { Message = "unknown error, maybe database server is down." });
+            }
+
+            if (!SecurityUtilities.Verify(sent_current_password, current_password))
+            {
+                return BadRequest(new { Message = "old password is wrong." });
+            }
+            else
+            {
+                sql = "UPDATE system_user SET user_password = @new_password WHERE system_user_id = @ID;";
+                int success = _data.SaveData<dynamic>(sql, new { ID = userID, new_password = SecurityUtilities.HashPassword(new_password) }, _config.GetConnectionString("Default"));
+
+                if (success >= 0)
                 {
-                    return Ok();
+                    return Ok(new { Message = "password was changed successfully." });
                 }
                 else
                 {
-                    return BadRequest(new { Message = "operation failed." });
+                    return BadRequest(new { Message = "password update failed." });
                 }
             }
-
         }
 
         private static string GetInstructorUpdateQuery()
@@ -126,58 +226,10 @@ namespace Better_Ecom_Backend.Controllers
                 + "additional_info = @Additional_info  where system_user_id = @System_user_id;";
         }
 
-        /// <summary>
-        /// User wants to change password.
-        /// </summary>
-        /// <param name="id">user id</param>
-        /// <param name="data">json object contains current password and new password.</param>
-        /// <returns>Ok if successful BadRequest otherwise.</returns>
-        [Authorize]
-        [HttpPatch("ChangePassword/{ID:int}")]
-        public IActionResult ChangePassword(int id, [FromBody] dynamic data)
-        {
-            data = (JsonElement)data;
-            int success;
-
-            if (!ChangePasswordDataExist(data))
-                return BadRequest(new { Message = "sent data not complete." });
-
-            string sent_current_password = data.GetProperty("Old_password").GetString();
-            string new_password = data.GetProperty("New_password").GetString();
-            string current_password;
-
-
-            string sql = "SELECT user_password FROM system_user WHERE system_user_id = @ID;";
-            var dbResult = _data.LoadData<string, dynamic>(sql, new { ID = id }, _config.GetConnectionString("Default"));
-            if (dbResult != null)
-                current_password = dbResult.FirstOrDefault();
-            else
-                return BadRequest(new { Message = "unknown error, maybe database server is down." });
-
-
-            if (!SecurityUtilities.Verify(  sent_current_password,current_password ))
-            {
-                return BadRequest("old password is wrong.");
-            }
-            else
-            {
-                sql = "UPDATE system_user SET user_password = @new_password WHERE system_user_id = @ID;";
-                success = _data.SaveData<dynamic>(sql, new { ID = id, new_password = SecurityUtilities.HashPassword( new_password) }, _config.GetConnectionString("Default"));
-
-                if (success >= 0)
-                {
-                    return Ok();
-                }
-                else
-                {
-                    return BadRequest(new { Message = "password update failed." });
-                }
-            }
-        }
-
         private static bool ChangePasswordDataExist(JsonElement sentData)
         {
-            return sentData.TryGetProperty("Old_password", out _)
+            return sentData.TryGetProperty("UserID", out _)
+                && sentData.TryGetProperty("Old_password", out _)
                 && sentData.TryGetProperty("New_password", out _);
         }
     }

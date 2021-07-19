@@ -10,12 +10,8 @@ namespace Better_Ecom_Backend.Helpers
 
     public class SecurityUtilities
     {
-
         public SecurityUtilities() { }
        
-         
-         
-         
         /// <summary>
         /// takes use password and hash it.
         /// </summary>
