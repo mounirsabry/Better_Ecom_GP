@@ -1,28 +1,24 @@
-<div class="body">
-  <div [formGroup]="loginForm" class="form">
-      <div style="color: red;">
-          {{errorMessage}}
-      </div>
-      <br><br>
-      <div class="input">
-          <label>ID  </label>
-          <input type="number" name="ID" id="ID" #ID formControlName="ID">
-          <p *ngIf="IDget.invalid && IDget.touched" style="color: red;"> ID is required</p>
-      </div>
+<div class="body container-fluid justify-content-center my-5">
+    <div [formGroup]="loginForm" class="gradient p-5 container-fluid justify-content-center">
+        <p class="text-danger row">{{errorMessage}}</p>
 
-      <br>
+        <div class="container-fluid my-3 justify-content-center row">
+            <div class="row">
+                <label class="col-3 fs-3 fw-bold">ID</label>
+                <input class="col-9" type="number" name="ID" id="ID" #ID formControlName="ID">
+            </div>
+            <p class="text-danger row" *ngIf="IDget.invalid && IDget.touched"> ID is required</p>
+        </div>
 
-      <div class="input">
-          <label>Password  </label>
-          <input type="password" name="Password" id="Password" #password formControlName="password">
-          <p *ngIf="passwordGet.invalid && passwordGet.touched" style="color: red;"> password is required</p>
-      </div>
+        <div class="container-fluid my-3 justify-content-center row">
+            <div class="row">
+                <label class="col-3 fs-3 fw-bold">Password</label>
+                <input class="col-9" type="password" name="Password" id="Password" #password formControlName="password">
+            </div>
+            <p class="text-danger row" *ngIf="passwordGet.invalid && passwordGet.touched"> password is required</p>
+        </div> 
 
-      <br>
+        <button class="btn btn-outline-dark row col-12 my-5" type="submit" (click)="login(ID.value, password.value)" [disabled]="loginForm.invalid"> Login </button>
 
-      <div class="input">
-          <button type="submit" (click)="login(ID.value, password.value)" [disabled]="loginForm.invalid"> Login </button>
-      </div>
-
-  </div>
+    </div>
 </div>

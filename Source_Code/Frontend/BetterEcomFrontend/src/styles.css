@@ -1,15 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
-button{
-    display: inline-block;
-    border: none;
-    text-decoration: none;
-    background: none;
-    color: #ffffff;
-    font-family: sans-serif;
-    font-size: 1rem;
-    cursor: pointer;
-    text-align: center;
-    transition: background 250ms ease-in-out, transform 150ms ease;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-  }
+.gradient{
+  width: 90vw;
+  color: white;
+  margin: 0 auto;
+  background-image: linear-gradient(to bottom, #0B879A, white);
+  height: 100vh;
+}

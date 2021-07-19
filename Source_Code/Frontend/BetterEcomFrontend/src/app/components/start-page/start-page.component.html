@@ -1,10 +1,10 @@
 <div class="body">
-  <div class="main">
-      <h2> Welcome to Better E-com </h2>
-      <div class="break"></div>
-      <button type="submit" [routerLink]="['/login','student']">Login as Student</button>
-      <button type="submit" [routerLink]="['/login','instructor']">Login as Instructor</button>
-
-      <h2 style="color: red;"> {{errorMessage}}</h2>
-  </div>
+    <div class="main gradient p-5 container-fluid">
+        <h2 class="display-1 row p-3 my-3"> Welcome to Better E-com </h2>
+        <div class="row">
+            <button class="btn btn-outline-light my-3" type="submit" [routerLink]="['/login','student']">Login as Student</button>
+            <button class="btn btn-outline-light my-3" type="submit" [routerLink]="['/login','instructor']">Login as Instructor</button>
+        </div>
+        <h2 class="text-danger">{{errorMessage}}</h2>
+    </div>
 </div>

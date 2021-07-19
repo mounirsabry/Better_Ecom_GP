@@ -1,58 +1,10 @@
-.homepage {
-  display: grid;
-  grid-template-rows: repeat(3, auto);
-  text-align: center;
-  width: 90vw;
-  margin: 0 auto;
-  color: white;
-  background-image: linear-gradient(to bottom, #0B879A, white);
-  padding: 1vh 0 0 0;
-}
-
-.navbar {
-  background-color: #0B879A;
-}
-
-.student-info,
-.navbar {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  padding: 2vh 1vw;
-}
-
-.student-info{
-  grid-template-rows: auto auto;
-}
-
-.hr{
-  grid-column: 1/span 2;
-}
-
-
-.navigations {
-  display: grid;
-  grid-template-columns: 30% 70%;
-  min-height: 100vh;
-}
-
-.navigations .sidebar{
-  display: grid;
-  align-content: flex-start;
-  text-align: left;
-  padding: 2vh;
-}
-
-.general-feeds{
-  color: white;
-}
-
-.navigations .sidebar a{
+a{
   text-decoration: none;
   color:white;
 }
 
-.navigations .sidebar a:hover{
-  color: #6E0D25;
+a:hover{
+  color: black;
   transform: scale(1,1.5);
   text-shadow: 3px 3px 30px #555;
 }
