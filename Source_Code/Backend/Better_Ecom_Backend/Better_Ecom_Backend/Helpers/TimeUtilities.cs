@@ -28,6 +28,25 @@ namespace Better_Ecom_Backend.Helpers
         {
 
         }
+
+
         */
+        public static List<Term> GetAvailableTerms()
+        {
+            List<Term> terms = new()
+            {
+                Term.First,
+                Term.Second,
+                Term.Summer,
+                Term.Other
+            };
+
+            return terms;
+        }
+
+        internal static Term GetCurrentTerm()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
