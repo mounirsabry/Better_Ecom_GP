@@ -7,45 +7,15 @@ div.body {
 }
 
 div.main {
-  background-image: linear-gradient(to bottom, #0B879A, white);
   color: white;
   width: fit-content;
   margin: 0 auto;
-  padding: 3vw 3vh;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: center;
   border-radius: 10%;
   height: 50vh;
 }
 
 h2{
   font-size:2rem;
-}
-
-.break {
-  flex-basis: 100%;
-  height: 0;
-}
-
-button {
-  display: inline-block;
-  border-radius: 20%;
-  border: none;
-  padding: 1rem 2rem;
-  margin: 0;
-  text-decoration: none;
-  background: none;
-  color: #ffffff;
-  font-family: sans-serif;
-  font-size: 1rem;
-  cursor: pointer;
-  text-align: center;
-  transition: background 250ms ease-in-out, transform 150ms ease;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  margin-right: 1vw;
 }
 
 button:hover,
