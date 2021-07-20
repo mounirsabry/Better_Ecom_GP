@@ -29,7 +29,7 @@ export class DepartmentsService {
   }
 
   getStudentPriorityList(id : number){
-    return this.httpclient.get<any>("https://localhost:44361/department/GetStudentDepartmentsPriorityList/" + id);
+    return this.httpclient.get<any>("https://localhost:44361/department/GetStudentPriorityList/" + id);
   }
 
   setDepartmentForStudent(department : any){
