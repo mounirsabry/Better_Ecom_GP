@@ -15,7 +15,6 @@ import { RegisterNewStudentOrInstructorComponent } from './modules/account-modul
 import { ChooseDepartmentComponent } from './modules/department-module/choose-department/choose-department.component';
 import { ViewDepartmentsCoursesComponent } from './modules/department-module/view-departments-courses/view-departments-courses.component';
 import { AddCourseToDepartmentComponent } from './modules/department-module/add-course-to-department/add-course-to-department.component';
-import { ChangeCourseDepartmentComponent } from './modules/department-module/change-course-department/change-course-department.component';
 import { AdminDepartmentComponent } from './modules/department-module/admin-department/admin-department.component';
 import { CourseInfoComponent } from './modules/department-module/course-info/course-info.component';
 
@@ -41,7 +40,6 @@ const routes: Routes = [
   {path:'chooseDepartment',component:ChooseDepartmentComponent},
   {path:'viewDepartmentCourses/:type',component:ViewDepartmentsCoursesComponent},
   {path:'addCourseToDepartment/:departmentCode',component:AddCourseToDepartmentComponent},
-  {path:'changeCourseDepartment',component:ChangeCourseDepartmentComponent},
   {path:'adminDepartment',component:AdminDepartmentComponent},
   {path:'courseInfo',component:CourseInfoComponent},
   {path:'**', redirectTo:'pageNotFound',pathMatch:'full'}
