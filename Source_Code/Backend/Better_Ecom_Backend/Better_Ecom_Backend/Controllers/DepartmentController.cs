@@ -383,7 +383,7 @@ namespace Better_Ecom_Backend.Controllers
             course.Course_description = jsonData.GetProperty("courseDescription").GetString();
 
             string saveCourseSql = "UPDATE course SET course_name = @Course_name, department_code = @Department_code, academic_year = @Academic_year, course_description = @Course_description" + "\n"
-                + "WHERE course_code = Course_code;";
+                + "WHERE course_code = @Course_code;";
 
             int status = _data.SaveData(saveCourseSql, course, _config.GetConnectionString("Default"));
 
