@@ -2,7 +2,7 @@
     <label>Choose Search Type</label>
     <select name="SearchType" id="SearchType" #SearchType formControlName="searchType">
         <option value="code">Course Code</option>
-        <option value="name">Course Name</option>
+        <option value="name" [hidden]="isAdmin()">Course Name</option>
     </select>
     <p *ngIf="searchTypeGet.invalid && searchTypeGet.touched" style="color: red;">please select a search type</p>
     <br>
@@ -35,7 +35,7 @@
 </table>
 -->
 
-<!--<div *ngFor="let course of objectValues(course_info)">
+<div *ngFor="let course of objectValues(course_info)">
     <form [formGroup]="updateCourseForm" (ngSubmit)=updateCourse() *ngFor="let course of objectValues(course_info)">
         <div *ngFor="let info of course | keyvalue">
                 <label>{{ info.key }}: </label>
@@ -46,12 +46,12 @@
         <button *ngIf="isAdmin()" type="submit" style="color: black;">Update Course Information</button>
     </form>
     <hr>
-</div>-->
+</div>
 
 <a *ngIf="isAdmin()" [routerLink]="['']">Update Course Information</a>
 
 
-<form [formGroup]="courseForm">
+<!--<form [formGroup]="courseForm">
     <div formArrayName="courseArray">
         <div *ngFor="let course of objectValues(courseArray.value); let courseIndex = index">
             <div [formGroupName]="courseIndex">
@@ -59,7 +59,7 @@
                 <form [formGroup]="updateCourseForm" (ngSubmit)="updateCourse()">
                     <div *ngFor="let info of course | keyvalue">
                         <label>{{ info.key }}: </label>
-                        <!--<label>{{ info.value }}.</label>-->
+                        <<label>{{ info.value }}.</label>
                         <label *ngIf="!isAdmin()">{{ info.value }}</label>
                         <input *ngIf="isAdmin() && checkKey(info.key)" type="{{ inputType(info.key) }}" placeholder="{{ info.value }}" value="{{ info.value }}" formControlName="{{ info.key }}">
                         <input type="text" *ngIf="!checkKey(info.key)" formControlName="{{ info.key }}" placeholder="{{ info.value }}">
@@ -70,4 +70,4 @@
             </div>
         </div>
     </div>
-</form>
+</form>-->
