@@ -22,10 +22,12 @@
   <br>
 
   <label>National ID</label>
-  <input type="number" formControlName="National_id">
+  <input type="text" formControlName="National_id">
   <p *ngIf="nationalIDGet.invalid && nationalIDGet.touched" style="color: red;"> National ID is required</p>
 
   <br>
+
+  <input *ngIf="type == 'student'" type="hidden" formControlName="Department_code" value="GE">
 
 
   <label>Birth Date</label>

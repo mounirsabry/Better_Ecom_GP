@@ -23,6 +23,7 @@ export class RegisterNewStudentOrInstructorComponent implements OnInit {
 
       this.registerForm.addControl('High_school_type',new FormControl('',Validators.required))
       this.registerForm.addControl('Entrance_year',new FormControl('',Validators.required))
+      this.registerForm.addControl('Department_code', new FormControl('GE'))
 
     }else if(this.type = 'instructor'){
 
@@ -43,12 +44,16 @@ export class RegisterNewStudentOrInstructorComponent implements OnInit {
     Nationality : new FormControl('',Validators.required),
     National_id : new FormControl('',Validators.required),
     Birth_date : new FormControl('',Validators.required),
-    Gender: new FormControl('',Validators.required)
+    Gender: new FormControl('',Validators.required),
   }
   )
 
   get fullNameGet() {
     return this.registerForm.get('Full_name')
+  }
+
+  get departmentCodeGet() {
+    return this.registerForm.get('Department_code')
   }
 
   get addressGet() {
