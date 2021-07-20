@@ -35,8 +35,8 @@
 </table>
 -->
 
-<div *ngFor="let course of objectValues(course_info)">
-    <form [formGroup]="updateCourseForm" (ngSubmit)=updateCourse()>
+<!--<div *ngFor="let course of objectValues(course_info)">
+    <form [formGroup]="updateCourseForm" (ngSubmit)=updateCourse() *ngFor="let course of objectValues(course_info)">
         <div *ngFor="let info of course | keyvalue">
                 <label>{{ info.key }}: </label>
                 <label *ngIf="!isAdmin()">{{ info.value }}</label>
@@ -46,4 +46,28 @@
         <button *ngIf="isAdmin()" type="submit" style="color: black;">Update Course Information</button>
     </form>
     <hr>
-</div>
+</div>-->
+
+<a *ngIf="isAdmin()" [routerLink]="['']">Update Course Information</a>
+
+
+<form [formGroup]="courseForm">
+    <div formArrayName="courseArray">
+        <div *ngFor="let course of objectValues(courseArray.value); let courseIndex = index">
+            <div [formGroupName]="courseIndex">
+                {{courseIndex}}
+                <form [formGroup]="updateCourseForm" (ngSubmit)="updateCourse()">
+                    <div *ngFor="let info of course | keyvalue">
+                        <label>{{ info.key }}: </label>
+                        <!--<label>{{ info.value }}.</label>-->
+                        <label *ngIf="!isAdmin()">{{ info.value }}</label>
+                        <input *ngIf="isAdmin() && checkKey(info.key)" type="{{ inputType(info.key) }}" placeholder="{{ info.value }}" value="{{ info.value }}" formControlName="{{ info.key }}">
+                        <input type="text" *ngIf="!checkKey(info.key)" formControlName="{{ info.key }}" placeholder="{{ info.value }}">
+                    </div>
+                    <button *ngIf="isAdmin()" type="submit" style="color: black;">Update Course Information</button>
+                    <hr>
+                </form>
+            </div>
+        </div>
+    </div>
+</form>

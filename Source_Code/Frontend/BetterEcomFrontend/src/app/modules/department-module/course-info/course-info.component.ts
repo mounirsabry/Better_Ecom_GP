@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { DepartmentCoursesService } from '../services/department-courses.service';
 
@@ -30,18 +30,35 @@ export class CourseInfoComponent implements OnInit {
       return this.courseInfoForm.get('searchType');
     }
 
+    courseForm = new FormGroup({
+      courseArray : new FormArray([]),
+    })
+
+    get courseArray(){
+      return this.courseForm.get('courseArray') as FormArray;
+    }
+
+    addcourse(){
+      this.courseArray.push(this.updateCourseForm);
+    }
+
+    removeCourse(courseIndex : number){
+      this.courseArray.removeAt(courseIndex);
+    }
+
     updateCourseForm = new FormGroup({
-      UserID : new FormControl('', Validators.required),
       department_code : new FormControl('', Validators.required),
       course_code : new FormControl('', Validators.required),
       course_name : new FormControl('', Validators.required),
       academic_year : new FormControl('', Validators.required),
       course_description : new FormControl('', Validators.required),
-      is_read_only : new FormControl('', Validators.required),
-      is_archived : new FormControl('', Validators.required),
+      is_read_only : new FormControl({disabled : true}, Validators.required),
+      is_archived : new FormControl({disabled : true}, Validators.required),
       //prerequisites : new FormControl(''),
       //departmentApplicability : new FormControl('')
     })
+
+    courseInfoFormArray = new FormArray([])
 
     get department_code_get(){
       return this.updateCourseForm.get('department_code');
@@ -76,16 +93,7 @@ export class CourseInfoComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe((params: ParamMap) =>{
       this.type = localStorage.getItem('type');
-      this.updateCourseForm.controls['UserID'].setValue(+localStorage.getItem('ID'));
     })
-    var course = {
-      'UserID' : +localStorage.getItem('ID'),
-      'courseCode' : this.course_code_get.value,
-      'academicYear' : this.academic_year_get.value,
-      'courseName' : this.course_name_get.value,
-      'departmentCode' : this.department_code_get.value,
-      'courseDescription' : this.course_description_get.value
-    }
   }
 
   searchForCourse(){
@@ -94,6 +102,12 @@ export class CourseInfoComponent implements OnInit {
         data =>{
           this.course_info = data;
           console.log(this.course_info);
+          for(let i of data){
+            this.updateCourseForm.setValue(i);
+            this.courseArray.push(this.updateCourseForm);
+            console.log(this.courseArray.value);
+          }
+          //console.log(this.courseArray.value);
         },
         error =>{
           console.log(error.error);
@@ -158,20 +172,22 @@ export class CourseInfoComponent implements OnInit {
     if(this.is_archived_get.value == 'false'){this.updateCourseForm.controls['is_archived'].setValue(0);}
     else if(this.is_archived_get.value == 'true'){this.updateCourseForm.controls['is_archived'].setValue(1);}*/
 
-    console.log(this.course_info[0].course_code);
+    //console.log(this.course_info[0].course_code);
 
-    var course = {
+    //console.log("heey",this.courseForm.value);
+
+    /*var course = {
       'UserID' : +localStorage.getItem('ID'),
       'courseCode' : (this.course_code_get.value == "")? this.course_info[0].course_code : this.course_code_get.value,
       'academicYear' : this.academic_year_get.value,
       'courseName' : this.course_name_get.value,
       'departmentCode' : this.department_code_get.value,
       'courseDescription' : this.course_description_get.value
-    }
+    }*/
 
-    console.log(course);
+    console.log(this.updateCourseForm.value);
 
-    this.departmentCoursesService.updateCourseInformation(course).subscribe(
+    /*this.departmentCoursesService.updateCourseInformation(course).subscribe(
       data =>{
         alert("Course updated");
       },
@@ -179,7 +195,7 @@ export class CourseInfoComponent implements OnInit {
         console.log(error.error);
         alert("failed");
       }
-    )
+    )*/
   }
 
 }
