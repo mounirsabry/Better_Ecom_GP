@@ -48,7 +48,7 @@ export class CourseInfoComponent implements OnInit {
 
     updateCourseForm = new FormGroup({
       department_code : new FormControl('', Validators.required),
-      course_code : new FormControl('', Validators.required),
+      course_code : new FormControl({disabled : true}, Validators.required),
       course_name : new FormControl('', Validators.required),
       academic_year : new FormControl('', Validators.required),
       course_description : new FormControl('', Validators.required),
@@ -103,11 +103,10 @@ export class CourseInfoComponent implements OnInit {
           this.course_info = data;
           console.log(this.course_info);
           for(let i of data){
+            console.log(i);
             this.updateCourseForm.setValue(i);
-            this.courseArray.push(this.updateCourseForm);
-            console.log(this.courseArray.value);
           }
-          //console.log(this.courseArray.value);
+          console.log(this.updateCourseForm.value);
         },
         error =>{
           console.log(error.error);
@@ -120,6 +119,10 @@ export class CourseInfoComponent implements OnInit {
         data =>{
           this.course_info = data;
           console.log(this.course_info);
+          for(let i of data){
+            this.updateCourseForm.setValue(i);
+          }
+          console.log(this.updateCourseForm.value);
         },
         error =>{
           console.log(error.error);
@@ -155,10 +158,10 @@ export class CourseInfoComponent implements OnInit {
   }
 
   checkKey(key){
-    if(key == 'is_read_only'){return false;}
-    else if (key == 'is_archived'){return false;}
+    if(key == 'is_archived' || key == 'is_read_only' || key == 'course_code'){return false;}
     else{return true;}
   }
+
 
   changeColor(name){
     return (this.updateCourseForm.get(name).dirty? 'red' : 'black')
@@ -172,22 +175,20 @@ export class CourseInfoComponent implements OnInit {
     if(this.is_archived_get.value == 'false'){this.updateCourseForm.controls['is_archived'].setValue(0);}
     else if(this.is_archived_get.value == 'true'){this.updateCourseForm.controls['is_archived'].setValue(1);}*/
 
-    //console.log(this.course_info[0].course_code);
-
-    //console.log("heey",this.courseForm.value);
-
-    /*var course = {
+    console.log(this.course_info[0].course_code);
+    var course = {
       'UserID' : +localStorage.getItem('ID'),
-      'courseCode' : (this.course_code_get.value == "")? this.course_info[0].course_code : this.course_code_get.value,
-      'academicYear' : this.academic_year_get.value,
-      'courseName' : this.course_name_get.value,
-      'departmentCode' : this.department_code_get.value,
-      'courseDescription' : this.course_description_get.value
-    }*/
+      'Course_code' : this.course_code_get.value,
+      'Academic_year' : +this.academic_year_get.value,
+      'Course_name' :  this.course_name_get.value,
+      'Department_code' : this.department_code_get.value,
+      'Course_description' : this.course_description_get.value
+    }
 
     console.log(this.updateCourseForm.value);
+    console.log(course);
 
-    /*this.departmentCoursesService.updateCourseInformation(course).subscribe(
+    this.departmentCoursesService.updateCourseInformation(course).subscribe(
       data =>{
         alert("Course updated");
       },
@@ -195,7 +196,7 @@ export class CourseInfoComponent implements OnInit {
         console.log(error.error);
         alert("failed");
       }
-    )*/
+    )
   }
 
 }

@@ -360,7 +360,7 @@ namespace Better_Ecom_Backend.Controllers
                 return BadRequest(new { Message = "you have not sent all data." });
             }
 
-            string courseCode = jsonData.GetProperty("courseCode").GetString();
+            string courseCode = jsonData.GetProperty("Course_code").GetString();
 
             string getCourseSql = "SELECT * FROM course WHERE course_code = @courseCode;";
             List<Course> courses = _data.LoadData<Course, dynamic>(getCourseSql, new { courseCode }, _config.GetConnectionString("Default"));
@@ -377,10 +377,10 @@ namespace Better_Ecom_Backend.Controllers
                 return BadRequest(new { Message = "course does not exist." });
             }
 
-            course.Department_code = jsonData.GetProperty("departmentCode").GetString();
-            course.Course_name = jsonData.GetProperty("courseName").GetString();
-            course.Academic_year = jsonData.GetProperty("academicYear").GetInt32();
-            course.Course_description = jsonData.GetProperty("courseDescription").GetString();
+            course.Department_code = jsonData.GetProperty("Department_code").GetString();
+            course.Course_name = jsonData.GetProperty("Course_name").GetString();
+            course.Academic_year = jsonData.GetProperty("Academic_year").GetInt32();
+            course.Course_description = jsonData.GetProperty("Course_description").GetString();
 
             string saveCourseSql = "UPDATE course SET course_name = @Course_name, department_code = @Department_code, academic_year = @Academic_year, course_description = @Course_description" + "\n"
                 + "WHERE course_code = Course_code;";
