@@ -22,7 +22,11 @@ export class DepartmentCoursesService {
   }
 
   addCourse(course : any){
-    return this.httpclient.post<any>("https://localhost:44361/department/AddCourseToDepartment" , course);
+    return this.httpclient.post<any>("https://localhost:44361/department/AddCourseToDepartment", course);
+  }
+
+  updateCourseInformation(course : any){
+    return this.httpclient.patch<any>("https://localhost:44361/department/UpdateCourseInfo", course);
   }
 
   handleError(error : HttpErrorResponse){
