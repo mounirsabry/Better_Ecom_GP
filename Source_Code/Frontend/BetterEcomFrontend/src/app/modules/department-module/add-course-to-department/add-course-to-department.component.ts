@@ -70,7 +70,6 @@ export class AddCourseToDepartmentComponent implements OnInit {
   addPrerequisite(){
     this.prerequisites_list.push(this.prerequisites_get.value);
     this.addCourseToDepartmentForm.controls['prerequisites'].reset();
-    //this.addCourseToDepartmentForm.controls['prerequisites'].setValue(this.prerequisites_list);
   }
 
   removePrerequisites(prerequisite : any){

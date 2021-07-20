@@ -29,6 +29,18 @@ export class DepartmentCoursesService {
     return this.httpclient.patch<any>("https://localhost:44361/department/UpdateCourseInfo", course);
   }
 
+  updateCoursePrerequisiteInfo(coursePrerequisite : any){
+    return this.httpclient.patch<any>("https://localhost:44361/department/UpdateCoursePrerequisites", coursePrerequisite);
+  }
+
+  updateCourseDepartmentApplicabilityInfo(courseDepApp : any){
+    return this.httpclient.patch<any>("https://localhost:44361/department/UpdateCourseDepartmentApplicability", courseDepApp);
+  }
+  
+  archiveCourse(course : any){
+    return this.httpclient.patch<any>("https://localhost:44361/department/ArchiveCourse", course);
+  }
+
   handleError(error : HttpErrorResponse){
     return throwError(error);
   }

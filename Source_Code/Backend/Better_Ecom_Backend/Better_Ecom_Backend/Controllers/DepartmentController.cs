@@ -383,7 +383,7 @@ namespace Better_Ecom_Backend.Controllers
             course.Course_description = jsonData.GetProperty("Course_description").GetString();
 
             string saveCourseSql = "UPDATE course SET course_name = @Course_name, department_code = @Department_code, academic_year = @Academic_year, course_description = @Course_description" + "\n"
-                + "WHERE course_code = Course_code;";
+                + "WHERE course_code = @Course_code;";
 
             int status = _data.SaveData(saveCourseSql, course, _config.GetConnectionString("Default"));
 
@@ -423,7 +423,7 @@ namespace Better_Ecom_Backend.Controllers
             List<string> sqlList = new();
             List<dynamic> parameterList = new();
 
-            string courseCode = jsonData.GetProperty("courseCode").GetString();
+            string courseCode = jsonData.GetProperty("Course_code").GetString();
 
             List<string> prerequisites = new();
             foreach (JsonElement element in jsonData.GetProperty("prerequisites").EnumerateArray())
@@ -478,7 +478,7 @@ namespace Better_Ecom_Backend.Controllers
             List<string> sqlList = new();
             List<dynamic> parameterList = new();
 
-            string courseCode = jsonData.GetProperty("courseCode").GetString();
+            string courseCode = jsonData.GetProperty("Course_code").GetString();
 
             List<string> departmentApplicability = new();
 
@@ -525,7 +525,7 @@ namespace Better_Ecom_Backend.Controllers
         /// <param name="jsonData">json object containing the course id admin with to archive.</param>
         /// <returns></returns>
         [Authorize(Roles = "admin")]
-        [HttpDelete("ArchiveCourse")]
+        [HttpPatch("ArchiveCourse")]
         public IActionResult ArchiveCourse([FromBody] dynamic jsonData)
         {
             //ADMIN ONLY FUNCTION.
@@ -535,7 +535,7 @@ namespace Better_Ecom_Backend.Controllers
             }
 
             string courseCode;
-            if (jsonData.TryGetProperty("CourseCode", out temp))
+            if (jsonData.TryGetProperty("Course_code", out temp))
             {
                 courseCode = temp.GetString();
             }

@@ -48,8 +48,6 @@
     <hr>
 </div>
 
-<a *ngIf="isAdmin()" [routerLink]="['']">Update Course Information</a>
-
 
 <!--<form [formGroup]="courseForm">
     <div formArrayName="courseArray">
@@ -71,3 +69,41 @@
         </div>
     </div>
 </form>-->
+
+<form [formGroup]="updateCoursePrerequisiteForm" (ngSubmit)="updateCoursePrerequisite()" [hidden]="!isAdmin()">
+    <br>
+
+    <label>Prerequisites: </label>
+    <input type="text" name="Prerequisites" id="Prerequisites" #Prerequisites formControlName="prerequisites">
+    <select name="PrerequisitesList" id="PrerequisitesList" #PrerequisitesList>
+        <option *ngFor="let pList of prerequisites_list">{{ pList }}</option>
+    </select>
+    <br>
+    <button type="button" (click)="addPrerequisite()" style="color: black;">add prerequisite</button>
+    <button type="button" (click)="removePrerequisites(PrerequisitesList.value)" style="color: black;">remove prerequisite</button>
+
+    <br>
+
+    <button type="submit" [disabled]="isListEmpty(prerequisites_list)" style="color: black;">Update Course Prerequisite</button>
+</form>
+
+<br>
+<hr>
+
+<form [formGroup]="updateCourseDepartmentApplicabilityForm" (ngSubmit)="updateCourseDepartmentApplicability()" [hidden]="!isAdmin()">
+    <br>
+    <label>Department Applicability: </label>
+    <input type="text" name="DepartmentApplicability" id="DepartmentApplicability" #DepartmentApplicability formControlName="departmentApplicability">
+    <select name="DepAppList" id="DepAppList" #DepAppList>
+        <option *ngFor="let depAppList of departmentApplicability_list">{{ depAppList }}</option>
+    </select>
+    <br>
+    <button type="button" (click)="addDepartmentApplicability()" style="color: black;">add department</button>
+    <button type="button" (click)="removeDepartmentApplicability(DepAppList.value)" style="color: black;">remove department</button>
+
+    <br>
+
+    <button type="submit" [disabled]="isListEmpty(departmentApplicability_list)" style="color: black;">Update</button>
+</form>
+
+<button type="button" (click)="archiveCourse()" style="color: black;">Archive Course</button>

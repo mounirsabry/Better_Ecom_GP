@@ -13,6 +13,8 @@ export class CourseInfoComponent implements OnInit {
   course_info : Array<any> = []
   updateFlag : boolean = false;
   type : string
+  prerequisites_list : Array<string> = []
+  departmentApplicability_list : Array<string> = []
 
   constructor(private activatedRoute:ActivatedRoute,
     private departmentCoursesService:DepartmentCoursesService) { }
@@ -30,21 +32,8 @@ export class CourseInfoComponent implements OnInit {
       return this.courseInfoForm.get('searchType');
     }
 
-    courseForm = new FormGroup({
-      courseArray : new FormArray([]),
-    })
 
-    get courseArray(){
-      return this.courseForm.get('courseArray') as FormArray;
-    }
-
-    addcourse(){
-      this.courseArray.push(this.updateCourseForm);
-    }
-
-    removeCourse(courseIndex : number){
-      this.courseArray.removeAt(courseIndex);
-    }
+   
 
     updateCourseForm = new FormGroup({
       department_code : new FormControl('', Validators.required),
@@ -54,8 +43,6 @@ export class CourseInfoComponent implements OnInit {
       course_description : new FormControl('', Validators.required),
       is_read_only : new FormControl({disabled : true}, Validators.required),
       is_archived : new FormControl({disabled : true}, Validators.required),
-      //prerequisites : new FormControl(''),
-      //departmentApplicability : new FormControl('')
     })
 
     courseInfoFormArray = new FormArray([])
@@ -89,6 +76,23 @@ export class CourseInfoComponent implements OnInit {
       return this.updateCourseForm.get('is_archived');
     }
 
+
+
+    updateCoursePrerequisiteForm = new FormGroup({
+      prerequisites : new FormControl('')
+    })
+
+    get prerequisites_get(){
+      return this.updateCoursePrerequisiteForm.get('prerequisites');
+    }
+
+    updateCourseDepartmentApplicabilityForm = new FormGroup({
+      departmentApplicability : new FormControl('')
+    })
+
+    get departmentApplicability_get(){
+      return this.updateCourseDepartmentApplicabilityForm.get('departmentApplicability');
+    }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe((params: ParamMap) =>{
@@ -169,12 +173,6 @@ export class CourseInfoComponent implements OnInit {
 
   updateCourse(){
 
-    /*if(this.is_read_get.value == 'false'){this.updateCourseForm.controls['is_read_only'].setValue(0);}
-    else if(this.is_read_get.value == 'true'){this.updateCourseForm.controls['is_read_only'].setValue(1);}
-
-    if(this.is_archived_get.value == 'false'){this.updateCourseForm.controls['is_archived'].setValue(0);}
-    else if(this.is_archived_get.value == 'true'){this.updateCourseForm.controls['is_archived'].setValue(1);}*/
-
     console.log(this.course_info[0].course_code);
     var course = {
       'UserID' : +localStorage.getItem('ID'),
@@ -191,6 +189,93 @@ export class CourseInfoComponent implements OnInit {
     this.departmentCoursesService.updateCourseInformation(course).subscribe(
       data =>{
         alert("Course updated");
+      },
+      error =>{
+        console.log(error.error);
+        alert("failed");
+      }
+    )
+  }
+
+  addPrerequisite(){
+    this.prerequisites_list.push(this.prerequisites_get.value);
+    this.updateCoursePrerequisiteForm.controls['prerequisites'].reset();
+  }
+
+  removePrerequisites(prerequisite : any){
+    console.log(prerequisite);
+    this.prerequisites_list.forEach((element, index)=>{
+      if(element == prerequisite) this.prerequisites_list.splice(index, 1);
+    })
+  }
+
+  addDepartmentApplicability(){
+    this.departmentApplicability_list.push(this.departmentApplicability_get.value);
+    this.updateCourseDepartmentApplicabilityForm.controls['departmentApplicability'].reset();
+  }
+
+  removeDepartmentApplicability(depApp : any){
+    console.log(depApp);
+    this.departmentApplicability_list.forEach((element, index)=>{
+      if(element == depApp) this.departmentApplicability_list.splice(index, 1);
+    })
+  }
+
+  isListEmpty(list){
+    if(list.length < 1){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  updateCoursePrerequisite(){
+    var course_prerequisite = {
+      'UserID' : +localStorage.getItem('ID'),
+      'Course_code' : this.course_code_get.value,
+      'prerequisites' : this.prerequisites_list
+    }
+
+    this.departmentCoursesService.updateCoursePrerequisiteInfo(course_prerequisite).subscribe(
+      data =>{
+        alert("Course Prerequisite updated");
+      },
+      error =>{
+        console.log(error.error);
+        alert("failed");
+      }
+    )
+  }
+
+  updateCourseDepartmentApplicability(){
+    var course_dep_applicablitiy = {
+      'UserID' : +localStorage.getItem('ID'),
+      'Course_code' : this.course_code_get.value,
+      'departmentApplicability' : this.departmentApplicability_list
+    }
+
+    this.departmentCoursesService.updateCourseDepartmentApplicabilityInfo(course_dep_applicablitiy).subscribe(
+      data =>{
+        alert("Course Department Applicalbility updated");
+      },
+      error =>{
+        console.log(error.error);
+        alert("failed");
+      }
+    )
+  }
+
+  archiveCourse(){
+    var course = {
+      'UserID' : +localStorage.getItem('ID'),
+      'Course_code' : this.course_code_get.value,
+      'is_archived' : this.is_archived_get.value
+    }
+
+    this.departmentCoursesService.archiveCourse(course).subscribe(
+      data =>{
+        alert("Course archived");
       },
       error =>{
         console.log(error.error);
