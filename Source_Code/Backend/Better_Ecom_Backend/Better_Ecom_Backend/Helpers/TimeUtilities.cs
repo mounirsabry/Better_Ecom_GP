@@ -28,8 +28,6 @@ namespace Better_Ecom_Backend.Helpers
         {
 
         }
-
-
         */
         public static List<Term> GetAvailableTerms()
         {
@@ -44,7 +42,7 @@ namespace Better_Ecom_Backend.Helpers
             return terms;
         }
 
-        internal static Term GetCurrentTerm()
+        public static Term GetCurrentTerm()
         {
             throw new NotImplementedException();
         }
