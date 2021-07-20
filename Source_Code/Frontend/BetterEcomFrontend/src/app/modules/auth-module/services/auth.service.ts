@@ -13,7 +13,7 @@ export class AuthService {
   login(ID:number, password:string, type:string) {
 
     let user:any = {
-      "ID":ID,
+      "UserID":ID,
       "Password":password,
       "Type":type
     }

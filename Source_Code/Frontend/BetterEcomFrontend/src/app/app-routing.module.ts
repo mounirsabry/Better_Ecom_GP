@@ -13,6 +13,10 @@ import { ViewProfileComponent } from './modules/account-module/view-profile/view
 import { LoginComponent } from './modules/auth-module/login/login.component';
 import { RegisterNewStudentOrInstructorComponent } from './modules/account-module/register-new-student-or-instructor/register-new-student-or-instructor.component';
 import { ChooseDepartmentComponent } from './modules/department-module/choose-department/choose-department.component';
+import { ViewDepartmentsCoursesComponent } from './modules/department-module/view-departments-courses/view-departments-courses.component';
+import { AddCourseToDepartmentComponent } from './modules/department-module/add-course-to-department/add-course-to-department.component';
+import { AdminDepartmentComponent } from './modules/department-module/admin-department/admin-department.component';
+import { CourseInfoComponent } from './modules/department-module/course-info/course-info.component';
 
 const routes: Routes = [
   // i did redirecto to startPage instead of normal cuz you can't pass optional paramters to '' url.
@@ -34,6 +38,10 @@ const routes: Routes = [
   {path:'registerNewStudentOrInstructor/:type',component:RegisterNewStudentOrInstructorComponent},
   {path:'registerationsAndAccountsManagements',component:RegisterationsAndAccountsManagementComponent},
   {path:'chooseDepartment',component:ChooseDepartmentComponent},
+  {path:'viewDepartmentCourses/:type',component:ViewDepartmentsCoursesComponent},
+  {path:'addCourseToDepartment/:departmentCode',component:AddCourseToDepartmentComponent},
+  {path:'adminDepartment',component:AdminDepartmentComponent},
+  {path:'courseInfo',component:CourseInfoComponent},
   {path:'**', redirectTo:'pageNotFound',pathMatch:'full'}
 
 ];
