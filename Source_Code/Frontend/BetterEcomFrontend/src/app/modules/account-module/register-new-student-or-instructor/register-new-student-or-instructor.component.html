@@ -22,10 +22,24 @@
   <br>
 
   <label>National ID</label>
-  <input type="number" formControlName="National_id">
+  <input type="text" formControlName="National_id">
   <p *ngIf="nationalIDGet.invalid && nationalIDGet.touched" style="color: red;"> National ID is required</p>
 
   <br>
+
+  <input *ngIf="type == 'student'" type="hidden" formControlName="Department_code" value="GE">
+
+  <!--even though it looks like the default select is Ai, it is empty :/-->
+  <div *ngIf="type == 'instructor'" >
+    <label >Department Code    </label>
+    <select  formControlName="Department_code" >
+      <option *ngFor="let code of departmentCodes">{{code}}</option>
+    </select>
+    <p *ngIf="departmentCodeGet.invalid && departmentCodeGet.touched" style="color: red;"> Department Code is required</p>
+
+    <br >
+  </div>
+
 
 
   <label>Birth Date</label>
