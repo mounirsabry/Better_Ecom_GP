@@ -1,0 +1,14 @@
+<form [formGroup]="setDepartmentForm" (ngSubmit)="setDepartment()">
+    <label>Student ID </label>
+    <input type="number" name="StudentID" id="StudentID" #StudentID formControlName="StudentID">
+    <p *ngIf="studentIdGet.invalid && studentIdGet.touched" style="color: red;">Id is required</p>
+    <button type="button" (click)="getStudentList()" style="color: black;">Get Student List</button>
+
+    <br>
+
+    <div *ngFor="let dep of view_priority_list">
+        <input type="radio" name="DepartmentCode" id="DepartmentCode" value="{{ dep }}" #DepartmentCode formControlName="DepartmentCode">
+        <label for="{{ dep }}">{{ dep }}</label>
+    </div>
+    <button type="submit" [disabled]="setDepartmentForm.invalid" style="color: black;">Set Department</button>
+</form>
