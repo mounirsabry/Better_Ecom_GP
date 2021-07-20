@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { DepartmentsService } from '../../department-module/services/departments.service';
 import { RegisterNewStudentOrInstructorService } from '../services/register-new-student-or-instructor.service';
 
 @Component({
@@ -10,8 +11,10 @@ import { RegisterNewStudentOrInstructorService } from '../services/register-new-
 })
 export class RegisterNewStudentOrInstructorComponent implements OnInit {
 
+  departmentCodes = []
   constructor(private activatedRoute:ActivatedRoute,
-              private regNewStdntOrIns :RegisterNewStudentOrInstructorService) { }
+              private regNewStdntOrIns : RegisterNewStudentOrInstructorService,
+              private departmentsService : DepartmentsService) { }
 
   type:string
   ngOnInit(): void {
@@ -31,6 +34,14 @@ export class RegisterNewStudentOrInstructorComponent implements OnInit {
       this.registerForm.addControl('University',new FormControl('',Validators.required))
       this.registerForm.addControl('Graduation_year',new FormControl('',Validators.required))
 
+      this.registerForm.addControl('Department_code', new FormControl('',Validators.required))
+
+      this.departmentsService.getDepartmentsData().subscribe(
+        data =>{
+
+          this.departmentCodes = data.map(function(obj) {return obj.department_code});
+        }
+      )
 
     }
 
