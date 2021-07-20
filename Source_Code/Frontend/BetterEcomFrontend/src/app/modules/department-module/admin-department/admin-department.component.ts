@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DepartmentsService } from '../services/departments.service';
 
+// this component admin set department for student
+
 @Component({
   selector: 'app-admin-department',
   templateUrl: './admin-department.component.html',

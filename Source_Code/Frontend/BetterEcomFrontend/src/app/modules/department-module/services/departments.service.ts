@@ -33,7 +33,7 @@ export class DepartmentsService {
   }
 
   setDepartmentForStudent(department : any){
-    return this.httpclient.patch<any>("https://localhost:44361/department/SetDepartmentForStudent", department);
+    return this.httpclient.delete<any>("https://localhost:44361/department/SetDepartmentForStudent", department);
   }
 
   handleError(error : HttpErrorResponse){
