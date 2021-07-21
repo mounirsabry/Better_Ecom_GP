@@ -95,7 +95,7 @@
                     <label class="col-3">Gender</label>
                     <div class="col-9">
                         <select formControlName="Gender">
-                      <option >Male</option>F
+                      <option >Male</option>
                       <option >Female</option>
                     </select>
                     </div>
@@ -104,6 +104,23 @@
                     <p class="text-danger" *ngIf="genderGet.invalid && genderGet.touched"> Gender is required</p>
                 </div>
             </div>
+
+            <input type="hidden" *ngIf="type == 'student'" formControlName="Department_code">
+
+            <div class="container-fluid my-2" *ngIf="type == 'instructor'">
+              <div class="row">
+                  <label class="col-3">Department Code</label>
+                  <div class="col-9">
+                      <select formControlName="Department_code">
+                    <option *ngFor="let code of departmentCodes" >{{code}}</option>
+
+                  </select>
+                  </div>
+              </div>
+              <div class="row">
+                  <p class="text-danger" *ngIf="departmentCodeGet.invalid && departmentCodeGet.touched"> Department Code is required</p>
+              </div>
+          </div>
 
 
             <button class="btn btn-outline-dark col-12 my-5" type="submit" [disabled]="registerForm.invalid">Register </button>
