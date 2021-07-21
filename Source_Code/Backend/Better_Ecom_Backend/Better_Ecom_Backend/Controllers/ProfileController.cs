@@ -34,7 +34,7 @@ namespace Better_Ecom_Backend.Controllers
         [HttpGet("GetProfile/{UserID:int}/{Type}")]
         public dynamic GetProfile([FromHeader] string Authorization , int userID, string type)
         {
-            TokenInfo idAndType = HelperFunctions.getIdAndTypeFromToken(Authorization);
+            TokenInfo idAndType = HelperFunctions.GetIdAndTypeFromToken(Authorization);
 
             string deducedType = HelperFunctions.GetUserTypeFromID(userID);
             if (type != deducedType || deducedType == "invalid")

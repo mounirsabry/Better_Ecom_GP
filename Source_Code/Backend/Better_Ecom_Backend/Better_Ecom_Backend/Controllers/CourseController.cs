@@ -1,4 +1,5 @@
 ﻿using Better_Ecom_Backend.Helpers;
+using Better_Ecom_Backend.Models;
 using DataLibrary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -32,17 +33,34 @@ namespace Better_Ecom_Backend.Controllers
             return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
         }
 
-        [HttpGet("GetStudentRegisteredCourseInstances")]
-        public IActionResult GetStudentRegisteredCourseInstances()
+        [HttpGet("GetCourseAvailableCourseInstances/{CourseCode}")]
+        public IActionResult GetCourseAvailableCourseInstances(string courseCode)
         {
             //STUDENT, ADMIN FUNCTION.
+            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+        }
+
+        [HttpGet("GetStudentRegisteredCourseInstances/{StudentID:int}")]
+        public IActionResult GetStudentRegisteredCourseInstances(int studentID)
+        {
+            //STUDENT, ADMIN FUNCTION.
+
+            //Check the token, if the user is an admin, then accept any valid student ID.
+            //If the user is a student, then the sent student ID must match the id in the token.
             return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
         }
 
         [HttpPost("RegisterToCourseInstance")]
         public IActionResult RegisterToCourseInstance([FromBody] JsonElement jsonInput)
         {
-            //STUDENT ONLY FUNCTION.
+            //STUDENT, ADMIN FUNCTION.
+            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+        }
+
+        [HttpDelete("DropStudentFromCourseInstance")]
+        public IActionResult DropStudentFromCourseInstance([FromBody] JsonElement jsonInput)
+        {
+            //STUDENT, ADMIN FUNCTION.
             return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
         }
 
@@ -126,9 +144,29 @@ namespace Better_Ecom_Backend.Controllers
             return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
         }
 
-        private static bool IsFromStudentAvailableCoursesList(string courseCode)
+        private static bool IsFromStudentAvailableCoursesList(int userID)
         {
             return true;
+        }
+
+        private static bool IsFromCourseAvailableCourseInstancesList(int courseInstanceID)
+        {
+            return true;
+        }
+
+        private List<string> GetCourseCodesListFromCourseInstanceID(int courseInstanceID)
+        {
+            string sql = "SELECT course_code FROM course" + "\n"
+                + "INNER JOIN course_instance" + "\n"
+                + "WHERE course.course_code = course_instance.course_code" + "\n"
+                + "AND instance_id = @courseInstanceID;";
+
+            List<string> courseCodes = _data.LoadData<string, dynamic>(sql, new { courseInstanceID }, _config.GetConnectionString("Default"));
+            if (courseCodes is null)
+            {
+                return null;
+            }
+            return courseCodes;
         }
     }
 }

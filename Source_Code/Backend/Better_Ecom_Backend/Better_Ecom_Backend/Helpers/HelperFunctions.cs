@@ -17,10 +17,10 @@ namespace Better_Ecom_Backend.Helpers
             return "not implemented yet.";
         }
 
-        public static TokenInfo getIdAndTypeFromToken(string tokenString)
+        public static TokenInfo GetIdAndTypeFromToken(string tokenString)
         {
             JwtSecurityTokenHandler handler = new();
-            tokenString = tokenString.Substring(7);
+            tokenString = tokenString[7..];
             JwtSecurityToken token = handler.ReadJwtToken(tokenString);
 
             return new TokenInfo(int.Parse(token.Claims.ToList()[1].Value), token.Claims.ToList()[0].Value  );

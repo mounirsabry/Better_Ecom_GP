@@ -95,23 +95,12 @@ CREATE TABLE IF NOT EXISTS course_instance (
     course_term ENUM('First', 'Second', 'Summer', 'Other') NOT NULL,
     credit_hours INT NOT NULL DEFAULT 0,
     is_read_only BOOL NOT NULL DEFAULT FALSE,
+    is_closed_for_registration BOOL NOT NULL DEFAULT FALSE,
     CONSTRAINT course_instance_code_year_term_combination_unique UNIQUE (course_code , course_year , course_term),
     CONSTRAINT course_instance_course_code FOREIGN KEY (course_code)
         REFERENCES course (course_code)
         ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY (instance_id)
-);
-
-CREATE TABLE IF NOT EXISTS course_department_applicability (
-    course_code VARCHAR(20) NOT NULL,
-    department_code CHAR(2) NOT NULL,
-    CONSTRAINT course_department_applicability_course_code FOREIGN KEY (course_code)
-        REFERENCES course (course_code)
-        ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT course_department_applicability_department_code FOREIGN KEY (department_code)
-        REFERENCES department (department_code)
-        ON UPDATE CASCADE ON DELETE CASCADE,
-    PRIMARY KEY (course_code , department_code)
 );
 
 CREATE TABLE IF NOT EXISTS course_prerequisite (
@@ -124,6 +113,18 @@ CREATE TABLE IF NOT EXISTS course_prerequisite (
         REFERENCES course (course_code)
         ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY (course_code , prerequisite_course_code)
+);
+
+CREATE TABLE IF NOT EXISTS course_department_applicability (
+    course_code VARCHAR(20) NOT NULL,
+    department_code CHAR(2) NOT NULL,
+    CONSTRAINT course_department_applicability_course_code FOREIGN KEY (course_code)
+        REFERENCES course (course_code)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT course_department_applicability_department_code FOREIGN KEY (department_code)
+        REFERENCES department (department_code)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (course_code , department_code)
 );
 
 CREATE TABLE IF NOT EXISTS course_instance_late_registration_request (

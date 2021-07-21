@@ -40,7 +40,7 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult Login([FromBody] JsonElement loginData)
         {
 
-            if(!LoginRequiredDataValid(loginData))
+            if (!LoginRequiredDataValid(loginData))
             {
                 return BadRequest(new { Message = "required data missing or invalid." });
             }
@@ -191,7 +191,7 @@ namespace Better_Ecom_Backend.Controllers
         [HttpPatch("ResetAccountCredientials")]
         public IActionResult ResetAccountCredientials([FromBody] JsonElement userData)
         {
-            if(!ResetAccountCredientialsRequiredDataValid(userData))
+            if (!ResetAccountCredientialsRequiredDataValid(userData))
             {
                 return BadRequest(new { Message = "required data missing or invalid." });
             }
