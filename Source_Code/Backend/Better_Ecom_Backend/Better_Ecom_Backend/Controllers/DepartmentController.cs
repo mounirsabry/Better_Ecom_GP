@@ -639,7 +639,6 @@ namespace Better_Ecom_Backend.Controllers
             List<CourseInstance> courseInstance = _data.LoadData<CourseInstance, dynamic>(getCourseInstanceByIdSql, new { instanceID }, _config.GetConnectionString("Default"));
             if (courseInstance is null)
             {
-
                 return BadRequest(new { Message = "unknown error, maybe database server is down." });
             }
 
