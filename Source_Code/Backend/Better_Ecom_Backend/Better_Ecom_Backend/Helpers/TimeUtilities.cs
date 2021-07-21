@@ -13,22 +13,24 @@ namespace Better_Ecom_Backend.Helpers
             string currentYearString = DateTime.Today.ToString("yyyy");
             return Int32.Parse(currentYearString);
         }
-        /*
-        public static Term GetCurrentTerm()
-        {
-
-        }
 
         public static int GetCurrentMonth()
         {
-
+            string currentMonthString = DateTime.Today.ToString("MM");
+            return Int32.Parse(currentMonthString);
         }
 
         public static int GetCurrentDay()
         {
-
+            string currentDayString = DateTime.Today.ToString("dd");
+            return Int32.Parse(currentDayString);
         }
-        */
+
+        public static DayOfWeek GetCurrentDayOfWeek()
+        {
+            return DateTime.Today.DayOfWeek;
+        }
+
         public static List<Term> GetAvailableTerms()
         {
             List<Term> terms = new()
@@ -44,7 +46,19 @@ namespace Better_Ecom_Backend.Helpers
 
         public static Term GetCurrentTerm()
         {
-            throw new NotImplementedException();
+            int currentMonth = GetCurrentMonth();
+            if ((currentMonth >= 9 && currentMonth <= 12) || (currentMonth == 1))
+            {
+                return Term.First;
+            }
+            else if (currentMonth >= 2 && currentMonth <= 6)
+            {
+                return Term.Second;
+            }
+            else
+            {
+                return Term.Summer;
+            }
         }
     }
 }
