@@ -90,7 +90,7 @@ namespace Better_Ecom_Backend.Controllers
                 for (int i = 1; i <= 5; i++)
                 {
                     sqlList.Add($"UPDATE student_department_priority_list SET priority = @priority WHERE student_id = @studentID AND department_code = @department_code");
-                    parameterList.Add(new { student_id = studentID, department_code = jsonData.GetProperty($"DepartmentCode{i}").GetString(), priority = i });
+                    parameterList.Add(new { studentID, department_code = jsonData.GetProperty($"DepartmentCode{i}").GetString(), priority = i });
                 }
             }
             else
@@ -98,7 +98,7 @@ namespace Better_Ecom_Backend.Controllers
                 for (int i = 1; i <= 5; i++)
                 {
                     sqlList.Add($"INSERT INTO student_department_priority_list VALUES(@studentID, @department_code, @priority)");
-                    parameterList.Add(new { student_id = studentID, department_code = jsonData.GetProperty($"DepartmentCode{i}").GetString(), priority = i });
+                    parameterList.Add(new { studentID, department_code = jsonData.GetProperty($"DepartmentCode{i}").GetString(), priority = i });
                 }
             }
 
