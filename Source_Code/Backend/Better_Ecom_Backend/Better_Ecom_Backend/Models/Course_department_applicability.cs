@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace Better_Ecom_Backend.Models
 {
-    public class CourseDepartmentApplicability
+    public class Course_department_applicability
     {
         public string Course_code { get; set; }
         public string Deparmtent_code { get; set; }
 
-        public CourseDepartmentApplicability(string courseCode, string departmentCode)
+        public Course_department_applicability(string courseCode, string departmentCode)
         {
             Course_code = courseCode;
             Deparmtent_code = departmentCode;
         }
 
-        public CourseDepartmentApplicability() : this(null, null) { }
+        public Course_department_applicability() : this(null, null) { }
 
-        public CourseDepartmentApplicability(JsonElement jsonData)
+        public Course_department_applicability(JsonElement jsonData)
         {
             JsonElement temp;
             if (jsonData.TryGetProperty(nameof(Course_code), out temp))

@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS admin_user (
     PRIMARY KEY (admin_user_id)
 );
         
-CREATE TABLE IF NOT EXISTS student_department_priority_list (
+CREATE TABLE IF NOT EXISTS student_department_priority (
     student_id INT NOT NULL,
     department_code CHAR(2) NOT NULL,
     priority INT NOT NULL,

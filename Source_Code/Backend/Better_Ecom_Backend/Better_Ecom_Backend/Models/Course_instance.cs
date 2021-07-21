@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Better_Ecom_Backend.Models
 {
-    public class CourseInstance
+    public class Course_instance
     {
         public int Instance_id { get; set; }
         public string Course_code { get; set; }
@@ -14,7 +14,7 @@ namespace Better_Ecom_Backend.Models
         public Term Course_term { get; set; }
         public int Credit_hours { get; set; }
 
-        public CourseInstance(int instanceID, string courseCode, int courseYear, Term courseTerm, int creditHours)
+        public Course_instance(int instanceID, string courseCode, int courseYear, Term courseTerm, int creditHours)
         {
             Instance_id = instanceID;
             Course_code = courseCode;
@@ -23,9 +23,9 @@ namespace Better_Ecom_Backend.Models
             Credit_hours = creditHours;
         }
 
-        public CourseInstance() : this(-1, null, -1, Term.Other, 0) { }
+        public Course_instance() : this(-1, null, -1, Term.Other, 0) { }
 
-        public CourseInstance(JsonElement jsonData)
+        public Course_instance(JsonElement jsonData)
         {
             JsonElement temp;
             if (jsonData.TryGetProperty(nameof(Instance_id), out temp))

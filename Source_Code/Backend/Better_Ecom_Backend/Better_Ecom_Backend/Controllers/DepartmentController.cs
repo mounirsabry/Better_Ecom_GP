@@ -607,7 +607,7 @@ namespace Better_Ecom_Backend.Controllers
             }
 
             string getCourseInstancesByCodeSql = "SELECT * FROM course_instance WHERE course_code = @courseCode;";
-            List<CourseInstance> courseInstances = _data.LoadData<CourseInstance, dynamic>(getCourseInstancesByCodeSql, new { courseCode }, _config.GetConnectionString("Default"));
+            List<Course_instance> courseInstances = _data.LoadData<Course_instance, dynamic>(getCourseInstancesByCodeSql, new { courseCode }, _config.GetConnectionString("Default"));
             if (courseInstances is null)
             {
 
@@ -636,7 +636,7 @@ namespace Better_Ecom_Backend.Controllers
             }
 
             string getCourseInstanceByIdSql = "SELECT * FROM course_instance WHERE instance_id = @instanceID;";
-            List<CourseInstance> courseInstance = _data.LoadData<CourseInstance, dynamic>(getCourseInstanceByIdSql, new { instanceID }, _config.GetConnectionString("Default"));
+            List<Course_instance> courseInstance = _data.LoadData<Course_instance, dynamic>(getCourseInstanceByIdSql, new { instanceID }, _config.GetConnectionString("Default"));
             if (courseInstance is null)
             {
                 return BadRequest(new { Message = "unknown error, maybe database server is down." });
@@ -668,7 +668,7 @@ namespace Better_Ecom_Backend.Controllers
                 return BadRequest(new { Message = "you have not sent all required data." });
             }
 
-            CourseInstance courseInstance = new(jsonData);
+            Course_instance courseInstance = new(jsonData);
             //Wait until we see how it's calculated or provided.Term();
 
             if (!CheckCourseExist(courseInstance.Course_code))
@@ -724,7 +724,7 @@ namespace Better_Ecom_Backend.Controllers
         private bool CheckUserHasPriorities(int studentID)
         {
             string loadPrioritiesSql = "SELECT * FROM student_department_priority_list WHERE student_id = @studentID;";
-            List<StudentDepartmentPriority> priorities = _data.LoadData<StudentDepartmentPriority, dynamic>(loadPrioritiesSql, new { studentID }, _config.GetConnectionString("Default"));
+            List<Student_department_priority> priorities = _data.LoadData<Student_department_priority, dynamic>(loadPrioritiesSql, new { studentID }, _config.GetConnectionString("Default"));
 
             if (priorities is null || priorities.Count == 0)
             {
