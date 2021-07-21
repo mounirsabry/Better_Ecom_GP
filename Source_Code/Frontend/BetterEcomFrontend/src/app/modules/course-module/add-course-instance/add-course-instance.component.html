@@ -1,1 +1,33 @@
-<p>add-course-instance works!</p>
+<form [formGroup]="addCourseInstanceForm" (ngSubmit)="addCourseInstance()">
+
+    <!--<label>Enter Instance Id: </label>
+    <input type="number" name="InstanceID" id="InstanceID" #InstanceID formControlName="Instance_id">
+    <p *ngIf="instance_id_get.invalid && instance_id_get.touched" style="color: red;">Instance Id is required</p>-->
+
+    <br>
+
+    <label>Enter Course Code: </label>
+    <input type="text" name="CourseCode" id="CourseCode" #CourseCode formControlName="Course_code">
+    <p *ngIf="course_code_get.invalid && course_code_get.touched" style="color: red;">Course Code is required</p>
+
+    <br>
+
+    <!--<label>Enter Course Year: </label>
+    <input type="number" name="CourseYear" id="CourseYear" #CourseYear formControlName="Course_year">-->
+
+    <br>
+
+    <!--<label>Enter Course Term: </label>
+    <input type="number" name="CourseTerm" id="CourseTerm" #CourseTerm formControlName="Course_term">
+    <p *ngIf="course_term_get.invalid && course_term_get.touched" style="color: red;">Course Term is required</p>-->
+
+    <br>
+
+    <label>Enter Course Credit Hours: </label>
+    <input type="number" name="CreditHours" id="CreditHours" #CreditHours formControlName="Credit_hours">
+    <p *ngIf="credit_hours_get.invalid && credit_hours_get.touched" style="color: red;">Credit Hours is required</p>
+
+    <br>
+
+    <button type="submit" [disabled]="addCourseInstanceForm.invalid">Add Course</button>
+</form>

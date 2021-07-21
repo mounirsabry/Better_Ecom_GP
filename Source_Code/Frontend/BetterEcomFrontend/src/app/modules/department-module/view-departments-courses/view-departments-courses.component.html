@@ -37,7 +37,7 @@
 
 <form>
   <!-- make cs dynamic, according to chosen department-->
-  <a *ngIf="type == 'admin'" [routerLink]="['/addCourseToDepartment/cs']" >add course</a>
+  <a *ngIf="isAdmin()" [routerLink]="['/addCourseToDepartment/cs']" >add course</a>
   <br>
   <a [routerLink]="['/courseInfo']">Search for Course</a>
 </form>

@@ -65,4 +65,11 @@ export class ViewDepartmentsCoursesComponent implements OnInit {
     return Object.keys(obj);
   }
 
+  isAdmin(){
+    if(this.type == 'admin'){
+      return true;
+    }
+    else {return false;}
+  }
+
 }

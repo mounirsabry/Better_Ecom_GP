@@ -775,7 +775,7 @@ namespace Better_Ecom_Backend.Controllers
         private bool CheckCourseData(JsonElement sentData)
         {
             return sentData.TryGetProperty("Course_code", out _)
-                && sentData.TryGetProperty("departmentApplicability", out _)
+                && sentData.TryGetProperty("DepartmentApplicability", out _)
                 && (sentData.TryGetProperty("Department_code", out _) && GetDepartmentsCodes().Contains(sentData.GetProperty("Department_code").GetString()))
                 && sentData.TryGetProperty("Course_name", out _);
         }
