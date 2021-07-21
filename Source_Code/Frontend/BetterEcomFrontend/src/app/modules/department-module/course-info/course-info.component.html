@@ -35,18 +35,16 @@
 </table>
 -->
 
-<div *ngFor="let course of objectValues(course_info)">
     <form [formGroup]="updateCourseForm" (ngSubmit)=updateCourse() *ngFor="let course of objectValues(course_info)">
         <div *ngFor="let info of course | keyvalue">
                 <label>{{ info.key }}: </label>
                 <label *ngIf="!isAdmin()">{{ info.value }}</label>
                 <input *ngIf="isAdmin() && checkKey(info.key)" type="{{ inputType(info.key) }}" placeholder="{{ info.value }}" value="{{ info.value }}" formControlName="{{ info.key }}">
-                <label *ngIf="!checkKey(info.key)">{{ info.value }}</label>
+                <label *ngIf="!checkKey(info.key) && isAdmin()">{{ info.value }}</label>
         </div>
         <button *ngIf="isAdmin()" type="submit" style="color: black;">Update Course Information</button>
     </form>
     <hr>
-</div>
 
 
 <!--<form [formGroup]="courseForm">
@@ -106,4 +104,4 @@
     <button type="submit" [disabled]="isListEmpty(departmentApplicability_list)" style="color: black;">Update</button>
 </form>
 
-<button type="button" (click)="archiveCourse()" style="color: black;">Archive Course</button>
+<button type="button" *ngIf=isAdmin() (click)="archiveCourse()" style="color: black;">Archive Course</button>

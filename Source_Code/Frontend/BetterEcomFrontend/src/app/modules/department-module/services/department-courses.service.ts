@@ -38,7 +38,7 @@ export class DepartmentCoursesService {
   }
   
   archiveCourse(course : any){
-    return this.httpclient.patch<any>("https://localhost:44361/department/ArchiveCourse", course);
+    return this.httpclient.delete<any>("https://localhost:44361/department/ArchiveCourse", course);
   }
 
   handleError(error : HttpErrorResponse){
