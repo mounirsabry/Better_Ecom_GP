@@ -54,14 +54,13 @@ namespace Better_Ecom_Backend.Controllers
         /// <returns>Ok action result if successful BadRequest otherwise.</returns>
         [Authorize(Roles = "student")]
         [HttpPost("ChooseDepartments")]
-        public IActionResult ChooseDepartments([FromBody] dynamic inputData)
+        public IActionResult ChooseDepartments([FromBody] JsonElement jsonData)
         {
             //STUDENT ONLY FUNCTION.
-            JsonElement jsonData = (JsonElement)inputData;
 
-            if (!SetPriorityListRequiredDataExist(jsonData))
+            if (!SetPriorityListRequiredDataValid(jsonData))
             {
-                return BadRequest(new { Message = "you have not sent all required data." });
+                return BadRequest(new { Message = "required data missing or invalid." });
             }
 
             int studentID = jsonData.GetProperty("StudentID").GetInt32();
@@ -277,7 +276,7 @@ namespace Better_Ecom_Backend.Controllers
             if (!jsonData.TryGetProperty("UserID", out JsonElement temp) || !CheckAdminExists(temp.GetInt32()))
                 return BadRequest(new { Message = "user id was not provided or is invalid." });
 
-            if (!CheckCourseData(jsonData))
+            if (!AddCourseToDepartmentRequiredDataValid(jsonData))
                 return BadRequest(new { Message = "course data is not valid or not complete." });
 
             Course newCourse = new(jsonData);
@@ -414,7 +413,7 @@ namespace Better_Ecom_Backend.Controllers
                 return BadRequest(new { Message = "user id was not provided or is invalid." });
             }
 
-            if (!CheckUpdateCoursePrerequisitiesDataExist(jsonData))
+            if (!CheckUpdateCoursePrerequisitiesRequiredDataValid(jsonData))
             {
 
                 return BadRequest(new { Message = "you have not sent all required data." });
@@ -696,29 +695,29 @@ namespace Better_Ecom_Backend.Controllers
 
         private static bool CheckUpdateCourseInfoExist(JsonElement jsonData)
         {
-            return jsonData.TryGetProperty("Course_code", out _)
-                && jsonData.TryGetProperty("Academic_year", out _)
-                && jsonData.TryGetProperty("Course_name", out _)
-                && jsonData.TryGetProperty("Department_code", out _)
-                && jsonData.TryGetProperty("Course_description", out _);
+            return jsonData.TryGetProperty("Course_code", out JsonElement temp) && temp.ValueKind == JsonValueKind.String
+                && jsonData.TryGetProperty("Academic_year", out temp) && temp.TryGetInt32(out _)
+                && jsonData.TryGetProperty("Course_name", out temp) && temp.ValueKind == JsonValueKind.String
+                && jsonData.TryGetProperty("Department_code", out temp) && temp.ValueKind == JsonValueKind.String
+                && jsonData.TryGetProperty("Course_description", out temp) && temp.ValueKind == JsonValueKind.String;
         }
 
         private static bool CheckAddCourseInstanceDataExist(JsonElement jsonData)
         {
-            return jsonData.TryGetProperty("Course_code", out _)
-                && jsonData.TryGetProperty("Credit_hours", out _);
+            return jsonData.TryGetProperty("Course_code", out JsonElement temp) && temp.ValueKind == JsonValueKind.String
+                && jsonData.TryGetProperty("Credit_hours", out temp) && temp.ValueKind == JsonValueKind.Number;
         }
 
-        private static bool CheckUpdateCoursePrerequisitiesDataExist(JsonElement jsonData)
+        private static bool CheckUpdateCoursePrerequisitiesRequiredDataValid(JsonElement jsonData)
         {
-            return jsonData.TryGetProperty("Course_code", out _)
-                && jsonData.TryGetProperty("prerequisites", out _);
+            return jsonData.TryGetProperty("Course_code", out JsonElement temp) && temp.ValueKind == JsonValueKind.String
+                && jsonData.TryGetProperty("prerequisites", out temp) && temp.ValueKind == JsonValueKind.Array;
         }
 
         private static bool CheckUpdateDepartmentApplicabilityDataExist(JsonElement jsonData)
         {
-            return jsonData.TryGetProperty("Course_code", out _)
-                && jsonData.TryGetProperty("departmentApplicability", out _);
+            return jsonData.TryGetProperty("Course_code", out JsonElement temp) && temp.ValueKind == JsonValueKind.String
+                && jsonData.TryGetProperty("departmentApplicability", out temp) && temp.ValueKind == JsonValueKind.Array;
         }
 
         private bool CheckUserHasPriorities(int studentID)
@@ -738,8 +737,8 @@ namespace Better_Ecom_Backend.Controllers
 
         private static bool SetDepartmentForStudentDataExist(JsonElement sentData)
         {
-            return sentData.TryGetProperty("StudentID", out _)
-            && sentData.TryGetProperty("DepartmentCode", out _);
+            return sentData.TryGetProperty("StudentID", out JsonElement temp) && temp.TryGetInt32(out _)
+            && sentData.TryGetProperty("DepartmentCode", out temp) && temp.ValueKind == JsonValueKind.String;
         }
 
         private bool CheckCourseExist(string courseCode)
@@ -747,14 +746,14 @@ namespace Better_Ecom_Backend.Controllers
             List<string> codes = _data.LoadData<string, dynamic>("SELECT course_code from course WHERE course_code = @courseCode;", new { courseCode }, _config.GetConnectionString("Default"));
             return codes != null && codes.Count > 0;
         }
-        private static bool SetPriorityListRequiredDataExist(JsonElement sentData)
+        private static bool SetPriorityListRequiredDataValid(JsonElement sentData)
         {
-            return sentData.TryGetProperty("StudentID", out _)
-            && sentData.TryGetProperty("DepartmentCode1", out _)
-            && sentData.TryGetProperty("DepartmentCode2", out _)
-            && sentData.TryGetProperty("DepartmentCode3", out _)
-            && sentData.TryGetProperty("DepartmentCode4", out _)
-            && sentData.TryGetProperty("DepartmentCode5", out _);
+            return sentData.TryGetProperty("StudentID", out JsonElement temp) && temp.TryGetInt32(out _)
+            && sentData.TryGetProperty("DepartmentCode1", out temp) && temp.ValueKind == JsonValueKind.String 
+            && sentData.TryGetProperty("DepartmentCode2", out temp) && temp.ValueKind == JsonValueKind.String
+            && sentData.TryGetProperty("DepartmentCode3", out temp) && temp.ValueKind == JsonValueKind.String
+            && sentData.TryGetProperty("DepartmentCode4", out temp) && temp.ValueKind == JsonValueKind.String
+            && sentData.TryGetProperty("DepartmentCode5", out temp) && temp.ValueKind == JsonValueKind.String;
         }
 
         private bool CheckAdminExists(int ID)
@@ -771,12 +770,12 @@ namespace Better_Ecom_Backend.Controllers
                 return true;
             }
         }
-        private bool CheckCourseData(JsonElement sentData)
+        private bool AddCourseToDepartmentRequiredDataValid(JsonElement sentData)
         {
-            return sentData.TryGetProperty("Course_code", out _)
-                && sentData.TryGetProperty("departmentApplicability", out _)
-                && (sentData.TryGetProperty("Department_code", out _) && GetDepartmentsCodes().Contains(sentData.GetProperty("Department_code").GetString()))
-                && sentData.TryGetProperty("Course_name", out _);
+            return sentData.TryGetProperty("Course_code", out JsonElement temp) && temp.ValueKind == JsonValueKind.String
+                && sentData.TryGetProperty("departmentApplicability", out temp) && temp.ValueKind == JsonValueKind.Array
+                && (sentData.TryGetProperty("Department_code", out temp) && temp.ValueKind == JsonValueKind.String && GetDepartmentsCodes().Contains(temp.GetString()))
+                && sentData.TryGetProperty("Course_name", out temp) && temp.ValueKind == JsonValueKind.String;
         }
 
         private List<Course> CheckCourseArchiveStatus(string code)
