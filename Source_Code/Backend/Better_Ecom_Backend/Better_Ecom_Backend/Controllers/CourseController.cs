@@ -26,89 +26,43 @@ namespace Better_Ecom_Backend.Controllers
             _data = data;
         }
 
-        [Authorize(Roles = "student, admin")]
-        [HttpGet("GetStudentAvailableCourses/{StudentID:int}")]
-        public IActionResult GetStudentAvailableCourses([FromHeader] string Authorization, int StudentID)
+        [HttpGet("GetStudentAvailableCourses/{UserID:int}")]
+        public IActionResult GetStudentAvailableCourses(int userID)
         {
             //STUDENT, ADMIN FUNCTION.
-            TokenInfo info = HelperFunctions.GetIdAndTypeFromToken(Authorization);
-            if (info.Type == "student" && info.UserID != StudentID)
-            {
-                return Forbid("students can only get their own data.");
-            }
-
-            
-
             return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
         }
 
-        [Authorize(Roles = "admin, student")]
-        [HttpGet("GetStudentRegisteredCourseInstances/{StudentID:int}")]
-        public IActionResult GetStudentRegisteredCourseInstances([FromHeader] string Authorization,int studentID)
+        [HttpGet("GetCourseAvailableCourseInstances/{CourseCode}")]
+        public IActionResult GetCourseAvailableCourseInstances(string courseCode)
         {
             //STUDENT, ADMIN FUNCTION.
-            TokenInfo info = HelperFunctions.GetIdAndTypeFromToken(Authorization);
-            if(info.Type == "student" && info.UserID != studentID)
-            {
-                return Forbid("students can only get their own data.");
-            }
-
-            string getCourseInstanceByStudentSql = "SELECT course_instance_id FROM student_course_instance_registration WHERE student_id = @studentID";
-            string getStudentRegisteredCourseInstancesSql = $"SELECT * FROM course_instance WHERE instance_id in ({getCourseInstanceByStudentSql}); ";
-
-            List<Course_instance> instances = _data.LoadData<Course_instance, dynamic>(getStudentRegisteredCourseInstancesSql, new { studentID }, _config.GetConnectionString("Default"));
-
-            if(instances is null)
-            {
-                return BadRequest(new { Message = "unknown error, maybe database server is down." });
-            }
-
-
-
-            return Ok( instances );
+            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
         }
 
-        [Authorize(Roles ="student, admin")]
-        [HttpPost("RegisterToCourseInstance")]
-        public IActionResult RegisterToCourseInstance([FromHeader] string Authorization,[FromBody] JsonElement jsonInput)
+        [HttpGet("GetStudentRegisteredCourseInstances/{StudentID:int}")]
+        public IActionResult GetStudentRegisteredCourseInstances(int studentID)
         {
-            //STUDENT ONLY FUNCTION.
+            //STUDENT, ADMIN FUNCTION.
 
-            if(!RegisterToCourseInstanceDataValid(jsonInput))
-            {
-                return BadRequest(new { Message = "required data missing or invalid." });
-            }
-
-            int studentID = jsonInput.GetProperty("UserID").GetInt32();
-
-            TokenInfo info = HelperFunctions.GetIdAndTypeFromToken(Authorization);
-            if (info.Type == "student" && info.UserID != studentID)
-            {
-                return Forbid("students can only get their own data.");
-            }
-
-            //We still have to check that the course is valid for the user.
-
-            int courseInstanceID = jsonInput.GetProperty("Course_instance").GetInt32();
-            DateTime registrationDate = DateTime.Now;
-            Student_course_instance_registration registration = new(-1, studentID, courseInstanceID, registrationDate, StudentCourseInstanceRegistrationStatus.Undertaking);
-
-            string insertCourseRegistrationSql = "INSERT INTO student_course_instance_registration VALUES(NULL, @student_id, @course_instance_id, @registration_date, @student_course_intance_status);";
-
-            int status = _data.SaveData(insertCourseRegistrationSql, registration, _config.GetConnectionString("Default"));
-
-            if(status > 0)
-            {
-                return Ok(registration);
-            }
-            else
-            {
-                return BadRequest(new { Message = "unknown error, maybe database server is down." });
-            }
-
+            //Check the token, if the user is an admin, then accept any valid student ID.
+            //If the user is a student, then the sent student ID must match the id in the token.
+            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
         }
 
+        [HttpPost("RegisterToCourseInstance")]
+        public IActionResult RegisterToCourseInstance([FromBody] JsonElement jsonInput)
+        {
+            //STUDENT, ADMIN FUNCTION.
+            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+        }
 
+        [HttpDelete("DropStudentFromCourseInstance")]
+        public IActionResult DropStudentFromCourseInstance([FromBody] JsonElement jsonInput)
+        {
+            //STUDENT, ADMIN FUNCTION.
+            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+        }
 
         [Authorize]
         [HttpGet("GetCourseInstanceRegisteredStudents/{CourseInstanceID:int}")]
@@ -193,11 +147,6 @@ namespace Better_Ecom_Backend.Controllers
         private static bool IsFromStudentAvailableCoursesList(int userID)
         {
             return true;
-        }
-
-        private bool RegisterToCourseInstanceDataValid(JsonElement jsonInput)
-        {
-            throw new NotImplementedException();
         }
 
         private static bool IsFromCourseAvailableCourseInstancesList(int courseInstanceID)
