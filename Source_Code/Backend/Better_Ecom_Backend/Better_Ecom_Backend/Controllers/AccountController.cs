@@ -37,12 +37,17 @@ namespace Better_Ecom_Backend.Controllers
         /// <param name="loginData">json object contains id, password and type.</param>
         /// <returns>authorization token if provided data is valid BadRequest otherwise.</returns>
         [HttpPost("Login")]
-        public IActionResult Login([FromBody] dynamic loginData)
+        public IActionResult Login([FromBody] JsonElement loginData)
         {
-            JsonElement loginDataJSON = (JsonElement)loginData;
-            int userID = loginDataJSON.GetProperty("UserID").GetInt32();
-            string password = loginDataJSON.GetProperty("Password").GetString();
-            string type = loginDataJSON.GetProperty("Type").GetString();
+
+            if(!LoginRequiredDataValid(loginData))
+            {
+                return BadRequest(new { Message = "required data missing or invalid." });
+            }
+
+            int userID = loginData.GetProperty("UserID").GetInt32();
+            string password = loginData.GetProperty("Password").GetString();
+            string type = loginData.GetProperty("Type").GetString();
 
             if (!HelperFunctions.CheckUserIDAndType(userID, type))
             {
@@ -184,12 +189,16 @@ namespace Better_Ecom_Backend.Controllers
         /// <returns>Ok if successful BadRequest otherwise.</returns>
         [Authorize(Roles = "admin")]
         [HttpPatch("ResetAccountCredientials")]
-        public IActionResult ResetAccountCredientials([FromBody] dynamic userData)
+        public IActionResult ResetAccountCredientials([FromBody] JsonElement userData)
         {
-            JsonElement userJson = (JsonElement)userData;
-            int userID = userJson.GetProperty("UserID").GetInt32();
-            string nationalID = userJson.GetProperty("NationalID").GetString();
-            string type = userJson.GetProperty("Type").GetString();
+            if(!ResetAccountCredientialsRequiredDataValid(userData))
+            {
+                return BadRequest(new { Message = "required data missing or invalid." });
+            }
+
+            int userID = userData.GetProperty("UserID").GetInt32();
+            string nationalID = userData.GetProperty("NationalID").GetString();
+            string type = userData.GetProperty("Type").GetString();
 
             if (!HelperFunctions.CheckUserIDAndType(userID, type))
             {
@@ -271,14 +280,28 @@ namespace Better_Ecom_Backend.Controllers
             }
         }
 
+        private bool ResetAccountCredientialsRequiredDataValid(JsonElement userData)
+        {
+            return userData.TryGetProperty("UserID", out JsonElement temp) && temp.TryGetInt32(out _)
+                && userData.TryGetProperty("NationalID", out temp) && temp.ValueKind == JsonValueKind.String
+                && userData.TryGetProperty("Type", out temp) && temp.ValueKind == JsonValueKind.String;
+        }
+
         private static bool CreateAccountForStudentDataExist(JsonElement sentData)
         {
-            return sentData.TryGetProperty("StudentID", out _);
+            return sentData.TryGetProperty("StudentID", out JsonElement temp) && temp.TryGetInt32(out _);
         }
 
         private static bool CreateAccountForInstructorDataExist(JsonElement sentData)
         {
-            return sentData.TryGetProperty("InstructorID", out _);
+            return sentData.TryGetProperty("InstructorID", out JsonElement temp) && temp.TryGetInt32(out _);
+        }
+
+        private static bool LoginRequiredDataValid(JsonElement sentData)
+        {
+            return sentData.TryGetProperty("UserID", out JsonElement temp) && temp.TryGetInt32(out _)
+                && sentData.TryGetProperty("Password", out temp) && temp.ValueKind == JsonValueKind.String
+                && sentData.TryGetProperty("Type", out temp) && temp.ValueKind == JsonValueKind.String;
         }
 
         private string GenerateJSONWebToken(int userID, string type)

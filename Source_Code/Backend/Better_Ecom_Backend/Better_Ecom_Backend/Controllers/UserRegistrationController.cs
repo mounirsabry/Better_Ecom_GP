@@ -36,9 +36,8 @@ namespace Better_Ecom_Backend.Controllers
         /// <returns>Created and new student object if successful BadRequest otherwise.</returns>
         [Authorize(Roles = "admin")]
         [HttpPost("AddNewStudent")]
-        public IActionResult AddNewStudent([FromBody] dynamic studentData)
+        public IActionResult AddNewStudent([FromBody] JsonElement studentJson)
         {
-            JsonElement studentJson = (JsonElement)studentData;
             Student newStudent = new(studentJson);
             if (CheckSystemUserData(newStudent) == false)
             {
@@ -129,9 +128,8 @@ namespace Better_Ecom_Backend.Controllers
         /// <returns>Created and new instructor object, BadRequest otherwise.</returns>
         [Authorize(Roles = "admin")]
         [HttpPost("AddNewInstructor")]
-        public IActionResult AddNewInstructor([FromBody] dynamic instructorData)
+        public IActionResult AddNewInstructor([FromBody] JsonElement instructorJson)
         {
-            JsonElement instructorJson = (JsonElement)instructorData;
             Instructor newInstructor = new(instructorJson);
 
             if (CheckSystemUserData(newInstructor) == false)
