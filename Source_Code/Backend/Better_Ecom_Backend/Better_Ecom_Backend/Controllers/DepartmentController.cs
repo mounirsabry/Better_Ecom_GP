@@ -273,8 +273,6 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult AddCourseToDepartment([FromBody] JsonElement jsonData)
         {
             //ADMIN ONLY FUNCTION.
-            if (!jsonData.TryGetProperty("UserID", out JsonElement temp) || !CheckAdminExists(temp.GetInt32()))
-                return BadRequest(new { Message = "user id was not provided or is invalid." });
 
             if (!AddCourseToDepartmentRequiredDataValid(jsonData))
                 return BadRequest(new { Message = "course data is not valid or not complete." });
@@ -291,8 +289,14 @@ namespace Better_Ecom_Backend.Controllers
             List<string> prerequisites = new();
             List<string> departmentApplicability = new();
 
-            if (jsonData.TryGetProperty("Prerequisites", out temp))
+
+            if (jsonData.TryGetProperty("Prerequisites", out JsonElement temp))
             {
+                if(temp.ValueKind != JsonValueKind.Array)
+                {
+                    return BadRequest(new { Message = "prerequisites has to be array." });
+                }
+
                 foreach (JsonElement element in temp.EnumerateArray())
                 {
                     prerequisites.Add(element.GetString());
@@ -300,6 +304,10 @@ namespace Better_Ecom_Backend.Controllers
             }
             if (jsonData.TryGetProperty("DepartmentApplicability", out temp))
             {
+                if(temp.ValueKind != JsonValueKind.Array)
+                {
+                    return BadRequest(new { Message = "department applicability has to be list." });
+                }
                 foreach (JsonElement element in temp.EnumerateArray())
                 {
                     departmentApplicability.Add(element.GetString());
