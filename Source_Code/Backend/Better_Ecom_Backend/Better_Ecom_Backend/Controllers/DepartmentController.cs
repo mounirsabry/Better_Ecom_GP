@@ -133,7 +133,7 @@ namespace Better_Ecom_Backend.Controllers
                 return BadRequest("invalid student id.");
             }
 
-            string sql = "SELECT department_code, priority FROM student_department_priority_list WHERE student_id = @id;";
+            string sql = "SELECT department_code, priority FROM student_department_priority WHERE student_id = @id;";
             dynamic rows = _data.LoadData<dynamic, dynamic>(sql, new { id = studentID }, _config.GetConnectionString("Default"));
             if (rows == null)
             {
