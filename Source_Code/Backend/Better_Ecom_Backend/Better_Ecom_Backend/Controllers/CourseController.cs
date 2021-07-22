@@ -469,7 +469,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
             }
-
+            
             Course_instance_late_registration_request registration = registrations.FirstOrDefault();
             if(registration is null)
             {
@@ -483,12 +483,25 @@ namespace Better_Ecom_Backend.Controllers
 
 
 
-            if(requestStatus == LateRegistrationRequestStatus.Accepted)
+            if(requestStatus == LateRegistrationRequestStatus.Accepted && registration.Request_status != LateRegistrationRequestStatus.Accepted)
             {
                 string insertCourseRegistration = "INSERT INTO student_course_instance_registration VALUES(NULL, @studentID, @courseInstanceID, @registrationDate, @studentCourseInstanceStatus);";
+                var parameters = new
+                {
+                    studentID = registration.Student_id,
+                    courseInstanceID = registration.Course_instance_id,
+                    registrationDate = DateTime.Now,
+                    studentCourseInstanceStatus = nameof(requestStatus)
+                };
                 sqlList.Add(insertCourseRegistration);
-                parametersList.Add(new { studentID = registration });
+                parametersList.Add(parameters);
             }
+            else if(registration.Request_status == LateRegistrationRequestStatus.Accepted)
+            {
+                return BadRequest(new { Message = "can not change accepted student." });
+            }
+
+            
 
             return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
         }
