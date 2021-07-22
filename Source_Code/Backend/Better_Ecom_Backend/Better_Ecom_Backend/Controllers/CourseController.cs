@@ -117,7 +117,7 @@ namespace Better_Ecom_Backend.Controllers
                 }
                 else
                 {
-                    if (AppSettingsFunctions.GetIsLateCourseRegistrationOpen(_config) == true)
+                    if (AppSettingsFunctions.GetIsLateCourseRegistrationOpen(_config))
                     {
                         return BadRequest(new { Message = "course registration is closed, but late registration is open, the student must register through requests." });
                     }
@@ -231,8 +231,6 @@ namespace Better_Ecom_Backend.Controllers
             }
 
         }
-
-
 
         [Authorize]
         [HttpGet("GetCourseInstanceRegisteredStudents/{CourseInstanceID:int}")]
@@ -382,7 +380,7 @@ namespace Better_Ecom_Backend.Controllers
         }
 
 
-        [Authorize(Roles ="student")]
+        [Authorize(Roles = "student")]
         [HttpDelete("DeleteLateCourseInstanceRegistrationRequest")]
         public IActionResult DeleteLateCourseInstanceRegistrationRequest([FromBody] JsonElement jsonInput)
         {
