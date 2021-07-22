@@ -35,73 +35,61 @@
 </table>
 -->
 
-    <form [formGroup]="updateCourseForm" (ngSubmit)=updateCourse() *ngFor="let course of objectValues(course_info)">
-        <div *ngFor="let info of course | keyvalue">
-                <label>{{ info.key }}: </label>
-                <label *ngIf="!isAdmin()">{{ info.value }}</label>
-                <input *ngIf="isAdmin() && checkKey(info.key)" type="{{ inputType(info.key) }}" placeholder="{{ info.value }}" value="{{ info.value }}" formControlName="{{ info.key }}">
-                <label *ngIf="!checkKey(info.key) && isAdmin()">{{ info.value }}</label>
-        </div>
-        <button *ngIf="isAdmin()" type="submit" style="color: black;">Update Course Information</button>
-    </form>
-    <hr>
-
-
-<!--<form [formGroup]="courseForm">
-    <div formArrayName="courseArray">
-        <div *ngFor="let course of objectValues(courseArray.value); let courseIndex = index">
-            <div [formGroupName]="courseIndex">
-                {{courseIndex}}
-                <form [formGroup]="updateCourseForm" (ngSubmit)="updateCourse()">
-                    <div *ngFor="let info of course | keyvalue">
-                        <label>{{ info.key }}: </label>
-                        <<label>{{ info.value }}.</label>
-                        <label *ngIf="!isAdmin()">{{ info.value }}</label>
-                        <input *ngIf="isAdmin() && checkKey(info.key)" type="{{ inputType(info.key) }}" placeholder="{{ info.value }}" value="{{ info.value }}" formControlName="{{ info.key }}">
-                        <input type="text" *ngIf="!checkKey(info.key)" formControlName="{{ info.key }}" placeholder="{{ info.value }}">
-                    </div>
-                    <button *ngIf="isAdmin()" type="submit" style="color: black;">Update Course Information</button>
-                    <hr>
-                </form>
+    <form [formGroup]="updateCourseForm">
+        <div formGroupName="courseInstanceForm">
+            <div *ngFor="let course of objectValues(course_info)">
+                <div *ngFor="let info of course | keyvalue">
+                    <label>{{ info.key }}: </label>
+                    <label *ngIf="!isAdmin()">{{ info.value }}</label>
+                    <input *ngIf="isAdmin() && checkKey(info.key)" type="{{ inputType(info.key) }}" placeholder="{{ info.value }}" value="{{ info.value }}" formControlName="{{ info.key }}">
+                    <label *ngIf="!checkKey(info.key) && isAdmin()">{{ info.value }}</label>
+                </div>
+                <br>
+                <hr *ngIf="!isAdmin()">
             </div>
+            <button *ngIf="isAdmin() && checkSearchFlag()" type="button" (click)="updateCourse()" style="color: black;">Update Course Information</button>
         </div>
-    </div>
-</form>-->
 
-<form [formGroup]="updateCoursePrerequisiteForm" (ngSubmit)="updateCoursePrerequisite()" [hidden]="!isAdmin()">
-    <br>
+        <hr *ngIf="isAdmin() && checkSearchFlag()">
 
-    <label>Prerequisites: </label>
-    <input type="text" name="Prerequisites" id="Prerequisites" #Prerequisites formControlName="prerequisites">
-    <select name="PrerequisitesList" id="PrerequisitesList" #PrerequisitesList>
-        <option *ngFor="let pList of prerequisites_list">{{ pList }}</option>
-    </select>
-    <br>
-    <button type="button" (click)="addPrerequisite()" style="color: black;">add prerequisite</button>
-    <button type="button" (click)="removePrerequisites(PrerequisitesList.value)" style="color: black;">remove prerequisite</button>
+        <div formGroupName="updateCoursePrerequisiteForm" *ngIf="isAdmin() && checkSearchFlag()">
+            <br>
+        
+            <label>Prerequisites: </label>
+            <input type="text" name="Prerequisites" id="Prerequisites" #Prerequisites formControlName="prerequisites">
+            <select name="PrerequisitesList" id="PrerequisitesList" #PrerequisitesList>
+                <option *ngFor="let pList of prerequisites_list">{{ pList }}</option>
+            </select>
+            <br>
+            <button type="button" (click)="addPrerequisite()" style="color: black;">add prerequisite</button>
+            <button type="button" (click)="removePrerequisites(PrerequisitesList.value)" style="color: black;">remove prerequisite</button>
+        
+            <br>
+        
+            <button type="button" [disabled]="isListEmpty(prerequisites_list)" (click)="updateCoursePrerequisite()" style="color: black;">Update Course Prerequisite</button>
+        </div>
 
-    <br>
+        <br>
+        <hr *ngIf="isAdmin() && checkSearchFlag()">
 
-    <button type="submit" [disabled]="isListEmpty(prerequisites_list)" style="color: black;">Update Course Prerequisite</button>
-</form>
+        <div formGroupName="updateCourseDepartmentApplicabilityForm" *ngIf="isAdmin() && checkSearchFlag()">
+            <br>
+            <label>Department Applicability: </label>
+            <input type="text" name="DepartmentApplicability" id="DepartmentApplicability" #DepartmentApplicability formControlName="departmentApplicability">
+            <select name="DepAppList" id="DepAppList" #DepAppList>
+                <option *ngFor="let depAppList of departmentApplicability_list">{{ depAppList }}</option>
+            </select>
+            <br>
+            <button type="button" (click)="addDepartmentApplicability()" style="color: black;">add department</button>
+            <button type="button" (click)="removeDepartmentApplicability(DepAppList.value)" style="color: black;">remove department</button>
+
+            <br>
+
+            <button type="button" [disabled]="isListEmpty(departmentApplicability_list)" (click)="updateCourseDepartmentApplicability()" style="color: black;">Update</button>
+        </div>
+    </form>
 
 <br>
-<hr>
+<hr *ngIf="isAdmin() && checkSearchFlag()">
 
-<form [formGroup]="updateCourseDepartmentApplicabilityForm" (ngSubmit)="updateCourseDepartmentApplicability()" [hidden]="!isAdmin()">
-    <br>
-    <label>Department Applicability: </label>
-    <input type="text" name="DepartmentApplicability" id="DepartmentApplicability" #DepartmentApplicability formControlName="departmentApplicability">
-    <select name="DepAppList" id="DepAppList" #DepAppList>
-        <option *ngFor="let depAppList of departmentApplicability_list">{{ depAppList }}</option>
-    </select>
-    <br>
-    <button type="button" (click)="addDepartmentApplicability()" style="color: black;">add department</button>
-    <button type="button" (click)="removeDepartmentApplicability(DepAppList.value)" style="color: black;">remove department</button>
-
-    <br>
-
-    <button type="submit" [disabled]="isListEmpty(departmentApplicability_list)" style="color: black;">Update</button>
-</form>
-
-<button type="button" *ngIf=isAdmin() (click)="archiveCourse()" style="color: black;">Archive Course</button>
+<button type="button" *ngIf="isAdmin() && checkSearchFlag()" (click)="archiveCourse()" style="color: black;">Archive Course</button>

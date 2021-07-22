@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Better_Ecom_Backend.Helpers
 {
@@ -16,6 +17,19 @@ namespace Better_Ecom_Backend.Helpers
             return "not implemented yet.";
         }
 
+        public static string GetMaybeDatabaseIsDownMessage()
+        {
+            return "unknown error, maybe database is down.";
+        }
+
+        public static TokenInfo GetIdAndTypeFromToken(string tokenString)
+        {
+            JwtSecurityTokenHandler handler = new();
+            tokenString = tokenString[7..];
+            JwtSecurityToken token = handler.ReadJwtToken(tokenString);
+
+            return new TokenInfo(int.Parse(token.Claims.ToList()[1].Value), token.Claims.ToList()[0].Value  );
+        }
         public static int GetFirstDigit(int number)
         {
             return (int)number.ToString()[0] - 48;

@@ -1,4 +1,5 @@
-﻿using Better_Ecom_Backend.Helpers;
+﻿using Better_Ecom_Backend.Entities;
+using Better_Ecom_Backend.Helpers;
 using Better_Ecom_Backend.Models;
 using DataLibrary;
 using Microsoft.AspNetCore.Authorization;
@@ -28,8 +29,8 @@ namespace Better_Ecom_Backend.Controllers
         /// Gets the available departments.
         /// </summary>
         /// <returns>Ok result containing the departments if successful BadRequest otherwise.</returns>
-        [HttpGet("GetDepartments")]
         [Authorize]
+        [HttpGet("GetDepartments")]
         public IActionResult GetDepartments()
         {
             //ALL USERS FUNCTION.
@@ -54,14 +55,13 @@ namespace Better_Ecom_Backend.Controllers
         /// <returns>Ok action result if successful BadRequest otherwise.</returns>
         [Authorize(Roles = "student")]
         [HttpPost("ChooseDepartments")]
-        public IActionResult ChooseDepartments([FromBody] dynamic inputData)
+        public IActionResult ChooseDepartments([FromBody] JsonElement jsonData)
         {
             //STUDENT ONLY FUNCTION.
-            JsonElement jsonData = (JsonElement)inputData;
 
-            if (!SetPriorityListRequiredDataExist(jsonData))
+            if (!SetPriorityListRequiredDataValid(jsonData))
             {
-                return BadRequest(new { Message = "you have not sent all required data." });
+                return BadRequest(new { Message = "required data missing or invalid." });
             }
 
             int studentID = jsonData.GetProperty("StudentID").GetInt32();
@@ -133,7 +133,7 @@ namespace Better_Ecom_Backend.Controllers
                 return BadRequest("invalid student id.");
             }
 
-            string sql = "SELECT department_code, priority FROM student_department_priority_list WHERE student_id = @id;";
+            string sql = "SELECT department_code, priority FROM student_department_priority WHERE student_id = @id;";
             dynamic rows = _data.LoadData<dynamic, dynamic>(sql, new { studentID }, _config.GetConnectionString("Default"));
             if (rows == null)
             {
@@ -228,20 +228,28 @@ namespace Better_Ecom_Backend.Controllers
         /// </summary>
         /// <param name="courseCode">The primary key of the course</param>
         /// <returns>List containing the course as first element.</returns>
-        [HttpGet("GetCourseInfoByCode/{CourseCode}")]
         [Authorize]
+        [HttpGet("GetCourseInfoByCode/{CourseCode}")]
         public IActionResult GetCourseInfoByCode(string courseCode)
         {
             //ALL USERS FUNCTION.
-            string getCourseSql = "SELECT * FROM course WHERE course_code = @courseCode";
-            List<Course> course = _data.LoadData<Course, dynamic>(getCourseSql, new { courseCode }, _config.GetConnectionString("Default"));
+            string getCourseSQL = "SELECT * FROM course WHERE course_code = @courseCode;";
+            string getCoursePrerequisitesSQL = "SELECT prerequisite_course_code from course_prerequisite WHERE course_code = @courseCode;";
+            string getCourseDepartmentApplicabiliteSQL = "SELECT department_code FROM course_department_applicability WHERE course_code = @courseCode;";
+            List<Course> courses = _data.LoadData<Course, dynamic>(getCourseSQL, new { courseCode }, _config.GetConnectionString("Default"));
+            List<string> prerequisites = _data.LoadData<string, dynamic>(getCoursePrerequisitesSQL, new { courseCode }, _config.GetConnectionString("Default"));
+            List<string> departmentApplicabilities = _data.LoadData<string, dynamic>(getCourseDepartmentApplicabiliteSQL, new { courseCode }, _config.GetConnectionString("Default"));
 
-            if (course is null)
+            if (courses is null || prerequisites is null || departmentApplicabilities is null)
+            {
                 return BadRequest(new { Message = "unknown error, maybe database server is down." });
+            }
             else
-                return Ok(course);
-
-            //Returns one course, if the course code was not found, return an error.
+            {
+                Course course = courses[0];
+                CourseInfo courseInfo = new(course, prerequisites, departmentApplicabilities);
+                return Ok(courseInfo);
+            }
         }
 
         /// <summary>
@@ -249,18 +257,36 @@ namespace Better_Ecom_Backend.Controllers
         /// </summary>
         /// <param name="courseName">The name of the courses to be searched</param>
         /// <returns>Ok response with list of found courses with the given name or BadRequest.</returns>
+        [Authorize]
         [HttpGet("GetCourseInfoByName/{CourseName}")]
         public IActionResult GetCourseInfoByName(string courseName)
         {
             //ALL USERS FUNCTION.
-            string getCourseSql = "SELECT * FROM course WHERE course_name = @courseName";
-            List<Course> course = _data.LoadData<Course, dynamic>(getCourseSql, new { courseName }, _config.GetConnectionString("Default"));
+            string getCourseSQL = "SELECT * FROM course WHERE course_name = @courseName";
+            string getCoursePrerequisitesSQL = "SELECT prerequisite_course_code from course_prerequisite WHERE course_code = @courseCode;";
+            string getCourseDepartmentApplicabiliteSQL = "SELECT department_code FROM course_department_applicability WHERE course_code = @courseCode;";
+            List<Course> courses = _data.LoadData<Course, dynamic>(getCourseSQL, new { courseName }, _config.GetConnectionString("Default"));
 
-            if (course is null)
+            if (courses is null)
+            {
                 return BadRequest(new { Message = "unknown error, maybe database server is down." });
-            else
-                return Ok(course);
+            }
 
+            List<CourseInfo> coursesInfo = new();
+            foreach (Course course in courses)
+            {
+                List<string> prerequisites = _data.LoadData<string, dynamic>(getCoursePrerequisitesSQL, new { courseCode = course.Course_code }, _config.GetConnectionString("Default"));
+                List<string> departmentApplicabilities = _data.LoadData<string, dynamic>(getCourseDepartmentApplicabiliteSQL, new { courseCode = course.Course_code }, _config.GetConnectionString("Default"));
+
+                if (prerequisites is null || departmentApplicabilities is null)
+                {
+                    return BadRequest(new { Message = "unknown error, maybe database server is down." });
+                }
+                CourseInfo courseInfo = new(course, prerequisites, departmentApplicabilities);
+                coursesInfo.Add(courseInfo);
+            }
+
+            return Ok(coursesInfo);
             //May return zero course, one course, or more than one course.
         }
 
@@ -274,10 +300,8 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult AddCourseToDepartment([FromBody] JsonElement jsonData)
         {
             //ADMIN ONLY FUNCTION.
-            if (!jsonData.TryGetProperty("UserID", out JsonElement temp) || !CheckAdminExists(temp.GetInt32()))
-                return BadRequest(new { Message = "user id was not provided or is invalid." });
 
-            if (!CheckCourseData(jsonData))
+            if (!AddCourseToDepartmentRequiredDataValid(jsonData))
                 return BadRequest(new { Message = "course data is not valid or not complete." });
 
             Course newCourse = new(jsonData);
@@ -292,8 +316,14 @@ namespace Better_Ecom_Backend.Controllers
             List<string> prerequisites = new();
             List<string> departmentApplicability = new();
 
-            if (jsonData.TryGetProperty("Prerequisites", out temp))
+
+            if (jsonData.TryGetProperty("Prerequisites", out JsonElement temp))
             {
+                if (temp.ValueKind != JsonValueKind.Array)
+                {
+                    return BadRequest(new { Message = "prerequisites has to be array." });
+                }
+
                 foreach (JsonElement element in temp.EnumerateArray())
                 {
                     prerequisites.Add(element.GetString());
@@ -301,6 +331,10 @@ namespace Better_Ecom_Backend.Controllers
             }
             if (jsonData.TryGetProperty("DepartmentApplicability", out temp))
             {
+                if (temp.ValueKind != JsonValueKind.Array)
+                {
+                    return BadRequest(new { Message = "department applicability has to be list." });
+                }
                 foreach (JsonElement element in temp.EnumerateArray())
                 {
                     departmentApplicability.Add(element.GetString());
@@ -414,7 +448,7 @@ namespace Better_Ecom_Backend.Controllers
                 return BadRequest(new { Message = "user id was not provided or is invalid." });
             }
 
-            if (!CheckUpdateCoursePrerequisitiesDataExist(jsonData))
+            if (!CheckUpdateCoursePrerequisitiesRequiredDataValid(jsonData))
             {
 
                 return BadRequest(new { Message = "you have not sent all required data." });
@@ -607,7 +641,7 @@ namespace Better_Ecom_Backend.Controllers
             }
 
             string getCourseInstancesByCodeSql = "SELECT * FROM course_instance WHERE course_code = @courseCode;";
-            List<CourseInstance> courseInstances = _data.LoadData<CourseInstance, dynamic>(getCourseInstancesByCodeSql, new { courseCode }, _config.GetConnectionString("Default"));
+            List<Course_instance> courseInstances = _data.LoadData<Course_instance, dynamic>(getCourseInstancesByCodeSql, new { courseCode }, _config.GetConnectionString("Default"));
             if (courseInstances is null)
             {
 
@@ -615,7 +649,6 @@ namespace Better_Ecom_Backend.Controllers
             }
             else
             {
-
                 return Ok(courseInstances);
             }
         }
@@ -636,13 +669,11 @@ namespace Better_Ecom_Backend.Controllers
             }
 
             string getCourseInstanceByIdSql = "SELECT * FROM course_instance WHERE instance_id = @instanceID;";
-            List<CourseInstance> courseInstance = _data.LoadData<CourseInstance, dynamic>(getCourseInstanceByIdSql, new { instanceID }, _config.GetConnectionString("Default"));
+            List<Course_instance> courseInstance = _data.LoadData<Course_instance, dynamic>(getCourseInstanceByIdSql, new { instanceID }, _config.GetConnectionString("Default"));
             if (courseInstance is null)
             {
-
                 return BadRequest(new { Message = "unknown error, maybe database server is down." });
             }
-
             else
             {
                 return Ok(courseInstance);
@@ -669,7 +700,7 @@ namespace Better_Ecom_Backend.Controllers
                 return BadRequest(new { Message = "you have not sent all required data." });
             }
 
-            CourseInstance courseInstance = new(jsonData);
+            Course_instance courseInstance = new(jsonData);
             //Wait until we see how it's calculated or provided.Term();
 
             if (!CheckCourseExist(courseInstance.Course_code))
@@ -682,7 +713,7 @@ namespace Better_Ecom_Backend.Controllers
                 courseInstance.Course_year = TimeUtilities.GetCurrentYear();
             }
 
-            string addCourseInstanceSql = "INSERT INTO course_instance VALUES(NULL, @Course_code, @Course_year, @Course_term, @Credit_hours);";
+            string addCourseInstanceSql = "INSERT INTO course_instance VALUES(NULL, @Course_code, @Course_year, @Course_term, @Credit_hours, FALSE, FALSE);";
             int status = _data.SaveData(addCourseInstanceSql, courseInstance, _config.GetConnectionString("Default"));
 
             if (status > 0)
@@ -695,37 +726,61 @@ namespace Better_Ecom_Backend.Controllers
             }
         }
 
+        [Authorize]
+        [HttpGet("GetIsCourseInstanceOpenForRegistration/{CourseInstanceID:int}")]
+        public IActionResult GetIsCourseInstanceOpenForRegistration(int courseInstanceID)
+        {
+            //STUDENT, INSTRUCTOR, ADMIN FUNCTION.
+            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPatch("MarkCourseInstanceAsClosedForRegistration")]
+        public IActionResult MarkCourseInstanceAsClosedForRegistration([FromBody] JsonElement jsonInput)
+        {
+            //ADMIN ONLY FUNCTION.
+            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPatch("RemoveClosedForRegistratiolnMarkFromCourseInstance")]
+        public IActionResult RemoveClosedForRegistratiolnMarkFromCourseInstance([FromBody] JsonElement jsonInput)
+        {
+            //ADMIN ONLY FUNCTION.
+            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+        }
+
         private static bool CheckUpdateCourseInfoExist(JsonElement jsonData)
         {
-            return jsonData.TryGetProperty("Course_code", out _)
-                && jsonData.TryGetProperty("Academic_year", out _)
-                && jsonData.TryGetProperty("Course_name", out _)
-                && jsonData.TryGetProperty("Department_code", out _)
-                && jsonData.TryGetProperty("Course_description", out _);
+            return jsonData.TryGetProperty("Course_code", out JsonElement temp) && temp.ValueKind == JsonValueKind.String
+                && jsonData.TryGetProperty("Academic_year", out temp) && temp.TryGetInt32(out _)
+                && jsonData.TryGetProperty("Course_name", out temp) && temp.ValueKind == JsonValueKind.String
+                && jsonData.TryGetProperty("Department_code", out temp) && temp.ValueKind == JsonValueKind.String
+                && jsonData.TryGetProperty("Course_description", out temp) && temp.ValueKind == JsonValueKind.String;
         }
 
         private static bool CheckAddCourseInstanceDataExist(JsonElement jsonData)
         {
-            return jsonData.TryGetProperty("Course_code", out _)
-                && jsonData.TryGetProperty("Credit_hours", out _);
+            return jsonData.TryGetProperty("Course_code", out JsonElement temp) && temp.ValueKind == JsonValueKind.String
+                && jsonData.TryGetProperty("Credit_hours", out temp) && temp.ValueKind == JsonValueKind.Number;
         }
 
-        private static bool CheckUpdateCoursePrerequisitiesDataExist(JsonElement jsonData)
+        private static bool CheckUpdateCoursePrerequisitiesRequiredDataValid(JsonElement jsonData)
         {
-            return jsonData.TryGetProperty("Course_code", out _)
-                && jsonData.TryGetProperty("prerequisites", out _);
+            return jsonData.TryGetProperty("Course_code", out JsonElement temp) && temp.ValueKind == JsonValueKind.String
+                && jsonData.TryGetProperty("prerequisites", out temp) && temp.ValueKind == JsonValueKind.Array;
         }
 
         private static bool CheckUpdateDepartmentApplicabilityDataExist(JsonElement jsonData)
         {
-            return jsonData.TryGetProperty("Course_code", out _)
-                && jsonData.TryGetProperty("departmentApplicability", out _);
+            return jsonData.TryGetProperty("Course_code", out JsonElement temp) && temp.ValueKind == JsonValueKind.String
+                && jsonData.TryGetProperty("departmentApplicability", out temp) && temp.ValueKind == JsonValueKind.Array;
         }
 
         private bool CheckUserHasPriorities(int studentID)
         {
             string loadPrioritiesSql = "SELECT * FROM student_department_priority_list WHERE student_id = @studentID;";
-            List<StudentDepartmentPriority> priorities = _data.LoadData<StudentDepartmentPriority, dynamic>(loadPrioritiesSql, new { studentID }, _config.GetConnectionString("Default"));
+            List<Student_department_priority> priorities = _data.LoadData<Student_department_priority, dynamic>(loadPrioritiesSql, new { studentID }, _config.GetConnectionString("Default"));
 
             if (priorities is null || priorities.Count == 0)
             {
@@ -739,8 +794,8 @@ namespace Better_Ecom_Backend.Controllers
 
         private static bool SetDepartmentForStudentDataExist(JsonElement sentData)
         {
-            return sentData.TryGetProperty("StudentID", out _)
-            && sentData.TryGetProperty("DepartmentCode", out _);
+            return sentData.TryGetProperty("StudentID", out JsonElement temp) && temp.TryGetInt32(out _)
+            && sentData.TryGetProperty("DepartmentCode", out temp) && temp.ValueKind == JsonValueKind.String;
         }
 
         private bool CheckCourseExist(string courseCode)
@@ -748,14 +803,14 @@ namespace Better_Ecom_Backend.Controllers
             List<string> codes = _data.LoadData<string, dynamic>("SELECT course_code from course WHERE course_code = @courseCode;", new { courseCode }, _config.GetConnectionString("Default"));
             return codes != null && codes.Count > 0;
         }
-        private static bool SetPriorityListRequiredDataExist(JsonElement sentData)
+        private static bool SetPriorityListRequiredDataValid(JsonElement sentData)
         {
-            return sentData.TryGetProperty("StudentID", out _)
-            && sentData.TryGetProperty("DepartmentCode1", out _)
-            && sentData.TryGetProperty("DepartmentCode2", out _)
-            && sentData.TryGetProperty("DepartmentCode3", out _)
-            && sentData.TryGetProperty("DepartmentCode4", out _)
-            && sentData.TryGetProperty("DepartmentCode5", out _);
+            return sentData.TryGetProperty("StudentID", out JsonElement temp) && temp.TryGetInt32(out _)
+            && sentData.TryGetProperty("DepartmentCode1", out temp) && temp.ValueKind == JsonValueKind.String
+            && sentData.TryGetProperty("DepartmentCode2", out temp) && temp.ValueKind == JsonValueKind.String
+            && sentData.TryGetProperty("DepartmentCode3", out temp) && temp.ValueKind == JsonValueKind.String
+            && sentData.TryGetProperty("DepartmentCode4", out temp) && temp.ValueKind == JsonValueKind.String
+            && sentData.TryGetProperty("DepartmentCode5", out temp) && temp.ValueKind == JsonValueKind.String;
         }
 
         private bool CheckAdminExists(int ID)
@@ -772,12 +827,12 @@ namespace Better_Ecom_Backend.Controllers
                 return true;
             }
         }
-        private bool CheckCourseData(JsonElement sentData)
+        private bool AddCourseToDepartmentRequiredDataValid(JsonElement sentData)
         {
-            return sentData.TryGetProperty("Course_code", out _)
-                && sentData.TryGetProperty("DepartmentApplicability", out _)
-                && (sentData.TryGetProperty("Department_code", out _) && GetDepartmentsCodes().Contains(sentData.GetProperty("Department_code").GetString()))
-                && sentData.TryGetProperty("Course_name", out _);
+            return sentData.TryGetProperty("Course_code", out JsonElement temp) && temp.ValueKind == JsonValueKind.String
+                && sentData.TryGetProperty("departmentApplicability", out temp) && temp.ValueKind == JsonValueKind.Array
+                && (sentData.TryGetProperty("Department_code", out temp) && temp.ValueKind == JsonValueKind.String && GetDepartmentsCodes().Contains(temp.GetString()))
+                && sentData.TryGetProperty("Course_name", out temp) && temp.ValueKind == JsonValueKind.String;
         }
 
         private List<Course> CheckCourseArchiveStatus(string code)

@@ -4,6 +4,7 @@ using DataLibrary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -31,8 +32,10 @@ namespace Better_Ecom_Backend.Controllers
         /// <returns>Ok with user profile if successful BadRequest otherwise.</returns>
         [Authorize]
         [HttpGet("GetProfile/{UserID:int}/{Type}")]
-        public dynamic GetProfile(int userID, string type)
+        public dynamic GetProfile([FromHeader] string Authorization , int userID, string type)
         {
+            TokenInfo idAndType = HelperFunctions.GetIdAndTypeFromToken(Authorization);
+
             string deducedType = HelperFunctions.GetUserTypeFromID(userID);
             if (type != deducedType || deducedType == "invalid")
             {
@@ -41,6 +44,10 @@ namespace Better_Ecom_Backend.Controllers
             else if (type != "student" && type != "instructor" && type != "admin")
             {
                 return BadRequest(new { Message = "invalid user type." });
+            }
+            else if (idAndType.Type == "student" && idAndType.UserID != userID)
+            {
+                return Forbid("students can only get their own info.");
             }
 
             string id_text;
@@ -86,13 +93,18 @@ namespace Better_Ecom_Backend.Controllers
         // not sure if the admin will use this to modify student/instructor profiles, will assume not till i get there.
         [Authorize]
         [HttpPatch("SaveProfileChanges")]
-        public IActionResult SaveProfileChanges([FromBody] dynamic data)
+        public IActionResult SaveProfileChanges([FromBody] JsonElement data)
         {
             int userID;
             string type;
 
-            JsonElement temp;
-            if (data.TryGetProperty("UserID", out temp))
+
+            if(!SaveProfileChangesRequiredDataValid(data))
+            {
+                return BadRequest(new { Message = "required data missing or invalid." });
+            }
+
+            if (data.TryGetProperty("UserID", out JsonElement temp) && temp.TryGetInt32(out _))
             {
                 userID = temp.GetInt32();
             }
@@ -101,7 +113,7 @@ namespace Better_Ecom_Backend.Controllers
                 return BadRequest(new { Message = "user id was not provided." });
             }
 
-            if (data.TryGetProperty("Type", out temp))
+            if (data.TryGetProperty("Type", out temp) && temp.ValueKind == JsonValueKind.String)
             {
                 type = temp.GetString();
             }
@@ -153,6 +165,8 @@ namespace Better_Ecom_Backend.Controllers
             }
         }
 
+
+
         /// <summary>
         /// User wants to change password.
         /// </summary>
@@ -165,9 +179,9 @@ namespace Better_Ecom_Backend.Controllers
         {
             data = (JsonElement)data;
 
-            if (!ChangePasswordDataExist(data))
+            if (!ChangePasswordRequiredDataValid(data))
             {
-                return BadRequest(new { Message = "sent data not complete." });
+                return BadRequest(new { Message = "required data missing or invalid." });
             }
 
             int userID = data.GetProperty("UserID").GetInt32();
@@ -215,6 +229,7 @@ namespace Better_Ecom_Backend.Controllers
             }
         }
 
+
         private static string GetInstructorUpdateQuery()
         {
             return "UPDATE instructor SET contact_info = @Contact_info where instructor_id = @Instructor_id;";
@@ -226,11 +241,17 @@ namespace Better_Ecom_Backend.Controllers
                 + "additional_info = @Additional_info  where system_user_id = @System_user_id;";
         }
 
-        private static bool ChangePasswordDataExist(JsonElement sentData)
+        private static bool ChangePasswordRequiredDataValid(JsonElement sentData)
         {
-            return sentData.TryGetProperty("UserID", out _)
-                && sentData.TryGetProperty("Old_password", out _)
-                && sentData.TryGetProperty("New_password", out _);
+            return sentData.TryGetProperty("UserID", out JsonElement temp) && temp.TryGetInt32(out _)
+                && sentData.TryGetProperty("Old_password", out temp) && temp.ValueKind == JsonValueKind.String
+                && sentData.TryGetProperty("New_password", out temp) && temp.ValueKind == JsonValueKind.String;
+        }
+
+        private static bool SaveProfileChangesRequiredDataValid(JsonElement data)
+        {
+            return data.TryGetProperty("UserID", out JsonElement temp) && temp.TryGetInt32(out _)
+                && data.TryGetProperty("Type", out temp) && temp.ValueKind == JsonValueKind.String;
         }
     }
 }

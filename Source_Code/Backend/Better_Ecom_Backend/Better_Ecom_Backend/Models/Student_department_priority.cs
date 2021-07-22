@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Better_Ecom_Backend.Models
 {
-    public class StudentDepartmentPriority
+    public class Student_department_priority
     {
         public int Student_id { get; set; }
         public string Department_code { get; set; }
@@ -17,17 +17,17 @@ namespace Better_Ecom_Backend.Models
         //5 will be lower than 4, 3, 2, 1.
         //-1 indicates unassigned priority.
 
-        public StudentDepartmentPriority(int studentID, string departmentCode, int priority)
+        public Student_department_priority(int studentID, string departmentCode, int priority)
         {
             Student_id = studentID;
             Department_code = departmentCode;
             Priority = priority;
         }
 
-        public StudentDepartmentPriority() : this(-1, null, -1)
+        public Student_department_priority() : this(-1, null, -1)
         {}
 
-        public StudentDepartmentPriority(JsonElement data)
+        public Student_department_priority(JsonElement data)
         {
             JsonElement temp;
             if (data.TryGetProperty(nameof(Student_id), out temp))
