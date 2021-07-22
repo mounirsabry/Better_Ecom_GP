@@ -63,7 +63,7 @@ namespace Better_Ecom_Backend.Controllers
 
             if (dbResult == null)
             {
-                return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
             else if (dbResult.Count == 0)
             {
@@ -134,7 +134,7 @@ namespace Better_Ecom_Backend.Controllers
             }
             else
             {
-                return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
         }
 
@@ -178,7 +178,7 @@ namespace Better_Ecom_Backend.Controllers
             }
             else
             {
-                return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
 
             if (!SecurityUtilities.Verify(sent_current_password, current_password))

@@ -21,7 +21,7 @@ namespace Better_Ecom_Backend.Controllers
 
         public IActionResult Test()
         {
-            string sql = "SELECT * FROM admin_user;";
+            string sql = "SELECT * FROM admin_user WHERE admin_user_id = 11;";
 
             var admins = _data.LoadData<Admin_user, dynamic>(sql, new { }, _config.GetConnectionString("Default"));
             return Ok(admins.ToList());

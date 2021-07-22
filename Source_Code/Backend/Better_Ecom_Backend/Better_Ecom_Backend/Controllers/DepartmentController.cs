@@ -730,7 +730,7 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult GetIsCourseInstanceOpenForRegistration(int courseInstanceID)
         {
             //STUDENT, INSTRUCTOR, ADMIN FUNCTION.
-            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+            return Ok(new { Message = MessageFunctions.GetNotImplementedString() });
         }
 
         [Authorize(Roles = "admin")]
@@ -738,7 +738,7 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult MarkCourseInstanceAsClosedForRegistration([FromBody] JsonElement jsonInput)
         {
             //ADMIN ONLY FUNCTION.
-            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+            return Ok(new { Message = MessageFunctions.GetNotImplementedString() });
         }
 
         [Authorize(Roles = "admin")]
@@ -746,7 +746,7 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult RemoveClosedForRegistratiolnMarkFromCourseInstance([FromBody] JsonElement jsonInput)
         {
             //ADMIN ONLY FUNCTION.
-            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+            return Ok(new { Message = MessageFunctions.GetNotImplementedString() });
         }
 
         private static bool CheckUpdateCourseInfoExist(JsonElement jsonData)
