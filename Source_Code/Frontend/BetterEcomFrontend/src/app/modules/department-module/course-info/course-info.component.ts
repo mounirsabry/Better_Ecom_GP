@@ -138,8 +138,15 @@ export class CourseInfoComponent implements OnInit {
           console.log(this.updateCourseForm.value);*/
           console.log(data);
           this.course_info.push(data.courseInstance);
-          this.prerequisites_list.push(data.prerequisites)
-          this.departmentApplicability_list.push(data.departmentApplicabilities);
+          for(let m of data.prerequisites){
+            this.prerequisites_list.push(m);
+          }
+          console.log(data.prerequisites);
+
+          for(let n of data.departmentApplicabilities){
+            this.departmentApplicability_list.push(n);
+          }
+
           console.log(this.course_info);
           console.log(this.departmentApplicability_list);
           console.log(this.prerequisites_list);
@@ -234,8 +241,8 @@ export class CourseInfoComponent implements OnInit {
   }
 
   addPrerequisite(){
-    this.prerequisites_list.push(this.prerequisites_get.value);
-    this.updateCourseForm.controls['updateCoursePrerequisiteForm'].value.prerequisites.reset();
+    this.prerequisites_list.push(this.prerequisites_get);
+    this.updateCourseForm.controls.updateCoursePrerequisiteForm.reset();
   }
 
   removePrerequisites(prerequisite : any){
@@ -246,8 +253,8 @@ export class CourseInfoComponent implements OnInit {
   }
 
   addDepartmentApplicability(){
-    this.departmentApplicability_list.push(this.departmentApplicability_get.value);
-    this.updateCourseForm.controls['departmentApplicability'].reset();
+    this.departmentApplicability_list.push(this.departmentApplicability_get);
+    this.updateCourseForm.controls['updateCourseDepartmentApplicabilityForm'].reset();
   }
 
   removeDepartmentApplicability(depApp : any){
@@ -269,9 +276,11 @@ export class CourseInfoComponent implements OnInit {
   updateCoursePrerequisite(){
     var course_prerequisite = {
       'UserID' : +localStorage.getItem('ID'),
-      'Course_code' : this.course_code_get.value,
+      'Course_code' : this.course_info[0].course_code,
       'prerequisites' : this.prerequisites_list
     }
+
+    console.log(course_prerequisite);
 
     this.departmentCoursesService.updateCoursePrerequisiteInfo(course_prerequisite).subscribe(
       data =>{
@@ -287,7 +296,7 @@ export class CourseInfoComponent implements OnInit {
   updateCourseDepartmentApplicability(){
     var course_dep_applicablitiy = {
       'UserID' : +localStorage.getItem('ID'),
-      'Course_code' : this.course_code_get.value,
+      'Course_code' : this.course_info[0].course_code,
       'departmentApplicability' : this.departmentApplicability_list
     }
 
