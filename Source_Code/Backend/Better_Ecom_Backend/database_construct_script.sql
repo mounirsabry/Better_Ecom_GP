@@ -159,6 +159,21 @@ CREATE TABLE IF NOT EXISTS student_course_instance_registration (
     PRIMARY KEY (registration_id)
 );
 
+CREATE TABLE IF NOT EXISTS instructor_course_instance_registration (
+	registration_id INT AUTO_INCREMENT,
+    instructor_id INT NOT NULL,
+    course_instance_id INT NOT NULL,
+    registration_date DATETIME NOT NULL,
+    CONSTRAINT instructor_course_registration_combination_unqiue UNIQUE (instructor_id, course_instance_id),
+    CONSTRAINT instructor_course_registration_instructor_id FOREIGN KEY (instructor_id)
+		REFERENCES instructor (instructor_id)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT instructor_course_registration_course_instance_id FOREIGN KEY (course_instance_id)
+		REFERENCES course_instance (instance_id)
+		ON UPDATE CASCADE ON DELETE CASCADE,
+	PRIMARY KEY (registration_id)
+);
+
 INSERT INTO department VALUES ('GE', 'General');
 INSERT INTO department VALUES ('CS', 'Computer Science');
 INSERT INTO department VALUES ('IS', 'Information Systems');
