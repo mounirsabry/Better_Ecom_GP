@@ -157,8 +157,8 @@ namespace Better_Ecom_Backend.Controllers
             }
 
             int userID = tokenInfo.UserID;
-            string sent_current_password = data.GetProperty("Old_password").GetString();
-            string new_password = data.GetProperty("New_password").GetString();
+            string sent_current_password = data.GetProperty("OldPassword").GetString();
+            string new_password = data.GetProperty("NewPassword").GetString();
             string current_password;
 
             if (HelperFunctions.GetUserTypeFromID(userID) == "invalid")
