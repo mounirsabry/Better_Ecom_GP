@@ -235,7 +235,7 @@ export class CourseInfoComponent implements OnInit {
 
   addPrerequisite(){
     this.prerequisites_list.push(this.prerequisites_get.value);
-    this.updateCourseForm.controls['prerequisites'].reset();
+    this.updateCourseForm.controls['updateCoursePrerequisiteForm'].value.prerequisites.reset();
   }
 
   removePrerequisites(prerequisite : any){
