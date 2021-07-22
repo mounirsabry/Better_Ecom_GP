@@ -59,7 +59,7 @@ namespace Better_Ecom_Backend.Controllers
                 "INNER JOIN student_course_instance_registration ON student_course_instance_registration.course_instance_id = course_instance.instance_id WHERE student_id = @studentID;";
             string getCourseAvailableCourseInstances = $"SELECT * FROM course WHERE course_code in ({getCourseCodes})";
 
-            List<Course> courses;
+            //List<Course> courses;
 
             return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
         }
@@ -212,7 +212,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return BadRequest(new { Message = "instance doesn't exist." });
             }
-            else if(term.First().course_year != TimeUtilities.GetCurrentYear() || term.First().course_term != TimeUtilities.GetCurrentTerm())
+            else if(term[0].course_year != TimeUtilities.GetCurrentYear() || term[0].course_term != TimeUtilities.GetCurrentTerm())
             {
                 return BadRequest(new { Message = "can't drop from old course" });
             }
@@ -347,7 +347,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return BadRequest(new { Message = "instance doesn't exist." });
             }
-            else if (term.First().course_year != TimeUtilities.GetCurrentYear() || term.First().course_term != TimeUtilities.GetCurrentTerm())
+            else if (term[0].course_year != TimeUtilities.GetCurrentYear() || term[0].course_term != TimeUtilities.GetCurrentTerm())
             {
                 return BadRequest(new { Message = "can't register in old course" });
             }
@@ -508,7 +508,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return -1;
             }
-            return ids.FirstOrDefault();
+            return ids[0];
         }
 
         private bool RegisterToCourseInstanceDataValid(JsonElement jsonInput)
