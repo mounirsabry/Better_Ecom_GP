@@ -13,10 +13,10 @@ export class AddCourseInstanceComponent implements OnInit {
 
   addCourseInstanceForm = new FormGroup({
     UserID : new FormControl('',),
-    //Instance_id : new FormControl('', Validators.required),
+    Instance_id : new FormControl('', Validators.required),
     Course_code : new FormControl('', Validators.required),
     //Course_year : new FormControl(''),
-    //Course_term : new FormControl('', Validators.required),
+    Course_term : new FormControl('', Validators.required),
     Credit_hours : new FormControl('', Validators.required)
   })
 
