@@ -1,33 +1,32 @@
-<form [formGroup]="addCourseInstanceForm" (ngSubmit)="addCourseInstance()">
+<div class="gradient container-fluid p-3">
 
-    <!--<label>Enter Instance Id: </label>
-    <input type="number" name="InstanceID" id="InstanceID" #InstanceID formControlName="Instance_id">
-    <p *ngIf="instance_id_get.invalid && instance_id_get.touched" style="color: red;">Instance Id is required</p>-->
+    <hr class="row">
+    <form class="row container-fluid" [formGroup]="addCourseInstanceForm" (ngSubmit)="addCourseInstance()">
 
-    <br>
+        <div class="row my-1">
+            <label class="col-4">Enter Course Code: </label>
+            <input class="col-8" type="text" name="CourseCode" id="CourseCode" #CourseCode formControlName="Course_code">
+        </div>
+        <p class="row text-danger fw-bold" *ngIf="course_code_get.invalid && course_code_get.touched">Course Code is required</p>
 
-    <label>Enter Course Code: </label>
-    <input type="text" name="CourseCode" id="CourseCode" #CourseCode formControlName="Course_code">
-    <p *ngIf="course_code_get.invalid && course_code_get.touched" style="color: red;">Course Code is required</p>
+        <div class="row my-1">
+            <label class="col-4">Enter Course Year: </label>
+            <input class="col-8" type="number" name="CourseYear" id="CourseYear" #CourseYear formControlName="Course_year">
+        </div>
 
-    <br>
+        <div class="row my-1">
+            <label class="col-4">Enter Course Term: </label>
+            <input class="col-8" type="number" name="CourseTerm" id="CourseTerm" #CourseTerm formControlName="Course_term">
+        </div>
+        <p class="row text-danger fw-bold" *ngIf="course_term_get.invalid && course_term_get.touched">Course Term is required</p>
 
-    <!--<label>Enter Course Year: </label>
-    <input type="number" name="CourseYear" id="CourseYear" #CourseYear formControlName="Course_year">-->
+        <div class="row my-1">
+            <label class="col-4">Enter Course Credit Hours: </label>
+            <input class="col-8" type="number" name="CreditHours" id="CreditHours" #CreditHours formControlName="Credit_hours">
+        </div>
+        <p class="row text-danger fw-bold" *ngIf="credit_hours_get.invalid && credit_hours_get.touched" >Credit Hours is required</p>
 
-    <br>
 
-    <!--<label>Enter Course Term: </label>
-    <input type="number" name="CourseTerm" id="CourseTerm" #CourseTerm formControlName="Course_term">
-    <p *ngIf="course_term_get.invalid && course_term_get.touched" style="color: red;">Course Term is required</p>-->
-
-    <br>
-
-    <label>Enter Course Credit Hours: </label>
-    <input type="number" name="CreditHours" id="CreditHours" #CreditHours formControlName="Credit_hours">
-    <p *ngIf="credit_hours_get.invalid && credit_hours_get.touched" style="color: red;">Credit Hours is required</p>
-
-    <br>
-
-    <button type="submit" [disabled]="addCourseInstanceForm.invalid">Add Course</button>
-</form>
+        <button class="row my-1 btn btn-outline-dark text-light" type="submit" [disabled]="addCourseInstanceForm.invalid">Add Course</button>
+    </form>
+</div>
