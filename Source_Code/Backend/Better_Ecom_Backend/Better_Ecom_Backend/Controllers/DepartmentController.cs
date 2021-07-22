@@ -830,7 +830,7 @@ namespace Better_Ecom_Backend.Controllers
         private bool AddCourseToDepartmentRequiredDataValid(JsonElement sentData)
         {
             return sentData.TryGetProperty("Course_code", out JsonElement temp) && temp.ValueKind == JsonValueKind.String
-                && sentData.TryGetProperty("departmentApplicability", out temp) && temp.ValueKind == JsonValueKind.Array
+                && sentData.TryGetProperty("DepartmentApplicability", out temp) && temp.ValueKind == JsonValueKind.Array
                 && (sentData.TryGetProperty("Department_code", out temp) && temp.ValueKind == JsonValueKind.String && GetDepartmentsCodes().Contains(temp.GetString()))
                 && sentData.TryGetProperty("Course_name", out temp) && temp.ValueKind == JsonValueKind.String;
         }
