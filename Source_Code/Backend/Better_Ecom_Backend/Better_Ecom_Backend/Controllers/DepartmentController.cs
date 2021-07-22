@@ -5,7 +5,6 @@ using DataLibrary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -134,7 +133,7 @@ namespace Better_Ecom_Backend.Controllers
             }
 
             string sql = "SELECT department_code, priority FROM student_department_priority_list WHERE student_id = @id;";
-            dynamic rows = _data.LoadData<dynamic, dynamic>(sql, new { studentID }, _config.GetConnectionString("Default"));
+            dynamic rows = _data.LoadData<dynamic, dynamic>(sql, new { id = studentID }, _config.GetConnectionString("Default"));
             if (rows == null)
             {
                 return BadRequest(new { Message = "unknown error, maybe database server is down." });
@@ -701,7 +700,6 @@ namespace Better_Ecom_Backend.Controllers
             }
 
             Course_instance courseInstance = new(jsonData);
-            //Wait until we see how it's calculated or provided.Term();
 
             if (!CheckCourseExist(courseInstance.Course_code))
             {
@@ -713,7 +711,8 @@ namespace Better_Ecom_Backend.Controllers
                 courseInstance.Course_year = TimeUtilities.GetCurrentYear();
             }
 
-            string addCourseInstanceSql = "INSERT INTO course_instance VALUES(NULL, @Course_code, @Course_year, @Course_term, @Credit_hours, FALSE, FALSE);";
+
+            string addCourseInstanceSql = "INSERT INTO course_instance VALUES(NULL, @Course_code, @Course_year, @Course_term, @Credit_hours, FALSE);";
             int status = _data.SaveData(addCourseInstanceSql, courseInstance, _config.GetConnectionString("Default"));
 
             if (status > 0)

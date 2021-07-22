@@ -2,14 +2,11 @@
 using Better_Ecom_Backend.Models;
 using DataLibrary;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Better_Ecom_Backend.Controllers
 {
@@ -40,16 +37,35 @@ namespace Better_Ecom_Backend.Controllers
             return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
         }
 
+        [Authorize]
         [HttpGet("GetCourseAvailableCourseInstances/{CourseCode}")]
-        public IActionResult GetCourseAvailableCourseInstances(string courseCode)
+        public IActionResult GetCourseAvailableCourseInstances([FromHeader] string Authorization, string courseCode)
         {
-            //STUDENT, ADMIN FUNCTION.
+            //STUDENT, INSTRUCTOR, ADMIN FUNCTION.
 
             return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
         }
 
         [Authorize(Roles = "admin, student")]
-        [HttpGet("GetStudentRegisteredCourseInstances/{StudentID:int}")]
+        [HttpGet("GetStudentRegisteredCourses/{StudentID:int}")]
+        public IActionResult GetStudentRegisteredCourses([FromHeader] string Authorization, int studentID)
+        {
+            TokenInfo info = HelperFunctions.GetIdAndTypeFromToken(Authorization);
+            if (info.Type == "student" && info.UserID != studentID)
+            {
+                return Forbid("students can only get their own data.");
+            }
+            string getCourseCodes = "SELECT course_code FROM course_instance " + "\n" +
+                "INNER JOIN student_course_instance_registration ON student_course_instance_registration.course_instance_id = course_instance.instance_id WHERE student_id = @studentID;";
+            string getCourseAvailableCourseInstances = $"SELECT * FROM course WHERE course_code in ({getCourseCodes})";
+
+            List<Course> courses;
+
+            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+        }
+
+        [Authorize(Roles = "admin, student")]
+        [HttpGet("GetStudentRegisteredCourseInstances/{Student:int}")]
         public IActionResult GetStudentRegisteredCourseInstances([FromHeader] string Authorization, int studentID)
         {
             //STUDENT, ADMIN FUNCTION.
@@ -72,36 +88,63 @@ namespace Better_Ecom_Backend.Controllers
             return Ok(instances);
         }
 
-        [Authorize(Roles = "student, admin")]
-        [HttpPost("RegisterToCourseInstance")]
-        public IActionResult RegisterToCourseInstance([FromHeader] string Authorization, [FromBody] JsonElement jsonInput)
+        [Authorize(Roles = "admin, student")]
+        [HttpGet("GetCourseStudentRegisteredCourseInstances/{StudentID:int}/{CourseCode}")]
+        public IActionResult GetCourseStudentRegisteredCourseInstances([FromHeader] string Authorization, int studentID, string courseCode)
         {
             //STUDENT, ADMIN FUNCTION.
-            if (AppSettingsFunctions.GetIsCourseRegistrationOpen(_config) == false)
-            {
-                return BadRequest(new { Message = "normal course registration is unavailable, try check late course registration." });
-            }
-
-            if (!RegisterToCourseInstanceDataValid(jsonInput))
-            {
-                return BadRequest(new { Message = "required data missing or invalid." });
-            }
-
-            int studentID = jsonInput.GetProperty("StudentID").GetInt32();
-            int courseInstanceID = jsonInput.GetProperty("CourseInstanceID").GetInt32();
-
             TokenInfo info = HelperFunctions.GetIdAndTypeFromToken(Authorization);
             if (info.Type == "student" && info.UserID != studentID)
             {
                 return Forbid("students can only get their own data.");
             }
 
+            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+        }
+
+        [Authorize(Roles = "student, admin")]
+        [HttpPost("RegisterToCourseInstance")]
+        public IActionResult RegisterToCourseInstance([FromHeader] string Authorization, [FromBody] JsonElement jsonInput)
+        {
+            //STUDENT, ADMIN FUNCTION.
+            TokenInfo info = HelperFunctions.GetIdAndTypeFromToken(Authorization);
+
+            if (AppSettingsFunctions.GetIsCourseRegistrationOpen(_config) == false)
+            {
+                if (info.Type == "student")
+                {
+                    return BadRequest(new { Message = "normal course registration is unavailable, try check late course registration." });
+                }
+                else
+                {
+                    if (AppSettingsFunctions.GetIsLateCourseRegistrationOpen(_config) == true)
+                    {
+                        return BadRequest(new { Message = "course registration is closed, but late registration is open, the student must register through requests." });
+                    }
+                }
+            }
+
+            if (!RegisterToCourseInstanceDataValid(jsonInput))
+            {
+                return BadRequest(new { Message = HelperFunctions.GetRequiredDataMissingOrInvalidMessage() });
+            }
+
+            int studentID = jsonInput.GetProperty("StudentID").GetInt32();
+            int courseInstanceID = jsonInput.GetProperty("CourseInstanceID").GetInt32();
+            if (info.Type == "student" && info.UserID != studentID)
+            {
+                return Forbid("students can only get their own data.");
+            }
+
             string courseCode;
-            //We still have to check that the course is valid for the user.
             List<string> courseCodes = GetCourseCodesListFromCourseInstanceID(courseInstanceID);
             if (courseCodes is null)
             {
                 return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+            else if (courseCodes.Count == 0)
+            {
+                return BadRequest(new { Message = "no course found associated with the given instance id." });
             }
             else
             {
@@ -131,47 +174,147 @@ namespace Better_Ecom_Backend.Controllers
             }
             else
             {
-                return BadRequest(new { Message = "unknown error, maybe database server is down." });
+                return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
             }
         }
 
+
+        [Authorize(Roles ="student, admin")]
         [HttpDelete("DropStudentFromCourseInstance")]
-        public IActionResult DropStudentFromCourseInstance([FromBody] JsonElement jsonInput)
+        public IActionResult DropStudentFromCourseInstance([FromHeader] string Authorization,[FromBody] JsonElement jsonInput)
         {
             //STUDENT, ADMIN FUNCTION.
-            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+
+            if(!DropStudentFromCourseInstanceDataValid(jsonInput))
+            {
+                return BadRequest(new { Message = HelperFunctions.GetRequiredDataMissingOrInvalidMessage() });
+            }
+
+            int studentID = jsonInput.GetProperty("StudentID").GetInt32();
+            int courseInstanceID = jsonInput.GetProperty("CourseInstanceID").GetInt32();
+
+
+            TokenInfo info = HelperFunctions.GetIdAndTypeFromToken(Authorization);
+            if (info.Type == "student" && info.UserID != studentID)
+            {
+                return Forbid("students can only get their own data.");
+            }
+
+            string getTargetCourseInstanceYearAndTermSql = "SELECT course_year, course_term FROM course_instance WHERE instance_id = @courseInstanceID;";
+
+            var term = _data.LoadData<dynamic, dynamic>(getTargetCourseInstanceYearAndTermSql, new { courseInstanceID }, _config.GetConnectionString("Default"));
+
+            if(term is null)
+            {
+                return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+            else if(term.Count == 0)
+            {
+                return BadRequest(new { Message = "instance doesn't exist." });
+            }
+            else if(term.First().course_year != TimeUtilities.GetCurrentYear() || term.First().course_term != TimeUtilities.GetCurrentTerm())
+            {
+                return BadRequest(new { Message = "can't drop from old course" });
+            }
+
+            string dropStudentFromCourseInstanceSql = "DELETE FROM student_course_instance_registration WHERE course_instance_id = @courseInstanceID AND student_id = @studentID;";
+
+            int status = _data.SaveData(dropStudentFromCourseInstanceSql, new { courseInstanceID, studentID }, _config.GetConnectionString("Default"));
+
+            if(status > 0)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+
         }
+
+
 
         [Authorize]
         [HttpGet("GetCourseInstanceRegisteredStudents/{CourseInstanceID:int}")]
         public IActionResult GetCourseInstanceRegisteredStudents(int courseInstanceID)
         {
             //ALL UESRS.
-            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+
+            string getCourseInstanceRegisteredStudentsIdsSql = "SELECT student_id FROM student_course_instance_registration, course_instance_late_registration_request" + "\n" +
+                "WHERE course_instance_id = @courseInstanceID";
+
+            string getCourseInstanceRegisteredStudentsSql = "SELECT * FROM student" + "\n" +
+                "INNER JOIN system_user on system_user_id = student_id" + "\n" +
+                $"WHERE student_id in ({getCourseInstanceRegisteredStudentsIdsSql})";
+
+            List<Student> students = _data.LoadData<Student, dynamic>(getCourseInstanceRegisteredStudentsSql, new { courseInstanceID }, _config.GetConnectionString("Default"));
+
+            if(students is null)
+            {
+                return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+            
+
+            return Ok(students);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet("GetAllLateCourseInstanceRegistrationRequests")]
         public IActionResult GetAllLateCourseInstanceRegistrationRequests()
         {
             //ADMIN ONLY FUNCTION.
-            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+
+            List<Course_instance_late_registration_request> lateCourseInstances = _data.LoadData<Course_instance_late_registration_request, dynamic>("SELECT * FROM course_instance_late_registration_request;",new { },_config.GetConnectionString("Default"));
+
+            if(lateCourseInstances is null)
+            {
+                return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+
+            return Ok(lateCourseInstances);
         }
 
+        [Authorize(Roles ="admin")]
         [HttpGet("GetCourseLateCourseRegistrationRequests/{CourseCode}")]
         public IActionResult GetCourseLateCourseRegistrationRequests(string courseCode)
         {
             //ADMIN ONLY FUNCTION.
-            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+
+            string getCourseInstancesSql = "SELECT instance_id FROM course_instance WHERE course_code = @courseCode;";
+            string getCourseLateRegistrationRequest = $"SELECT * FROM course_instance_late_registration_request WHERE course_instance_id in ({getCourseInstancesSql});";
+            List<Course_instance_late_registration_request> lateCourseInstances = _data.LoadData<Course_instance_late_registration_request, dynamic>(getCourseLateRegistrationRequest, new { courseCode }, _config.GetConnectionString("Default"));
+
+            if (lateCourseInstances is null)
+            {
+                return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+
+            return Ok(lateCourseInstances);
         }
 
+        [Authorize(Roles = "student, admin")]
         [HttpGet("GetStudentLateCourseInstanceRegistrationRequests/{StudentID:int}")]
-        public IActionResult GetStudentLateCourseInstanceRegistrationRequests(int studentID)
+        public IActionResult GetStudentLateCourseInstanceRegistrationRequests([FromHeader]string Authorization, int studentID)
         {
             //STUDENT, ADMIN FUNCTION.
-            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+            TokenInfo info = HelperFunctions.GetIdAndTypeFromToken(Authorization);
+            if (info.Type == "student" && info.UserID != studentID)
+            {
+                return Forbid("students can only get their own data.");
+            }
+
+            string getStudentLateCourseInstanceRegistrationRequestsSql = "SELECT * FROM course_instance_late_registration_request WHERE student_id = @studentID;";
+            List<Course_instance_late_registration_request> lateRegistrations = _data.LoadData<Course_instance_late_registration_request, dynamic>(
+                getStudentLateCourseInstanceRegistrationRequestsSql, new { studentID }, _config.GetConnectionString("Default"));
+
+            if(lateRegistrations is null)
+            {
+                return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+            return Ok(lateRegistrations);
         }
 
-        [HttpGet("GetLateCourseInstanceRegistrationRequestAvailableStatus")]
+        [HttpGet("GetLateCourseInstanceRegistrationRequestAvailableStauts")]
         public IActionResult GetLateCourseInstanceRegistrationRequestAvailableStauts()
         {
             //STUDENT, ADMIN FUNCTION.
@@ -182,20 +325,98 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult SubmitLateCourseInstanceRegistrationRequest([FromBody] JsonElement jsonInput)
         {
             //STUDENT ONLY FUNCTION.
-            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+            if(!SubmitLateCourseInstanceRegistrationRequestDataValid(jsonInput))
+            {
+                return BadRequest(new { Message = HelperFunctions.GetRequiredDataMissingOrInvalidMessage() });
+            }
+
+            int studentID = jsonInput.GetProperty("StudentID").GetInt32();
+            int courseInstanceID = jsonInput.GetProperty("CourseInstanceID").GetInt32();
+            DateTime requestDate = DateTime.Now;
+            LateRegistrationRequestStatus requestStatus = LateRegistrationRequestStatus.Pending_Accept;
+
+            string getTargetCourseInstanceYearAndTermSql = "SELECT course_year, course_term FROM course_instance WHERE instance_id = @courseInstanceID;";
+
+            var term = _data.LoadData<dynamic, dynamic>(getTargetCourseInstanceYearAndTermSql, new { courseInstanceID }, _config.GetConnectionString("Default"));
+
+            if (term is null)
+            {
+                return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+            else if (term.Count == 0)
+            {
+                return BadRequest(new { Message = "instance doesn't exist." });
+            }
+            else if (term.First().course_year != TimeUtilities.GetCurrentYear() || term.First().course_term != TimeUtilities.GetCurrentTerm())
+            {
+                return BadRequest(new { Message = "can't register in old course" });
+            }
+
+            string submitLateCourseInstanceRegistrationRequest = "INSERT INTO course_instance_late_registration_request VALUES(NULL, @studentID, @courseInstanceID, @requestDate, @requestStatus);";
+
+            dynamic parameters = new
+            {
+                studentID,
+                courseInstanceID,
+                requestDate,
+                requestStatus = nameof(requestStatus)
+            };
+
+            int status = _data.SaveData(submitLateCourseInstanceRegistrationRequest, parameters, _config.GetConnectionString("Default"));
+
+            if(status > 0)
+            {
+                int id = GetLateRegistrationId(courseInstanceID, studentID);
+
+                Course_instance_late_registration_request registration = new(id, studentID, courseInstanceID, requestDate, requestStatus);
+
+                return Ok(registration);
+            }
+            else
+            {
+
+                return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
+
+            }
+
         }
 
+
+        [Authorize(Roles ="student")]
         [HttpDelete("DeleteLateCourseInstanceRegistrationRequest")]
         public IActionResult DeleteLateCourseInstanceRegistrationRequest([FromBody] JsonElement jsonInput)
         {
             //STUDENT ONLY FUNCTION.
-            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+            if (!jsonInput.TryGetProperty("lateRegistrationRequestID", out JsonElement temp) || !temp.TryGetInt32(out int requestID))
+            {
+                return BadRequest(new { Message = HelperFunctions.GetRequiredDataMissingOrInvalidMessage() });
+            }
+
+            string deleteLateCourseInstanceRegistrationRequestSql = "DELETE FROM course_instance_late_registration_request WHERE request_id = @requestID;";
+
+            int status = _data.SaveData(deleteLateCourseInstanceRegistrationRequestSql, new { requestID }, _config.GetConnectionString("Default"));
+
+            if (status > 0)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+
+
+
         }
 
+        [Authorize(Roles ="admin")]
         [HttpPatch("SetLateCourseInstanceRegistrationRequest")]
         public IActionResult SetLateCourseInstanceRegistrationRequest([FromBody] JsonElement jsonInput)
         {
             //ADMIN ONLY FUNCTION.
+
+
+
             return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
         }
 
@@ -248,7 +469,8 @@ namespace Better_Ecom_Backend.Controllers
                     + "AND course_term = @CurrentTerm" + "\n"
                     + "OR course_term = 'Other'" + "\n"
                     + "AND is_closed_for_registration = FALSE;";
-
+            Console.WriteLine(workingYear);
+            Console.WriteLine(sql);
 
             return null;
         }
@@ -278,9 +500,32 @@ namespace Better_Ecom_Backend.Controllers
             return courseCodes;
         }
 
+        private int GetLateRegistrationId(int courseInstanceID, int studentID)
+        {
+            List<int> ids = _data.LoadData<int, dynamic>("SELECT request_id FROM course_instance_late_registration_request WHERE student_id = @studentID AND course_instance_id = @courseInstanceID;",
+                new { courseInstanceID, studentID }, _config.GetConnectionString("Default"));
+            if(ids is null || ids.Contains(-1))
+            {
+                return -1;
+            }
+            return ids.FirstOrDefault();
+        }
+
         private bool RegisterToCourseInstanceDataValid(JsonElement jsonInput)
         {
             throw new NotImplementedException();
+        }
+
+        private bool DropStudentFromCourseInstanceDataValid(JsonElement jsonInput)
+        {
+            return jsonInput.TryGetProperty("CourseInstanceID", out JsonElement temp) && temp.TryGetInt32(out _)
+                && jsonInput.TryGetProperty("StudentID", out temp) && temp.TryGetInt32(out _);
+        }
+
+        private bool SubmitLateCourseInstanceRegistrationRequestDataValid(JsonElement jsonInput)
+        {
+            return jsonInput.TryGetProperty("StudentID", out JsonElement temp) && temp.TryGetInt32(out _)
+                && jsonInput.TryGetProperty("CourseInstanceID", out temp) && temp.TryGetInt32(out _);
         }
     }
 }

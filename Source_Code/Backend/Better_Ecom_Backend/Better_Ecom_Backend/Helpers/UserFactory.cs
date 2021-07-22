@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Better_Ecom_Backend.Models;
 using System.Text.Json;
-using System.Threading.Tasks;
-using Better_Ecom_Backend.Models;
 
 namespace Better_Ecom_Backend.Helpers
 {
