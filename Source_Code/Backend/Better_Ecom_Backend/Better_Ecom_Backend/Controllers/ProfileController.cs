@@ -134,7 +134,7 @@ namespace Better_Ecom_Backend.Controllers
             }
             else
             {
-                return BadRequest(new { Message = "unknown error, maybe database is down." });
+                return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
             }
         }
 
@@ -146,23 +146,24 @@ namespace Better_Ecom_Backend.Controllers
         /// <returns>Ok if successful BadRequest otherwise.</returns>
         [Authorize]
         [HttpPatch("ChangePassword")]
-        public IActionResult ChangePassword([FromBody] dynamic data)
+        public IActionResult ChangePassword([FromHeader] string Authorization, [FromBody] dynamic data)
         {
             data = (JsonElement)data;
+            TokenInfo tokenInfo = HelperFunctions.GetIdAndTypeFromToken(Authorization);
 
             if (!ChangePasswordRequiredDataValid(data))
             {
                 return BadRequest(new { Message = "required data missing or invalid." });
             }
 
-            int userID = data.GetProperty("UserID").GetInt32();
-            string sent_current_password = data.GetProperty("Old_password").GetString();
-            string new_password = data.GetProperty("New_password").GetString();
+            int userID = tokenInfo.UserID;
+            string sent_current_password = data.GetProperty("OldPassword").GetString();
+            string new_password = data.GetProperty("NewPassword").GetString();
             string current_password;
 
             if (HelperFunctions.GetUserTypeFromID(userID) == "invalid")
             {
-                return BadRequest(new { Message = "invalid id." });
+                return BadRequest(new { Message = "invalid id or type." });
             }
             else if (sent_current_password == new_password)
             {
@@ -177,7 +178,7 @@ namespace Better_Ecom_Backend.Controllers
             }
             else
             {
-                return BadRequest(new { Message = "unknown error, maybe database server is down." });
+                return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
             }
 
             if (!SecurityUtilities.Verify(sent_current_password, current_password))
@@ -213,9 +214,8 @@ namespace Better_Ecom_Backend.Controllers
 
         private static bool ChangePasswordRequiredDataValid(JsonElement sentData)
         {
-            return sentData.TryGetProperty("UserID", out JsonElement temp) && temp.TryGetInt32(out _)
-                && sentData.TryGetProperty("Old_password", out temp) && temp.ValueKind == JsonValueKind.String
-                && sentData.TryGetProperty("New_password", out temp) && temp.ValueKind == JsonValueKind.String;
+            return sentData.TryGetProperty("OldPassword", out JsonElement temp) && temp.ValueKind == JsonValueKind.String
+                && sentData.TryGetProperty("NewPassword", out temp) && temp.ValueKind == JsonValueKind.String;
         }
 
         private static bool SaveProfileChangesRequiredDataValid(JsonElement data)
