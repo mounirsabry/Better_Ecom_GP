@@ -1,8 +1,8 @@
 <form [formGroup]="addCourseInstanceForm" (ngSubmit)="addCourseInstance()">
 
-    <label>Enter Instance Id: </label>
+    <!--<label>Enter Instance Id: </label>
     <input type="number" name="InstanceID" id="InstanceID" #InstanceID formControlName="Instance_id">
-    <p *ngIf="instance_id_get.invalid && instance_id_get.touched" style="color: red;">Instance Id is required</p>
+    <p *ngIf="instance_id_get.invalid && instance_id_get.touched" style="color: red;">Instance Id is required</p>-->
 
     <br>
 
@@ -12,8 +12,8 @@
 
     <br>
 
-    <!--<label>Enter Course Year: </label>
-    <input type="number" name="CourseYear" id="CourseYear" #CourseYear formControlName="Course_year">-->
+    <label>Enter Course Year: </label>
+    <input type="number" name="CourseYear" id="CourseYear" #CourseYear formControlName="Course_year">
 
     <br>
 
