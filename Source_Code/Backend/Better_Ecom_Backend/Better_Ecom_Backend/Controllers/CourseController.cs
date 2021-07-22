@@ -379,7 +379,6 @@ namespace Better_Ecom_Backend.Controllers
 
         }
 
-
         [Authorize(Roles = "student")]
         [HttpDelete("DeleteLateCourseInstanceRegistrationRequest")]
         public IActionResult DeleteLateCourseInstanceRegistrationRequest([FromBody] JsonElement jsonInput)
@@ -390,10 +389,11 @@ namespace Better_Ecom_Backend.Controllers
                 return BadRequest(new { Message = HelperFunctions.GetRequiredDataMissingOrInvalidMessage() });
             }
 
+            //You cannot delete an accepted request.
+
             string deleteLateCourseInstanceRegistrationRequestSql = "DELETE FROM course_instance_late_registration_request WHERE request_id = @requestID;";
 
             int status = _data.SaveData(deleteLateCourseInstanceRegistrationRequestSql, new { requestID }, _config.GetConnectionString("Default"));
-
             if (status > 0)
             {
                 return Ok();
@@ -402,9 +402,6 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
             }
-
-
-
         }
 
         [Authorize(Roles = "admin")]
@@ -412,7 +409,16 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult SetLateCourseInstanceRegistrationRequest([FromBody] JsonElement jsonInput)
         {
             //ADMIN ONLY FUNCTION.
-
+            if (SetLateCourseInstanceRegistrationRequestDataValid(jsonInput) == false)
+            {
+                return BadRequest(new { Message = HelperFunctions.GetRequiredDataMissingOrInvalidMessage() });
+            }
+            //Fetch the status from the database.
+            //if the sent status and database status is accepted, then display, the request is already accepted.
+            //If the database status is accepted and the sent status is else, then display, you cannot change the status of an accepted request.
+            //If the database status is pending or rejected and the sent status is accepted, then you should
+            //Accpet the request.
+            //Insert a new row in the student course instance reigstration table.
 
 
             return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
@@ -431,6 +437,8 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult GetStudentCourseInstanceStatus(int studentID, int courseInstanceID)
         {
             //ALL USERS.
+            //If the user is a student, then the studentID must match the id in the token.
+            //return the student course instance registration status value.
             return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
         }
 
@@ -524,6 +532,22 @@ namespace Better_Ecom_Backend.Controllers
         {
             return jsonInput.TryGetProperty("StudentID", out JsonElement temp) && temp.TryGetInt32(out _)
                 && jsonInput.TryGetProperty("CourseInstanceID", out temp) && temp.TryGetInt32(out _);
+        }
+
+        private bool SetLateCourseInstanceRegistrationRequestDataValid(JsonElement jsonInput)
+        {
+            bool isDataFound = jsonInput.TryGetProperty("RequestID", out JsonElement temp) && temp.TryGetInt32(out _)
+                && jsonInput.TryGetProperty("RequestStatus", out temp) && temp.TryGetInt32(out _);
+
+            if (isDataFound)
+            {
+                int requestStatusInt = jsonInput.GetProperty("RequestStatus").GetInt32();
+                if (requestStatusInt >= 0 && requestStatusInt <= 2)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
