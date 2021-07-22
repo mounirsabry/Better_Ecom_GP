@@ -701,7 +701,6 @@ namespace Better_Ecom_Backend.Controllers
             }
 
             Course_instance courseInstance = new(jsonData);
-            //Wait until we see how it's calculated or provided.Term();
 
             if (!CheckCourseExist(courseInstance.Course_code))
             {
