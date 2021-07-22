@@ -17,6 +17,11 @@ namespace Better_Ecom_Backend.Helpers
             return "not implemented yet.";
         }
 
+        public static string GetMaybeDatabaseIsDownMessage()
+        {
+            return "unknown error, maybe database is down.";
+        }
+
         public static TokenInfo GetIdAndTypeFromToken(string tokenString)
         {
             JwtSecurityTokenHandler handler = new();

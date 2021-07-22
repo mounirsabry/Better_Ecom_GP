@@ -44,7 +44,7 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult GetCourseAvailableCourseInstances(string courseCode)
         {
             //STUDENT, ADMIN FUNCTION.
-            //Take the course code, return all the 
+
             return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
         }
 
@@ -77,12 +77,18 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult RegisterToCourseInstance([FromHeader] string Authorization, [FromBody] JsonElement jsonInput)
         {
             //STUDENT, ADMIN FUNCTION.
+            if (AppSettingsFunctions.GetIsCourseRegistrationOpen(_config) == false)
+            {
+                return BadRequest(new { Message = "normal course registration is unavailable, try check late course registration." });
+            }
+
             if (!RegisterToCourseInstanceDataValid(jsonInput))
             {
                 return BadRequest(new { Message = "required data missing or invalid." });
             }
 
-            int studentID = jsonInput.GetProperty("UserID").GetInt32();
+            int studentID = jsonInput.GetProperty("StudentID").GetInt32();
+            int courseInstanceID = jsonInput.GetProperty("CourseInstanceID").GetInt32();
 
             TokenInfo info = HelperFunctions.GetIdAndTypeFromToken(Authorization);
             if (info.Type == "student" && info.UserID != studentID)
@@ -90,9 +96,28 @@ namespace Better_Ecom_Backend.Controllers
                 return Forbid("students can only get their own data.");
             }
 
+            string courseCode;
             //We still have to check that the course is valid for the user.
+            List<string> courseCodes = GetCourseCodesListFromCourseInstanceID(courseInstanceID);
+            if (courseCodes is null)
+            {
+                return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+            else
+            {
+                courseCode = courseCodes[0];
+            }
 
-            int courseInstanceID = jsonInput.GetProperty("Course_instance").GetInt32();
+            if (IsFromStudentAvailableCoursesList(studentID, courseCode) == false)
+            {
+                return BadRequest("this course is unavailable for the student.");
+            }
+
+            if (IsFromCourseAvailableCourseInstancesList(courseInstanceID) == false)
+            {
+                return BadRequest("this course instance is unavailable for registration.");
+            }
+
             DateTime registrationDate = DateTime.Now;
             Student_course_instance_registration registration = new(-1, studentID, courseInstanceID, registrationDate, StudentCourseInstanceRegistrationStatus.Undertaking);
 
@@ -197,7 +222,38 @@ namespace Better_Ecom_Backend.Controllers
             return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
         }
 
-        private static bool IsFromStudentAvailableCoursesList(int userID)
+        private List<Course> GetStudentAvailableCoursesList(int studentID)
+        {
+            return null;
+        }
+
+        private List<Course_instance> GetCourseAvailableCourseInstancesList(string courseCode)
+        {
+            //Take the course code, return all the available course instances for registration.
+            /*
+            The query is based on the course code, current working year, current term, and is the course instance
+            is close for registration or not.
+            */
+            int workingYear = TimeUtilities.GetCurrentYear();
+            int currentMonth = TimeUtilities.GetCurrentMonth();
+            Term currentTerm = TimeUtilities.GetCurrentTerm();
+            if (currentMonth == 1 && currentTerm == Term.First)
+            {
+                workingYear -= 1;
+            }
+
+            string sql = "SELECT * FROM course_instance" + "\n"
+                    + "WHERE course_code = @Coursecode" + "\n"
+                    + "AND course_year = @WorkingYear" + "\n"
+                    + "AND course_term = @CurrentTerm" + "\n"
+                    + "OR course_term = 'Other'" + "\n"
+                    + "AND is_closed_for_registration = FALSE;";
+
+
+            return null;
+        }
+
+        private static bool IsFromStudentAvailableCoursesList(int userID, string courseCode)
         {
             return true;
         }
