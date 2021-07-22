@@ -134,7 +134,7 @@ namespace Better_Ecom_Backend.Controllers
             }
 
             string sql = "SELECT department_code, priority FROM student_department_priority_list WHERE student_id = @id;";
-            dynamic rows = _data.LoadData<dynamic, dynamic>(sql, new { studentID }, _config.GetConnectionString("Default"));
+            dynamic rows = _data.LoadData<dynamic, dynamic>(sql, new { id = studentID }, _config.GetConnectionString("Default"));
             if (rows == null)
             {
                 return BadRequest(new { Message = "unknown error, maybe database server is down." });
