@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 
 namespace Better_Ecom_Backend.Controllers
@@ -60,22 +59,11 @@ namespace Better_Ecom_Backend.Controllers
                 "INNER JOIN student_course_instance_registration ON student_course_instance_registration.course_instance_id = course_instance.instance_id WHERE student_id = @studentID;";
             string getCourseAvailableCourseInstances = $"SELECT * FROM course WHERE course_code in ({getCourseCodes})";
 
-            List<Course> courses = _data.LoadData<Course,dynamic>(getCourseAvailableCourseInstances, new { studentID }, _config.GetConnectionString("Default"));
+            //List<Course> courses;
 
-            if(courses is null)
-            {
-                return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
-            }
-
-            return Ok(courses);
+            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Authorization"></param>
-        /// <param name="studentID"></param>
-        /// <returns></returns>
         [Authorize(Roles = "admin, student")]
         [HttpGet("GetStudentRegisteredCourseInstances/{Student:int}")]
         public IActionResult GetStudentRegisteredCourseInstances([FromHeader] string Authorization, int studentID)
@@ -100,13 +88,6 @@ namespace Better_Ecom_Backend.Controllers
             return Ok(instances);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Authorization"></param>
-        /// <param name="studentID"></param>
-        /// <param name="courseCode"></param>
-        /// <returns></returns>
         [Authorize(Roles = "admin, student")]
         [HttpGet("GetCourseStudentRegisteredCourseInstances/{StudentID:int}/{CourseCode}")]
         public IActionResult GetCourseStudentRegisteredCourseInstances([FromHeader] string Authorization, int studentID, string courseCode)
@@ -118,26 +99,9 @@ namespace Better_Ecom_Backend.Controllers
                 return Forbid("students can only get their own data.");
             }
 
-            string getStudentRegisteredInstanceIds = "SELECT course_instance_id FROM student_course_instance_registration WHERE student_id = @studentID;";
-            string getCourseStudentRegisteredCourseInstancesSql = $"SELECT * FROM course_instance WHERE instance_id IN ({getStudentRegisteredInstanceIds}) AND course_code = @courseCode;";
-
-            List<Course_instance> instances = _data.LoadData<Course_instance, dynamic>(getCourseStudentRegisteredCourseInstancesSql, new { studentID, courseCode }, _config.GetConnectionString("Default"));
-
-            if(instances is null)
-            {
-                return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
-            }
-
-            return Ok(instances);
+            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
         }
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Authorization"></param>
-        /// <param name="jsonInput"></param>
-        /// <returns></returns>
         [Authorize(Roles = "student, admin")]
         [HttpPost("RegisterToCourseInstance")]
         public IActionResult RegisterToCourseInstance([FromHeader] string Authorization, [FromBody] JsonElement jsonInput)
@@ -206,7 +170,6 @@ namespace Better_Ecom_Backend.Controllers
 
             if (status > 0)
             {
-                registration.Registration_id = GetRegistrationId(courseInstanceID, studentID);
                 return Ok(registration);
             }
             else
@@ -216,19 +179,13 @@ namespace Better_Ecom_Backend.Controllers
         }
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Authorization"></param>
-        /// <param name="jsonInput"></param>
-        /// <returns></returns>
-        [Authorize(Roles ="student, admin")]
+        [Authorize(Roles = "student, admin")]
         [HttpDelete("DropStudentFromCourseInstance")]
-        public IActionResult DropStudentFromCourseInstance([FromHeader] string Authorization,[FromBody] JsonElement jsonInput)
+        public IActionResult DropStudentFromCourseInstance([FromHeader] string Authorization, [FromBody] JsonElement jsonInput)
         {
             //STUDENT, ADMIN FUNCTION.
 
-            if(!DropStudentFromCourseInstanceDataValid(jsonInput))
+            if (!DropStudentFromCourseInstanceDataValid(jsonInput))
             {
                 return BadRequest(new { Message = HelperFunctions.GetRequiredDataMissingOrInvalidMessage() });
             }
@@ -247,15 +204,15 @@ namespace Better_Ecom_Backend.Controllers
 
             var term = _data.LoadData<dynamic, dynamic>(getTargetCourseInstanceYearAndTermSql, new { courseInstanceID }, _config.GetConnectionString("Default"));
 
-            if(term is null)
+            if (term is null)
             {
                 return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
             }
-            else if(term.Count == 0)
+            else if (term.Count == 0)
             {
                 return BadRequest(new { Message = "instance doesn't exist." });
             }
-            else if(term[0].course_year != TimeUtilities.GetCurrentYear() || term[0].course_term != TimeUtilities.GetCurrentTerm())
+            else if (term[0].course_year != TimeUtilities.GetCurrentYear() || term[0].course_term != TimeUtilities.GetCurrentTerm())
             {
                 return BadRequest(new { Message = "can't drop from old course" });
             }
@@ -264,7 +221,7 @@ namespace Better_Ecom_Backend.Controllers
 
             int status = _data.SaveData(dropStudentFromCourseInstanceSql, new { courseInstanceID, studentID }, _config.GetConnectionString("Default"));
 
-            if(status > 0)
+            if (status > 0)
             {
                 return Ok();
             }
@@ -290,11 +247,11 @@ namespace Better_Ecom_Backend.Controllers
 
             List<Student> students = _data.LoadData<Student, dynamic>(getCourseInstanceRegisteredStudentsSql, new { courseInstanceID }, _config.GetConnectionString("Default"));
 
-            if(students is null)
+            if (students is null)
             {
                 return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
             }
-            
+
 
             return Ok(students);
         }
@@ -305,9 +262,9 @@ namespace Better_Ecom_Backend.Controllers
         {
             //ADMIN ONLY FUNCTION.
 
-            List<Course_instance_late_registration_request> lateCourseInstances = _data.LoadData<Course_instance_late_registration_request, dynamic>("SELECT * FROM course_instance_late_registration_request;",new { },_config.GetConnectionString("Default"));
+            List<Course_instance_late_registration_request> lateCourseInstances = _data.LoadData<Course_instance_late_registration_request, dynamic>("SELECT * FROM course_instance_late_registration_request;", new { }, _config.GetConnectionString("Default"));
 
-            if(lateCourseInstances is null)
+            if (lateCourseInstances is null)
             {
                 return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
             }
@@ -315,7 +272,7 @@ namespace Better_Ecom_Backend.Controllers
             return Ok(lateCourseInstances);
         }
 
-        [Authorize(Roles ="admin")]
+        [Authorize(Roles = "admin")]
         [HttpGet("GetCourseLateCourseRegistrationRequests/{CourseCode}")]
         public IActionResult GetCourseLateCourseRegistrationRequests(string courseCode)
         {
@@ -335,7 +292,7 @@ namespace Better_Ecom_Backend.Controllers
 
         [Authorize(Roles = "student, admin")]
         [HttpGet("GetStudentLateCourseInstanceRegistrationRequests/{StudentID:int}")]
-        public IActionResult GetStudentLateCourseInstanceRegistrationRequests([FromHeader]string Authorization, int studentID)
+        public IActionResult GetStudentLateCourseInstanceRegistrationRequests([FromHeader] string Authorization, int studentID)
         {
             //STUDENT, ADMIN FUNCTION.
             TokenInfo info = HelperFunctions.GetIdAndTypeFromToken(Authorization);
@@ -348,7 +305,7 @@ namespace Better_Ecom_Backend.Controllers
             List<Course_instance_late_registration_request> lateRegistrations = _data.LoadData<Course_instance_late_registration_request, dynamic>(
                 getStudentLateCourseInstanceRegistrationRequestsSql, new { studentID }, _config.GetConnectionString("Default"));
 
-            if(lateRegistrations is null)
+            if (lateRegistrations is null)
             {
                 return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
             }
@@ -366,7 +323,7 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult SubmitLateCourseInstanceRegistrationRequest([FromBody] JsonElement jsonInput)
         {
             //STUDENT ONLY FUNCTION.
-            if(!SubmitLateCourseInstanceRegistrationRequestDataValid(jsonInput))
+            if (!SubmitLateCourseInstanceRegistrationRequestDataValid(jsonInput))
             {
                 return BadRequest(new { Message = HelperFunctions.GetRequiredDataMissingOrInvalidMessage() });
             }
@@ -405,7 +362,7 @@ namespace Better_Ecom_Backend.Controllers
 
             int status = _data.SaveData(submitLateCourseInstanceRegistrationRequest, parameters, _config.GetConnectionString("Default"));
 
-            if(status > 0)
+            if (status > 0)
             {
                 int id = GetLateRegistrationId(courseInstanceID, studentID);
 
@@ -450,7 +407,7 @@ namespace Better_Ecom_Backend.Controllers
 
         }
 
-        [Authorize(Roles ="admin")]
+        [Authorize(Roles = "admin")]
         [HttpPatch("SetLateCourseInstanceRegistrationRequest")]
         public IActionResult SetLateCourseInstanceRegistrationRequest([FromBody] JsonElement jsonInput)
         {
@@ -485,40 +442,14 @@ namespace Better_Ecom_Backend.Controllers
             return Ok(EnumFunctions.GetStudentCourseInstanceRegistrationStatusList());
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Authorization"></param>
-        /// <param name="studentID"></param>
-        /// <param name="courseInstanceID"></param>
-        /// <returns></returns>
         [Authorize]
         [HttpGet("GetStudentCourseInstanceStatus/{StudentID:int}/{CourseInstanceID:int}")]
-        public IActionResult GetStudentCourseInstanceStatus([FromBody] string Authorization, int studentID, int courseInstanceID)
+        public IActionResult GetStudentCourseInstanceStatus(int studentID, int courseInstanceID)
         {
             //ALL USERS.
-            TokenInfo info = HelperFunctions.GetIdAndTypeFromToken(Authorization);
-            if (info.Type == "student" && info.UserID != studentID)
-            {
-                return Forbid("students can only get their own data.");
-            }
-
-            string getStudentCourseInstanceStatusSql = "SELECT student_course_intance_status FROM student_course_instance_registration WHERE student_id = @studentID AND course_instance_id = @courseInstanceID;";
-
-            List<StudentCourseInstanceRegistrationStatus> registrationStatuses = _data.LoadData<StudentCourseInstanceRegistrationStatus, dynamic>(getStudentCourseInstanceStatusSql,
-                new { studentID, courseInstanceID }, _config.GetConnectionString("Default"));
-            
-            if(registrationStatuses is null)
-            {
-                return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
-            }
-            else
-            {
-                return Ok(registrationStatuses);
-            }
+            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
         }
 
-        [Authorize(Roles ="admin")]
         [HttpPatch("SetStudentCourseInstanceStatus")]
         public IActionResult SetStudentCourseInstanceStatus([FromBody] JsonElement jsonInput)
         {
@@ -589,22 +520,11 @@ namespace Better_Ecom_Backend.Controllers
         {
             List<int> ids = _data.LoadData<int, dynamic>("SELECT request_id FROM course_instance_late_registration_request WHERE student_id = @studentID AND course_instance_id = @courseInstanceID;",
                 new { courseInstanceID, studentID }, _config.GetConnectionString("Default"));
-            if(ids is null || ids.Contains(-1))
-            {
-                return -1;
-            }
-            return ids[0];
-        }
-
-        private int GetRegistrationId(int courseInstanceID, int studentID)
-        {
-            List<int> ids = _data.LoadData<int, dynamic>("SELECT registration_id FROM student_course_instance_registration WHERE student_id = @studentID AND course_instance_id = @courseInstanceID;",
-                new { courseInstanceID, studentID }, _config.GetConnectionString("Default"));
             if (ids is null || ids.Contains(-1))
             {
                 return -1;
             }
-            return ids.FirstOrDefault();
+            return ids[0];
         }
 
         private bool RegisterToCourseInstanceDataValid(JsonElement jsonInput)
