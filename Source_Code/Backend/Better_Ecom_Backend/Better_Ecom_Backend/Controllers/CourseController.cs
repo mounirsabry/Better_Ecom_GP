@@ -461,14 +461,7 @@ namespace Better_Ecom_Backend.Controllers
             List<string> sqlList = new();
             List<dynamic> parametersList = new();
 
-
-            string setLateCourseInstanceRegistrationRequestStatusSql = "UPDATE course_instance_late_registration_request SET request_status = @requestStatus WHERE request_id = @requestID;";
-
-            sqlList.Add(setLateCourseInstanceRegistrationRequestStatusSql);
-            parametersList.Add(new { requestID, requestStatus = nameof(requestStatus) });
-
             string getCourseLateRegistrationRequestSql = "SELECT * FROM course_instance_late_registration_request WHERE request_id = @requestID;";
-
             List<Course_instance_late_registration_request> registrations = _data.LoadData<Course_instance_late_registration_request, dynamic>(getCourseLateRegistrationRequestSql,
                 new { requestID }, _config.GetConnectionString("Default"));
 
@@ -476,6 +469,19 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
             }
+
+            Course_instance_late_registration_request registration = registrations.FirstOrDefault();
+            if(registration is null)
+            {
+                return BadRequest(new { Message = "registration does not exist." });
+            }
+
+            string setLateCourseInstanceRegistrationRequestStatusSql = "UPDATE course_instance_late_registration_request SET request_status = @requestStatus WHERE request_id = @requestID;";
+
+            sqlList.Add(setLateCourseInstanceRegistrationRequestStatusSql);
+            parametersList.Add(new { requestID, requestStatus = nameof(requestStatus) });
+
+
 
             if(requestStatus == LateRegistrationRequestStatus.Accepted)
             {
