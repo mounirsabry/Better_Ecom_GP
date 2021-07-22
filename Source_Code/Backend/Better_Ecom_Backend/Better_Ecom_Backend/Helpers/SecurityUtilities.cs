@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BC = BCrypt.Net.BCrypt;
+﻿using BC = BCrypt.Net.BCrypt;
 
 namespace Better_Ecom_Backend.Helpers
 {
@@ -11,7 +7,7 @@ namespace Better_Ecom_Backend.Helpers
     public class SecurityUtilities
     {
         public SecurityUtilities() { }
-       
+
         /// <summary>
         /// takes use password and hash it.
         /// </summary>
@@ -19,7 +15,7 @@ namespace Better_Ecom_Backend.Helpers
         /// <returns>hashed password</returns>
         public static string HashPassword(string pass)
         {
-            
+
             return BC.HashPassword(pass);
         }
         /// <summary>

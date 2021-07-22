@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Better_Ecom_Backend.Models;
-using Microsoft.Extensions.Configuration;
+﻿using Better_Ecom_Backend.Models;
 using DataLibrary;
-using Better_Ecom_Backend.Helpers;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System.Linq;
 
 namespace Better_Ecom_Backend.Controllers
 {

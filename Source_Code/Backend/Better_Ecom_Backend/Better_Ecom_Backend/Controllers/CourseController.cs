@@ -2,14 +2,11 @@
 using Better_Ecom_Backend.Models;
 using DataLibrary;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Better_Ecom_Backend.Controllers
 {
@@ -40,10 +37,11 @@ namespace Better_Ecom_Backend.Controllers
             return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
         }
 
+        [Authorize]
         [HttpGet("GetCourseAvailableCourseInstances/{CourseCode}")]
         public IActionResult GetCourseAvailableCourseInstances([FromHeader] string Authorization, string courseCode)
         {
-            //STUDENT, ADMIN FUNCTION.
+            //STUDENT, INSTRUCTOR, ADMIN FUNCTION.
 
             return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
         }
@@ -78,7 +76,7 @@ namespace Better_Ecom_Backend.Controllers
         /// <param name="studentID"></param>
         /// <returns></returns>
         [Authorize(Roles = "admin, student")]
-        [HttpGet("GetStudentRegisteredCourseInstances/{StudentID:int}")]
+        [HttpGet("GetStudentRegisteredCourseInstances/{Student:int}")]
         public IActionResult GetStudentRegisteredCourseInstances([FromHeader] string Authorization, int studentID)
         {
             //STUDENT, ADMIN FUNCTION.
@@ -144,9 +142,21 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult RegisterToCourseInstance([FromHeader] string Authorization, [FromBody] JsonElement jsonInput)
         {
             //STUDENT, ADMIN FUNCTION.
+            TokenInfo info = HelperFunctions.GetIdAndTypeFromToken(Authorization);
+
             if (AppSettingsFunctions.GetIsCourseRegistrationOpen(_config) == false)
             {
-                return BadRequest(new { Message = "normal course registration is unavailable, try check late course registration." });
+                if (info.Type == "student")
+                {
+                    return BadRequest(new { Message = "normal course registration is unavailable, try check late course registration." });
+                }
+                else
+                {
+                    if (AppSettingsFunctions.GetIsLateCourseRegistrationOpen(_config))
+                    {
+                        return BadRequest(new { Message = "course registration is closed, but late registration is open, the student must register through requests." });
+                    }
+                }
             }
 
             if (!RegisterToCourseInstanceDataValid(jsonInput))
@@ -156,19 +166,20 @@ namespace Better_Ecom_Backend.Controllers
 
             int studentID = jsonInput.GetProperty("StudentID").GetInt32();
             int courseInstanceID = jsonInput.GetProperty("CourseInstanceID").GetInt32();
-
-            TokenInfo info = HelperFunctions.GetIdAndTypeFromToken(Authorization);
             if (info.Type == "student" && info.UserID != studentID)
             {
                 return Forbid("students can only get their own data.");
             }
 
             string courseCode;
-            //We still have to check that the course is valid for the user.
             List<string> courseCodes = GetCourseCodesListFromCourseInstanceID(courseInstanceID);
             if (courseCodes is null)
             {
                 return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+            else if (courseCodes.Count == 0)
+            {
+                return BadRequest(new { Message = "no course found associated with the given instance id." });
             }
             else
             {
@@ -243,7 +254,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return BadRequest(new { Message = "instance doesn't exist." });
             }
-            else if(term.First().course_year != TimeUtilities.GetCurrentYear() || term.First().course_term != TimeUtilities.GetCurrentTerm())
+            else if(term[0].course_year != TimeUtilities.GetCurrentYear() || term[0].course_term != TimeUtilities.GetCurrentTerm())
             {
                 return BadRequest(new { Message = "can't drop from old course" });
             }
@@ -262,8 +273,6 @@ namespace Better_Ecom_Backend.Controllers
             }
 
         }
-
-
 
         [Authorize]
         [HttpGet("GetCourseInstanceRegisteredStudents/{CourseInstanceID:int}")]
@@ -345,7 +354,7 @@ namespace Better_Ecom_Backend.Controllers
             return Ok(lateRegistrations);
         }
 
-        [HttpGet("GetLateCourseInstanceRegistrationRequestAvailableStatus")]
+        [HttpGet("GetLateCourseInstanceRegistrationRequestAvailableStauts")]
         public IActionResult GetLateCourseInstanceRegistrationRequestAvailableStauts()
         {
             //STUDENT, ADMIN FUNCTION.
@@ -378,7 +387,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return BadRequest(new { Message = "instance doesn't exist." });
             }
-            else if (term.First().course_year != TimeUtilities.GetCurrentYear() || term.First().course_term != TimeUtilities.GetCurrentTerm())
+            else if (term[0].course_year != TimeUtilities.GetCurrentYear() || term[0].course_term != TimeUtilities.GetCurrentTerm())
             {
                 return BadRequest(new { Message = "can't register in old course" });
             }
@@ -413,7 +422,7 @@ namespace Better_Ecom_Backend.Controllers
         }
 
 
-        [Authorize(Roles ="student")]
+        [Authorize(Roles = "student")]
         [HttpDelete("DeleteLateCourseInstanceRegistrationRequest")]
         public IActionResult DeleteLateCourseInstanceRegistrationRequest([FromBody] JsonElement jsonInput)
         {
@@ -526,7 +535,8 @@ namespace Better_Ecom_Backend.Controllers
                     + "AND course_term = @CurrentTerm" + "\n"
                     + "OR course_term = 'Other'" + "\n"
                     + "AND is_closed_for_registration = FALSE;";
-
+            Console.WriteLine(workingYear);
+            Console.WriteLine(sql);
 
             return null;
         }
@@ -564,7 +574,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return -1;
             }
-            return ids.FirstOrDefault();
+            return ids[0];
         }
 
         private int GetRegistrationId(int courseInstanceID, int studentID)

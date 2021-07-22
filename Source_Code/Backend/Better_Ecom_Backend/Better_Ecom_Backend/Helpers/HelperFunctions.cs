@@ -1,12 +1,10 @@
 ﻿using Better_Ecom_Backend.Models;
 using DataLibrary;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 
 namespace Better_Ecom_Backend.Helpers
 {
@@ -32,8 +30,9 @@ namespace Better_Ecom_Backend.Helpers
             tokenString = tokenString[7..];
             JwtSecurityToken token = handler.ReadJwtToken(tokenString);
 
-            return new TokenInfo(int.Parse(token.Claims.ToList()[1].Value), token.Claims.ToList()[0].Value  );
+            return new TokenInfo(int.Parse(token.Claims.ToList()[1].Value), token.Claims.ToList()[0].Value);
         }
+
         public static int GetFirstDigit(int number)
         {
             return (int)number.ToString()[0] - 48;
@@ -106,7 +105,7 @@ namespace Better_Ecom_Backend.Helpers
                 return false;
             }
         }
-        
+
         public static bool CheckDepartmentCodesList(IConfiguration _config, IDataAccess _data, List<string> departmentCodes)
         {
             if (departmentCodes == null || departmentCodes.Count == 0)

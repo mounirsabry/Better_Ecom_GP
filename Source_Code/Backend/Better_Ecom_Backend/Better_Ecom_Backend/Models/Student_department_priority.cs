@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Better_Ecom_Backend.Models
 {
@@ -25,7 +22,7 @@ namespace Better_Ecom_Backend.Models
         }
 
         public Student_department_priority() : this(-1, null, -1)
-        {}
+        { }
 
         public Student_department_priority(JsonElement data)
         {
