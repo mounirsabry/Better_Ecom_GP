@@ -4,7 +4,6 @@ using DataLibrary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -27,28 +26,16 @@ namespace Better_Ecom_Backend.Controllers
         /// <summary>
         /// Get user profile.
         /// </summary>
-        /// <param name="userID">the user id.</param>
-        /// <param name="type">the user type</param>
         /// <returns>Ok with user profile if successful BadRequest otherwise.</returns>
         [Authorize]
-        [HttpGet("GetProfile/{UserID:int}/{Type}")]
-        public dynamic GetProfile([FromHeader] string Authorization , int userID, string type)
+        [HttpGet("GetProfile")]
+        public dynamic GetProfile([FromHeader] string Authorization)
         {
-            TokenInfo idAndType = HelperFunctions.GetIdAndTypeFromToken(Authorization);
-
-            string deducedType = HelperFunctions.GetUserTypeFromID(userID);
-            if (type != deducedType || deducedType == "invalid")
-            {
-                return BadRequest(new { Message = "invalid id." });
-            }
-            else if (type != "student" && type != "instructor" && type != "admin")
-            {
-                return BadRequest(new { Message = "invalid user type." });
-            }
-            else if (idAndType.Type == "student" && idAndType.UserID != userID)
-            {
-                return Forbid("students can only get their own info.");
-            }
+            //ALL USERS FUNCTION.
+            //Each user gets his own profile.
+            TokenInfo tokenInfo = HelperFunctions.GetIdAndTypeFromToken(Authorization);
+            int userID = tokenInfo.UserID;
+            string type = tokenInfo.Type;
 
             string id_text;
             string table;
@@ -76,7 +63,7 @@ namespace Better_Ecom_Backend.Controllers
 
             if (dbResult == null)
             {
-                return BadRequest(new { Message = "unknown error, maybe database server is down." });
+                return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
             }
             else if (dbResult.Count == 0)
             {
@@ -86,60 +73,46 @@ namespace Better_Ecom_Backend.Controllers
             {
                 var user = dbResult[0];
                 user.user_password = null;
-                return user;
+                return Ok(user);
             }
         }
 
-        // not sure if the admin will use this to modify student/instructor profiles, will assume not till i get there.
         [Authorize]
         [HttpPatch("SaveProfileChanges")]
-        public IActionResult SaveProfileChanges([FromBody] JsonElement data)
+        public IActionResult SaveProfileChanges([FromHeader] string Authorization, [FromBody] JsonElement data)
         {
-            int userID;
-            string type;
+            //ALL USERS FUNCTION.
+            //Each user updates his own data.
+            TokenInfo tokenInfo = HelperFunctions.GetIdAndTypeFromToken(Authorization);
+            int userID = tokenInfo.UserID;
+            string type = tokenInfo.Type;
 
-
-            if(!SaveProfileChangesRequiredDataValid(data))
+            if (SaveProfileChangesRequiredDataValid(data) == false)
             {
                 return BadRequest(new { Message = "required data missing or invalid." });
-            }
-
-            if (data.TryGetProperty("UserID", out JsonElement temp) && temp.TryGetInt32(out _))
-            {
-                userID = temp.GetInt32();
-            }
-            else
-            {
-                return BadRequest(new { Message = "user id was not provided." });
-            }
-
-            if (data.TryGetProperty("Type", out temp) && temp.ValueKind == JsonValueKind.String)
-            {
-                type = temp.GetString();
-            }
-            else
-            {
-                return BadRequest(new { Message = "user type was not provided." });
-            }
-
-            string deducedType = HelperFunctions.GetUserTypeFromID(userID);
-            if (type != deducedType || deducedType == "invalid")
-            {
-                return BadRequest(new { Message = "invalid id." });
             }
             else if (type != "student" && type != "instructor" && type != "admin")
             {
                 return BadRequest(new { Message = "invalid user type." });
             }
+            else if (type == "instructor")
+            {
+                bool isContactInfoSent = data.TryGetProperty(nameof(Instructor.Contact_info), out JsonElement temp) && temp.ValueKind == JsonValueKind.String;
+                if (isContactInfoSent == false)
+                {
+                    return BadRequest(new { Message = "instructor contact info was not provided or was not a string." });
+                }
+            }
 
-            int System_user_id = userID;
             System_user system_user = UserFactory.getUser(data, type);
+            system_user.System_user_id = userID;
+
             List<string> queries = new();
             List<dynamic> parameterList = new();
             queries.Add(GetBaseUserUpdateQuery());
             parameterList.Add(new
             {
-                System_user_id,
+                system_user.System_user_id,
                 system_user.Email,
                 system_user.Address,
                 system_user.Phone_number,
@@ -149,7 +122,7 @@ namespace Better_Ecom_Backend.Controllers
             if (type == "instructor")
             {
                 queries.Add(GetInstructorUpdateQuery());
-                parameterList.Add(new { ((Instructor)system_user).Contact_info });
+                parameterList.Add(new { Instructor_id = system_user.System_user_id, ((Instructor)system_user).Contact_info });
             }
 
             List<int> success;
@@ -157,15 +130,13 @@ namespace Better_Ecom_Backend.Controllers
 
             if (!success.Contains(-1))
             {
-                return Ok();
+                return Ok(new { Message = "user data was updated successfully." });
             }
             else
             {
                 return BadRequest(new { Message = "unknown error, maybe database is down." });
             }
         }
-
-
 
         /// <summary>
         /// User wants to change password.
@@ -229,7 +200,6 @@ namespace Better_Ecom_Backend.Controllers
             }
         }
 
-
         private static string GetInstructorUpdateQuery()
         {
             return "UPDATE instructor SET contact_info = @Contact_info where instructor_id = @Instructor_id;";
@@ -250,8 +220,10 @@ namespace Better_Ecom_Backend.Controllers
 
         private static bool SaveProfileChangesRequiredDataValid(JsonElement data)
         {
-            return data.TryGetProperty("UserID", out JsonElement temp) && temp.TryGetInt32(out _)
-                && data.TryGetProperty("Type", out temp) && temp.ValueKind == JsonValueKind.String;
+            return data.TryGetProperty(nameof(System_user.Email), out JsonElement temp) && temp.ValueKind == JsonValueKind.String
+                && data.TryGetProperty(nameof(System_user.Phone_number), out temp) && temp.ValueKind == JsonValueKind.String
+                && data.TryGetProperty(nameof(System_user.Mobile_number), out temp) && temp.ValueKind == JsonValueKind.String
+                && data.TryGetProperty(nameof(System_user.Additional_info), out temp) && temp.ValueKind == JsonValueKind.String;
         }
     }
 }
