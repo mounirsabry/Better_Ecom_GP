@@ -711,6 +711,7 @@ namespace Better_Ecom_Backend.Controllers
                 courseInstance.Course_year = TimeUtilities.GetCurrentYear();
             }
 
+
             string addCourseInstanceSql = "INSERT INTO course_instance VALUES(NULL, @Course_code, @Course_year, @Course_term, @Credit_hours, FALSE);";
             int status = _data.SaveData(addCourseInstanceSql, courseInstance, _config.GetConnectionString("Default"));
 

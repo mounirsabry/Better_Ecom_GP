@@ -19,6 +19,10 @@ namespace Better_Ecom_Backend.Helpers
         {
             return "unknown error, maybe database is down.";
         }
+        public static string GetRequiredDataMissingOrInvalidMessage()
+        {
+            return "required data missing or invalid.";
+        }
 
         public static TokenInfo GetIdAndTypeFromToken(string tokenString)
         {
