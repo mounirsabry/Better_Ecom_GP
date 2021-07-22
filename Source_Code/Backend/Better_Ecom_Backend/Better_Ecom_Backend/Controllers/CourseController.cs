@@ -41,10 +41,22 @@ namespace Better_Ecom_Backend.Controllers
         }
 
         [HttpGet("GetCourseAvailableCourseInstances/{CourseCode}")]
-        public IActionResult GetCourseAvailableCourseInstances(string courseCode)
+        public IActionResult GetCourseAvailableCourseInstances([FromHeader] string Authorization, string courseCode)
         {
             //STUDENT, ADMIN FUNCTION.
 
+            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+        }
+
+        [Authorize(Roles = "admin, student")]
+        [HttpGet("GetStudentRegisteredCourses/{StudentID:int")]
+        public IActionResult GetStudentRegisteredCourses([FromHeader] string Authorization, int studentID)
+        {
+            TokenInfo info = HelperFunctions.GetIdAndTypeFromToken(Authorization);
+            if (info.Type == "student" && info.UserID != studentID)
+            {
+                return Forbid("students can only get their own data.");
+            }
             return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
         }
 
@@ -70,6 +82,20 @@ namespace Better_Ecom_Backend.Controllers
             }
 
             return Ok(instances);
+        }
+
+        [Authorize(Roles = "admin, student")]
+        [HttpGet("GetCourseStudentRegisteredCourseInstances/{StudentID:int}/{CourseCode}")]
+        public IActionResult GetCourseStudentRegisteredCourseInstances([FromHeader] string Authorization, int studentID, string courseCode)
+        {
+            //STUDENT, ADMIN FUNCTION.
+            TokenInfo info = HelperFunctions.GetIdAndTypeFromToken(Authorization);
+            if (info.Type == "student" && info.UserID != studentID)
+            {
+                return Forbid("students can only get their own data.");
+            }
+
+            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
         }
 
         [Authorize(Roles = "student, admin")]
