@@ -467,11 +467,21 @@ namespace Better_Ecom_Backend.Controllers
             sqlList.Add(setLateCourseInstanceRegistrationRequestStatusSql);
             parametersList.Add(new { requestID, requestStatus = nameof(requestStatus) });
 
+            string getCourseLateRegistrationRequestSql = "SELECT * FROM course_instance_late_registration_request WHERE request_id = @requestID;";
+
+            List<Course_instance_late_registration_request> registrations = _data.LoadData<Course_instance_late_registration_request, dynamic>(getCourseLateRegistrationRequestSql,
+                new { requestID }, _config.GetConnectionString("Default"));
+
+            if(registrations is null)
+            {
+                return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+
             if(requestStatus == LateRegistrationRequestStatus.Accepted)
             {
                 string insertCourseRegistration = "INSERT INTO student_course_instance_registration VALUES(NULL, @studentID, @courseInstanceID, @registrationDate, @studentCourseInstanceStatus);";
                 sqlList.Add(insertCourseRegistration);
-                parametersList.Add(new { });
+                parametersList.Add(new { studentID = registration });
             }
 
             return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
