@@ -455,8 +455,24 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult SetLateCourseInstanceRegistrationRequest([FromBody] JsonElement jsonInput)
         {
             //ADMIN ONLY FUNCTION.
+            int requestID = jsonInput.GetProperty("RequestID").GetInt32();
+            LateRegistrationRequestStatus requestStatus = (LateRegistrationRequestStatus)jsonInput.GetProperty("RequestStatus").GetInt32();
+
+            List<string> sqlList = new();
+            List<dynamic> parametersList = new();
 
 
+            string setLateCourseInstanceRegistrationRequestStatusSql = "UPDATE course_instance_late_registration_request SET request_status = @requestStatus WHERE request_id = @requestID;";
+
+            sqlList.Add(setLateCourseInstanceRegistrationRequestStatusSql);
+            parametersList.Add(new { requestID, requestStatus = nameof(requestStatus) });
+
+            if(requestStatus == LateRegistrationRequestStatus.Accepted)
+            {
+                string insertCourseRegistration = "INSERT INTO student_course_instance_registration VALUES(NULL, @studentID, @courseInstanceID, @registrationDate, @studentCourseInstanceStatus);";
+                sqlList.Add(insertCourseRegistration);
+                parametersList.Add(new { });
+            }
 
             return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
         }
@@ -507,6 +523,8 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult SetStudentCourseInstanceStatus([FromBody] JsonElement jsonInput)
         {
             //ADMIN ONLY FUNCTION.
+
+
             return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
         }
 
