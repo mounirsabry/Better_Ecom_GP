@@ -229,7 +229,7 @@ namespace Better_Ecom_Backend.Controllers
 
         }
 
-        private bool CheckAddToCourseInstanceFeedDataValid(JsonElement jsonInput)
+        private static bool CheckAddToCourseInstanceFeedDataValid(JsonElement jsonInput)
         {
             return jsonInput.TryGetProperty("CourseInstanceID", out JsonElement temp) &&  temp.TryGetInt32(out _)
                 && jsonInput.TryGetProperty("Content", out temp) && temp.ValueKind == JsonValueKind.String;
