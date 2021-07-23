@@ -568,7 +568,7 @@ namespace Better_Ecom_Backend.Controllers
                     studentID = registration.Student_id,
                     courseInstanceID = registration.Course_instance_id,
                     registrationDate = DateTime.Now,
-                    studentCourseInstanceStatus = Enum.GetName<LateRegistrationRequestStatus>(requestStatus)
+                    studentCourseInstanceStatus = nameof(StudentCourseInstanceRegistrationStatus.Undertaking)
                 };
                 sqlList.Add(insertCourseRegistration);
                 parametersList.Add(parameters);
