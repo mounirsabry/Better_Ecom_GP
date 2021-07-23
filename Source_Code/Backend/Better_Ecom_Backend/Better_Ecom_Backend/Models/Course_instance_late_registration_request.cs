@@ -9,7 +9,7 @@ namespace Better_Ecom_Backend.Models
         public int Student_id { get; set; }
         public int Course_instance_id { get; set; }
         public DateTime Request_date { get; set; }
-        public LateRegistrationRequestStatus Request_status { get; set; }
+        public LateRegistrationRequestStatus Request_status{ get; set; }
 
         public Course_instance_late_registration_request(int requestID, int studentID, int courseInstanceID, DateTime requestDate, LateRegistrationRequestStatus requestStatus)
         {
