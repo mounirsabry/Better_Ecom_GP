@@ -848,17 +848,11 @@ namespace Better_Ecom_Backend.Controllers
         /// <param name="jsonInput">json object containing(intructor is , course instance id).</param>
         /// <returns>Ok</returns>
         [Authorize(Roles = "admin")]
-        [HttpDelete("DropInstructorFromCourseInstance")]
-        public IActionResult DropInstructorFromCourseInstance([FromBody] JsonElement jsonInput)
+        [HttpDelete("DropInstructorFromCourseInstance/{CourseInstanceID:int}/{InstructorID:int}")]
+        public IActionResult DropInstructorFromCourseInstance(int courseInstanceID, int instructorID)
         {
             //The admin drops the instructor for the specified course instance.
-            if (DropInstructorFromCourseInstanceDataValid(jsonInput) == false)
-            {
-                return BadRequest(new { Message = MessageFunctions.GetRequiredDataMissingOrInvalidMessage() });
-            }
 
-            int instructorID = jsonInput.GetProperty("InstructorID").GetInt32();
-            int courseInstanceID = jsonInput.GetProperty("CourseInstanceID").GetInt32();
 
             if (ExistanceFunctions.IsCourseInstanceExists(_config, _data, courseInstanceID) == false)
             {
