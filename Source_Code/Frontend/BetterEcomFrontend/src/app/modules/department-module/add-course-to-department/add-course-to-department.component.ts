@@ -108,8 +108,8 @@ export class AddCourseToDepartmentComponent implements OnInit {
       'Course_name' : this.course_name_get.value,
       'Academic_year' : +this.academic_year_get.value,
       'Course_description' : this.course_description_get.value,
-      'prerequisites' : this.prerequisites_list,
-      'departmentApplicability' : this.departmentApplicability_list
+      'Prerequisites' : this.prerequisites_list,
+      'DepartmentApplicability' : this.departmentApplicability_list
     }
     console.log(temp);
     this.departmentCoursesService.addCourse(temp).subscribe(

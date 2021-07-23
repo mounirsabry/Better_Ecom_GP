@@ -573,10 +573,47 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult SetStudentCourseInstanceStatus([FromBody] JsonElement jsonInput)
         {
             //ADMIN ONLY FUNCTION.
+            if(!SetStudentCourseInstanceStatusDataValid(jsonInput))
+            {
+                return BadRequest(new { Message = MessageFunctions.GetRequiredDataMissingOrInvalidMessage() });
+            }
 
+            int courseInstanceRegistrationID = jsonInput.GetProperty("CourseInstanceRegistrationID").GetInt32();
+            StudentCourseInstanceRegistrationStatus courseStatus = (StudentCourseInstanceRegistrationStatus)jsonInput.GetProperty("CourseStatus").GetInt32();
 
-            return Ok(new { Message = MessageFunctions.GetNotImplementedString() });
+            string getCourseInstanceRegistrationSql = "SELECT * FROM student_course_instance_registration WHERE registration_id = @courseInstanceRegistrationID;";
+            List<Student_course_instance_registration> registrations = _data.LoadData<Student_course_instance_registration, dynamic>(getCourseInstanceRegistrationSql, new { courseInstanceRegistrationID },
+                _config.GetConnectionString("Default"));
+
+            if(registrations is null)
+            {
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+
+            Student_course_instance_registration registration = registrations.FirstOrDefault();
+
+            if(registration is null)
+            {
+                return BadRequest(new { Message = "registration does not exist." });
+            }
+
+            string setCourseStatusSql = "UPDATE student_course_instance_registration SET student_course_instance_status = @courseStatus WHERE registration_id = @courseInstanceRegistrationID;";
+
+            int status = _data.SaveData(setCourseStatusSql, new { courseStatus = nameof(courseStatus), courseInstanceRegistrationID }, _config.GetConnectionString("Default"));
+
+            if(status>=0)
+            {
+                registration.Student_course_instance_status = courseStatus;
+                return Ok(registration);
+            }
+            else
+            {
+
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+
         }
+
 
         [Authorize(Roles = "admin, instructor")]
         [HttpGet("GetInstructorRegisteredCourses/{InstructorID:int}")]
@@ -616,7 +653,7 @@ namespace Better_Ecom_Backend.Controllers
 
         [Authorize(Roles = "admin, instructor")]
         [HttpGet("GetCourseInstructorRegisteredCourseInstances/{InstructorID:int}/{CourseCode}")]
-        public IActionResult GetCourseInstructorRegisteredCourseInstances([FromHeader] String Authorization, int instructorID, string courseCode)
+        public IActionResult GetCourseInstructorRegisteredCourseInstances([FromHeader] string Authorization, int instructorID, string courseCode)
         {
             TokenInfo tokenInfo = HelperFunctions.GetIdAndTypeFromToken(Authorization);
             string userType = tokenInfo.Type;
@@ -628,13 +665,30 @@ namespace Better_Ecom_Backend.Controllers
                     return Forbid("instructors can only get their data.");
                 }
             }
+
+            if(ExistanceFunctions.IsCourseExists(_config,_data,courseCode) == false)
+            {
+                return BadRequest(new { Message = MessageFunctions.GetCourseNotFoundMessage() });
+            }
+
+            string getInstructorRegisteredCourseInstanceIdsSql = "SELECT instance_id FROM instructor_course_instance_registration WHERE intructor_id = @instructorID";
+
+            string getInstructorRegisteredCourseCodesSql = $"SELECT instance_id FROM course_instance WHERE instance_id IN ({getInstructorRegisteredCourseInstanceIdsSql}) AND course_code = @courseCode;";
+
+            List<string> instanceIds = _data.LoadData<string, dynamic>(getInstructorRegisteredCourseCodesSql, new { instructorID, courseCode }, _config.GetConnectionString("Default"));
+
+            if(instanceIds is null)
+            {
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+
             //Return all the course instances that the instructor is to in the specified course.
-            return Ok(new { Message = MessageFunctions.GetNotImplementedString() });
+            return Ok(instanceIds);
         }
 
         [Authorize(Roles = "admin")]
         [HttpPost("RegisterInstructorToCourseInstance")]
-        public IActionResult RegisterInstructorToCourseInstance([FromBody] dynamic jsonInput)
+        public IActionResult RegisterInstructorToCourseInstance([FromBody] JsonElement jsonInput)
         {
             //The admin registers the instructor to the spcified course instance.
             if (RegisterInstructorToCourseInstanceDataValid(jsonInput) == false)
@@ -642,8 +696,10 @@ namespace Better_Ecom_Backend.Controllers
                 return BadRequest(new { Message = MessageFunctions.GetRequiredDataMissingOrInvalidMessage() });
             }
 
-            int instructorID = 0;
-            int courseInstanceID = 0;
+            int instructorID = jsonInput.GetProperty("InstructorID").GetInt32();
+            int courseInstanceID = jsonInput.GetProperty("CourseInstanceID").GetInt32();
+            DateTime registrationDate = DateTime.Now;
+
             if (ExistanceFunctions.IsInstructorExists(_config, _data, instructorID) == false)
             {
                 return BadRequest(new { Message = MessageFunctions.GetInstructorNotFoundMessage() });
@@ -652,7 +708,22 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return BadRequest(new { Message = MessageFunctions.GetCourseInstanceNotFoundMessage() });
             }
-            return Ok(new { Message = MessageFunctions.GetNotImplementedString() });
+
+
+
+            string insertInstructorRegistrationSql = "INSERT INTO instructor_course_instance_registration VALUES(NULL, @instructorID, @courseInstanceID, @registrationDate);";
+
+            int status = _data.SaveData(insertInstructorRegistrationSql, new { instructorID, courseInstanceID, registrationDate }, _config.GetConnectionString("Default"));
+
+            if(status > 0)
+            {
+                return Ok();
+            }
+            else
+            {
+
+                return BadRequest(new {Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
         }
 
         [Authorize(Roles = "admin")]
@@ -664,7 +735,40 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return BadRequest(new { Message = MessageFunctions.GetRequiredDataMissingOrInvalidMessage() });
             }
-            return Ok(new { Message = MessageFunctions.GetNotImplementedString() });
+
+            int instructorID = jsonInput.GetProperty("InstructorID").GetInt32();
+            int courseInstanceID = jsonInput.GetProperty("CourseInstanceID").GetInt32();
+
+            if(ExistanceFunctions.IsCourseInstanceExists(_config,_data,courseInstanceID) == false)
+            {
+                return BadRequest(new { Message = MessageFunctions.GetCourseInstanceNotFoundMessage() });
+            }
+
+            List<bool> availablilities = GetCourseInstanceClosedForRegistration(courseInstanceID);
+            if(availablilities is null)
+            {
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+
+            if(availablilities.First())
+            {
+                return BadRequest(new { Message = MessageFunctions.GetCourseInstanceIsClosedMessage() });
+            }
+
+            string deleteIntructorRegistrationSql = "DELETE FROM instructor_course_instance_registration WHERE course_instance_id = @courseInstanceID AND instructor_id = @instructorID;";
+
+            int status = _data.SaveData(deleteIntructorRegistrationSql, new { instructorID, courseInstanceID }, _config.GetConnectionString("Default"));
+
+            if(status >= 0 )
+            {
+                return Ok();
+            }
+            else
+            {
+
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+
         }
 
         [Authorize]
@@ -672,7 +776,24 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult GetCourseInstanceRegisteredInstructors(int courseInstanceID)
         {
             //Return all the instructors (ids, names) registered to a specific course instance.
-            return Ok(new { Message = MessageFunctions.GetNotImplementedString() });
+
+            if(ExistanceFunctions.IsCourseInstanceExists(_config, _data, courseInstanceID) == false)
+            {
+                return BadRequest(new { Message = MessageFunctions.GetCourseInstanceNotFoundMessage() });
+            }
+            string getCourseInstanceIntructorIDsSql = "SELECT instructor_id FROM instructor_course_instance_registration WHERE course_instance_id = @courseInstanceID; ";
+            string getInstuctorsIdsAndNamesSql = $"SELECT system_user_id, full_name WHERE system_user_id IN ({getCourseInstanceIntructorIDsSql});";
+
+            var instructorsIdsAndNames = _data.LoadData<dynamic, dynamic>(getInstuctorsIdsAndNamesSql, new { courseInstanceID }, _config.GetConnectionString("Default"));
+
+            if(instructorsIdsAndNames is null)
+            {
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+
+
+
+            return Ok(instructorsIdsAndNames);
         }
 
         private static List<Course> GetStudentAvailableCoursesList(int studentID)
@@ -754,6 +875,13 @@ namespace Better_Ecom_Backend.Controllers
             return ids.FirstOrDefault();
         }
 
+        private List<bool> GetCourseInstanceClosedForRegistration(int courseInstanceID)
+        {
+            string getRegistrationAvailabilitySql = "SELECT is_closed_for_registration FROM course_instance WHERE instance_id = @courseInstanceID;";
+            List<bool> availablilityList = _data.LoadData<bool, dynamic>(getRegistrationAvailabilitySql, new { courseInstanceID }, _config.GetConnectionString("Default"));
+            return availablilityList;
+        }
+
         private bool RegisterToCourseInstanceDataValid(JsonElement jsonInput)
         {
             throw new NotImplementedException();
@@ -771,7 +899,15 @@ namespace Better_Ecom_Backend.Controllers
                 && jsonInput.TryGetProperty("CourseInstanceID", out temp) && temp.TryGetInt32(out _);
         }
 
-        private bool SetLateCourseInstanceRegistrationRequestDataValid(JsonElement jsonInput)
+        private static bool SetStudentCourseInstanceStatusDataValid(JsonElement jsonInput)
+        {
+            return jsonInput.TryGetProperty("StudentID", out JsonElement temp) && temp.TryGetInt32(out _)
+                && jsonInput.TryGetProperty("CourseInstanceID", out temp) && temp.TryGetInt32(out _)
+                && jsonInput.TryGetProperty("CourseStatus", out temp) && temp.TryGetInt32(out _);
+        }
+
+
+        private static bool SetLateCourseInstanceRegistrationRequestDataValid(JsonElement jsonInput)
         {
             return jsonInput.TryGetProperty("RequestID", out JsonElement temp) && temp.TryGetInt32(out _)
                 && jsonInput.TryGetProperty("RequestStatus", out temp) && temp.TryGetInt32(out _);

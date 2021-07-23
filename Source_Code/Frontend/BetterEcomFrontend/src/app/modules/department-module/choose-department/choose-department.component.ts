@@ -49,7 +49,7 @@ export class ChooseDepartmentComponent implements OnInit {
       priority_list =>{
         console.log(priority_list);
 
-        if(priority_list === null){
+        if(priority_list.length < 1){
 
           this.departmentService.getDepartmentsData().subscribe(
             data =>{
@@ -69,36 +69,41 @@ export class ChooseDepartmentComponent implements OnInit {
           this.department_priority_list = list.map(function(obj) {return obj.department_code});
           this.mapCodeToName();
         }
+      },
+      error =>{
+        console.log(error.error);
       }
     )
   }
 
   addDepartment(){
-    this.department_selected_name.push(this.departmentGet.value);
-    for(let i of this.department_selected_name){
-      this.department_name_list.forEach((element, index)=>{
-        if(i === element){
-          this.department_name_list.splice(index, 1);
-          this.department_selected_code.push(this.department_code_list[index])
-          this.department_code_list.splice(index, 1);
-        }
-      });
-    }
-    console.log(this.department_code_list);
-    console.log(this.department_selected_code);
+      this.department_selected_name.push(this.departmentGet.value);
+      for(let i of this.department_selected_name){
+        this.department_name_list.forEach((element, index)=>{
+          if(i === element){
+            this.department_name_list.splice(index, 1);
+            this.department_selected_code.push(this.department_code_list[index])
+            this.department_code_list.splice(index, 1);
+          }
+        });
+      }
+      console.log(this.department_code_list);
+      console.log(this.department_selected_code);
+      this.chooseDepartmentForm.controls.department.reset();
   }
 
   removeDepartment(){
-    this.department_name_list.push(this.remDepartmentGet.value)
-    for(let i of this.department_name_list){
-      this.department_selected_name.forEach((element, index)=>{
-        if(i === element){
-          this.department_selected_name.splice(index, 1);
-          this.department_code_list.push(this.department_selected_code[index]);
-          this.department_selected_code.splice(index, 1);
-        }
-      })
-    }
+      this.department_name_list.push(this.remDepartmentGet.value)
+      for(let i of this.department_name_list){
+        this.department_selected_name.forEach((element, index)=>{
+          if(i === element){
+            this.department_selected_name.splice(index, 1);
+            this.department_code_list.push(this.department_selected_code[index]);
+            this.department_selected_code.splice(index, 1);
+          }
+        })
+      }
+      this.removeDepartmentForm.controls.remDepartment.reset();
   }
 
   hasError(){

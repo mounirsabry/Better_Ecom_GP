@@ -1,107 +1,80 @@
-<form [formGroup]="courseInfoForm" (ngSubmit)="searchForCourse()">
-    <label>Choose Search Type</label>
-    <select name="SearchType" id="SearchType" #SearchType formControlName="searchType">
-        <option value="code">Course Code</option>
-        <option value="name" [hidden]="isAdmin()">Course Name</option>
-    </select>
-    <p *ngIf="searchTypeGet.invalid && searchTypeGet.touched" style="color: red;">please select a search type</p>
-    <br>
-    <label>Enter Course Name or Code </label>
-    <input type="text" name="Course" id="Course" #Course formControlName="course">
-    <br>
-    <button type="submit" [disabled]="courseInfoForm.invalid" style="color: black;">Search</button>
-</form>
+<div class="gradient container-fluid p-3 fw-bold">
+    <hr class="row">
 
-<br>
-<hr>
-<br>
-
-<!--
-<table style="width: 100%;">
-    <tr *ngFor="let courseKey of objectValues(course_info)">
-    <tr>
-      <th>Course Code</th>
-      <th>Department Code</th>
-      <th>Course Name</th>
-      <th>Academic Year</th>
-      <th>Course Description</th>
-      <th>Read only</th>
-      <th>Arhcived</th>
-      <th *ngFor="let key of objectKeys(courseKey)">{{ key }}</th>
-    </tr>
-    <tr *ngFor="let courseValue of objectValues(course_info)">
-      <td *ngFor="let value of objectValues(courseValue)">{{ value }}</td>
-    </tr>
-</table>
--->
-
-    <form [formGroup]="updateCourseForm" (ngSubmit)=updateCourse() *ngFor="let course of objectValues(course_info)">
-        <div *ngFor="let info of course | keyvalue">
-                <label>{{ info.key }}: </label>
-                <label *ngIf="!isAdmin()">{{ info.value }}</label>
-                <input *ngIf="isAdmin() && checkKey(info.key)" type="{{ inputType(info.key) }}" placeholder="{{ info.value }}" value="{{ info.value }}" formControlName="{{ info.key }}">
-                <label *ngIf="!checkKey(info.key) && isAdmin()">{{ info.value }}</label>
+    <form class="row container-fluid" [formGroup]="courseInfoForm" (ngSubmit)="searchForCourse()">
+        <div class="row my-1">
+            <label class="col-4">Choose Search Type</label>
+            <select class="col-8" name="SearchType" id="SearchType" #SearchType formControlName="searchType">
+            <option value="code">Course Code</option>
+            <option value="name" [hidden]="isAdmin()">Course Name</option>
+            </select>
         </div>
-        <button *ngIf="isAdmin()" type="submit" style="color: black;">Update Course Information</button>
+        <p class="row text-danger" *ngIf="searchTypeGet.invalid && searchTypeGet.touched">please select a search type</p>
+
+        <div class="row">
+            <label class="col-4">Enter Course Name or Code </label>
+            <input class="col-8" type="text" name="Course" id="Course" #Course formControlName="course">
+        </div>
+
+        <button class="row btn btn-outline-dark my-2" type="submit" [disabled]="courseInfoForm.invalid">Search</button>
     </form>
-    <hr>
 
+    <hr class="row my-3">
 
-<!--<form [formGroup]="courseForm">
-    <div formArrayName="courseArray">
-        <div *ngFor="let course of objectValues(courseArray.value); let courseIndex = index">
-            <div [formGroupName]="courseIndex">
-                {{courseIndex}}
-                <form [formGroup]="updateCourseForm" (ngSubmit)="updateCourse()">
-                    <div *ngFor="let info of course | keyvalue">
-                        <label>{{ info.key }}: </label>
-                        <<label>{{ info.value }}.</label>
-                        <label *ngIf="!isAdmin()">{{ info.value }}</label>
-                        <input *ngIf="isAdmin() && checkKey(info.key)" type="{{ inputType(info.key) }}" placeholder="{{ info.value }}" value="{{ info.value }}" formControlName="{{ info.key }}">
-                        <input type="text" *ngIf="!checkKey(info.key)" formControlName="{{ info.key }}" placeholder="{{ info.value }}">
-                    </div>
-                    <button *ngIf="isAdmin()" type="submit" style="color: black;">Update Course Information</button>
-                    <hr>
-                </form>
+    <form class="row container-fluid" [formGroup]="updateCourseForm">
+        <div class="row container-fluid" formGroupName="courseInstanceForm">
+            <div class="row container-fluid" *ngFor="let course of objectValues(course_info)">
+                <div class="row" *ngFor="let info of course | keyvalue">
+                    <label class="col-3">{{ info.key }}: </label>
+                    <label class="col-3" *ngIf="!isAdmin()">{{ info.value }}</label>
+                    <input class="col-3" *ngIf="isAdmin() && checkKey(info.key)" type="{{ inputType(info.key) }}" placeholder="{{ info.value }}" value="{{ info.value }}" formControlName="{{ info.key }}">
+                    <label class="col-3" *ngIf="!checkKey(info.key) && isAdmin()">{{ info.value }}</label>
+                </div>
+                <br>
+                <hr *ngIf="!isAdmin()">
             </div>
+            <button class="row btn btn-oultine-dark" *ngIf="isAdmin() && checkSearchFlag()" type="button" (click)="updateCourse()">Update Course Information</button>
         </div>
-    </div>
-</form>-->
 
-<form [formGroup]="updateCoursePrerequisiteForm" (ngSubmit)="updateCoursePrerequisite()" [hidden]="!isAdmin()">
-    <br>
+        <hr class="row" *ngIf="isAdmin() && checkSearchFlag()">
 
-    <label>Prerequisites: </label>
-    <input type="text" name="Prerequisites" id="Prerequisites" #Prerequisites formControlName="prerequisites">
-    <select name="PrerequisitesList" id="PrerequisitesList" #PrerequisitesList>
-        <option *ngFor="let pList of prerequisites_list">{{ pList }}</option>
-    </select>
-    <br>
-    <button type="button" (click)="addPrerequisite()" style="color: black;">add prerequisite</button>
-    <button type="button" (click)="removePrerequisites(PrerequisitesList.value)" style="color: black;">remove prerequisite</button>
+        <div class="row container-fluid" formGroupName="updateCoursePrerequisiteForm" *ngIf="isAdmin() && checkSearchFlag()">
 
-    <br>
+            <div class="row">
+                <label class="col-4">Prerequisites: </label>
+                <input class="col-4" type="text" name="Prerequisites" id="Prerequisites" #Prerequisites formControlName="prerequisites">
+                <select class="col-4" name="PrerequisitesList" id="PrerequisitesList" #PrerequisitesList>
+                <option *ngFor="let pList of prerequisites_list">{{ pList }}</option>
+                </select>
+            </div>
+            <div class="row">
+                <button class="btn btn-oultine-success col-6" type="button" (click)="addPrerequisite()">Add Prerequisite</button>
+                <button class="btn btn-oultine-danger col-6" type="button" (click)="removePrerequisites(PrerequisitesList.value)">Remove Prerequisite</button>
+            </div>
 
-    <button type="submit" [disabled]="isListEmpty(prerequisites_list)" style="color: black;">Update Course Prerequisite</button>
-</form>
+            <button class="row btn btn-oultine-dark" type="button" [disabled]="isListEmpty(prerequisites_list)" (click)="updateCoursePrerequisite()">Update Course Prerequisite</button>
+        </div>
 
-<br>
-<hr>
+        <hr class="row my-2" *ngIf="isAdmin() && checkSearchFlag()">
 
-<form [formGroup]="updateCourseDepartmentApplicabilityForm" (ngSubmit)="updateCourseDepartmentApplicability()" [hidden]="!isAdmin()">
-    <br>
-    <label>Department Applicability: </label>
-    <input type="text" name="DepartmentApplicability" id="DepartmentApplicability" #DepartmentApplicability formControlName="departmentApplicability">
-    <select name="DepAppList" id="DepAppList" #DepAppList>
-        <option *ngFor="let depAppList of departmentApplicability_list">{{ depAppList }}</option>
-    </select>
-    <br>
-    <button type="button" (click)="addDepartmentApplicability()" style="color: black;">add department</button>
-    <button type="button" (click)="removeDepartmentApplicability(DepAppList.value)" style="color: black;">remove department</button>
+        <div class="row container-fluid" formGroupName="updateCourseDepartmentApplicabilityForm" *ngIf="isAdmin() && checkSearchFlag()">
+            <div class="row">
+                <label class="col-4">Department Applicability: </label>
+                <input class="col-4" type="text" name="DepartmentApplicability" id="DepartmentApplicability" #DepartmentApplicability formControlName="departmentApplicability">
+                <select class="col-4" name="DepAppList" id="DepAppList" #DepAppList>
+                <option *ngFor="let depAppList of departmentApplicability_list">{{ depAppList }}</option>
+                </select>
+            </div>
+            <div class="row">
+                <button class="btn btn-oultine-success col-6" type="button" (click)="addDepartmentApplicability()">Add Department</button>
+                <button class="btn btn-oultine-danger col-6" type="button" (click)="removeDepartmentApplicability(DepAppList.value)">Remove Department</button>
+            </div>
 
-    <br>
+            <button class="row btn btn-oultine-dark" type="button" [disabled]="isListEmpty(departmentApplicability_list)" (click)="updateCourseDepartmentApplicability()" style="color: black;">Update</button>
+        </div>
+    </form>
 
-    <button type="submit" [disabled]="isListEmpty(departmentApplicability_list)" style="color: black;">Update</button>
-</form>
+    <hr class="row" *ngIf="isAdmin() && checkSearchFlag()">
 
-<button type="button" *ngIf=isAdmin() (click)="archiveCourse()" style="color: black;">Archive Course</button>
+    <button class="row btn btn-oultine-dark col-12" type="button" *ngIf="isAdmin() && checkSearchFlag()" (click)="archiveCourse()">Archive Course</button>
+</div>

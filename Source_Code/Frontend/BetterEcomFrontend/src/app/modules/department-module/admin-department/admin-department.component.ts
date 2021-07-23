@@ -11,44 +11,47 @@ import { DepartmentsService } from '../services/departments.service';
 })
 export class AdminDepartmentComponent implements OnInit {
 
-  view_priority_list : Array<string> = []
+  view_priority_list: Array<string> = []
 
-  constructor(private departmentService : DepartmentsService) { }
+  constructor(private departmentService: DepartmentsService) { }
 
   setDepartmentForm = new FormGroup({
-    StudentID : new FormControl('', [Validators.required]),
-    DepartmentCode : new FormControl('', [Validators.required])
+    StudentID: new FormControl('', [Validators.required]),
+    DepartmentCode: new FormControl('', [Validators.required])
   })
 
-  get studentIdGet(){
+  get studentIdGet() {
     return this.setDepartmentForm.get('StudentID');
   }
 
-  get departmentCodeGet(){
+  get departmentCodeGet() {
     return this.setDepartmentForm.get('DepartmentCode');
   }
 
   ngOnInit(): void {
   }
-  
-  getStudentList(){
+
+  getStudentList() {
     this.departmentService.getStudentPriorityList(this.studentIdGet.value).subscribe(
-      priority_list =>{
-        console.log(priority_list);
-        var list = priority_list.sort(function(a, b){
-          return a.priority - b.priority;
-        })
-        this.view_priority_list = list.map(function(obj) {return obj.department_code});
+      priority_list => {
+        if (priority_list.length > 0) {
+          console.log(priority_list);
+          var list = priority_list.sort(function (a, b) {
+            return a.priority - b.priority;
+          })
+          this.view_priority_list = list.map(function (obj) { return obj.department_code });
+        }
+        else { alert("Student has not submited any priority list"); }
       }
     )
   }
 
-  setDepartment(){
+  setDepartment() {
     this.departmentService.setDepartmentForStudent(this.setDepartmentForm.value).subscribe(
-      response =>{
+      response => {
         alert("Department has been set");
       },
-      error =>{
+      error => {
         console.log(error.error);
         alert("failed");
       }

@@ -1,57 +1,70 @@
-<form [formGroup]="addCourseToDepartmentForm" (ngSubmit)="addCourseToDepartment()">
-    <input type="text" name="UserID" id="UserID" #UserID formControlName="UserID" value="{{ userID }}" hidden>
-    <label>Department Code: </label>
-    <input type="text" name="DepartmentCode" id="DepartmentCode" #DepartmentCode formControlName="Department_code">
-    <p *ngIf="department_code_get.invalid && department_code_get.touched" style="color: red;">department code is required</p>
+<div class="gradient container-fluid">
 
-    <br>
+    <hr class="row">
 
-    <label>Course Code: </label>
-    <input type="text" name="CourseCode" id="CourseCode" #CourseCode formControlName="Course_code">
-    <p *ngIf="course_code_get.invalid && course_code_get.touched" style="color: red;">course code is required</p>
+    <form class="row container-fluid" [formGroup]="addCourseToDepartmentForm" (ngSubmit)="addCourseToDepartment()">
 
-    <br>
+        <input class="row" type="text" name="UserID" id="UserID" #UserID formControlName="UserID" value="{{ userID }}" hidden>
+        <div class="row my-1">
+            <label class="col-4">Department Code: </label>
+            <input class="col-8" type="text" name="DepartmentCode" id="DepartmentCode" #DepartmentCode formControlName="Department_code">
+        </div>
+        <p class="row text-danger fw-bold" *ngIf="department_code_get.invalid && department_code_get.touched">department code is required</p>
 
-    <label>Course Name: </label>
-    <input type="text" name="CourseName" id="CourseName" #CourseName formControlName="Course_name">
-    <p *ngIf="course_name_get.invalid && course_name_get.touched" style="color: red;">course name is required</p>
+        <div class="row my-1">
+            <label class="col-4">Course Code: </label>
+            <input class="col-8" type="text" name="CourseCode" id="CourseCode" #CourseCode formControlName="Course_code">
+        </div>
+        <p class="row text-danger fw-bold" *ngIf="course_code_get.invalid && course_code_get.touched">course code is required</p>
 
-    <br>
+        <div class="row my-1">
+            <label class="col-4">Course Name: </label>
+            <input class="col-8" type="text" name="CourseName" id="CourseName" #CourseName formControlName="Course_name">
+        </div>
+        <p class="row text-danger fw-bold" *ngIf="course_name_get.invalid && course_name_get.touched">course name is required</p>
 
-    <label>Academic Year: </label>
-    <input type="text" name="AcademicYear" id="AcademicYear" #AcademicYear formControlName="academic_year">
-    <p *ngIf="academic_year_get.invalid && academic_year_get.touched" style="color: red;">Academic Year is required</p>
+        <div class="row my-1">
+            <label class="col-4">Academic Year: </label>
+            <input class="col-8" type="text" name="AcademicYear" id="AcademicYear" #AcademicYear formControlName="academic_year">
+        </div>
+        <p class="row text-danger fw-bold" *ngIf="academic_year_get.invalid && academic_year_get.touched">Academic Year is required</p>
 
-    <br>
+        <div class="row my-1">
+            <label class="col-4">Course Description: </label>
+            <input class="col-8" type="text" name="CourseDescription" id="CourseCode" #CourseDescription formControlName="course_description">
+        </div>
+        <p class="row text-danger fw-bold" *ngIf="course_description_get.invalid && course_description_get.touched">course description is required</p>
 
-    <label>Course Description: </label>
-    <input type="text" name="CourseDescription" id="CourseCode" #CourseDescription formControlName="course_description">
-    <p *ngIf="course_description_get.invalid && course_description_get.touched" style="color: red;">course description is required</p>
+        <div class="row container-fluid my-1">
+            <div class="row">
+                <label class="col-4">Prerequisites: </label>
+                <input class="col-4" type="text" name="Prerequisites" id="Prerequisites" #Prerequisites formControlName="prerequisites">
+                <select class="col-4" name="PrerequisitesList" id="PrerequisitesList" #PrerequisitesList>
+                <option *ngFor="let pList of prerequisites_list">{{ pList }}</option>
+                </select>
+            </div>
+            <div class="row">
+                <button class="btn btn-outline-success text-light col-6" type="button" (click)="addPrerequisite()">Add Prerequisite</button>
+                <button class="btn btn-outline-danger text-light col-6" type="button" (click)="removePrerequisites(PrerequisitesList.value)">Remove Prerequisite</button>
+            </div>
+        </div>
 
-    <br>
+        <div class="row container-fluid my-1">
+            <div class="row">
+                <label class="col-4">Department Applicability: </label>
+                <input class="col-4" type="text" name="DepartmentApplicability" id="DepartmentApplicability" #DepartmentApplicability formControlName="departmentApplicability">
+                <select class="col-4" name="DepAppList" id="DepAppList" #DepAppList>
+                <option *ngFor="let depAppList of departmentApplicability_list">{{ depAppList }}</option>
+                </select>
+            </div>
+            <p class="row text-danger fw-bold" *ngIf="isDepAppEmpty && departmentApplicability_get.touched">department applicability get is required</p>
+            
+            <div class="row">
+                <button class="btn btn-outline-success text-light col-6" type="button" (click)="addDepartmentApplicability()">Add Department</button>
+                <button class="btn btn-outline-danger text-light col-6" type="button" (click)="removeDepartmentApplicability(DepAppList.value)">Remove Department</button>
+            </div>
+        </div>
 
-    <label>Prerequisites: </label>
-    <input type="text" name="Prerequisites" id="Prerequisites" #Prerequisites formControlName="prerequisites">
-    <select name="PrerequisitesList" id="PrerequisitesList" #PrerequisitesList>
-        <option *ngFor="let pList of prerequisites_list">{{ pList }}</option>
-    </select>
-    <br>
-    <button type="button" (click)="addPrerequisite()" style="color: black;">add prerequisite</button>
-    <button type="button" (click)="removePrerequisites(PrerequisitesList.value)" style="color: black;">remove prerequisite</button>
-
-    <br>
-
-    <label>Department Applicability: </label>
-    <input type="text" name="DepartmentApplicability" id="DepartmentApplicability" #DepartmentApplicability formControlName="departmentApplicability">
-    <p *ngIf="isDepAppEmpty && departmentApplicability_get.touched" style="color: red;">department applicability get is required</p>
-    <select name="DepAppList" id="DepAppList" #DepAppList>
-        <option *ngFor="let depAppList of departmentApplicability_list">{{ depAppList }}</option>
-    </select>
-    <br>
-    <button type="button" (click)="addDepartmentApplicability()" style="color: black;">add department</button>
-    <button type="button" (click)="removeDepartmentApplicability(DepAppList.value)" style="color: black;">remove department</button>
-
-    <br>
-
-    <button type="submit" [disabled]="addCourseToDepartmentForm.invalid || isDepAppEmpty()" style="color: black;">Add Course</button>
-</form>
+        <button class="row btn btn-outline-dark text-light" type="submit" [disabled]="addCourseToDepartmentForm.invalid || isDepAppEmpty()" style="color: black;">Add Course</button>
+    </form>
+</div>
