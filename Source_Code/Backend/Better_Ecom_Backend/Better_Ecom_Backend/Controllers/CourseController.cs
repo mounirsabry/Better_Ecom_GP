@@ -64,7 +64,7 @@ namespace Better_Ecom_Backend.Controllers
                 return Forbid("students can only get their own data.");
             }
             string getCourseCodes = "SELECT course_code FROM course_instance " + "\n" +
-                "INNER JOIN student_course_instance_registration ON student_course_instance_registration.course_instance_id = course_instance.instance_id WHERE student_id = @studentID;";
+                "INNER JOIN student_course_instance_registration ON student_course_instance_registration.course_instance_id = course_instance.instance_id WHERE student_id = @studentID";
             string getCourseAvailableCourseInstances = $"SELECT * FROM course WHERE course_code in ({getCourseCodes})";
 
             List<Course> courses = _data.LoadData<Course, dynamic>(getCourseAvailableCourseInstances, new { studentID }, _config.GetConnectionString("Default"));
@@ -901,7 +901,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return BadRequest(new { Message = MessageFunctions.GetCourseInstanceNotFoundMessage() });
             }
-            string getCourseInstanceIntructorIDsSql = "SELECT instructor_id FROM instructor_course_instance_registration WHERE course_instance_id = @courseInstanceID; ";
+            string getCourseInstanceIntructorIDsSql = "SELECT instructor_id FROM instructor_course_instance_registration WHERE course_instance_id = @courseInstanceID ";
             string getInstuctorsIdsAndNamesSql = $"SELECT system_user_id, full_name WHERE system_user_id IN ({getCourseInstanceIntructorIDsSql});";
 
             var instructorsIdsAndNames = _data.LoadData<dynamic, dynamic>(getInstuctorsIdsAndNamesSql, new { courseInstanceID }, _config.GetConnectionString("Default"));
