@@ -835,10 +835,7 @@ namespace Better_Ecom_Backend.Controllers
                 return BadRequest(new { Message = MessageFunctions.GetCourseInstanceNotFoundMessage() });
             }
 
-
-
             string insertInstructorRegistrationSql = "INSERT INTO instructor_course_instance_registration VALUES(NULL, @instructorID, @courseInstanceID, @registrationDate);";
-
             int status = _data.SaveData(insertInstructorRegistrationSql, new { instructorID, courseInstanceID, registrationDate }, _config.GetConnectionString("Default"));
 
             if (status > 0)
@@ -847,7 +844,6 @@ namespace Better_Ecom_Backend.Controllers
             }
             else
             {
-
                 return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
         }
@@ -921,6 +917,43 @@ namespace Better_Ecom_Backend.Controllers
             }
 
             return Ok(instructorsIdsAndNames);
+        }
+
+        [Authorize]
+        [HttpGet("GetCourseInstanceReadOnlyStatus/{CourseInstanceID:int}")]
+        public IActionResult GetCourseInstanceReadOnlyStatus(int courseInstanceID)
+        {
+            if (ExistanceFunctions.IsDBUpAndRunning(_config, _data) == false)
+            {
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+
+            if (ExistanceFunctions.IsCourseInstanceExists(_config, _data, courseInstanceID) == false)
+            {
+                return BadRequest(new { Message = MessageFunctions.GetCourseInstanceNotFoundMessage() });
+            }
+            return Ok(HelperFunctions.GetCourseInstanceReadOnlyStatus(_config, _data, courseInstanceID));
+        }
+
+        [Authorize(Roles = "admin, instructor")]
+        [HttpPatch("SetCourseInstanceReadOnlyStatus/{CourseInstanceID:int}/{ReadOnlyStatus}")]
+        public IActionResult SetCourseInstanceReadOnlyStatus(int courseInstanceID, bool readOnlyStatus)
+        {
+            if (ExistanceFunctions.IsDBUpAndRunning(_config, _data) == false)
+            {
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+
+            if (ExistanceFunctions.IsCourseInstanceExists(_config, _data, courseInstanceID) == false)
+            {
+                return BadRequest(new { Message = MessageFunctions.GetCourseInstanceNotFoundMessage() });
+            }
+
+            //Extract the id from the token, if the user is an instructor, then he must be registered to the course instance.
+            //Check the status provided.
+            //update the row with the new status.
+            //return an error or return course instance status updated successfully.
+            return Ok(new { Message = MessageFunctions.GetNotImplementedString() });
         }
 
         private List<Course> GetStudentAvailableCoursesList(int studentID)
