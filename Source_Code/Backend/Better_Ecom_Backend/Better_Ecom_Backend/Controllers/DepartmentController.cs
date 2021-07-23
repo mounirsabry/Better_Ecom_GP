@@ -555,24 +555,12 @@ namespace Better_Ecom_Backend.Controllers
         /// <param name="jsonData">json object containing the course id admin with to archive.</param>
         /// <returns></returns>
         [Authorize(Roles = "admin")]
-        [HttpDelete("ArchiveCourse")]
-        public IActionResult ArchiveCourse([FromBody] dynamic jsonData)
+        [HttpDelete("ArchiveCourse/{CourseCode}")]
+        public IActionResult ArchiveCourse(string courseCode)
         {
             //ADMIN ONLY FUNCTION.
-            if (!jsonData.TryGetProperty("UserID", out JsonElement temp) || !CheckAdminExists(temp.GetInt32()))
-            {
-                return BadRequest(new { Message = "user id is invalid." });
-            }
 
-            string courseCode;
-            if (jsonData.TryGetProperty("Course_code", out temp))
-            {
-                courseCode = temp.GetString();
-            }
-            else
-            {
-                return BadRequest(new { Message = "course code was not provided." });
-            }
+
 
             List<Course> course = CheckCourseArchiveStatus(courseCode);
 

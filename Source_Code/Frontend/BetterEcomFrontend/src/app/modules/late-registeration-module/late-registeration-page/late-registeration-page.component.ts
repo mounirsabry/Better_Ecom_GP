@@ -37,7 +37,7 @@ export class LateRegisterationPageComponent implements OnInit {
   }
 
   deleteRequest(){
-    var request_id = this.deleteLateRegisterationRequestForm.controls.lateRegistrationRequestID.value
+    var request_id : number = this.deleteLateRegisterationRequestForm.controls.lateRegistrationRequestID.value
     this.lateRegisterationService.deleteLateCourseInstanceRegistrationRequest(request_id).subscribe(
       response =>{
         alert("Request Deleted");

@@ -15,6 +15,18 @@ export class AdminLateRegisterationPageComponent implements OnInit {
     Course_code : new FormControl('', Validators.required)
   })
 
+  get course_code_get(){
+    return this.searchForRequestByCourseCodeForm.get('Course_code');
+  }
+
+  searchForRequestByStudentIDForm = new FormGroup({
+    Student_ID : new FormControl('', Validators.required)
+  })
+
+  get student_id_get(){
+    return this.searchForRequestByStudentIDForm.get('Student_ID');
+  }
+
   getLateRegisterationRequestsForm = new FormGroup({
     courseInstance : new FormGroup ({
       request_id : new FormControl,
@@ -25,20 +37,39 @@ export class AdminLateRegisterationPageComponent implements OnInit {
     })
   })
 
+  late_requests_list : Array<any> = []
+
   ngOnInit(): void {
-    /*this.lateRegisterationService.getAllLateCourseRegistrationRequests().subscribe(
+  }
+
+  getAllRequests(){
+    this.lateRegisterationService.getAllLateCourseRegistrationRequests().subscribe(
+      requests =>{
+        console.log(requests);
+        this.late_requests_list = requests;
+        console.log(this.late_requests_list);
+      },
+      error =>{
+        console.log(error.error);
+      }
+    )
+  }
+
+  getCourseRequests(){
+    console.log(this.course_code_get.value);
+    this.lateRegisterationService.getCourseLateCourseRegistrationRequests(this.course_code_get.value).subscribe(
       requests =>{
         console.log(requests);
       },
       error =>{
         console.log(error.error);
       }
-    )*/
+    )
   }
 
-  getRequests(){
-    console.log(this.searchForRequestByCourseCodeForm.value);
-    this.lateRegisterationService.getCourseLateCourseRegistrationRequests(this.searchForRequestByCourseCodeForm.controls.Course_code.value).subscribe(
+  getStudentRequests(){
+    console.log(this.student_id_get.value);
+    this.lateRegisterationService.getStudentLateCourseInstanceRegistrationRequests(this.student_id_get.value).subscribe(
       requests =>{
         console.log(requests);
       },

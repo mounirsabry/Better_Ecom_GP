@@ -108,15 +108,8 @@ export class CourseInfoComponent implements OnInit {
     if(this.searchTypeGet.value === 'name'){
       this.departmentCoursesService.getCourseInfoByName(this.courseGet.value).subscribe(
         data =>{
-          //this.course_info = data;
-          //console.log(this.course_info);
-          /*for(let i of data){
-            console.log(i);
-            this.updateCourseForm.setValue(i);
-          }*/
           console.log(data);
           data.forEach((element,index) => {
-            //if(element == 'courseInstance') this.course_info.push(element);
             this.course_info.push(element.courseInstance)
           });
           console.log(this.course_info);
@@ -130,12 +123,6 @@ export class CourseInfoComponent implements OnInit {
     else{
       this.departmentCoursesService.getCourseInfoByCode(this.courseGet.value).subscribe(
         data =>{
-          /*this.course_info = data;
-          console.log(this.course_info);
-          for(let i of data){
-            this.updateCourseForm.setValue(i);
-          }
-          console.log(this.updateCourseForm.value);*/
           console.log(data);
           this.course_info.push(data.courseInstance);
           for(let m of data.prerequisites){
@@ -312,12 +299,9 @@ export class CourseInfoComponent implements OnInit {
   }
 
   archiveCourse(){
-    var course = {
-      'UserID' : +localStorage.getItem('ID'),
-      'Course_code' : this.course_code_get.value,
-      'is_archived' : this.is_archived_get.value
-    }
-
+    
+    var course = this.courseGet.value;
+    console.log(course);
     this.departmentCoursesService.archiveCourse(course).subscribe(
       data =>{
         alert("Course archived");
