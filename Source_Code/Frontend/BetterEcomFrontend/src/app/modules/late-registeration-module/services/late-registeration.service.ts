@@ -13,6 +13,18 @@ export class LateRegisterationService {
     return this.httpclient.get<any>("https://localhost:44361/course/GetStudentAvailableCourses/" + student_id);
   }
 
+  getIsNormalCourseRegistrationOpen(){ //admin, student
+    return this.httpclient.get<any>("https://localhost:44361/course/GetIsNormalCourseRegistrationOpen");
+  }
+
+  getIsLateCourseRegistrationOpen(){ //admin, student
+    return this.httpclient.get<any>("https://localhost:44361/course/GetIsLateCourseRegistrationOpen");
+  }
+
+  getIsDropCourseRegistrationOpen(){ //admin, student
+    return this.httpclient.get<any>("https://localhost:44361/course/GetIsDropCourseRegistrationOpen");
+  }
+
   getAllLateCourseRegistrationRequests(){ //admin
     return this.httpclient.get<any>("https://localhost:44361/course/GetAllLateCourseInstanceRegistrationRequests");
   }
