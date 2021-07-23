@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { LateRegisterationService } from '../services/late-registeration.service';
 
 @Component({
   selector: 'app-late-registeration-page',
@@ -7,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LateRegisterationPageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private lateRegisterationService : LateRegisterationService) { }
 
   ngOnInit(): void {
   }
