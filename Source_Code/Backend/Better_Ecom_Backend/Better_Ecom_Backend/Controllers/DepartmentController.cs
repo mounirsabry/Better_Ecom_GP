@@ -5,7 +5,6 @@ using DataLibrary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -89,7 +88,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 for (int i = 1; i <= 5; i++)
                 {
-                    sqlList.Add($"UPDATE student_department_priority SET priority = @priority WHERE student_id = @studentID AND department_code = @department_code");
+                    sqlList.Add($"UPDATE student_department_priority_list SET priority = @priority WHERE student_id = @studentID AND department_code = @department_code");
                     parameterList.Add(new { studentID, department_code = jsonData.GetProperty($"DepartmentCode{i}").GetString(), priority = i });
                 }
             }
@@ -97,7 +96,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 for (int i = 1; i <= 5; i++)
                 {
-                    sqlList.Add($"INSERT INTO student_department_priority VALUES(@studentID, @department_code, @priority)");
+                    sqlList.Add($"INSERT INTO student_department_priority_list VALUES(@studentID, @department_code, @priority)");
                     parameterList.Add(new { studentID, department_code = jsonData.GetProperty($"DepartmentCode{i}").GetString(), priority = i });
                 }
             }
@@ -133,13 +132,20 @@ namespace Better_Ecom_Backend.Controllers
                 return BadRequest("invalid student id.");
             }
 
-            string sql = "SELECT department_code, priority FROM student_department_priority WHERE student_id = @id;";
+            string sql = "SELECT department_code, priority FROM student_department_priority_list WHERE student_id = @id;";
             dynamic rows = _data.LoadData<dynamic, dynamic>(sql, new { id = studentID }, _config.GetConnectionString("Default"));
             if (rows == null)
             {
                 return BadRequest(new { Message = "unknown error, maybe database server is down." });
             }
-               return Ok(rows);
+            else if (rows.Count == 0)
+            {
+                return Ok(new { Message = "student did not sumbit any priority list." });
+            }
+            else
+            {
+                return Ok(rows);
+            }
         }
 
         [Authorize(Roles = "admin")]
@@ -694,7 +700,6 @@ namespace Better_Ecom_Backend.Controllers
             }
 
             Course_instance courseInstance = new(jsonData);
-            //Wait until we see how it's calculated or provided.Term();
 
             if (!CheckCourseExist(courseInstance.Course_code))
             {
@@ -705,6 +710,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 courseInstance.Course_year = TimeUtilities.GetCurrentYear();
             }
+
 
             string addCourseInstanceSql = "INSERT INTO course_instance VALUES(NULL, @Course_code, @Course_year, @Course_term, @Credit_hours, FALSE);";
             int status = _data.SaveData(addCourseInstanceSql, courseInstance, _config.GetConnectionString("Default"));
@@ -724,7 +730,7 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult GetIsCourseInstanceOpenForRegistration(int courseInstanceID)
         {
             //STUDENT, INSTRUCTOR, ADMIN FUNCTION.
-            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+            return Ok(new { Message = MessageFunctions.GetNotImplementedString() });
         }
 
         [Authorize(Roles = "admin")]
@@ -732,7 +738,7 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult MarkCourseInstanceAsClosedForRegistration([FromBody] JsonElement jsonInput)
         {
             //ADMIN ONLY FUNCTION.
-            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+            return Ok(new { Message = MessageFunctions.GetNotImplementedString() });
         }
 
         [Authorize(Roles = "admin")]
@@ -740,7 +746,7 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult RemoveClosedForRegistratiolnMarkFromCourseInstance([FromBody] JsonElement jsonInput)
         {
             //ADMIN ONLY FUNCTION.
-            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+            return Ok(new { Message = MessageFunctions.GetNotImplementedString() });
         }
 
         private static bool CheckUpdateCourseInfoExist(JsonElement jsonData)
@@ -772,7 +778,7 @@ namespace Better_Ecom_Backend.Controllers
 
         private bool CheckUserHasPriorities(int studentID)
         {
-            string loadPrioritiesSql = "SELECT * FROM student_department_priority WHERE student_id = @studentID;";
+            string loadPrioritiesSql = "SELECT * FROM student_department_priority_list WHERE student_id = @studentID;";
             List<Student_department_priority> priorities = _data.LoadData<Student_department_priority, dynamic>(loadPrioritiesSql, new { studentID }, _config.GetConnectionString("Default"));
 
             if (priorities is null || priorities.Count == 0)
@@ -823,7 +829,7 @@ namespace Better_Ecom_Backend.Controllers
         private bool AddCourseToDepartmentRequiredDataValid(JsonElement sentData)
         {
             return sentData.TryGetProperty("Course_code", out JsonElement temp) && temp.ValueKind == JsonValueKind.String
-                && sentData.TryGetProperty("DepartmentApplicability", out temp) && temp.ValueKind == JsonValueKind.Array
+                && sentData.TryGetProperty("departmentApplicability", out temp) && temp.ValueKind == JsonValueKind.Array
                 && (sentData.TryGetProperty("Department_code", out temp) && temp.ValueKind == JsonValueKind.String && GetDepartmentsCodes().Contains(temp.GetString()))
                 && sentData.TryGetProperty("Course_name", out temp) && temp.ValueKind == JsonValueKind.String;
         }

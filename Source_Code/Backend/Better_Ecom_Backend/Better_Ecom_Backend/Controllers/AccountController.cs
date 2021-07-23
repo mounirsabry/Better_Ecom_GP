@@ -1,18 +1,16 @@
 ﻿using Better_Ecom_Backend.Helpers;
 using Better_Ecom_Backend.Models;
 using DataLibrary;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 using System.Text.Json;
-using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -35,11 +33,10 @@ namespace Better_Ecom_Backend.Controllers
         /// The client provides id, password and type that is checked if they are valid the client is authorized to use the api.
         /// </summary>
         /// <param name="loginData">json object contains id, password and type.</param>
-        /// <returns>authorization token if provided data is valid BadRequest otherwise.</returns>
+        /// <returns>authorization token if provided data is valid BadRequest or Unauthorized otherwise.</returns>
         [HttpPost("Login")]
         public IActionResult Login([FromBody] JsonElement loginData)
         {
-
             if (!LoginRequiredDataValid(loginData))
             {
                 return BadRequest(new { Message = "required data missing or invalid." });
@@ -49,21 +46,37 @@ namespace Better_Ecom_Backend.Controllers
             string password = loginData.GetProperty("Password").GetString();
             string type = loginData.GetProperty("Type").GetString();
 
-            if (!HelperFunctions.CheckUserIDAndType(userID, type))
+            if (type != "student" && type != "instructor" && type != "admin")
+            {
+                return BadRequest(new { Message = "invalid user type." });
+            }
+            else if (HelperFunctions.CheckUserIDAndType(userID, type) == false)
             {
                 return BadRequest(new { Message = "invalid user id or type." });
             }
+            else if (string.IsNullOrEmpty(password))
+            {
+                return BadRequest(new { Message = "password cannot by empty or null." });
+            }
 
-            //IActionResult
-            IActionResult response = Unauthorized();
-            bool exists = AuthenticateUser(userID, password, type) && !string.IsNullOrEmpty(password);
-
-            if (exists)
+            string authenticationMessage = AuthenticateUser(userID, password, type);
+            if (authenticationMessage == "query failed.")
+            {
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+            else if (authenticationMessage == "no user found with such id." || authenticationMessage == "password is wrong.")
+            {
+                return Unauthorized(new { Message = "id and password combination is wrong." });
+            }
+            else if (authenticationMessage == "invalid user type.")
+            {
+                return BadRequest(new { Message = "invalid user type." });
+            }
+            else
             {
                 string tokenString = GenerateJSONWebToken(userID, type);
-                response = Ok(new { token = tokenString });
+                return Ok(new { token = tokenString });
             }
-            return response;
         }
 
         /// <summary>
@@ -99,7 +112,7 @@ namespace Better_Ecom_Backend.Controllers
 
             if (students == null)
             {
-                return BadRequest(new { message = "unknown error, maybe database server is down." });
+                return BadRequest(new { message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
             else if (students.Count == 0)
             {
@@ -151,7 +164,7 @@ namespace Better_Ecom_Backend.Controllers
 
             if (instructors == null)
             {
-                return BadRequest(new { Message = "unknown error, maybe database server is down." });
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
             else if (instructors.Count == 0)
             {
@@ -247,7 +260,7 @@ namespace Better_Ecom_Backend.Controllers
 
             if (dbResult == null)
             {
-                return BadRequest(new { Message = "unknown error, maybe database server is down." });
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
             else if (dbResult.Count == 0)
             {
@@ -280,7 +293,7 @@ namespace Better_Ecom_Backend.Controllers
             }
         }
 
-        private bool ResetAccountCredientialsRequiredDataValid(JsonElement userData)
+        private static bool ResetAccountCredientialsRequiredDataValid(JsonElement userData)
         {
             return userData.TryGetProperty("UserID", out JsonElement temp) && temp.TryGetInt32(out _)
                 && userData.TryGetProperty("NationalID", out temp) && temp.ValueKind == JsonValueKind.String
@@ -321,7 +334,7 @@ namespace Better_Ecom_Backend.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private bool AuthenticateUser(int id, string password, string type)
+        private string AuthenticateUser(int id, string password, string type)
         {
             var parameters = new
             {
@@ -346,7 +359,7 @@ namespace Better_Ecom_Backend.Controllers
                     id_text = "admin_user.admin_user_id";
                     break;
                 default:
-                    return false;
+                    return "invalid user type.";
             }
 
             string sql = "SELECT system_user_id, user_password" + "\n"
@@ -357,13 +370,25 @@ namespace Better_Ecom_Backend.Controllers
 
             rows = _data.LoadData<dynamic, dynamic>(sql, parameters, _config.GetConnectionString("Default"));
 
-            if (rows != null && rows.Count > 0)
+            if (rows == null)
             {
-                return SecurityUtilities.Verify(password, rows[0].user_password);
+                return "query failed.";
+            }
+            else if (rows.Count == 0)
+            {
+                return "no user found with such id.";
             }
             else
             {
-                return false;
+                bool isVerified = SecurityUtilities.Verify(password, rows[0].user_password);
+                if (isVerified)
+                {
+                    return "authenticated.";
+                }
+                else
+                {
+                    return "password is wrong.";
+                }
             }
         }
     }
