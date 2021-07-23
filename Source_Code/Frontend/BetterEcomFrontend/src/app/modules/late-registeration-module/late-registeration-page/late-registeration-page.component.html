@@ -1,12 +1,14 @@
 
-<!--ngfor here-->
-<div >
-  <button>accept request</button> <!--for admin only-->
-  <button>delte request</button> <!---for admin and student-->
+<!--<form [formGroup]="selectCourseForm" (ngSubmit)="getCourse()">
 
-</div>
+  
+</form>-->
 
-<!-- all requests here-->
-<button>submit request</button>
 
+<form [formGroup]="submitLateCourseRegisterationForm" (ngSubmit)="submitRequest()">
+  <label>Course ID: </label>
+  <input type="number" name="CourseInstanceID" formControlName="CourseInstanceID">
+  <br>
+  <button type="submit" [disabled]="submitLateCourseRegisterationForm.invalid">Submit Request</button>
+</form>
 

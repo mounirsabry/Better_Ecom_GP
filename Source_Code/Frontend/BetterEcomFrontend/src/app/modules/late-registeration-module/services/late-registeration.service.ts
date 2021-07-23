@@ -9,6 +9,10 @@ export class LateRegisterationService {
 
   constructor(private httpclient:HttpClient) { }
 
+  getStudentAvailableCourses(student_id : number){
+    return this.httpclient.get<any>("https://localhost:44361/course/GetStudentAvailableCourses/" + student_id);
+  }
+
   getAllLateCourseRegistrationRequests(){ //admin
     return this.httpclient.get<any>("https://localhost:44361/course/GetAllLateCourseInstanceRegistrationRequests");
   }

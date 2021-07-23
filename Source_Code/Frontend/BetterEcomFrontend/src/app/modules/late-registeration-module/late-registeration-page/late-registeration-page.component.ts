@@ -11,7 +11,25 @@ export class LateRegisterationPageComponent implements OnInit {
 
   constructor(private lateRegisterationService : LateRegisterationService) { }
 
+  submitLateCourseRegisterationForm = new FormGroup({
+    StudentID : new FormControl,
+    CourseInstanceID : new FormControl('', Validators.required)
+  })
+
   ngOnInit(): void {
+    this.submitLateCourseRegisterationForm.controls.StudentID.setValue(+localStorage.getItem('ID'));
+  }
+
+  submitRequest(){
+    this.lateRegisterationService.submitLateCourseInstanceRegistrationRequest(this.submitLateCourseRegisterationForm.value).subscribe(
+      response =>{
+        alert("Registeration submited");
+      },
+      error =>{
+        console.log(error.error);
+        alert("failed");
+      }
+    )
   }
 
 }
