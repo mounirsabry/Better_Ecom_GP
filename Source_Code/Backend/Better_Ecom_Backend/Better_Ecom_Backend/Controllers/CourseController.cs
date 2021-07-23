@@ -450,11 +450,23 @@ namespace Better_Ecom_Backend.Controllers
 
         }
 
+        /// <summary>
+        /// Changes Late Course Registration request.
+        /// If accepted inserts new course registration instance with student data.
+        /// </summary>
+        /// <param name="jsonInput">json object containing RequestID: id of registration request, and RequestStatus: new request Status.</param>
+        /// <returns></returns>
         [Authorize(Roles = "admin")]
         [HttpPatch("SetLateCourseInstanceRegistrationRequest")]
         public IActionResult SetLateCourseInstanceRegistrationRequest([FromBody] JsonElement jsonInput)
         {
             //ADMIN ONLY FUNCTION.
+
+            if(!SetLateCourseInstanceRegistrationRequestDataValid(jsonInput))
+            {
+                return BadRequest(new { Message = MessageFunctions.GetRequiredDataMissingOrInvalidMessage() });
+            }
+
             int requestID = jsonInput.GetProperty("RequestID").GetInt32();
             LateRegistrationRequestStatus requestStatus = (LateRegistrationRequestStatus)jsonInput.GetProperty("RequestStatus").GetInt32();
 
@@ -469,7 +481,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
-
+            
             Course_instance_late_registration_request registration = registrations.FirstOrDefault();
             if (registration is null)
             {
@@ -483,15 +495,37 @@ namespace Better_Ecom_Backend.Controllers
 
 
 
-            if (requestStatus == LateRegistrationRequestStatus.Accepted)
+            if(requestStatus == LateRegistrationRequestStatus.Accepted && registration.Request_status != LateRegistrationRequestStatus.Accepted)
             {
                 string insertCourseRegistration = "INSERT INTO student_course_instance_registration VALUES(NULL, @studentID, @courseInstanceID, @registrationDate, @studentCourseInstanceStatus);";
+                var parameters = new
+                {
+                    studentID = registration.Student_id,
+                    courseInstanceID = registration.Course_instance_id,
+                    registrationDate = DateTime.Now,
+                    studentCourseInstanceStatus = nameof(requestStatus)
+                };
                 sqlList.Add(insertCourseRegistration);
-                parametersList.Add(new { studentID = registration });
+                parametersList.Add(parameters);
+            }
+            else if(registration.Request_status == LateRegistrationRequestStatus.Accepted)
+            {
+                return BadRequest(new { Message = "can not change accepted student." });
             }
 
-            return Ok(new { Message = MessageFunctions.GetNotImplementedString() });
+            List<int> status = _data.SaveDataTransaction(sqlList, parametersList, _config.GetConnectionString("Default"));
+
+            if(status.Contains(-1))
+            {
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+
+            registration.Request_status = requestStatus;
+
+            return Ok(registration);
         }
+
+
 
         [Authorize]
         [HttpGet("GetStudentCourseInstanceRegistrationAvailableStatus")]
@@ -735,6 +769,12 @@ namespace Better_Ecom_Backend.Controllers
         {
             return jsonInput.TryGetProperty("StudentID", out JsonElement temp) && temp.TryGetInt32(out _)
                 && jsonInput.TryGetProperty("CourseInstanceID", out temp) && temp.TryGetInt32(out _);
+        }
+
+        private bool SetLateCourseInstanceRegistrationRequestDataValid(JsonElement jsonInput)
+        {
+            return jsonInput.TryGetProperty("RequestID", out JsonElement temp) && temp.TryGetInt32(out _)
+                && jsonInput.TryGetProperty("RequestStatus", out temp) && temp.TryGetInt32(out _);
         }
 
         private static bool RegisterInstructorToCourseInstanceDataValid(JsonElement jsonInput)
