@@ -357,7 +357,7 @@ namespace Better_Ecom_Backend.Controllers
         {
             //ADMIN ONLY FUNCTION.
 
-            string getCourseInstancesSql = "SELECT instance_id FROM course_instance WHERE course_code = @courseCode;";
+            string getCourseInstancesSql = "SELECT instance_id FROM course_instance WHERE course_code = @courseCode";
             string getCourseLateRegistrationRequest = $"SELECT * FROM course_instance_late_registration_request WHERE course_instance_id in ({getCourseInstancesSql});";
             List<Course_instance_late_registration_request> lateCourseInstancesRegistrationRequests = _data.LoadData<Course_instance_late_registration_request, dynamic>(getCourseLateRegistrationRequest, new { courseCode }, _config.GetConnectionString("Default"));
 
