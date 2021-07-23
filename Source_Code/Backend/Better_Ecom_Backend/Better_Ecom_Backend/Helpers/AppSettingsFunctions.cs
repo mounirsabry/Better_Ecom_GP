@@ -5,9 +5,9 @@ namespace Better_Ecom_Backend.Helpers
 {
     public class AppSettingsFunctions
     {
-        public static bool GetIsCourseRegistrationOpen(IConfiguration _config)
+        public static bool GetIsNormalCourseRegistrationOpen(IConfiguration _config)
         {
-            return Convert.ToBoolean(_config["CourseRegistrationSettings:IsCourseRegistrationOpen"]);
+            return Convert.ToBoolean(_config["CourseRegistrationSettings:IsNormalCourseRegistrationOpen"]);
         }
 
         public static bool GetIsLateCourseRegistrationOpen(IConfiguration _config)

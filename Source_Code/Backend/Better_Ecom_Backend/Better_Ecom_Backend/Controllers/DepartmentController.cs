@@ -5,6 +5,7 @@ using DataLibrary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -726,7 +727,22 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult GetIsCourseInstanceOpenForRegistration(int courseInstanceID)
         {
             //STUDENT, INSTRUCTOR, ADMIN FUNCTION.
-            return Ok(new { Message = MessageFunctions.GetNotImplementedString() });
+
+            if(ExistanceFunctions.IsCourseInstanceExists(_config,_data,courseInstanceID) == false)
+            {
+                return BadRequest(new { Message = MessageFunctions.GetCourseInstanceNotFoundMessage() });
+            }
+
+            List<bool> availabilities = GetCourseInstanceClosedForRegistration(courseInstanceID);
+
+            if(availabilities is null)
+            {
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+
+            return Ok(!availabilities.First());
+
+           
         }
 
         [Authorize(Roles = "admin")]
@@ -734,15 +750,58 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult MarkCourseInstanceAsClosedForRegistration([FromBody] JsonElement jsonInput)
         {
             //ADMIN ONLY FUNCTION.
-            return Ok(new { Message = MessageFunctions.GetNotImplementedString() });
+            if (!jsonInput.TryGetProperty("CourseInstanceID", out JsonElement temp) || !temp.TryGetInt32(out int courseInstanceID))
+            {
+                return BadRequest(new { Message = MessageFunctions.GetRequiredDataMissingOrInvalidMessage() });
+            }
+            if (ExistanceFunctions.IsCourseInstanceExists(_config,_data,courseInstanceID) == false)
+            {
+                return BadRequest(new { Message = MessageFunctions.GetCourseInstanceNotFoundMessage() });
+            }
+
+            string markCourseInstanceClosedSql = "UPDATE course_instance SET is_closed_for_registration = TRUE WHERE instance_id = @courseInstanceID;";
+
+            int status = _data.SaveData(markCourseInstanceClosedSql, new { courseInstanceID }, _config.GetConnectionString("Default"));
+
+            if(status >=0)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+
         }
+
+
 
         [Authorize(Roles = "admin")]
         [HttpPatch("RemoveClosedForRegistratiolnMarkFromCourseInstance")]
         public IActionResult RemoveClosedForRegistratiolnMarkFromCourseInstance([FromBody] JsonElement jsonInput)
         {
             //ADMIN ONLY FUNCTION.
-            return Ok(new { Message = MessageFunctions.GetNotImplementedString() });
+            if (!jsonInput.TryGetProperty("CourseInstanceID", out JsonElement temp) || !temp.TryGetInt32(out int courseInstanceID))
+            {
+                return BadRequest(new { Message = MessageFunctions.GetRequiredDataMissingOrInvalidMessage() });
+            }
+            if (ExistanceFunctions.IsCourseInstanceExists(_config, _data, courseInstanceID) == false)
+            {
+                return BadRequest(new { Message = MessageFunctions.GetCourseInstanceNotFoundMessage() });
+            }
+
+            string markCourseInstanceClosedSql = "UPDATE course_instance SET is_closed_for_registration = FALSE WHERE instance_id = @courseInstanceID;";
+
+            int status = _data.SaveData(markCourseInstanceClosedSql, new { courseInstanceID }, _config.GetConnectionString("Default"));
+
+            if (status >= 0)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
         }
 
         private static bool CheckUpdateCourseInfoExist(JsonElement jsonData)
@@ -836,6 +895,13 @@ namespace Better_Ecom_Backend.Controllers
             List<Course> courses = _data.LoadData<Course, dynamic>(checkCourseSql, new { code }, _config.GetConnectionString("Default"));
 
             return courses;
+        }
+
+        private List<bool> GetCourseInstanceClosedForRegistration(int courseInstanceID)
+        {
+            string getRegistrationAvailabilitySql = "SELECT is_closed_for_registration FROM course_instance WHERE instance_id = @courseInstanceID;";
+            List<bool> availablilityList = _data.LoadData<bool, dynamic>(getRegistrationAvailabilitySql, new { courseInstanceID }, _config.GetConnectionString("Default"));
+            return availablilityList;
         }
 
         private List<string> GetDepartmentsCodes()
