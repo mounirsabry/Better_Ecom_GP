@@ -1,4 +1,5 @@
-﻿using Better_Ecom_Backend.Models;
+﻿using Better_Ecom_Backend.Helpers;
+using Better_Ecom_Backend.Models;
 using DataLibrary;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -25,6 +26,18 @@ namespace Better_Ecom_Backend.Controllers
 
             var admins = _data.LoadData<Admin_user, dynamic>(sql, new { }, _config.GetConnectionString("Default"));
             return Ok(admins.ToList());
+        }
+
+        [HttpGet("TestExistenceFunction/{ID}")]
+        public IActionResult TestExistenceFunction(int id)
+        {
+            return Ok(ExistanceFunctions.IsCourseInstanceExists(_config, _data, id));
+        }
+
+        [HttpGet("TestDBUpAndRunning")]
+        public IActionResult TestDBUpAndRunning()
+        {
+            return Ok(ExistanceFunctions.IsDBUpAndRunning(_config, _data));
         }
     }
 }

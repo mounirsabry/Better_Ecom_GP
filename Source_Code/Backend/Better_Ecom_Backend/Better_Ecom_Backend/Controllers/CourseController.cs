@@ -408,7 +408,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return BadRequest(new { Message = "instance doesn't exist." });
             }
-            else if (term[0].course_year != TimeUtilities.GetCurrentYear() || term[0].course_term != TimeUtilities.GetCurrentTerm())
+            else if (term[0].course_year != TimeUtilities.GetCurrentYear() || term[0].course_term != (TimeUtilities.GetCurrentTerm() + ""))
             {
                 return BadRequest(new { Message = "can't register in old course" });
             }
@@ -482,7 +482,7 @@ namespace Better_Ecom_Backend.Controllers
         {
             //ADMIN ONLY FUNCTION.
 
-            if(!SetLateCourseInstanceRegistrationRequestDataValid(jsonInput))
+            if (!SetLateCourseInstanceRegistrationRequestDataValid(jsonInput))
             {
                 return BadRequest(new { Message = MessageFunctions.GetRequiredDataMissingOrInvalidMessage() });
             }
@@ -501,7 +501,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
-            
+
             Course_instance_late_registration_request registration = registrations.FirstOrDefault();
             if (registration is null)
             {
@@ -515,7 +515,7 @@ namespace Better_Ecom_Backend.Controllers
 
 
 
-            if(requestStatus == LateRegistrationRequestStatus.Accepted && registration.Request_status != LateRegistrationRequestStatus.Accepted)
+            if (requestStatus == LateRegistrationRequestStatus.Accepted && registration.Request_status != LateRegistrationRequestStatus.Accepted)
             {
                 string insertCourseRegistration = "INSERT INTO student_course_instance_registration VALUES(NULL, @studentID, @courseInstanceID, @registrationDate, @studentCourseInstanceStatus);";
                 var parameters = new
@@ -528,14 +528,14 @@ namespace Better_Ecom_Backend.Controllers
                 sqlList.Add(insertCourseRegistration);
                 parametersList.Add(parameters);
             }
-            else if(registration.Request_status == LateRegistrationRequestStatus.Accepted)
+            else if (registration.Request_status == LateRegistrationRequestStatus.Accepted)
             {
                 return BadRequest(new { Message = "can not change accepted student." });
             }
 
             List<int> status = _data.SaveDataTransaction(sqlList, parametersList, _config.GetConnectionString("Default"));
 
-            if(status.Contains(-1))
+            if (status.Contains(-1))
             {
                 return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
@@ -593,7 +593,7 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult SetStudentCourseInstanceStatus([FromBody] JsonElement jsonInput)
         {
             //ADMIN ONLY FUNCTION.
-            if(!SetStudentCourseInstanceStatusDataValid(jsonInput))
+            if (!SetStudentCourseInstanceStatusDataValid(jsonInput))
             {
                 return BadRequest(new { Message = MessageFunctions.GetRequiredDataMissingOrInvalidMessage() });
             }
@@ -605,14 +605,14 @@ namespace Better_Ecom_Backend.Controllers
             List<Student_course_instance_registration> registrations = _data.LoadData<Student_course_instance_registration, dynamic>(getCourseInstanceRegistrationSql, new { courseInstanceRegistrationID },
                 _config.GetConnectionString("Default"));
 
-            if(registrations is null)
+            if (registrations is null)
             {
                 return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
 
             Student_course_instance_registration registration = registrations.FirstOrDefault();
 
-            if(registration is null)
+            if (registration is null)
             {
                 return BadRequest(new { Message = "registration does not exist." });
             }
@@ -621,7 +621,7 @@ namespace Better_Ecom_Backend.Controllers
 
             int status = _data.SaveData(setCourseStatusSql, new { courseStatus = nameof(courseStatus), courseInstanceRegistrationID }, _config.GetConnectionString("Default"));
 
-            if(status>=0)
+            if (status >= 0)
             {
                 registration.Student_course_instance_status = courseStatus;
                 return Ok(registration);
@@ -686,7 +686,7 @@ namespace Better_Ecom_Backend.Controllers
                 }
             }
 
-            if(ExistanceFunctions.IsCourseExists(_config,_data,courseCode) == false)
+            if (ExistanceFunctions.IsCourseExists(_config, _data, courseCode) == false)
             {
                 return BadRequest(new { Message = MessageFunctions.GetCourseNotFoundMessage() });
             }
@@ -697,7 +697,7 @@ namespace Better_Ecom_Backend.Controllers
 
             List<string> instanceIds = _data.LoadData<string, dynamic>(getInstructorRegisteredCourseCodesSql, new { instructorID, courseCode }, _config.GetConnectionString("Default"));
 
-            if(instanceIds is null)
+            if (instanceIds is null)
             {
                 return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
@@ -735,14 +735,14 @@ namespace Better_Ecom_Backend.Controllers
 
             int status = _data.SaveData(insertInstructorRegistrationSql, new { instructorID, courseInstanceID, registrationDate }, _config.GetConnectionString("Default"));
 
-            if(status > 0)
+            if (status > 0)
             {
                 return Ok();
             }
             else
             {
 
-                return BadRequest(new {Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
         }
 
@@ -759,18 +759,18 @@ namespace Better_Ecom_Backend.Controllers
             int instructorID = jsonInput.GetProperty("InstructorID").GetInt32();
             int courseInstanceID = jsonInput.GetProperty("CourseInstanceID").GetInt32();
 
-            if(ExistanceFunctions.IsCourseInstanceExists(_config,_data,courseInstanceID) == false)
+            if (ExistanceFunctions.IsCourseInstanceExists(_config, _data, courseInstanceID) == false)
             {
                 return BadRequest(new { Message = MessageFunctions.GetCourseInstanceNotFoundMessage() });
             }
 
             List<bool> availablilities = GetCourseInstanceClosedForRegistration(courseInstanceID);
-            if(availablilities is null)
+            if (availablilities is null)
             {
                 return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
 
-            if(availablilities.First())
+            if (availablilities.First())
             {
                 return BadRequest(new { Message = MessageFunctions.GetCourseInstanceIsClosedMessage() });
             }
@@ -779,7 +779,7 @@ namespace Better_Ecom_Backend.Controllers
 
             int status = _data.SaveData(deleteIntructorRegistrationSql, new { instructorID, courseInstanceID }, _config.GetConnectionString("Default"));
 
-            if(status >= 0 )
+            if (status >= 0)
             {
                 return Ok();
             }
@@ -797,7 +797,7 @@ namespace Better_Ecom_Backend.Controllers
         {
             //Return all the instructors (ids, names) registered to a specific course instance.
 
-            if(ExistanceFunctions.IsCourseInstanceExists(_config, _data, courseInstanceID) == false)
+            if (ExistanceFunctions.IsCourseInstanceExists(_config, _data, courseInstanceID) == false)
             {
                 return BadRequest(new { Message = MessageFunctions.GetCourseInstanceNotFoundMessage() });
             }
@@ -806,7 +806,7 @@ namespace Better_Ecom_Backend.Controllers
 
             var instructorsIdsAndNames = _data.LoadData<dynamic, dynamic>(getInstuctorsIdsAndNamesSql, new { courseInstanceID }, _config.GetConnectionString("Default"));
 
-            if(instructorsIdsAndNames is null)
+            if (instructorsIdsAndNames is null)
             {
                 return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
@@ -923,7 +923,6 @@ namespace Better_Ecom_Backend.Controllers
                 && jsonInput.TryGetProperty("CourseInstanceID", out temp) && temp.TryGetInt32(out _)
                 && jsonInput.TryGetProperty("CourseStatus", out temp) && temp.TryGetInt32(out _);
         }
-
 
         private static bool SetLateCourseInstanceRegistrationRequestDataValid(JsonElement jsonInput)
         {
