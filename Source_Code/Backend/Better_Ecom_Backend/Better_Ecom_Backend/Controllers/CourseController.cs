@@ -730,7 +730,12 @@ namespace Better_Ecom_Backend.Controllers
 
         }
 
-
+        /// <summary>
+        /// Gets Course Intstances That a given instructor is registered in.
+        /// </summary>
+        /// <param name="Authorization">Authorization token.</param>
+        /// <param name="instructorID">Id of instructor.</param>
+        /// <returns>List with course instance ids.</returns>
         [Authorize(Roles = "admin, instructor")]
         [HttpGet("GetInstructorRegisteredCourseInstances/{InstructorID:int}")]
         public IActionResult GetInstructorRegisteredCourseInstances([FromHeader] String Authorization, int instructorID)
@@ -764,7 +769,13 @@ namespace Better_Ecom_Backend.Controllers
                 return Ok(courseInstancesIds);
             }
         }
-
+        /// <summary>
+        /// Gets the instances of a given course that a given instructor is registered in.
+        /// </summary>
+        /// <param name="Authorization">Authorization token.</param>
+        /// <param name="instructorID">Id of instructor.</param>
+        /// <param name="courseCode">Course code.</param>
+        /// <returns></returns>
         [Authorize(Roles = "admin, instructor")]
         [HttpGet("GetCourseInstructorRegisteredCourseInstances/{InstructorID:int}/{CourseCode}")]
         public IActionResult GetCourseInstructorRegisteredCourseInstances([FromHeader] string Authorization, int instructorID, string courseCode)
@@ -800,6 +811,11 @@ namespace Better_Ecom_Backend.Controllers
             return Ok(instanceIds);
         }
 
+        /// <summary>
+        /// Register instructor to given course.
+        /// </summary>
+        /// <param name="jsonInput">json object containing instructor id and course instance id.</param>
+        /// <returns>Ok</returns>
         [Authorize(Roles = "admin")]
         [HttpPost("RegisterInstructorToCourseInstance")]
         public IActionResult RegisterInstructorToCourseInstance([FromBody] JsonElement jsonInput)
@@ -840,6 +856,11 @@ namespace Better_Ecom_Backend.Controllers
             }
         }
 
+        /// <summary>
+        /// Drops a registered instructor from a given course.
+        /// </summary>
+        /// <param name="jsonInput">json object containing(intructor is , course instance id).</param>
+        /// <returns>Ok</returns>
         [Authorize(Roles = "admin")]
         [HttpDelete("DropInstructorFromCourseInstance")]
         public IActionResult DropInstructorFromCourseInstance([FromBody] JsonElement jsonInput)
@@ -885,6 +906,11 @@ namespace Better_Ecom_Backend.Controllers
 
         }
 
+        /// <summary>
+        /// Gets the registered instructors in a given course instance.
+        /// </summary>
+        /// <param name="courseInstanceID">course instance id</param>
+        /// <returns>List of instructors ids and names.</returns>
         [Authorize]
         [HttpGet("GetCourseInstanceRegisteredInstructors/{CourseInstanceID:int}")]
         public IActionResult GetCourseInstanceRegisteredInstructors(int courseInstanceID)
