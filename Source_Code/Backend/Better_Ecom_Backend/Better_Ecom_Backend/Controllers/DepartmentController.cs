@@ -555,24 +555,12 @@ namespace Better_Ecom_Backend.Controllers
         /// <param name="jsonData">json object containing the course id admin with to archive.</param>
         /// <returns></returns>
         [Authorize(Roles = "admin")]
-        [HttpDelete("ArchiveCourse")]
-        public IActionResult ArchiveCourse([FromBody] dynamic jsonData)
+        [HttpDelete("ArchiveCourse/{CourseCode}")]
+        public IActionResult ArchiveCourse(string courseCode)
         {
             //ADMIN ONLY FUNCTION.
-            if (!jsonData.TryGetProperty("UserID", out JsonElement temp) || !CheckAdminExists(temp.GetInt32()))
-            {
-                return BadRequest(new { Message = "user id is invalid." });
-            }
 
-            string courseCode;
-            if (jsonData.TryGetProperty("Course_code", out temp))
-            {
-                courseCode = temp.GetString();
-            }
-            else
-            {
-                return BadRequest(new { Message = "course code was not provided." });
-            }
+
 
             List<Course> course = CheckCourseArchiveStatus(courseCode);
 
@@ -580,7 +568,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 string archiveCourseSql = "UPDATE course SET is_archived = TRUE WHERE course_code = @courseCode;";
                 int status = _data.SaveData(archiveCourseSql, new { courseCode }, _config.GetConnectionString("Default"));
-                if (status > 0)
+                if (status >= 0)
                 {
                     return Ok(new { Message = "course archived." });
                 }
@@ -728,21 +716,21 @@ namespace Better_Ecom_Backend.Controllers
         {
             //STUDENT, INSTRUCTOR, ADMIN FUNCTION.
 
-            if(ExistanceFunctions.IsCourseInstanceExists(_config,_data,courseInstanceID) == false)
+            if (ExistanceFunctions.IsCourseInstanceExists(_config, _data, courseInstanceID) == false)
             {
                 return BadRequest(new { Message = MessageFunctions.GetCourseInstanceNotFoundMessage() });
             }
 
             List<bool> availabilities = GetCourseInstanceClosedForRegistration(courseInstanceID);
 
-            if(availabilities is null)
+            if (availabilities is null)
             {
                 return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
 
             return Ok(!availabilities.First());
 
-           
+
         }
 
         [Authorize(Roles = "admin")]
@@ -754,7 +742,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return BadRequest(new { Message = MessageFunctions.GetRequiredDataMissingOrInvalidMessage() });
             }
-            if (ExistanceFunctions.IsCourseInstanceExists(_config,_data,courseInstanceID) == false)
+            if (ExistanceFunctions.IsCourseInstanceExists(_config, _data, courseInstanceID) == false)
             {
                 return BadRequest(new { Message = MessageFunctions.GetCourseInstanceNotFoundMessage() });
             }
@@ -763,7 +751,7 @@ namespace Better_Ecom_Backend.Controllers
 
             int status = _data.SaveData(markCourseInstanceClosedSql, new { courseInstanceID }, _config.GetConnectionString("Default"));
 
-            if(status >=0)
+            if (status >= 0)
             {
                 return Ok();
             }
