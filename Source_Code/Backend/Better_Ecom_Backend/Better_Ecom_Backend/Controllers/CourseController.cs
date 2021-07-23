@@ -285,7 +285,7 @@ namespace Better_Ecom_Backend.Controllers
 
             int status = _data.SaveData(dropStudentFromCourseInstanceSql, new { courseInstanceID, studentID }, _config.GetConnectionString("Default"));
 
-            if (status > 0)
+            if (status >= 0)
             {
                 return Ok();
             }
