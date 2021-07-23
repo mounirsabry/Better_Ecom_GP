@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Dapper.Contrib;
 using System.Text.Json;
 namespace Better_Ecom_Backend.Models
 {
