@@ -568,7 +568,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 string archiveCourseSql = "UPDATE course SET is_archived = TRUE WHERE course_code = @courseCode;";
                 int status = _data.SaveData(archiveCourseSql, new { courseCode }, _config.GetConnectionString("Default"));
-                if (status > 0)
+                if (status >= 0)
                 {
                     return Ok(new { Message = "course archived." });
                 }
