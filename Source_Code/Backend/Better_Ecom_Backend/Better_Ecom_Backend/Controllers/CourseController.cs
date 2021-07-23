@@ -131,6 +131,26 @@ namespace Better_Ecom_Backend.Controllers
             return Ok(instances);
         }
 
+        [Authorize(Roles = "admin, student")]
+        [HttpGet("GetIsNormalCourseRegistrationOpen")]
+        public IActionResult GetIsNormalCourseRegistrationOpen()
+        {
+            return Ok(AppSettingsFunctions.GetIsNormalCourseRegistrationOpen(_config));
+        }
+
+        [Authorize(Roles = "admin, student")]
+        [HttpGet("GetIsLateCourseRegistrationOpen")]
+        public IActionResult GetIsLateCourseRegistrationOpen()
+        {
+            return Ok(AppSettingsFunctions.GetIsLateCourseRegistrationOpen(_config));
+        }
+
+        [Authorize(Roles = "admin, student")]
+        [HttpGet("GetIsDropCourseRegistrationOpen")]
+        public IActionResult GetIsDropCourseRegistrationOpen()
+        {
+            return Ok(AppSettingsFunctions.GetIsDropCourseRegistrationOpen(_config));
+        }
 
         /// <summary>
         /// 
@@ -145,7 +165,7 @@ namespace Better_Ecom_Backend.Controllers
             //STUDENT, ADMIN FUNCTION.
             TokenInfo info = HelperFunctions.GetIdAndTypeFromToken(Authorization);
 
-            if (AppSettingsFunctions.GetIsCourseRegistrationOpen(_config) == false)
+            if (AppSettingsFunctions.GetIsNormalCourseRegistrationOpen(_config) == false)
             {
                 if (info.Type == "student")
                 {
@@ -790,8 +810,6 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
-
-
 
             return Ok(instructorsIdsAndNames);
         }
