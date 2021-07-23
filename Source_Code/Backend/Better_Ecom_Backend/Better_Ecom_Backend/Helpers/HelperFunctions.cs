@@ -111,5 +111,23 @@ namespace Better_Ecom_Backend.Helpers
             }
             return true;
         }
+
+        public static List<bool> GetCourseInstanceReadOnlyStatusList(IConfiguration _config, IDataAccess _data, int courseInstanceID)
+        {
+            string sql = "SELECT is_read_only FROM course_instance WHERE instance_id = @InstanceID;";
+            List<bool> statusList = _data.LoadData<bool, dynamic>(sql, new { InstanceID = courseInstanceID }, _config.GetConnectionString("Default"));
+            return statusList;
+        }
+
+        public static bool GetCourseInstanceReadOnlyStatus(IConfiguration _config, IDataAccess _data, int courseInstanceID)
+        {
+            string sql = "SELECT is_read_only FROM course_instance WHERE instance_id = @InstanceID;";
+            List<bool> statusList = _data.LoadData<bool, dynamic>(sql, new { InstanceID = courseInstanceID }, _config.GetConnectionString("Default"));
+            if (statusList is null || statusList.Count == 0)
+            {
+                return false;
+            }
+            return statusList[0];
+        }
     }
 }

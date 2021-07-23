@@ -716,21 +716,21 @@ namespace Better_Ecom_Backend.Controllers
         {
             //STUDENT, INSTRUCTOR, ADMIN FUNCTION.
 
-            if(ExistanceFunctions.IsCourseInstanceExists(_config,_data,courseInstanceID) == false)
+            if (ExistanceFunctions.IsCourseInstanceExists(_config, _data, courseInstanceID) == false)
             {
                 return BadRequest(new { Message = MessageFunctions.GetCourseInstanceNotFoundMessage() });
             }
 
             List<bool> availabilities = GetCourseInstanceClosedForRegistration(courseInstanceID);
 
-            if(availabilities is null)
+            if (availabilities is null)
             {
                 return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
 
             return Ok(!availabilities.First());
 
-           
+
         }
 
         [Authorize(Roles = "admin")]
@@ -742,7 +742,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return BadRequest(new { Message = MessageFunctions.GetRequiredDataMissingOrInvalidMessage() });
             }
-            if (ExistanceFunctions.IsCourseInstanceExists(_config,_data,courseInstanceID) == false)
+            if (ExistanceFunctions.IsCourseInstanceExists(_config, _data, courseInstanceID) == false)
             {
                 return BadRequest(new { Message = MessageFunctions.GetCourseInstanceNotFoundMessage() });
             }
@@ -751,7 +751,7 @@ namespace Better_Ecom_Backend.Controllers
 
             int status = _data.SaveData(markCourseInstanceClosedSql, new { courseInstanceID }, _config.GetConnectionString("Default"));
 
-            if(status >=0)
+            if (status >= 0)
             {
                 return Ok();
             }

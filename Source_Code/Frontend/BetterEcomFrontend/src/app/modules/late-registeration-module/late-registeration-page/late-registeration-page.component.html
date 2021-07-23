@@ -12,10 +12,32 @@
   <button type="submit" [disabled]="submitLateCourseRegisterationForm.invalid">Submit Request</button>
 </form>
 
-<form [formGroup]="deleteLateRegisterationRequestForm" (ngSubmit)="deleteRequest()">
+<!--<form [formGroup]="deleteLateRegisterationRequestForm" (ngSubmit)="deleteRequest()">
   <label>Request ID: </label>
   <input type="number" name="RequestID" formControlName="lateRegistrationRequestID">
   <br>
   <button type="submit" [disabled]="deleteLateRegisterationRequestForm.invalid">Delete Request</button>
-</form>
+</form>-->
+
+<table style="text-align: center;">
+  <tr>
+      <th>Index</th> <!--remove deh ya mina lw na ma sheltha4-->
+      <th>Course Instance ID</th>
+      <th>Request Date</th>
+      <th>Request ID</th>
+      <th>Request Status</th>
+      <th>Student ID</th>
+  </tr>
+
+  <tr *ngFor="let requests of objectValues(late_requests_list);let requestIndex = index">
+
+      <td>{{ requestIndex }}</td>
+      <td *ngFor="let request of requests | keyvalue">{{ request.value }}</td>
+      <td><button (click)="deleteRequest(requestIndex)">Delete</button></td>
+
+  </tr>
+
+</table>
+
+<button type="button" (click)="getAvailableCourses()">Get Available Courses</button>
 

@@ -40,14 +40,6 @@ export class AdminLateRegisterationPageComponent implements OnInit {
   late_requests_list : Array<any> = []
 
   ngOnInit(): void {
-    /*this.lateRegisterationService.getLateCourseInstanceRegistrationRequestAvailableStatus().subscribe(
-      status =>{
-        console.log(status);
-      },
-      error =>{
-        console.log(error.error);
-      }
-    )*/
   }
 
   getAllRequests(){
@@ -126,6 +118,26 @@ export class AdminLateRegisterationPageComponent implements OnInit {
 
   rejectRequest(index : number){
     console.log(this.late_requests_list[index]);
-    this.late_requests_list.splice(index, 1);
+    var setRequest = {
+      'RequestID' : this.late_requests_list[index].request_id,
+      'RequestStatus' : 2
+    }
+
+    this.lateRegisterationService.setLateCourseInstanceRegistrationRequest(setRequest).subscribe(
+      response =>{
+        this.late_requests_list.splice(index, 1);
+        alert("Request rejected");
+      },
+      error =>{
+        alert(error.error);
+      }
+    )
+  }
+
+  checkIfAcceptedOrRejected(index : number){
+    if(this.late_requests_list[index].request_status == 1 || this.late_requests_list[index].request_status == 2){
+      return true;
+    }
+    else {return false;}
   }
 }
