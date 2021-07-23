@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Better_Ecom_Backend.Models;
-using Microsoft.Extensions.Configuration;
+﻿using Better_Ecom_Backend.Models;
 using DataLibrary;
-using Better_Ecom_Backend.Helpers;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System.Linq;
 
 namespace Better_Ecom_Backend.Controllers
 {
@@ -25,7 +21,7 @@ namespace Better_Ecom_Backend.Controllers
 
         public IActionResult Test()
         {
-            string sql = "SELECT * FROM admin_user;";
+            string sql = "SELECT * FROM admin_user WHERE admin_user_id = 11;";
 
             var admins = _data.LoadData<Admin_user, dynamic>(sql, new { }, _config.GetConnectionString("Default"));
             return Ok(admins.ToList());

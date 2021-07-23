@@ -2,10 +2,8 @@
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data;
+using System.Linq;
 
 namespace DataLibrary
 {
@@ -13,7 +11,7 @@ namespace DataLibrary
     {
         public List<T> LoadData<T, U>(string sql, U parameters, string connectionString)
         {
-            
+
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
                 try
@@ -21,10 +19,9 @@ namespace DataLibrary
                     var rows = connection.Query<T>(sql, parameters);
                     return rows.ToList();
                 }
-                catch (Exception e )
+                catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
-
                     return null;
                 }
             }
@@ -39,7 +36,7 @@ namespace DataLibrary
                 {
                     state = connection.Execute(sql, parameters);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                     state = -1;

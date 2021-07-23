@@ -2,14 +2,11 @@
 using Better_Ecom_Backend.Models;
 using DataLibrary;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Better_Ecom_Backend.Controllers
 {
@@ -47,7 +44,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return BadRequest(new { Messsgae = "student data part is not valid." });
             }
-            else if(HelperFunctions.IsDepartmentCodeValid(_config, _data, newStudent.Department_code) == false)
+            else if (HelperFunctions.IsDepartmentCodeValid(_config, _data, newStudent.Department_code) == false)
             {
                 return BadRequest(new { Message = "department code is not valid." });
             }
@@ -72,7 +69,7 @@ namespace Better_Ecom_Backend.Controllers
             var users = _data.LoadData<dynamic, dynamic>(checkUserExistenceSQL, parameters, _config.GetConnectionString("Default"));
 
             if (users is null)
-            { 
+            {
                 return BadRequest(new { Message = "unknown error, maybe database server is down." });
             }
             //One person can not be student, instructor, admin at the same time.
@@ -120,7 +117,7 @@ namespace Better_Ecom_Backend.Controllers
 
             return Created("/UserRegistration/AddNewStudent", newStudent);
         }
-        
+
         /// <summary>
         /// Add new Instructor to database.
         /// </summary>
@@ -199,7 +196,7 @@ namespace Better_Ecom_Backend.Controllers
                 return BadRequest(new { Message = "unknown error." });
             }
 
-            return Created("/UserRegistration/AddNewInstructor",newInstructor);
+            return Created("/UserRegistration/AddNewInstructor", newInstructor);
         }
 
         private static bool CheckSystemUserData(System_user user)
