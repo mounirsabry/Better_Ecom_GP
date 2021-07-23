@@ -19,6 +19,9 @@ import { ViewDepartmentsCoursesComponent } from './modules/department-module/vie
 import { AddCourseToDepartmentComponent } from './modules/department-module/add-course-to-department/add-course-to-department.component';
 import { AdminDepartmentComponent } from './modules/department-module/admin-department/admin-department.component';
 import { CourseInfoComponent } from './modules/department-module/course-info/course-info.component';
+import { AddCourseInstanceComponent } from './modules/course-module/add-course-instance/add-course-instance.component';
+import { AdminCoursePageComponent } from './modules/course-module/admin-course-page/admin-course-page.component';
+import { RegisterStudentInstructorInACourseComponent } from './modules/course-module/register-student-instructor-in-a-course/register-student-instructor-in-a-course.component';
 @NgModule({
 
   declarations: [
@@ -32,6 +35,9 @@ import { CourseInfoComponent } from './modules/department-module/course-info/cou
     AddCourseToDepartmentComponent,
     AdminDepartmentComponent,
     CourseInfoComponent,
+    AddCourseInstanceComponent,
+    AdminCoursePageComponent,
+    RegisterStudentInstructorInACourseComponent
 
 
   ],
@@ -42,7 +48,7 @@ import { CourseInfoComponent } from './modules/department-module/course-info/cou
     HttpClientModule,
     ReactiveFormsModule,
     AccountModuleModule,
-    
+
   ],
   providers: [{
     provide:HTTP_INTERCEPTORS,
