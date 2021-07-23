@@ -492,7 +492,7 @@ namespace Better_Ecom_Backend.Controllers
 
             int status = _data.SaveData(deleteLateCourseInstanceRegistrationRequestSql, new { requestID }, _config.GetConnectionString("Default"));
 
-            if (status > 0)
+            if (status >= 0)
             {
                 return Ok();
             }
