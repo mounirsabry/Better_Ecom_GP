@@ -1,14 +1,21 @@
-<form [formGroup]="setDepartmentForm" (ngSubmit)="setDepartment()">
-    <label>Student ID </label>
-    <input type="number" name="StudentID" id="StudentID" #StudentID formControlName="StudentID">
-    <p *ngIf="studentIdGet.invalid && studentIdGet.touched" style="color: red;">Id is required</p>
-    <button type="button" (click)="getStudentList()" style="color: black;">Get Student List</button>
+<div class="gradient container-fluid p-3">
+    <hr class="row">
 
-    <br>
-
-    <div *ngFor="let dep of view_priority_list">
-        <input type="radio" name="DepartmentCode" id="DepartmentCode" value="{{ dep }}" #DepartmentCode formControlName="DepartmentCode">
-        <label for="{{ dep }}">{{ dep }}</label>
-    </div>
-    <button type="submit" [disabled]="setDepartmentForm.invalid" style="color: black;">Set Department</button>
-</form>
+    <form class="row container-fluid" [formGroup]="setDepartmentForm" (ngSubmit)="setDepartment()">
+        <div class="row">
+            <label class="col-4">Student ID </label>
+            <input class="col-4" type="number" name="StudentID" id="StudentID" #StudentID formControlName="StudentID">
+            <button class="col-4 btn btn-outline-dark text-light" type="button" (click)="getStudentList()">Get Student List</button>
+        </div>
+        <p class="text-danger row fw-bold" *ngIf="studentIdGet.invalid && studentIdGet.touched">Id is required</p>
+    
+    
+        <div class="row container-fluid" *ngFor="let dep of view_priority_list">
+            <div class="col-6 my-2">
+                <input class="mx-1" type="radio" name="DepartmentCode" id="DepartmentCode" value="{{ dep }}" #DepartmentCode formControlName="DepartmentCode">
+                <label for="{{ dep }}">{{ dep }}</label>
+            </div>
+        </div>
+        <button class="row btn btn-outline-dark text-light my-3" type="submit" [disabled]="setDepartmentForm.invalid">Set Department</button>
+    </form>
+</div>
