@@ -85,5 +85,49 @@ namespace Better_Ecom_Backend.Helpers
             }
             return true;
         }
+
+        internal static bool IsInstructorExistInCourseInstance(IConfiguration _config, IDataAccess _data, int userID, int courseInstanceID)
+        {
+            string getInstructorIDFromCourseInstance = "SELECT instructor_id FROM instructor_course_instance_registration" +
+                                                       " WHERE instructor_id = @userID AND course_instance_id = @courseInstanceID";
+
+            List<bool> ids = _data.LoadData<bool, dynamic>(getInstructorIDFromCourseInstance, new { userID, courseInstanceID }, _config.GetConnectionString("Default"));
+
+            if(ids is null)
+            {
+                return false;
+            }
+            else if (ids.Count == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
+  
+        }
+
+        internal static bool IsStudentExistInCourseInstance(IConfiguration _config, IDataAccess _data, int userID, int courseInstanceID)
+        {
+            string getInstructorIDFromCourseInstance = "SELECT student_id FROM student_course_instance_registration" +
+                                           " WHERE student_id = @userID AND course_instance_id = @courseInstanceID";
+
+            List<bool> ids = _data.LoadData<bool, dynamic>(getInstructorIDFromCourseInstance, new { userID, courseInstanceID }, _config.GetConnectionString("Default"));
+
+            if (ids is null)
+            {
+                return false;
+            }
+            else if (ids.Count == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
     }
 }
