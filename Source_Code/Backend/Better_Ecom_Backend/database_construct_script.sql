@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS student (
     department_code CHAR(2) NOT NULL,
     high_school_type VARCHAR(255) NOT NULL,
     entrance_year INT NOT NULL,
-    gpa DOUBLE NULL,
+    gpa DOUBLE NULL DEFAULT NULL,
     academic_year INT NOT NULL,
     CONSTRAINT student_system_user_id FOREIGN KEY (student_id)
         REFERENCES system_user (system_user_id)
@@ -172,6 +172,24 @@ CREATE TABLE IF NOT EXISTS instructor_course_instance_registration (
 		REFERENCES course_instance (instance_id)
 		ON UPDATE CASCADE ON DELETE CASCADE,
 	PRIMARY KEY (registration_id)
+);
+
+CREATE TABLE IF NOT EXISTS general_feed (
+	feed_id INT AUTO_INCREMENT,
+    content TEXT NOT NULL,
+    insertion_date DATETIME NOT NULL,
+    PRIMARY KEY (feed_id)
+);
+
+CREATE TABLE IF NOT EXISTS course_instance_feed (
+	feed_id INT AUTO_INCREMENT,
+    course_instance_id INT NOT NULL,
+    content TEXT NOT NULL,
+    insertion_date DATETIME NOT NULL,
+    CONSTRAINT course_instance_feed_course_instance_id FOREIGN KEY (course_instance_id)
+		REFERENCES course_instance (instance_id)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (feed_id)
 );
 
 INSERT INTO department VALUES ('GE', 'General');
