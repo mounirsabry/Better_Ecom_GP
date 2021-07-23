@@ -1,0 +1,5 @@
+<form [formGroup]="searchForRequestByCourseCodeForm" (ngSubmit)="getRequests()">
+    <input type="text" name="CourseCode" formControlName="Course_code">
+    <br>
+    <button type="submit" [disabled]="searchForRequestByCourseCodeForm.invalid">Get Course Requests</button>
+</form>

@@ -16,6 +16,10 @@ export class LateRegisterationPageComponent implements OnInit {
     CourseInstanceID : new FormControl('', Validators.required)
   })
 
+  deleteLateRegisterationRequestForm = new FormGroup({
+    lateRegistrationRequestID : new FormControl('', Validators.required)
+  })
+
   ngOnInit(): void {
     this.submitLateCourseRegisterationForm.controls.StudentID.setValue(+localStorage.getItem('ID'));
   }
@@ -28,6 +32,18 @@ export class LateRegisterationPageComponent implements OnInit {
       error =>{
         console.log(error.error);
         alert("failed");
+      }
+    )
+  }
+
+  deleteRequest(){
+    this.lateRegisterationService.deleteLateCourseInstanceRegistrationRequest(this.deleteLateRegisterationRequestForm.value).subscribe(
+      response =>{
+        alert("Request Deleted");
+        console.log(response);
+      },
+      error =>{
+        console.log(error);
       }
     )
   }

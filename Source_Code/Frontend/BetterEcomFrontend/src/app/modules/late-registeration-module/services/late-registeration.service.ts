@@ -30,7 +30,7 @@ export class LateRegisterationService {
   }
 
   getCourseLateCourseRegistrationRequests(course_code : string){ //admin
-    return this.httpclient.get<any>("https://localhost:44361/course/GetCourseLateCourseRegistrationRequests" + course_code);
+    return this.httpclient.get<any>("https://localhost:44361/course/GetCourseLateCourseRegistrationRequests/" + course_code);
   }
 
   getStudentLateCourseInstanceRegistrationRequests(student_id : string){ //student, admin
@@ -45,8 +45,8 @@ export class LateRegisterationService {
     return this.httpclient.post<any>("https://localhost:44361/course/SubmitLateCourseInstanceRegistrationRequest", request);
   }
 
-  deleteLateCourseInstanceRegistrationRequest(request : any){ //student
-    return this.httpclient.delete<any>("https://localhost:44361/course/DeleteLateCourseInstanceRegistrationRequest", request);
+  deleteLateCourseInstanceRegistrationRequest(request_id : number){ //student
+    return this.httpclient.delete<any>("https://localhost:44361/course/DeleteLateCourseInstanceRegistrationRequest/" + request_id);
   }
 
   setLateCourseInstanceRegistrationRequest(request : any){ //admin

@@ -12,3 +12,10 @@
   <button type="submit" [disabled]="submitLateCourseRegisterationForm.invalid">Submit Request</button>
 </form>
 
+<form [formGroup]="deleteLateRegisterationRequestForm" (ngSubmit)="deleteRequest()">
+  <label>Request ID: </label>
+  <input type="number" name="RequestID" formControlName="lateRegistrationRequestID">
+  <br>
+  <button type="submit" [disabled]="deleteLateRegisterationRequestForm.invalid">Delete Request</button>
+</form>
+
