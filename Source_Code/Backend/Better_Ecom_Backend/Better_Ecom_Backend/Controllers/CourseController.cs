@@ -26,16 +26,26 @@ namespace Better_Ecom_Backend.Controllers
 
         [Authorize(Roles = "student, admin")]
         [HttpGet("GetStudentAvailableCourses/{StudentID:int}")]
-        public IActionResult GetStudentAvailableCourses([FromHeader] string Authorization, int StudentID)
+        public IActionResult GetStudentAvailableCourses([FromHeader] string Authorization, int studentID)
         {
             //STUDENT, ADMIN FUNCTION.
             TokenInfo info = HelperFunctions.GetIdAndTypeFromToken(Authorization);
-            if (info.Type == "student" && info.UserID != StudentID)
+            if (info.Type == "student" && info.UserID != studentID)
             {
                 return Forbid("students can only get their own data.");
             }
 
-            return Ok(new { Message = MessageFunctions.GetNotImplementedString() });
+            if (ExistanceFunctions.IsDBUpAndRunning(_config, _data) == false)
+            {
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+            List<Course> studentAvailableCourses = GetStudentAvailableCoursesList(studentID);
+            if (studentAvailableCourses is null)
+            {
+                return BadRequest(new { Message = "server problem or the student does not have a department." });
+            }
+
+            return Ok(studentAvailableCourses);
         }
 
         [Authorize]
@@ -785,7 +795,6 @@ namespace Better_Ecom_Backend.Controllers
             }
             else
             {
-
                 return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
 
@@ -814,8 +823,53 @@ namespace Better_Ecom_Backend.Controllers
             return Ok(instructorsIdsAndNames);
         }
 
-        private static List<Course> GetStudentAvailableCoursesList(int studentID)
+        private List<Course> GetStudentAvailableCoursesList(int studentID)
         {
+            string getStudentDepartmentSQL = "SELECT department_code FROM student WHERE student_id = @StudentID;";
+            List<string> departmentCodes = _data.LoadData<string, dynamic>(getStudentDepartmentSQL, new { StudentID = studentID }, _config.GetConnectionString("Default"));
+            if (departmentCodes is null || departmentCodes.Count == 0)
+            {
+                return null;
+            }
+            string studentDepartmentCode = departmentCodes[0];
+
+            string getStudentDepartmentAvailableCourseCodesSQL;
+            dynamic getStudentDepartmentAvailableCourseCodesParameters;
+            if (studentDepartmentCode == "GE")
+            {
+                getStudentDepartmentAvailableCourseCodesSQL = "SELECT course_code FROM course_department_applicability WHERE department_code = 'GE';";
+                getStudentDepartmentAvailableCourseCodesParameters = new { };
+            }
+            else
+            {
+                getStudentDepartmentAvailableCourseCodesSQL = "SELECT course_code FROM course_department_applicability WHERE department_code = 'GE' OR department_code = @DepartmentCode;";
+                getStudentDepartmentAvailableCourseCodesParameters = new { DepartmentCode = studentDepartmentCode };
+            }
+
+            List<string> studentDepartmentAvailableCourseCodes;
+            studentDepartmentAvailableCourseCodes = _data.LoadData<string, dynamic>(getStudentDepartmentAvailableCourseCodesSQL,
+                getStudentDepartmentAvailableCourseCodesParameters, _config.GetConnectionString("Default"));
+            if (studentDepartmentAvailableCourseCodes is null)
+            {
+                return null;
+            }
+
+            List<Course> studentAvailableCourses = new();
+            foreach (string courseCode in studentDepartmentAvailableCourseCodes)
+            {
+                string getAllCourseCourseInstancesSQL = "SELECT instance_id FROM course_instance WHERE course_code = @CourseCode;";
+                string getPreviousStudentAttempts = "SELECT * FROM student_course_instance_registration WHERE student_id = @StudentID" + "\n"
+                                            + $"AND course_instance_id IN ({ getAllCourseCourseInstancesSQL });";
+
+                string getCoursePrerequisitesSQL = "SELECT prerequisite_course_code FROM course_prerequisite WHERE course_code = @CourseCode;";
+                List<string> coursePrerequisites;
+                coursePrerequisites = _data.LoadData<string, dynamic>(getCoursePrerequisitesSQL, new { CourseCode = courseCode }, _config.GetConnectionString("Default"));
+
+                foreach (string prerequisiteCourseCode in coursePrerequisites)
+                {
+
+                }
+            }
             return null;
         }
 
