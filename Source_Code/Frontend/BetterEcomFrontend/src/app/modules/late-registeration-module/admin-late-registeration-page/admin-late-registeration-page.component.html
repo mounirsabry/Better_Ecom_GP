@@ -3,6 +3,8 @@
     <button type="submit">Get All Requests</button>
 </form>
 
+<br>
+
 <form [formGroup]="searchForRequestByCourseCodeForm" (ngSubmit)="getCourseRequests()">
     <label>Search by Course Code: </label>
     <input type="text" name="CourseCode" formControlName="Course_code">
@@ -10,9 +12,33 @@
     <button type="submit" [disabled]="searchForRequestByCourseCodeForm.invalid">Get Course Requests</button>
 </form>
 
+<br>
 
-<table>
-    <div *ngFor="let request of late_requests_list; let requestIndex = index">
-        
-    </div>
+<form [formGroup]="searchForRequestByStudentIDForm" (ngSubmit)="getStudentRequests()">
+    <label>Search by Student ID: </label>
+    <input type="text" name="StudentID" formControlName="Student_ID">
+    <br>
+    <button type="submit" [disabled]="searchForRequestByStudentIDForm.invalid">Get Course Requests</button>
+</form>
+
+
+<table style="text-align: center;">
+    <tr>
+        <th>Index</th> <!--remove deh ya mina lw na ma sheltha4-->
+        <th>Course Instance ID</th>
+        <th>Request Date</th>
+        <th>Request ID</th>
+        <th>Request Status</th>
+        <th>Student ID</th>
+    </tr>
+
+    <tr *ngFor="let requests of objectValues(late_requests_list);let requestIndex = index">
+
+        <td>{{ requestIndex }}</td>
+        <td *ngFor="let request of requests | keyvalue">{{ request.value }}</td>
+        <td><button (click)="acceptRequest(requestIndex)">Accept</button></td>
+        <td><button (click)="rejectRequest(requestIndex)">Reject</button></td>
+
+    </tr>
+
 </table>

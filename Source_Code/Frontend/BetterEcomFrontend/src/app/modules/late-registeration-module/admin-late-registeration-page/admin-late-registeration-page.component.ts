@@ -40,13 +40,23 @@ export class AdminLateRegisterationPageComponent implements OnInit {
   late_requests_list : Array<any> = []
 
   ngOnInit(): void {
+    /*this.lateRegisterationService.getLateCourseInstanceRegistrationRequestAvailableStatus().subscribe(
+      status =>{
+        console.log(status);
+      },
+      error =>{
+        console.log(error.error);
+      }
+    )*/
   }
 
   getAllRequests(){
+    this.late_requests_list = [];
     this.lateRegisterationService.getAllLateCourseRegistrationRequests().subscribe(
       requests =>{
-        console.log(requests);
-        this.late_requests_list = requests;
+        requests.forEach((element,index) => {
+          this.late_requests_list.push(element)
+        });
         console.log(this.late_requests_list);
       },
       error =>{
@@ -56,10 +66,14 @@ export class AdminLateRegisterationPageComponent implements OnInit {
   }
 
   getCourseRequests(){
+    this.late_requests_list = [];
     console.log(this.course_code_get.value);
     this.lateRegisterationService.getCourseLateCourseRegistrationRequests(this.course_code_get.value).subscribe(
       requests =>{
-        console.log(requests);
+        requests.forEach((element,index) => {
+          this.late_requests_list.push(element)
+        });
+        console.log(this.late_requests_list);
       },
       error =>{
         console.log(error.error);
@@ -68,10 +82,15 @@ export class AdminLateRegisterationPageComponent implements OnInit {
   }
 
   getStudentRequests(){
+    this.late_requests_list = [];
     console.log(this.student_id_get.value);
-    this.lateRegisterationService.getStudentLateCourseInstanceRegistrationRequests(this.student_id_get.value).subscribe(
+    var student_id : number = +this.student_id_get.value;
+    this.lateRegisterationService.getStudentLateCourseInstanceRegistrationRequests(student_id).subscribe(
       requests =>{
-        console.log(requests);
+        requests.forEach((element,index) => {
+          this.late_requests_list.push(element)
+        });
+        console.log(this.late_requests_list);
       },
       error =>{
         console.log(error.error);
@@ -79,4 +98,34 @@ export class AdminLateRegisterationPageComponent implements OnInit {
     )
   }
 
+  objectValues(obj){
+    return Object.values(obj);
+  }
+
+  objectKeys(obj){
+    return Object.keys(obj);
+  }
+
+  acceptRequest(index : number){
+    console.log(this.late_requests_list[index]);
+    var setRequest = {
+      'RequestID' : this.late_requests_list[index].request_id,
+      'RequestStatus' : 1
+    }
+
+    this.lateRegisterationService.setLateCourseInstanceRegistrationRequest(setRequest).subscribe(
+      response =>{
+        this.late_requests_list.splice(index, 1);
+        alert("Request accepted");
+      },
+      error =>{
+        alert(error.error);
+      }
+    )
+  }
+
+  rejectRequest(index : number){
+    console.log(this.late_requests_list[index]);
+    this.late_requests_list.splice(index, 1);
+  }
 }
