@@ -555,7 +555,7 @@ namespace Better_Ecom_Backend.Controllers
         /// <param name="jsonData">json object containing the course id admin with to archive.</param>
         /// <returns></returns>
         [Authorize(Roles = "admin")]
-        [HttpDelete("ArchiveCourse/{CourseCode:string}")]
+        [HttpDelete("ArchiveCourse/{CourseCode}")]
         public IActionResult ArchiveCourse(string courseCode)
         {
             //ADMIN ONLY FUNCTION.
