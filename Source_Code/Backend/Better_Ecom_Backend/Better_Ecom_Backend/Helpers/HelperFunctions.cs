@@ -10,29 +10,6 @@ namespace Better_Ecom_Backend.Helpers
 {
     public class HelperFunctions
     {
-        public static string GetNotImplementedString()
-        {
-            return "not implemented yet.";
-        }
-
-        public static string GetMaybeDatabaseIsDownMessage()
-        {
-            return "unknown error, maybe database is down.";
-        }
-        public static string GetRequiredDataMissingOrInvalidMessage()
-        {
-            return "required data missing or invalid.";
-        }
-
-        public static TokenInfo GetIdAndTypeFromToken(string tokenString)
-        {
-            JwtSecurityTokenHandler handler = new();
-            tokenString = tokenString[7..];
-            JwtSecurityToken token = handler.ReadJwtToken(tokenString);
-
-            return new TokenInfo(int.Parse(token.Claims.ToList()[1].Value), token.Claims.ToList()[0].Value);
-        }
-
         public static int GetFirstDigit(int number)
         {
             return (int)number.ToString()[0] - 48;
@@ -80,6 +57,15 @@ namespace Better_Ecom_Backend.Helpers
             {
                 return true;
             }
+        }
+
+        public static TokenInfo GetIdAndTypeFromToken(string tokenString)
+        {
+            JwtSecurityTokenHandler handler = new();
+            tokenString = tokenString[7..];
+            JwtSecurityToken token = handler.ReadJwtToken(tokenString);
+
+            return new TokenInfo(int.Parse(token.Claims.ToList()[1].Value), token.Claims.ToList()[0].Value);
         }
 
         public static bool IsDepartmentCodeValid(IConfiguration _config, IDataAccess _data, string departmentCode)
