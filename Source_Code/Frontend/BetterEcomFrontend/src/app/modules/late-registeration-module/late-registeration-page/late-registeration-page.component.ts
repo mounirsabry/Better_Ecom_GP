@@ -123,13 +123,17 @@ export class LateRegisterationPageComponent implements OnInit {
         data =>{
           //console.log(data[0].course_code);
           this.late_requests_list[index].course_instance_id = data[0].course_code;
+          this.mapRequestStatus(index);
         }
       )
     })
     console.log(this.late_requests_list);
   }
 
-  getRequestStatus(){
-    
+  mapRequestStatus(index : number){
+    if(this.late_requests_list[index].request_status == 0) {this.late_requests_list[index].request_status = 'Pending_Accept'}
+    else if (this.late_requests_list[index].request_status == 1) {this.late_requests_list[index].request_status = 'Accepted'}
+    else if (this.late_requests_list[index].request_status == 2) {this.late_requests_list[index].request_status = 'Rejected'}
+
   }
 }
