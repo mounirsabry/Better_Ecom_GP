@@ -1,0 +1,25 @@
+
+
+<form *ngIf="logedInType == 'instructor' || logedInType == 'admin'" [formGroup]="attendanceForm" (ngSubmit)="addAttendaceItem()">
+
+  <label>Attendance Type</label>
+  <select formControlName="AttendanceType">
+    <option>Lab</option>
+    <option>Section</option>
+  </select>
+
+  <p class="row text-danger fw-bold" *ngIf="getAttendanceType.invalid && getAttendanceType.touched "> Attendance Type is Required</p>
+
+  <label>Item Name</label>
+  <input type="text" formControlName="ItemName">
+  <p class="row text-danger fw-bold" *ngIf="getItemName.invalid && getItemName.touched "> Item Name is Required</p>
+
+
+
+  <label>Attendance Date</label>
+  <input type="date" formControlName="AttendanceDate" >
+  <p class="row text-danger fw-bold" *ngIf="getAttendanceDate.invalid && getAttendanceDate.touched "> Attendance Date is Required</p>
+
+
+  <button [disabled]="attendanceForm.invalid" >Add Attendance Item</button>
+</form>

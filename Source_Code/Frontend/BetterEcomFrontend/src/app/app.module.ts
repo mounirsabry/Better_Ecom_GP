@@ -29,6 +29,7 @@ import { GeneralFeedComponent } from './modules/feed-module/general-feed/general
 import { CourseInstancePageComponent } from './modules/course-module/course-instance-page/course-instance-page.component';
 import { InstructorCoursePageComponent } from './modules/course-module/instructor-course-page/instructor-course-page.component';
 import { CourseFeedComponent } from './modules/feed-module/course-feed/course-feed.component';
+import { AttendancePageComponent } from './modules/attendance-module/attendance-page/attendance-page.component';
 @NgModule({
 
   declarations: [
@@ -51,7 +52,8 @@ import { CourseFeedComponent } from './modules/feed-module/course-feed/course-fe
     GeneralFeedComponent,
     CourseInstancePageComponent,
     InstructorCoursePageComponent,
-    CourseFeedComponent
+    CourseFeedComponent,
+    AttendancePageComponent
 
 
   ],
