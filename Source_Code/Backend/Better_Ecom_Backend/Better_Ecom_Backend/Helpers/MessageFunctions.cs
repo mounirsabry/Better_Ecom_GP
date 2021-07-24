@@ -52,9 +52,19 @@ namespace Better_Ecom_Backend.Helpers
             return "no course instance was found with the provided id.";
         }
 
-        internal static string GetCourseInstanceIsClosedMessage()
+        public static string GetCourseIsArchivedMessage()
         {
-            return "course is closed.";
+            return "the course is archived.";
+        }
+
+        public static string GetCourseInstanceIsClosedMessage()
+        {
+            return "the course is closed.";
+        }
+
+        public static string GetCourseInstanceIsReadOnlyMessage()
+        {
+            return "the course is read only.";
         }
     }
 }

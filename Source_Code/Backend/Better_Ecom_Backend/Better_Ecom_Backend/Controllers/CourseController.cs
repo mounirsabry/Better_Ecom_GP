@@ -975,7 +975,7 @@ namespace Better_Ecom_Backend.Controllers
             }
             else
             {
-                getStudentDepartmentAvailableCourseCodesSQL = "SELECT course_code FROM course_department_applicability WHERE department_code = 'GE' OR department_code = @DepartmentCode;";
+                getStudentDepartmentAvailableCourseCodesSQL = "SELECT DISTINCT(course_code) FROM course_department_applicability WHERE department_code = 'GE' OR department_code = @DepartmentCode;";
                 getStudentDepartmentAvailableCourseCodesParameters = new { DepartmentCode = studentDepartmentCode };
             }
 
@@ -990,20 +990,100 @@ namespace Better_Ecom_Backend.Controllers
             List<Course> studentAvailableCourses = new();
             foreach (string courseCode in studentDepartmentAvailableCourseCodes)
             {
-                string getAllCourseCourseInstancesSQL = "SELECT instance_id FROM course_instance WHERE course_code = @CourseCode;";
+                //Checks if the user has previously passed the course or he is currently undertaking the course.
+                string getAllCourseCourseInstancesSQL = "SELECT instance_id FROM course_instance WHERE course_code = @CourseCode";
                 string getPreviousStudentAttempts = "SELECT * FROM student_course_instance_registration WHERE student_id = @StudentID" + "\n"
                                             + $"AND course_instance_id IN ({ getAllCourseCourseInstancesSQL });";
 
+                List<Student_course_instance_registration> studentCourseAttempts;
+                studentCourseAttempts = _data.LoadData<Student_course_instance_registration, dynamic>(getPreviousStudentAttempts,
+                    new { CourseCode = courseCode, StudentID = studentID }, _config.GetConnectionString("Default"));
+                if (studentCourseAttempts is null)
+                {
+                    return null;
+                }
+
+                bool IsStudentPassedOrHaveActiveAttempt = false;
+                foreach (var attempt in studentCourseAttempts)
+                {
+                    if (attempt.Student_course_instance_status == StudentCourseInstanceRegistrationStatus.Passed
+                    || attempt.Student_course_instance_status == StudentCourseInstanceRegistrationStatus.Undertaking)
+                    {
+                        IsStudentPassedOrHaveActiveAttempt = true;
+                        break;
+                    }
+                }
+                if (IsStudentPassedOrHaveActiveAttempt)
+                {
+                    continue;
+                }
+
                 string getCoursePrerequisitesSQL = "SELECT prerequisite_course_code FROM course_prerequisite WHERE course_code = @CourseCode;";
+
                 List<string> coursePrerequisites;
                 coursePrerequisites = _data.LoadData<string, dynamic>(getCoursePrerequisitesSQL, new { CourseCode = courseCode }, _config.GetConnectionString("Default"));
 
+                if (coursePrerequisites is null)
+                {
+                    return null;
+                }
+
+                bool isPassedFound = true;
                 foreach (string prerequisiteCourseCode in coursePrerequisites)
                 {
+                    string getStudentPrerequisiteCourseStatus = "SELECT student_course_instance_status FROM course" + "\n"
+                                                        + "INNER JOIN course_instance" + "\n"
+                                                        + "INNER JOIN student_course_instance_registration" + "\n"
+                                                        + "WHERE course.course_code = course_instance.course_code" + "\n"
+                                                        + "AND course_instance.instance_id = student_course_instance_registration.course_instance_id" + "\n"
+                                                        + "AND course.course_code = @CourseCode;";
 
+                    List<string> prerequisiteCourseStatusList;
+                    prerequisiteCourseStatusList = _data.LoadData<string, dynamic>(getStudentPrerequisiteCourseStatus, new { CourseCode = prerequisiteCourseCode },
+                        _config.GetConnectionString("Default"));
+
+                    if (prerequisiteCourseStatusList is null)
+                    {
+                        return null;
+                    }
+                    else if (prerequisiteCourseStatusList.Count == 0)
+                    {
+                        isPassedFound = false;
+                        break;
+                    }
+
+                    foreach (string status in prerequisiteCourseStatusList)
+                    {
+                        isPassedFound = false;
+                        if (status == Enum.GetName(StudentCourseInstanceRegistrationStatus.Passed))
+                        {
+                            isPassedFound = true;
+                            break;
+                        }
+                    }
+
+                    if (!isPassedFound)
+                    {
+                        break;
+                    }
+                }
+
+                if (isPassedFound)
+                {
+                    string GetCourseByCourseCodeSQL = "SELECT * FROM course WHERE course_code = @CourseCode;";
+                    List<Course> courseList;
+                    courseList = _data.LoadData<Course, dynamic>(GetCourseByCourseCodeSQL, new { CourseCode = courseCode }, _config.GetConnectionString("Default"));
+                    
+                    if (courseList is null || courseList.Count == 0)
+                    {
+                        return null;
+                    }
+                    Course availableCourse = courseList[0];
+
+                    studentAvailableCourses.Add(availableCourse);
                 }
             }
-            return null;
+            return studentAvailableCourses;
         }
 
         private static List<Course_instance> GetCourseAvailableCourseInstancesList(string courseCode)
