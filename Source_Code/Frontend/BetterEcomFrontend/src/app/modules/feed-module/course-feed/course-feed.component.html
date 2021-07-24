@@ -13,14 +13,14 @@
       </div>
   </div>
 
-  <button type="button" *ngIf="logedInType == 'instructor'" (click)="(showEditText == 'visible')?showEditText = 'hidden':showEditText = 'visible'">{{(showEditText == 'hidden')?'Add To Feed' : 'Close Add' }}</button>
+  <button class="row col-12 btn btn-outline-primary text-light my-3" type="button" *ngIf="logedInType == 'instructor'" (click)="(showEditText == 'visible')?showEditText = 'hidden':showEditText = 'visible'">{{(showEditText == 'hidden')?'Add To Feed' : 'Close Add' }}</button>
   
-  <form [style.visibility] = 'showEditText' [formGroup]="courseFeedForm" (ngSubmit)="addToFeed()">
+  <form class="row container-fluid" [style.visibility] = 'showEditText' [formGroup]="courseFeedForm" (ngSubmit)="addToFeed()">
   
-    <textarea  formControlName="Content"></textarea>
+    <textarea rows="10" class="row" formControlName="Content"></textarea>
     <p class="row text-danger fw-bold" *ngIf="getContent.invalid && getContent.touched">You are required to enter text</p>
   
-    <button  type="submit" *ngIf="logedInType == 'instructor'" [disabled]="courseFeedForm.invalid">Add</button>
+    <button class="row btn btn-outline-success text-light my-1" type="submit" *ngIf="logedInType == 'instructor'" [disabled]="courseFeedForm.invalid">Add</button>
   
   </form>
 </div>
