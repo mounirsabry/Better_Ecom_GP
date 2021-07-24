@@ -128,4 +128,8 @@ export class LateRegisterationPageComponent implements OnInit {
     })
     console.log(this.late_requests_list);
   }
+
+  getRequestStatus(){
+    
+  }
 }
