@@ -778,9 +778,9 @@ namespace Better_Ecom_Backend.Controllers
                 return BadRequest(new { Message = MessageFunctions.GetInstructorNotFoundMessage() });
             }
 
-            string getRegisteredCourseInstanceIdsSql = "SELECT * FROM instructor_course_instance_registration WHERE instructor_id = @instructorID ";
-
-            List<Course_instance> courseInstancesIds = _data.LoadData<Course_instance, dynamic>(getRegisteredCourseInstanceIdsSql, new { instructorID }, _config.GetConnectionString("Default"));
+            string getRegisteredCourseInstanceIdsSql = "SELECT course_instance_id FROM instructor_course_instance_registration WHERE instructor_id = @instructorID ";
+            string getCourseInstancesFromIds = $"Select * FROM course_instance WHERE instance_id IN ({getRegisteredCourseInstanceIdsSql});";
+            List<Course_instance> courseInstancesIds = _data.LoadData<Course_instance, dynamic>(getCourseInstancesFromIds, new { instructorID }, _config.GetConnectionString("Default"));
 
             if (courseInstancesIds is null)
             {
