@@ -148,7 +148,7 @@ CREATE TABLE IF NOT EXISTS student_course_instance_registration (
     student_id INT NOT NULL,
     course_instance_id INT NOT NULL,
     registration_date DATETIME NOT NULL,
-    student_course_intance_status ENUM('Undertaking', 'Passed', 'Failed') NOT NULL,
+    student_course_instance_status ENUM('Undertaking', 'Passed', 'Failed') NOT NULL,
     CONSTRAINT student_course_registration_combination_unique UNIQUE (student_id , course_instance_id),
     CONSTRAINT student_course_registration_student_id FOREIGN KEY (student_id)
         REFERENCES student (student_id)
@@ -223,31 +223,51 @@ INSERT INTO course
 VALUES ('GE101', 'GE', 'Math 1', 1, 'First course of math', FALSE);
 INSERT INTO course_department_applicability
 VALUES ('GE101', 'GE');
+INSERT INTO course_instance
+VALUES (NULL, 'GE101', 2017, 'First', 3, TRUE, TRUE); 
+INSERT INTO course_instance
+VALUES (NULL, 'GE101', 2021, 'First', 3, FALSE, FALSE);
 
 INSERT INTO course
 VALUES ('GE102', 'GE', 'English', 1, 'English coures.', FALSE);
 INSERT INTO course_department_applicability
 VALUES ('GE102', 'GE');
+INSERT INTO course_instance
+VALUES (NULL, 'GE102', 2021, 'First', 3, FALSE, FALSE);
 
 INSERT INTO course
 VALUES ('GE103', 'GE', 'Math 2', 1, 'Second course of math', FALSE);
+INSERT INTO course_prerequisite
+VALUES ('GE103', 'GE101');
 INSERT INTO course_department_applicability
 VALUES ('GE103', 'GE');
+INSERT INTO course_instance
+VALUES (NULL, 'GE103', 2021, 'Second', 3, FALSE, FALSE); 
 
 INSERT INTO course
 VALUES ('GE104', 'GE', 'Technical Writing', 1, 'Technical Writing course.', FALSE);
 INSERT INTO course_department_applicability
 VALUES ('GE104', 'GE');
+INSERT INTO course_instance
+VALUES (NULL, 'GE104', 2021, 'Second', 3, FALSE, FALSE);
 
 INSERT INTO course
 VALUES ('GE105', 'GE', 'Programming 1', 1, 'First course of programming.', FALSE);
 INSERT INTO course_department_applicability
 VALUES ('GE105', 'GE');
+INSERT INTO course_instance
+VALUES (NULL, 'GE105', 2021, 'Second', 3, FALSE, FALSE);
 
 INSERT INTO course
 VALUES ('GE201', 'GE', 'Programming 2', 2, 'Second course of programming, OOP course.', FALSE);
+INSERT INTO course_prerequisite
+VALUES ('GE201', 'GE105');
 INSERT INTO course_department_applicability
 VALUES ('GE201', 'GE');
+INSERT INTO course_instance
+VALUES (NULL, 'GE201', 2017, 'First', 3, TRUE, TRUE);
+INSERT INTO course_instance
+VALUES (NULL, 'GE201', 2021, 'First', 3, FALSE, FALSE);
 
 INSERT INTO course
 VALUES ('GE202', 'GE', 'Data Communication', 2, 'Basics of IT.', FALSE);
@@ -258,6 +278,10 @@ INSERT INTO course
 VALUES ('GE203', 'GE', 'Data Structures', 2, 'Fundamentals of data structures.', FALSE);
 INSERT INTO course_department_applicability
 VALUES ('GE203', 'GE');
+INSERT INTO course_instance
+VALUES (NULL, 'GE203', 2017, 'First', 3, TRUE, TRUE);
+INSERT INTO course_instance
+VALUES (NULL, 'GE203', 2021, 'First', 3, FALSE, FALSE);
 
 INSERT INTO course
 VALUES ('GE204', 'GE', 'Databases 1', 2, 'General databases course.', FALSE);
@@ -273,6 +297,8 @@ VALUES ('CS301', 'CS');
 
 INSERT INTO course
 VALUES ('CS302', 'CS', 'Software Engineering 1', 3, 'General software engineering course.', FALSE);
+INSERT INTO course_prerequisite
+VALUES ('CS302', 'GE201');
 INSERT INTO course_department_applicability 
 VALUES ('CS302', 'GE');
 INSERT INTO course_department_applicability
@@ -287,6 +313,8 @@ VALUES ('CS303', 'CS');
 
 INSERT INTO course
 VALUES ('CS304', 'CS', 'Software Engineering 2', 3, 'Second course for software engineering.', FALSE);
+INSERT INTO course_prerequisite
+VALUES ('CS304', 'CS302');
 INSERT INTO course_department_applicability 
 VALUES ('CS304', 'GE');
 INSERT INTO course_department_applicability
@@ -304,39 +332,13 @@ INSERT INTO course_department_applicability
 VALUES ('CS404', 'IT');
 INSERT INTO course_department_applicability
 VALUES ('CS404', 'DS');
-
-INSERT INTO course_instance
-VALUES (NULL, 'GE101', 2021, 'First', 3, FALSE, FALSE); 
-
-INSERT INTO course_instance
-VALUES (NULL, 'GE102', 2021, 'First', 3, FALSE, FALSE);
-
-INSERT INTO course_instance
-VALUES (NULL, 'GE103', 2021, 'Second', 3, FALSE, FALSE); 
-
-INSERT INTO course_instance
-VALUES (NULL, 'GE104', 2021, 'Second', 3, FALSE, FALSE);
-
-INSERT INTO course_instance
-VALUES (NULL, 'GE105', 2021, 'Second', 3, FALSE, FALSE);
-
 INSERT INTO course_instance
 VALUES (NULL, 'CS404', 2021, 'Second', 3, FALSE, FALSE);
 
-INSERT INTO course_instance
-VALUES (NULL, 'GE201', 2017, 'First', 3, TRUE, TRUE);
-INSERT INTO course_instance
-VALUES (NULL, 'GE201', 2021, 'First', 3, FALSE, FALSE);
-
-INSERT INTO course_instance
-VALUES (NULL, 'GE203', 2017, 'First', 3, TRUE, TRUE);
-INSERT INTO course_instance
-VALUES (NULL, 'GE203', 2021, 'First', 3, FALSE, FALSE);
-
 INSERT INTO student_course_instance_registration
-VALUES (NULL, '20210001', 1, '2027-10-01', 'Passed');
+VALUES (NULL, '20210001', 1, '2017-10-01', 'Passed');
 INSERT INTO student_course_instance_registration
-VALUES (NULL, '20210001', 6, '2021-02-01', 'Undertaking');
+VALUES (NULL, '20210001', 11, '2021-02-01', 'Undertaking');
 
 INSERT INTO student_course_instance_registration
 VALUES (NULL, '20210002', 1, '2021-10-01', 'Undertaking');
