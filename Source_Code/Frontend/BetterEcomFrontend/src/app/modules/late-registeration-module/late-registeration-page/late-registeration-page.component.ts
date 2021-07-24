@@ -44,6 +44,8 @@ export class LateRegisterationPageComponent implements OnInit {
     this.late_requests_list = [];
     //console.log(this.student_id_get.value)
     this.getStudentRequests();
+
+
   }
 
   getStudentRequests(){
@@ -80,7 +82,7 @@ export class LateRegisterationPageComponent implements OnInit {
       data =>{
         if(data.length < 1) {alert("No Course Instances were found")}
 
-        this.available_coures_instance_list = data;
+        this.available_coures_instance_list.push(...data) ; // in oder to push a list inside a list
         console.log(this.available_coures_instance_list);
         this.showAvailableInstancesTable = true;
       },
@@ -99,6 +101,7 @@ export class LateRegisterationPageComponent implements OnInit {
       response =>{
         this.getStudentRequests();
         alert("Registeration submited");
+        this.available_coures_instance_list.splice(index,1)
       },
       error =>{
         console.log(error.error);
