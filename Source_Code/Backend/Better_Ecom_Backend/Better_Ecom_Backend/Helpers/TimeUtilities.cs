@@ -12,10 +12,22 @@ namespace Better_Ecom_Backend.Helpers
             return Int32.Parse(currentYearString);
         }
 
+        public static int GetYearFromDate(DateTime date)
+        {
+            string dateYearString = date.ToString("yyyy");
+            return Int32.Parse(dateYearString);
+        }
+
         public static int GetCurrentMonth()
         {
             string currentMonthString = DateTime.Today.ToString("MM");
             return Int32.Parse(currentMonthString);
+        }
+
+        public static int GetMonthFromDate(DateTime date)
+        {
+            string dateMonthString = date.ToString("MM");
+            return Int32.Parse(dateMonthString);
         }
 
         public static int GetCurrentDay()
@@ -24,9 +36,20 @@ namespace Better_Ecom_Backend.Helpers
             return Int32.Parse(currentDayString);
         }
 
+        public static int GetDayFromDate(DateTime date)
+        {
+            string dateDayString = date.ToString("dd");
+            return Int32.Parse(dateDayString);
+        }
+
         public static DayOfWeek GetCurrentDayOfWeek()
         {
             return DateTime.Today.DayOfWeek;
+        }
+
+        public static DayOfWeek GetDayOfWeekFromDate(DateTime date)
+        {
+            return date.DayOfWeek;
         }
 
         public static List<Term> GetAvailableTerms()
@@ -42,14 +65,13 @@ namespace Better_Ecom_Backend.Helpers
             return terms;
         }
 
-        public static Term GetCurrentTerm()
+        public static Term GetTermFromMonth(int month)
         {
-            int currentMonth = GetCurrentMonth();
-            if ((currentMonth >= 9 && currentMonth <= 12) || (currentMonth == 1))
+            if ((month >= 9 && month <= 12) || (month == 1))
             {
                 return Term.First;
             }
-            else if (currentMonth >= 2 && currentMonth <= 6)
+            else if (month >= 2 && month <= 6)
             {
                 return Term.Second;
             }
@@ -57,6 +79,18 @@ namespace Better_Ecom_Backend.Helpers
             {
                 return Term.Summer;
             }
+        }
+
+        public static Term GetCurrentTerm()
+        {
+            int currentMonth = GetCurrentMonth();
+            return GetTermFromMonth(currentMonth);
+        }
+
+        public static Term GetTermFromDate(DateTime date)
+        {
+            int dateMonth = GetMonthFromDate(date);
+            return GetTermFromMonth(dateMonth);
         }
     }
 }

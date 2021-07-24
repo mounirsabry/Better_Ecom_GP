@@ -148,7 +148,7 @@ namespace Better_Ecom_Backend.Controllers
                 return Forbid("students can only get their own data.");
             }
 
-            string getStudentRegisteredInstanceIds = "SELECT course_instance_id FROM student_course_instance_registration WHERE student_id = @studentID;";
+            string getStudentRegisteredInstanceIds = "SELECT course_instance_id FROM student_course_instance_registration WHERE student_id = @studentID";
             string getCourseStudentRegisteredCourseInstancesSql = $"SELECT * FROM course_instance WHERE instance_id IN ({getStudentRegisteredInstanceIds}) AND course_code = @courseCode;";
 
             List<Course_instance> instances = _data.LoadData<Course_instance, dynamic>(getCourseStudentRegisteredCourseInstancesSql, new { studentID, courseCode }, _config.GetConnectionString("Default"));
@@ -249,10 +249,16 @@ namespace Better_Ecom_Backend.Controllers
 
             DateTime registrationDate = DateTime.Now;
             Student_course_instance_registration registration = new(-1, studentID, courseInstanceID, registrationDate, StudentCourseInstanceRegistrationStatus.Undertaking);
+            var parameters = new
+            {
+                studentID ,
+                courseInstanceID ,
+                registrationDate ,
+                studentCourseInstanceStatus = nameof(StudentCourseInstanceRegistrationStatus.Undertaking)
+            };
+            string insertCourseRegistrationSql = "INSERT INTO student_course_instance_registration VALUES(NULL, @studentID, @courseInstanceID, @registrationDate, @studentCourseInstanceStatus);";
 
-            string insertCourseRegistrationSql = "INSERT INTO student_course_instance_registration VALUES(NULL, @student_id, @course_instance_id, @registration_date, @student_course_intance_status);";
-
-            int status = _data.SaveData(insertCourseRegistrationSql, registration, _config.GetConnectionString("Default"));
+            int status = _data.SaveData(insertCourseRegistrationSql, parameters, _config.GetConnectionString("Default"));
 
             if (status > 0)
             {
@@ -622,7 +628,7 @@ namespace Better_Ecom_Backend.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpGet("GetStudentCourseInstanceStatus/{StudentID:int}/{CourseInstanceID:int}")]
-        public IActionResult GetStudentCourseInstanceStatus([FromBody] string Authorization, int studentID, int courseInstanceID)
+        public IActionResult GetStudentCourseInstanceStatus([FromHeader] string Authorization, int studentID, int courseInstanceID)
         {
             //ALL USERS.
             TokenInfo info = HelperFunctions.GetIdAndTypeFromToken(Authorization);
@@ -631,18 +637,23 @@ namespace Better_Ecom_Backend.Controllers
                 return Forbid("students can only get their own data.");
             }
 
-            string getStudentCourseInstanceStatusSql = "SELECT student_course_intance_status FROM student_course_instance_registration WHERE student_id = @studentID AND course_instance_id = @courseInstanceID;";
+            string getStudentCourseInstanceStatusSql = "SELECT student_course_instance_status FROM student_course_instance_registration WHERE student_id = @studentID AND course_instance_id = @courseInstanceID;";
 
-            List<StudentCourseInstanceRegistrationStatus> registrationStatuses = _data.LoadData<StudentCourseInstanceRegistrationStatus, dynamic>(getStudentCourseInstanceStatusSql,
+            List<string> registrationStatuses = _data.LoadData<string, dynamic>(getStudentCourseInstanceStatusSql,
                 new { studentID, courseInstanceID }, _config.GetConnectionString("Default"));
 
             if (registrationStatuses is null)
             {
                 return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
+            else if (registrationStatuses.Count == 0)
+            {
+                return BadRequest(new { Message = "student has no status for given course instance." });
+            }
             else
             {
-                return Ok(registrationStatuses);
+                List<StudentCourseInstanceRegistrationStatus> status = new() { Enum.Parse<StudentCourseInstanceRegistrationStatus>(registrationStatuses.First()) };
+                return Ok(status);
             }
         }
 
@@ -843,7 +854,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return BadRequest(new { Message = MessageFunctions.GetInstructorNotFoundMessage() });
             }
-            if (ExistanceFunctions.IsCourseInstanceExists(_config, _data, courseInstanceID))
+            if (ExistanceFunctions.IsCourseInstanceExists(_config, _data, courseInstanceID) == false)
             {
                 return BadRequest(new { Message = MessageFunctions.GetCourseInstanceNotFoundMessage() });
             }
@@ -965,7 +976,7 @@ namespace Better_Ecom_Backend.Controllers
             TokenInfo tokenInfo = HelperFunctions.GetIdAndTypeFromToken(Authorization);
             if(tokenInfo.Type == "instructor")
             {
-                if (ExistanceFunctions.IsInstructorExistInCourseInstance(_config, _data, tokenInfo.UserID, courseInstanceID) == false)
+                if (RegistrationFunctions.IsInstructorRegisteredToCourseInstance(_config, _data, tokenInfo.UserID, courseInstanceID) == false)
                 {
                     return BadRequest(new { Message = "instructor must be registered in course instance." });
                 }
@@ -1152,7 +1163,7 @@ namespace Better_Ecom_Backend.Controllers
 
         private List<string> GetCourseCodesListFromCourseInstanceID(int courseInstanceID)
         {
-            string sql = "SELECT course_code FROM course" + "\n"
+            string sql = "SELECT course.course_code FROM course" + "\n"
                 + "INNER JOIN course_instance" + "\n"
                 + "WHERE course.course_code = course_instance.course_code" + "\n"
                 + "AND instance_id = @courseInstanceID;";

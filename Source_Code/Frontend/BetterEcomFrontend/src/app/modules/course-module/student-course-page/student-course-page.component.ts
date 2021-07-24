@@ -11,6 +11,7 @@ export class StudentCoursePageComponent implements OnInit {
 
   courses_list : Array<any> = []
   course_instance_list : Array<any> = []
+  combined_list : Array<any> = []
 
   isNormalRegisteration : boolean = false
   isLateRegisteration : boolean = false
@@ -27,9 +28,6 @@ export class StudentCoursePageComponent implements OnInit {
     //this.isDropCourseRegistrationOpen();
 
     this.getRegisteredCourses();
-    //this.getAllRegisteredCourseInstances();
-    //this.getRegisteredCourseInstance();
-
   }
 
   getRegisteredCourses(){
@@ -38,10 +36,7 @@ export class StudentCoursePageComponent implements OnInit {
         this.courses_list = data;
         console.log(this.courses_list);
         var temp = this.courses_list.find(x => x.course_code === 'GE101');
-        //console.log(temp);
-        this.courses_list.forEach((element, index) =>{
-          this.getRegisteredCourseInstance(element.course_code);
-        })
+        this.getAllRegisteredCourseInstances();
       },
       error =>{
         console.log(error.error);
@@ -49,26 +44,14 @@ export class StudentCoursePageComponent implements OnInit {
     )
   }
 
-  /*getAllRegisteredCourseInstances(){
+  getAllRegisteredCourseInstances(){
     this.viewRegisteredCoursesService.getStudentRegisteredCourseInstances(this.student_id).subscribe(
       data =>{
         this.course_instance_list = data;
         console.log(this.course_instance_list);
-        data.forEach((element, index) =>{
-          this.filterListByCode(data, index)
+        this.courses_list.forEach((element, index) =>{
+          this.combineLists(index);
         })
-      },
-      error =>{
-        console.log(error.error);
-      }
-    )
-  }*/
-
-  getRegisteredCourseInstance(courseCode : string){
-    this.viewRegisteredCoursesService.GetCourseStudentRegisteredCourseInstances(this.student_id, courseCode).subscribe(
-      data =>{
-        this.course_instance_list = data;
-        console.log(this.course_instance_list);
       },
       error =>{
         console.log(error.error);
@@ -76,10 +59,42 @@ export class StudentCoursePageComponent implements OnInit {
     )
   }
 
+  /*getRegisteredCourseInstance(courseCode : string){
+    this.viewRegisteredCoursesService.GetCourseStudentRegisteredCourseInstances(this.student_id, courseCode).subscribe(
+      data =>{
+        this.course_instance_list.push(data);
+      },
+      error =>{
+        console.log(error.error);
+      }
+    )
+    console.log(this.course_instance_list);
+  }*/
+
+  combineLists(index){
+    var temp = this.course_instance_list.filter(x => x.course_code === this.courses_list[index].course_code);
+    var obj = {}
+    for(let i of temp){
+      obj = {
+        'Instance_ID' : i.instance_id,
+        'Course Code' : i.course_code,
+        'Course Name' : this.courses_list[index].course_name,
+        'Course Year' : i.course_year
+      }
+      this.combined_list.push(obj);
+    }
+    console.log(this.combined_list);
+  }
+
+  checkInstanceID(key){
+    if(key === 'Instance_ID'){
+      return true;
+    }
+    else {return false;}
+  }
 
   filterListByCode(list, index){
     var temp = list.filter(x => x.course_code === this.courses_list[index].course_code);
-    console.log(temp); 
     return temp;
   }
 
