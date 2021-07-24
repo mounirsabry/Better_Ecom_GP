@@ -1,47 +1,43 @@
+<div class="gradient container-fluid p-3">
+    <hr class="row my-2">
+    <form class="row container-fluid" [formGroup]="registerStudentCourseForm" (ngSubmit)="register()">
 
-<form [formGroup]="registerStudentCourseForm" (ngSubmit)="register()">
+        <div class="row my-2">
+            <label class="col-4" style="text-transform: capitalize;">{{type}} ID</label>
 
-  <div *ngIf="logedInUser != 'student'">
-    <label>{{type}} ID</label>
-    <br>
-    <div *ngIf="type == 'student'">
-      <input  type="number" formControlName="StudentID">
+            <div class="col-8 container-fluid" *ngIf="type == 'student'">
+                <div class="row">
+                    <input class="col-6" type="number" formControlName="StudentID">
+                    <p class="col-6 text-danger fw-bold" *ngIf="GetStudentID.invalid && GetStudentID.touched"> Student ID is required</p>
+                </div>
+            </div>
 
-      <p style="color: red;" *ngIf="GetStudentID.invalid && GetStudentID.touched"> Student ID is required</p>
-    </div>
-
-    <div *ngIf="type == 'instructor'">
-      <input type="number" *ngIf="type == 'instructor'" formControlName="InstructorID">
-
-      <p style="color: red;" *ngIf="GetInstructorID.invalid && GetInstructorID.touched"> Instructor ID is required</p>
-    </div>
-
-
-    <label>Course Code</label>
-    <input type="text" formControlName="CourseCode" >
-    <p style="color: red;" *ngIf="GetCourseCode.invalid && GetCourseCode.touched"> Course Code is required</p>
-
-    <br>
-
-    <label>Current Term</label>
-    <select formControlName="CurrentTerm">
-      <option>First</option>
-      <option>Second</option>
-      <option>Summer</option>
-    </select>
-    <p style="color: red;" *ngIf="GetCurrentTerm.invalid && GetCurrentTerm.touched"> Current Term is required</p>
-
-    <br>
-  </div>
-
-  <!--if the loged in is student-->
-
-  <select >
-    <option></option>
-  </select>
+            <div class="col-8 container-fluid" *ngIf="type == 'instructor'">
+                <div class="row">
+                    <input class="col-6" type="number" *ngIf="type == 'instructor'" formControlName="InstructorID">
+                    <p class="col-6 text-danger fw-bold" *ngIf="GetInstructorID.invalid && GetInstructorID.touched"> Instructor ID is required</p>
+                </div>
+            </div>
+        </div>
 
 
+        <div class="row my-2">
+          <label class="col-4">Course Code</label>
+          <input class="col-4" type="text" formControlName="CourseCode">
+          <p class="col-4 text-danger fw-bold"  *ngIf="GetCourseCode.invalid && GetCourseCode.touched"> Course Code is required</p>
+        </div>
 
-  <button [disabled] = "registerStudentCourseForm.invalid">Register</button>
+        <div class="row my-2">
+          <label class="col-4">Current Term</label>
+          <select class="col-4" formControlName="CurrentTerm">
+          <option>First</option>
+          <option>Second</option>
+          <option>Summer</option>
+          </select>
+          <p class="col-4 text-danger fw-bold" *ngIf="GetCurrentTerm.invalid && GetCurrentTerm.touched"> Current Term is required</p>
+        </div>
 
-</form>
+        <button class="row btn btn-outline-success text-light my-3" [disabled]="registerStudentCourseForm.invalid">Register</button>
+
+    </form>
+</div>
