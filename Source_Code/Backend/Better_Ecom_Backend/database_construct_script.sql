@@ -149,7 +149,7 @@ CREATE TABLE IF NOT EXISTS student_course_instance_registration (
     course_instance_id INT NOT NULL,
     registration_date DATETIME NOT NULL,
     student_course_instance_status ENUM('Undertaking', 'Passed', 'Failed') NOT NULL,
-    student_course_instance_grade ENUM('APlus', 'A', 'BPlus', 'B', 'CPlus', 'C', 'DPlus', 'D', 'F', 'Not_Specified') NOT NULL,
+    student_course_instance_grade ENUM('APlus', 'A', 'BPlus', 'B', 'CPlus', 'C', 'DPlus', 'D', 'F', 'Not_Specified') NOT NULL DEFAULT 'Not_Specified',
     CONSTRAINT student_course_registration_combination_unique UNIQUE (student_id , course_instance_id),
     CONSTRAINT student_course_registration_student_id FOREIGN KEY (student_id)
         REFERENCES student (student_id)
@@ -363,9 +363,9 @@ INSERT INTO course_instance
 VALUES (NULL, 'CS404', 2021, 'Second', 3, FALSE, FALSE);
 
 INSERT INTO student_course_instance_registration
-VALUES (NULL, '20210001', 1, '2017-10-01', 'Passed');
+VALUES (NULL, '20210001', 1, '2017-10-01', 'Passed', DEFAULT);
 INSERT INTO student_course_instance_registration
-VALUES (NULL, '20210001', 11, '2021-02-01', 'Undertaking');
+VALUES (NULL, '20210001', 11, '2021-02-01', 'Undertaking', DEFAULT);
 
 INSERT INTO student_course_instance_registration
-VALUES (NULL, '20210002', 1, '2021-10-01', 'Undertaking');
+VALUES (NULL, '20210002', 1, '2021-10-01', 'Undertaking', DEFAULT);
