@@ -1,13 +1,21 @@
 <div class="gradient container-fluid p-3">
     <hr class="row">
 
-    <div class="row">
+    <div class="row container-fluid">
         <div class="col-4 container-fluid">
-            <button class="row col-12 my-2 btn btn-outline-dark text-light" [routerLink]="['/registerStudentInstructorInACourse/student']" *ngIf="isNormalRegisteration">Course Registeration</button>
-            <button class="row col-12 my-2 btn btn-outline-dark text-light" [routerLink]="['/lateRegisterationPage']" *ngIf="isLateRegisteration">Late Course Registeration</button>
+            <button class="row col-12 my-2 btn btn-outline-dark text-light my-2" [routerLink]="['/registerStudentInstructorInACourse/student']" *ngIf="isNormalRegisteration">Course Registeration</button>
+            <button class="row col-12 my-2 btn btn-outline-dark text-light my-2" [routerLink]="['/lateRegisterationPage']" *ngIf="isLateRegisteration">Late Course Registeration</button>
         </div>
-        <div class="col-8">
-            Courses
+
+        <div class="col-8 container-fluid">
+            <button class="row col-12 my-2 btn btn-outline-dark text-light my-2" *ngFor="let course of combined_list; let courseIndex = index" [routerLink]="['/courseInstancePage', course.Instance_ID]">
+                <div  *ngFor="let c of course | keyvalue">
+                    <label *ngIf="!checkInstanceID(c.key)">{{ c.key }}: </label>
+                    <label *ngIf="!checkInstanceID(c.key)">{{ c.value }}</label>
+                    <br>
+                </div>
+                <br>
+            </button>
         </div>
     </div>
 </div>

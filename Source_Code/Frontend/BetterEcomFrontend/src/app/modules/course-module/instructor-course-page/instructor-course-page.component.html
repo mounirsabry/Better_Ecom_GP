@@ -1,0 +1,12 @@
+<div class="gradient container-fluid p-3">
+    <hr class="row my-2">
+    
+    <button class="col-12 my-2 btn btn-outline-dark text-light" *ngFor="let course of combined_list; let courseIndex = index" [routerLink] = "['/courseInstancePage', course.Instance_ID]">
+        <div  *ngFor="let c of course | keyvalue">
+            <label *ngIf="!checkInstanceID(c.key)">{{ c.key }}: </label>
+            <label *ngIf="!checkInstanceID(c.key)">{{ c.value }}</label>
+            <br>
+        </div>
+        <br>
+    </button>
+</div>
