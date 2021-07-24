@@ -237,7 +237,7 @@ namespace Better_Ecom_Backend.Controllers
             DateTime registrationDate = DateTime.Now;
             Student_course_instance_registration registration = new(-1, studentID, courseInstanceID, registrationDate, StudentCourseInstanceRegistrationStatus.Undertaking);
 
-            string insertCourseRegistrationSql = "INSERT INTO student_course_instance_registration VALUES(NULL, @student_id, @course_instance_id, @registration_date, @student_course_intance_status);";
+            string insertCourseRegistrationSql = "INSERT INTO student_course_instance_registration VALUES(NULL, @Student_id, @Course_instance_id, @Registration_date, @Student_course_instance_status);";
 
             int status = _data.SaveData(insertCourseRegistrationSql, registration, _config.GetConnectionString("Default"));
 
@@ -830,7 +830,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return BadRequest(new { Message = MessageFunctions.GetInstructorNotFoundMessage() });
             }
-            if (ExistanceFunctions.IsCourseInstanceExists(_config, _data, courseInstanceID))
+            if (ExistanceFunctions.IsCourseInstanceExists(_config, _data, courseInstanceID) == false)
             {
                 return BadRequest(new { Message = MessageFunctions.GetCourseInstanceNotFoundMessage() });
             }
@@ -1125,7 +1125,7 @@ namespace Better_Ecom_Backend.Controllers
 
         private List<string> GetCourseCodesListFromCourseInstanceID(int courseInstanceID)
         {
-            string sql = "SELECT course_code FROM course" + "\n"
+            string sql = "SELECT course.course_code FROM course" + "\n"
                 + "INNER JOIN course_instance" + "\n"
                 + "WHERE course.course_code = course_instance.course_code" + "\n"
                 + "AND instance_id = @courseInstanceID;";

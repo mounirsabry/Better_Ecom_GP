@@ -1,31 +1,41 @@
-<form [formGroup]="chooseDepartmentForm" (ngSubmit)="addDepartment()">
-    <label>Departments</label>
-    <select name="Departments" id="Departments" #Departments formControlName="department">
-        <option *ngFor="let dep of department_name_list; let i = index" 
-        value="{{ dep }}">{{ dep }}</option>
-    </select>
-    <p *ngIf="departmentGet.invalid && departmentGet.touched && !isEmpty(department_name_list)" style="color: red;">please select a department</p>
-    <button type="submit" [disabled]="chooseDepartmentForm.invalid" style="color: black;">Add Department</button>
-</form>
+<div class="gradient container-fluid p-3">
+    <hr class="row">
 
-<hr>
+    <form class="row container-fluid" [formGroup]="chooseDepartmentForm" (ngSubmit)="addDepartment()">
+        <div class="row">
+            <label class="col-4">Departments</label>
+            <select class="col-8" name="Departments" id="Departments" #Departments formControlName="department">
+            <option *ngFor="let dep of department_name_list; let i = index" 
+            value="{{ dep }}">{{ dep }}</option>
+            </select>
+        </div>
+        <p class="row text-danger fw-bold" *ngIf="departmentGet.invalid && departmentGet.touched && !isEmpty(department_name_list)">please select a department</p>
+        <button class="row btn btn-outline-dark text-light my-2" type="submit" [disabled]="chooseDepartmentForm.invalid">Add Department</button>
+    </form>
 
-<form [formGroup]="removeDepartmentForm" (ngSubmit)="submitDepartments()">
-    <label>Departments Priority List</label>
-    <select name="SelectedDep" id="SelctedDep" #SelectedDep formControlName="remDepartment">
-        <option *ngFor="let remDep of department_selected_name" value="{{ remDep }}">{{ remDep }}</option>
-    </select>
-    <br>
-    <button type="button" (click)="removeDepartment()" style="color: black;">Remove Department</button>
-    <button type="submit" [disabled]="removeDepartmentForm.invalid || hasError()"style="color: black;">Submit Departments List</button>
-    <p *ngIf="hasError()" style="color: black;">Note: The Department Priority List must contain all 5 departments</p>
-    <br>
-    
-    <hr>
+    <hr class="row my-2">
 
-    <label>Student Priority List</label>
-    <ul>
-        <li *ngFor="let dep_selected of department_selected_name">{{ dep_selected}}</li>
-    </ul>
-</form>
+    <form class="row container-fluid" [formGroup]="removeDepartmentForm" (ngSubmit)="submitDepartments()">
+        <div class="row">
+            <label class="col-4">Departments Priority List</label>
+            <select class="col-8" name="SelectedDep" id="SelctedDep" #SelectedDep formControlName="remDepartment">
+            <option *ngFor="let remDep of department_selected_name" value="{{ remDep }}">{{ remDep }}</option>
+            </select>
+        </div>
 
+        <div class="row my-2">
+            <button class="col-6 btn btn-outline-danger text-light" type="button" (click)="removeDepartment()">Remove Department</button>
+            <button class="col-6 btn btn-outline-success text-light" type="submit" [disabled]="removeDepartmentForm.invalid || hasError()">Submit Departments List</button>
+        </div>
+        <p class="row text-dark fw-bold" *ngIf="hasError()">Note: The Department Priority List must contain all 5 departments</p>
+
+        <hr class="row my-2">
+
+        <div class="row my-3">
+            <label class="fw-bold text-dark">Student Priority List</label>
+            <ul>
+                <li *ngFor="let dep_selected of department_selected_name">{{ dep_selected}}</li>
+            </ul>
+        </div>
+    </form>
+</div>

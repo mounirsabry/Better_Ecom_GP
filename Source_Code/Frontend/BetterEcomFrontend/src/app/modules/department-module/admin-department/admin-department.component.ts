@@ -11,27 +11,27 @@ import { DepartmentsService } from '../services/departments.service';
 })
 export class AdminDepartmentComponent implements OnInit {
 
-  view_priority_list : Array<string> = []
+  view_priority_list: Array<string> = []
 
-  constructor(private departmentService : DepartmentsService) { }
+  constructor(private departmentService: DepartmentsService) { }
 
   setDepartmentForm = new FormGroup({
-    StudentID : new FormControl('', [Validators.required]),
-    DepartmentCode : new FormControl('', [Validators.required])
+    StudentID: new FormControl('', [Validators.required]),
+    DepartmentCode: new FormControl('', [Validators.required])
   })
 
-  get studentIdGet(){
+  get studentIdGet() {
     return this.setDepartmentForm.get('StudentID');
   }
 
-  get departmentCodeGet(){
+  get departmentCodeGet() {
     return this.setDepartmentForm.get('DepartmentCode');
   }
 
   ngOnInit(): void {
   }
-  
-  getStudentList(){
+
+  getStudentList() {
     this.departmentService.getStudentPriorityList(this.studentIdGet.value).subscribe(
       priority_list =>{
         if(priority_list.length > 0){
@@ -46,12 +46,12 @@ export class AdminDepartmentComponent implements OnInit {
     )
   }
 
-  setDepartment(){
+  setDepartment() {
     this.departmentService.setDepartmentForStudent(this.setDepartmentForm.value).subscribe(
-      response =>{
+      response => {
         alert("Department has been set");
       },
-      error =>{
+      error => {
         console.log(error.error);
         alert("failed");
       }

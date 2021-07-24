@@ -1,7 +1,6 @@
 
 <form [formGroup]="registerStudentCourseForm" (ngSubmit)="register()">
 
-
   <label>{{type}} ID</label>
   <br>
   <div *ngIf="type == 'student'">
@@ -17,11 +16,22 @@
   </div>
 
 
-  <label>Course ID</label>
-  <input type="text" formControlName="CourseInstanceID" >
-  <p style="color: red;" *ngIf="GetCourseInstanceID.invalid && GetCourseInstanceID.touched"> Course ID is required</p>
+  <label>Course Code</label>
+  <input type="text" formControlName="CourseCode" >
+  <p style="color: red;" *ngIf="GetCourseCode.invalid && GetCourseCode.touched"> Course Code is required</p>
 
   <br>
+
+  <label>Current Term</label>
+  <select formControlName="CurrentTerm">
+    <option>First</option>
+    <option>Second</option>
+    <option>Summer</option>
+  </select>
+  <p style="color: red;" *ngIf="GetCurrentTerm.invalid && GetCurrentTerm.touched"> Current Term is required</p>
+
+  <br>
+
 
 
   <button [disabled] = "registerStudentCourseForm.invalid">Register</button>

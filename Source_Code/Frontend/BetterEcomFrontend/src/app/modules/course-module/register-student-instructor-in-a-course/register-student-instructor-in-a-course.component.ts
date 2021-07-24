@@ -12,8 +12,10 @@ export class RegisterStudentInstructorInACourseComponent implements OnInit {
 
   type:string
 
+  instanceId:number = -2
   registerStudentCourseForm = new FormGroup({
-    CourseInstanceID: new FormControl('',[Validators.required]),
+    CourseCode: new FormControl('',[Validators.required]),
+    CurrentTerm : new FormControl('',[Validators.required])
   })
   constructor(private activatedRoute:ActivatedRoute,
               private registerStdInsCourseService:RegisterStudentInstructorCourseService) { }
@@ -34,7 +36,71 @@ export class RegisterStudentInstructorInACourseComponent implements OnInit {
 
   register(){
 
-    this.registerStdInsCourseService.registerInCourse(this.type,this.registerStudentCourseForm.value).subscribe(
+    this.registerStdInsCourseService.getCourseInstance(this.registerStudentCourseForm.value['CourseCode']).subscribe(
+      response =>{
+
+        let currentYear = new Date().getFullYear()
+
+        // for some reason, the enum in db current_term, returns number intead of string,
+        //i.e 0 instead of first, 1 instead of second etc.
+        let TermToNumber:number
+
+        if(this.registerStudentCourseForm.value['CurrentTerm'] == 'First'){
+
+          TermToNumber = 0
+        }else if(this.registerStudentCourseForm.value['CurrentTerm'] == 'Second'){
+
+          TermToNumber = 1
+
+        }else{
+
+          TermToNumber = 2
+        }
+
+        for(let key of Object.keys(response)){
+
+          if(response[key]['course_year'] == currentYear && response[key]['course_term'] == TermToNumber ){
+            this.instanceId = response[key]['instance_id']
+          }
+        }
+
+
+        console.log(this.instanceId)
+        if(this.instanceId != -2){
+          let idsObj = {}
+          if(this.type == 'student')
+            idsObj['StudentID'] = this.registerStudentCourseForm.value['StudentID']
+          else
+            idsObj['InstructorID'] = this.registerStudentCourseForm.value['InstructorID']
+
+
+          idsObj['CourseInstanceID'] = this.instanceId
+          this.registerStdInsCourseService.registerInCourse(this.type,idsObj).subscribe(
+
+            response => {
+              alert('registeration Successful!')
+            },
+            error => {
+
+              alert('registeration Failed!'+ ((this.type == 'student')?'The Registeration Time could be over, or ':'')+ this.type + 'ID is not registered in the faculty or ' + this.type + 'ID is already registered in this course')
+
+            }
+            )
+        }else{
+          alert('no course was found with the specified info!')
+        }
+
+
+
+      },
+
+
+      error => {
+        alert('Registeration Failed! server may be down')
+      }
+    )
+
+    /*this.registerStdInsCourseService.registerInCourse(this.type,this.registerStudentCourseForm.value).subscribe(
 
       response => {
         alert("registeration Successfull!")
@@ -42,7 +108,7 @@ export class RegisterStudentInstructorInACourseComponent implements OnInit {
       error =>{
         alert("registeration Failed!")
       }
-    )
+    )*/
 
   }
 
@@ -55,9 +121,12 @@ export class RegisterStudentInstructorInACourseComponent implements OnInit {
     return this.registerStudentCourseForm.get('StudentID')
   }
 
-  get GetCourseInstanceID(){
-    return this.registerStudentCourseForm.get('CourseInstanceID')
+  get GetCourseCode(){
+    return this.registerStudentCourseForm.get('CourseCode')
   }
 
+  get GetCurrentTerm(){
+    return this.registerStudentCourseForm.get('CurrentTerm')
+  }
 
 }
