@@ -38,11 +38,13 @@ export class AdminLateRegisterationPageComponent implements OnInit {
   })
 
   late_requests_list : Array<any> = []
+  showTable : boolean = false;
 
   ngOnInit(): void {
   }
 
   getAllRequests(){
+    this.showTable = false;
     this.late_requests_list = [];
     this.lateRegisterationService.getAllLateCourseRegistrationRequests().subscribe(
       requests =>{
@@ -54,6 +56,7 @@ export class AdminLateRegisterationPageComponent implements OnInit {
         if(this.late_requests_list.length < 1) {alert('There is no new requests');}
         this.getInstanceID();
         console.log(this.late_requests_list);
+        this.showTable = true;
       },
       error =>{
         console.log(error.error);
@@ -62,15 +65,19 @@ export class AdminLateRegisterationPageComponent implements OnInit {
   }
 
   getCourseRequests(){
+    this.showTable = false;
     this.late_requests_list = [];
     console.log(this.course_code_get.value);
     this.lateRegisterationService.getCourseLateCourseRegistrationRequests(this.course_code_get.value).subscribe(
       requests =>{
         requests.forEach((element,index) => {
-          this.late_requests_list.push(element)
+          if(!this.checkIfAcceptedOrRejected(element))
+            this.late_requests_list.push(element)
         });
         if(this.late_requests_list.length < 1) {alert('There is no new requests');}
+        this.getInstanceID();
         console.log(this.late_requests_list);
+        this.showTable = true;
       },
       error =>{
         console.log(error.error);
@@ -79,16 +86,20 @@ export class AdminLateRegisterationPageComponent implements OnInit {
   }
 
   getStudentRequests(){
+    this.showTable = false;
     this.late_requests_list = [];
     console.log(this.student_id_get.value);
     var student_id : number = +this.student_id_get.value;
     this.lateRegisterationService.getStudentLateCourseInstanceRegistrationRequests(student_id).subscribe(
       requests =>{
         requests.forEach((element,index) => {
-          this.late_requests_list.push(element)
+          if(!this.checkIfAcceptedOrRejected(element))
+            this.late_requests_list.push(element)
         });
         if(this.late_requests_list.length < 1) {alert('There is no new requests');}
+        this.getInstanceID();
         console.log(this.late_requests_list);
+        this.showTable = true;
       },
       error =>{
         console.log(error.error);
@@ -161,7 +172,7 @@ export class AdminLateRegisterationPageComponent implements OnInit {
   }
 
   mapRequestStatus(index : number){
-    if(this.late_requests_list[index].request_status == 0) {this.late_requests_list[index].request_status = 'Pending_Accept'}
+    if(this.late_requests_list[index].request_status == 0) {this.late_requests_list[index].request_status = 'Pending Accept'}
     else if (this.late_requests_list[index].request_status == 1) {this.late_requests_list[index].request_status = 'Accepted'}
     else if (this.late_requests_list[index].request_status == 2) {this.late_requests_list[index].request_status = 'Rejected'}
 

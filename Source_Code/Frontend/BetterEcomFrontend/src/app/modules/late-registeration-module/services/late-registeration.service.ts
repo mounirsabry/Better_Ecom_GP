@@ -13,6 +13,10 @@ export class LateRegisterationService {
     return this.httpclient.get<any>("https://localhost:44361/course/GetStudentAvailableCourses/" + student_id);
   }
 
+  getCourseAvailableCourseInstances(course_code : string){
+    return this.httpclient.get<any>("https://localhost:44361/course/GetCourseAvailableCourseInstances/" + course_code);
+  }
+
   getIsNormalCourseRegistrationOpen(){ //admin, student
     return this.httpclient.get<any>("https://localhost:44361/course/GetIsNormalCourseRegistrationOpen");
   }

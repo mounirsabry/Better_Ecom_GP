@@ -25,6 +25,8 @@ import { RegisterStudentInstructorInACourseComponent } from './modules/course-mo
 import { LateRegisterationPageComponent } from './modules/late-registeration-module/late-registeration-page/late-registeration-page.component';
 import { AdminLateRegisterationPageComponent } from './modules/late-registeration-module/admin-late-registeration-page/admin-late-registeration-page.component';
 import { StudentCoursePageComponent } from './modules/course-module/student-course-page/student-course-page.component';
+import { GeneralFeedComponent } from './modules/feed-module/general-feed/general-feed.component';
+import { CourseInstancePageComponent } from './modules/course-module/course-instance-page/course-instance-page.component';
 @NgModule({
 
   declarations: [
@@ -43,7 +45,9 @@ import { StudentCoursePageComponent } from './modules/course-module/student-cour
     RegisterStudentInstructorInACourseComponent,
     LateRegisterationPageComponent,
     AdminLateRegisterationPageComponent,
-    StudentCoursePageComponent
+    StudentCoursePageComponent,
+    GeneralFeedComponent,
+    CourseInstancePageComponent
 
 
   ],
