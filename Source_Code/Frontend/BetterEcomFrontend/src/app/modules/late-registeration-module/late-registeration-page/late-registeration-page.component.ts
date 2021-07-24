@@ -33,6 +33,7 @@ export class LateRegisterationPageComponent implements OnInit {
   late_requests_list : Array<any> = []
   available_courses_list : Array<any> = []
   studentID : number = +localStorage.getItem('ID');
+  course_code_list : Array<string> = []
 
 
   ngOnInit(): void {
@@ -45,6 +46,11 @@ export class LateRegisterationPageComponent implements OnInit {
           this.late_requests_list.push(element)
         });
         console.log(this.late_requests_list);
+        this.getInstanceID();
+        this.late_requests_list.forEach((element, index) =>{
+          this.mapInstanceToCourse(index);
+        });
+        console.log('ok');
       },
       error =>{
         console.log(error.error);
@@ -116,4 +122,21 @@ export class LateRegisterationPageComponent implements OnInit {
     return Object.keys(obj);
   }
 
+  getInstanceID(){
+    for(let i of this.late_requests_list){
+      this.lateRegisterationService.getCourseInstanceByID(i.course_instance_id).subscribe(
+        data =>{
+          console.log(data);
+          console.log(data[0].course_code);
+          this.course_code_list.push(data[0].course_code);
+        }
+      )
+      console.log(this.course_code_list);
+    }
+  }
+
+  mapInstanceToCourse(index : number){
+    this.late_requests_list[index].course_instance_id = this.course_code_list[index];
+    console.log(this.course_code_list[index]);
+  }
 }
