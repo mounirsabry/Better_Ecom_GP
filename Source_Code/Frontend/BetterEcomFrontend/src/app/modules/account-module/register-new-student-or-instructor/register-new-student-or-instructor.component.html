@@ -39,7 +39,7 @@
             <div class="container-fluid my-2">
                 <div class="row">
                     <label class="col-3">National ID</label>
-                    <input class="col-9" type="number" formControlName="National_id"></div>
+                    <input class="col-9" type="text" formControlName="National_id"></div>
                 <div class="row">
                     <p class="text-danger" *ngIf="nationalIDGet.invalid && nationalIDGet.touched"> National ID is required</p>
                 </div>
@@ -112,9 +112,9 @@
                   <label class="col-3">Department Code</label>
                   <div class="col-9">
                       <select formControlName="Department_code">
-                    <option *ngFor="let code of departmentCodes" >{{code}}</option>
-
-                  </select>
+                          <option *ngFor="let code of departmentCodes" >{{code}}</option>
+                          <option hidden disabled selected value> -- select an option -- </option>
+                     </select>
                   </div>
               </div>
               <div class="row">
