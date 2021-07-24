@@ -7,67 +7,72 @@ import { throwError } from 'rxjs';
 })
 export class LateRegisterationService {
 
-  constructor(private httpclient:HttpClient) { }
+  constructor(private httpclient: HttpClient) { }
 
-  getStudentAvailableCourses(student_id : number){
+  getStudentAvailableCourses(student_id: number) {
     return this.httpclient.get<any>("https://localhost:44361/course/GetStudentAvailableCourses/" + student_id);
   }
 
-  getIsNormalCourseRegistrationOpen(){ //admin, student
+  getIsNormalCourseRegistrationOpen() { //admin, student
     return this.httpclient.get<any>("https://localhost:44361/course/GetIsNormalCourseRegistrationOpen");
   }
 
-  getIsLateCourseRegistrationOpen(){ //admin, student
+  getIsLateCourseRegistrationOpen() { //admin, student
     return this.httpclient.get<any>("https://localhost:44361/course/GetIsLateCourseRegistrationOpen");
   }
 
-  getIsDropCourseRegistrationOpen(){ //admin, student
+  getIsDropCourseRegistrationOpen() { //admin, student
     return this.httpclient.get<any>("https://localhost:44361/course/GetIsDropCourseRegistrationOpen");
   }
 
-  getAllLateCourseRegistrationRequests(){ //admin
+  getAllLateCourseRegistrationRequests() { //admin
     return this.httpclient.get<any>("https://localhost:44361/course/GetAllLateCourseInstanceRegistrationRequests");
   }
 
-  getCourseLateCourseRegistrationRequests(course_code : string){ //admin
+  getCourseAvailableCourseInstances(course_code: string) {
+    return this.httpclient.get<any>("https://localhost:44361/course/GetCourseAvailableCourseInstances/" + course_code);
+  }
+
+
+  getCourseLateCourseRegistrationRequests(course_code: string) { //admin
     return this.httpclient.get<any>("https://localhost:44361/course/GetCourseLateCourseRegistrationRequests/" + course_code);
   }
 
-  getStudentLateCourseInstanceRegistrationRequests(student_id : number){ //student, admin
-    return this.httpclient.get<any>("https://localhost:44361/course/GetStudentLateCourseInstanceRegistrationRequests/" + student_id); 
+  getStudentLateCourseInstanceRegistrationRequests(student_id: number) { //student, admin
+    return this.httpclient.get<any>("https://localhost:44361/course/GetStudentLateCourseInstanceRegistrationRequests/" + student_id);
   }
 
-  getLateCourseInstanceRegistrationRequestAvailableStatus(){  //admin
+  getLateCourseInstanceRegistrationRequestAvailableStatus() {  //admin
     return this.httpclient.get<any>("https://localhost:44361/course/GetLateCourseInstanceRegistrationRequestAvailableStauts");
   }
 
-  submitLateCourseInstanceRegistrationRequest(request : any){ //student
+  submitLateCourseInstanceRegistrationRequest(request: any) { //student
     return this.httpclient.post<any>("https://localhost:44361/course/SubmitLateCourseInstanceRegistrationRequest", request);
   }
 
-  deleteLateCourseInstanceRegistrationRequest(request_id : number){ //student
+  deleteLateCourseInstanceRegistrationRequest(request_id: number) { //student
     return this.httpclient.delete<any>("https://localhost:44361/course/DeleteLateCourseInstanceRegistrationRequest/" + request_id);
   }
 
-  setLateCourseInstanceRegistrationRequest(request : any){ //admin
+  setLateCourseInstanceRegistrationRequest(request: any) { //admin
     return this.httpclient.patch<any>("https://localhost:44361/course/SetLateCourseInstanceRegistrationRequest", request);
   }
 
-  getCourseInstancesFromCourse(course_code : string){
-    return this.httpclient.get<any>("https://localhost:44361/department/GetCourseInstancesFromCourse/" + course_code); 
+  getCourseInstancesFromCourse(course_code: string) {
+    return this.httpclient.get<any>("https://localhost:44361/department/GetCourseInstancesFromCourse/" + course_code);
   }
 
-  getCourseInstanceByID(instance_id : number){
-    return this.httpclient.get<any>("https://localhost:44361/department/GetCourseInstanceByID/" + instance_id); 
+  getCourseInstanceByID(instance_id: number) {
+    return this.httpclient.get<any>("https://localhost:44361/department/GetCourseInstanceByID/" + instance_id);
   }
 
-  getRegisteredCoursesStudent(){} //courseController
-  dropStudent(){}
-  dropInstructor(){}
-  getRegisteredCoursesInstructor(){}
-  setCourseInstanceReadOnly(){}
+  getRegisteredCoursesStudent() { } //courseController
+  dropStudent() { }
+  dropInstructor() { }
+  getRegisteredCoursesInstructor() { }
+  setCourseInstanceReadOnly() { }
 
-  handleError(error : HttpErrorResponse){
+  handleError(error: HttpErrorResponse) {
     return throwError(error);
   }
 }

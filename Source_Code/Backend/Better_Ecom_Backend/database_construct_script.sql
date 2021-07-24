@@ -160,36 +160,62 @@ CREATE TABLE IF NOT EXISTS student_course_instance_registration (
 );
 
 CREATE TABLE IF NOT EXISTS instructor_course_instance_registration (
-	registration_id INT AUTO_INCREMENT,
+    registration_id INT AUTO_INCREMENT,
     instructor_id INT NOT NULL,
     course_instance_id INT NOT NULL,
     registration_date DATETIME NOT NULL,
-    CONSTRAINT instructor_course_registration_combination_unqiue UNIQUE (instructor_id, course_instance_id),
+    CONSTRAINT instructor_course_registration_combination_unqiue UNIQUE (instructor_id , course_instance_id),
     CONSTRAINT instructor_course_registration_instructor_id FOREIGN KEY (instructor_id)
-		REFERENCES instructor (instructor_id)
+        REFERENCES instructor (instructor_id)
         ON UPDATE CASCADE ON DELETE CASCADE,
-	CONSTRAINT instructor_course_registration_course_instance_id FOREIGN KEY (course_instance_id)
-		REFERENCES course_instance (instance_id)
-		ON UPDATE CASCADE ON DELETE CASCADE,
-	PRIMARY KEY (registration_id)
+    CONSTRAINT instructor_course_registration_course_instance_id FOREIGN KEY (course_instance_id)
+        REFERENCES course_instance (instance_id)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (registration_id)
 );
 
 CREATE TABLE IF NOT EXISTS general_feed (
-	feed_id INT AUTO_INCREMENT,
+    feed_id INT AUTO_INCREMENT,
     content TEXT NOT NULL,
     insertion_date DATETIME NOT NULL,
     PRIMARY KEY (feed_id)
 );
 
 CREATE TABLE IF NOT EXISTS course_instance_feed (
-	feed_id INT AUTO_INCREMENT,
+    feed_id INT AUTO_INCREMENT,
     course_instance_id INT NOT NULL,
     content TEXT NOT NULL,
     insertion_date DATETIME NOT NULL,
     CONSTRAINT course_instance_feed_course_instance_id FOREIGN KEY (course_instance_id)
-		REFERENCES course_instance (instance_id)
+        REFERENCES course_instance (instance_id)
         ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY (feed_id)
+);
+
+CREATE TABLE IF NOT EXISTS attendance_item (
+    item_id INT AUTO_INCREMENT,
+    course_instance_id INT NOT NULL,
+    item_name VARCHAR(100) NOT NULL,
+    attendance_type ENUM('Lab', 'Section') NOT NULL,
+    attendance_date DATETIME NULL,
+    CONSTRAINT attendance_name_unique_across_course_instance UNIQUE (course_instance_id , item_name),
+    CONSTRAINT attendance_item_course_instance FOREIGN KEY (course_instance_id)
+        REFERENCES course_instance (instance_id)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (item_id)
+);
+
+CREATE TABLE IF NOT EXISTS student_attendance_item_attendance (
+    attendance_item_id INT NOT NULL,
+    student_id INT NOT NULL,
+    attendance_status ENUM('Attended', 'Absent', 'Excused', 'Not_Specified') NOT NULL,
+    CONSTRAINT attendance_attendance_item_id FOREIGN KEY (attendance_item_id)
+		REFERENCES attendance_item (item_id)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT attendance_student_id FOREIGN KEY (student_id)
+		REFERENCES student (student_id)
+		ON UPDATE CASCADE ON DELETE CASCADE,
+	PRIMARY KEY (attendance_item_id , student_id)
 );
 
 INSERT INTO department VALUES ('GE', 'General');

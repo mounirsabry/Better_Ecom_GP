@@ -639,16 +639,21 @@ namespace Better_Ecom_Backend.Controllers
 
             string getStudentCourseInstanceStatusSql = "SELECT student_course_instance_status FROM student_course_instance_registration WHERE student_id = @studentID AND course_instance_id = @courseInstanceID;";
 
-            List<StudentCourseInstanceRegistrationStatus> registrationStatuses = _data.LoadData<StudentCourseInstanceRegistrationStatus, dynamic>(getStudentCourseInstanceStatusSql,
+            List<string> registrationStatuses = _data.LoadData<string, dynamic>(getStudentCourseInstanceStatusSql,
                 new { studentID, courseInstanceID }, _config.GetConnectionString("Default"));
 
             if (registrationStatuses is null)
             {
                 return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
+            else if (registrationStatuses.Count == 0)
+            {
+                return BadRequest(new { Message = "student has no status for given course instance." });
+            }
             else
             {
-                return Ok(registrationStatuses);
+                List<StudentCourseInstanceRegistrationStatus> status = new() { Enum.Parse<StudentCourseInstanceRegistrationStatus>(registrationStatuses.First()) };
+                return Ok(status);
             }
         }
 
@@ -971,7 +976,7 @@ namespace Better_Ecom_Backend.Controllers
             TokenInfo tokenInfo = HelperFunctions.GetIdAndTypeFromToken(Authorization);
             if(tokenInfo.Type == "instructor")
             {
-                if (ExistanceFunctions.IsInstructorExistInCourseInstance(_config, _data, tokenInfo.UserID, courseInstanceID) == false)
+                if (RegistrationFunctions.IsInstructorRegisteredToCourseInstance(_config, _data, tokenInfo.UserID, courseInstanceID) == false)
                 {
                     return BadRequest(new { Message = "instructor must be registered in course instance." });
                 }
