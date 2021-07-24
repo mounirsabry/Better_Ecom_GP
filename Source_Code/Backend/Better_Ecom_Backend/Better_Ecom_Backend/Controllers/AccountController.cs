@@ -202,8 +202,12 @@ namespace Better_Ecom_Backend.Controllers
         /// <returns>Ok if successful BadRequest otherwise.</returns>
         [Authorize(Roles = "admin")]
         [HttpPatch("ResetAccountCredientials")]
-        public IActionResult ResetAccountCredientials([FromBody] JsonElement userData)
+        public IActionResult ResetAccountCredientials([FromHeader]string Authorization, [FromBody] JsonElement userData)
         {
+
+            TokenInfo tokenInfo = HelperFunctions.GetIdAndTypeFromToken(Authorization);
+            int invokerID = tokenInfo.UserID;
+
             if (!ResetAccountCredientialsRequiredDataValid(userData))
             {
                 return BadRequest(new { Message = "required data missing or invalid." });
@@ -216,6 +220,14 @@ namespace Better_Ecom_Backend.Controllers
             if (!HelperFunctions.CheckUserIDAndType(userID, type))
             {
                 return BadRequest(new { Message = "invalid user id or type." });
+            }
+
+            if(type == "admin")
+            {
+                if(userID != invokerID)
+                {
+                    return BadRequest(new { Message = "admin cannot reset credentials of another admin." });
+                }
             }
 
             string sql;
