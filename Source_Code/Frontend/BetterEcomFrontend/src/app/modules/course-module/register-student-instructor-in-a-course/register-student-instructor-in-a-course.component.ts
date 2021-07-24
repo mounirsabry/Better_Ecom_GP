@@ -12,8 +12,10 @@ export class RegisterStudentInstructorInACourseComponent implements OnInit {
 
   type:string
 
+  instanceId:number
   registerStudentCourseForm = new FormGroup({
-    CourseInstanceID: new FormControl('',[Validators.required]),
+    CourseCode: new FormControl('',[Validators.required]),
+    CurrentTerm : new FormControl('',[Validators.required])
   })
   constructor(private activatedRoute:ActivatedRoute,
               private registerStdInsCourseService:RegisterStudentInstructorCourseService) { }
@@ -34,7 +36,58 @@ export class RegisterStudentInstructorInACourseComponent implements OnInit {
 
   register(){
 
-    this.registerStdInsCourseService.registerInCourse(this.type,this.registerStudentCourseForm.value).subscribe(
+    this.registerStdInsCourseService.getCourseInstance(this.registerStudentCourseForm.value['CourseCode']).subscribe(
+      response =>{
+        let currentYear = new Date().getFullYear()
+
+        // for some reason, the enum in db current_term, returns number intead of string,
+        //i.e 0 instead of first, 1 instead of second etc.
+        let TermToNumber:number
+
+        if(this.registerStudentCourseForm.value['CurrentTerm'] == 'First'){
+
+          TermToNumber = 0
+        }else if(this.registerStudentCourseForm.value['CurrentTerm'] == 'Second'){
+
+          TermToNumber = 1
+
+        }else{
+
+          TermToNumber = 2
+        }
+
+        for(let key of Object.keys(response)){
+
+          if(response[key]['course_year'] == currentYear && response[key]['course_term'] == TermToNumber ){
+            this.instanceId = response[key]['instance_id']
+          }
+        }
+
+        let idsObj = {}
+        idsObj['StudentID'] = this.registerStudentCourseForm.value['StudentID']
+        idsObj['CourseInstanceID'] = this.instanceId
+        this.registerStdInsCourseService.registerInCourse(this.type,idsObj).subscribe(
+
+          response => {
+            alert('registeration Successful!')
+          },
+          error => {
+            alert('registeration Failed!')
+
+
+          }
+        )
+
+
+      },
+
+
+      error => {
+        alert('Registeration Failed!')
+      }
+    )
+
+    /*this.registerStdInsCourseService.registerInCourse(this.type,this.registerStudentCourseForm.value).subscribe(
 
       response => {
         alert("registeration Successfull!")
@@ -42,7 +95,7 @@ export class RegisterStudentInstructorInACourseComponent implements OnInit {
       error =>{
         alert("registeration Failed!")
       }
-    )
+    )*/
 
   }
 
@@ -55,9 +108,12 @@ export class RegisterStudentInstructorInACourseComponent implements OnInit {
     return this.registerStudentCourseForm.get('StudentID')
   }
 
-  get GetCourseInstanceID(){
-    return this.registerStudentCourseForm.get('CourseInstanceID')
+  get GetCourseCode(){
+    return this.registerStudentCourseForm.get('CourseCode')
   }
 
+  get GetCurrentTerm(){
+    return this.registerStudentCourseForm.get('CurrentTerm')
+  }
 
 }
