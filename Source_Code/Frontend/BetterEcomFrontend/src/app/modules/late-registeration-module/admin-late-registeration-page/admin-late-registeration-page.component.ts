@@ -47,8 +47,12 @@ export class AdminLateRegisterationPageComponent implements OnInit {
     this.lateRegisterationService.getAllLateCourseRegistrationRequests().subscribe(
       requests =>{
         requests.forEach((element,index) => {
-          this.late_requests_list.push(element)
+          if(!this.checkIfAcceptedOrRejected(element))
+            this.late_requests_list.push(element)
+
         });
+        if(this.late_requests_list.length < 1) {alert('There is no new requests');}
+        this.getInstanceID();
         console.log(this.late_requests_list);
       },
       error =>{
@@ -65,6 +69,7 @@ export class AdminLateRegisterationPageComponent implements OnInit {
         requests.forEach((element,index) => {
           this.late_requests_list.push(element)
         });
+        if(this.late_requests_list.length < 1) {alert('There is no new requests');}
         console.log(this.late_requests_list);
       },
       error =>{
@@ -82,6 +87,7 @@ export class AdminLateRegisterationPageComponent implements OnInit {
         requests.forEach((element,index) => {
           this.late_requests_list.push(element)
         });
+        if(this.late_requests_list.length < 1) {alert('There is no new requests');}
         console.log(this.late_requests_list);
       },
       error =>{
@@ -134,10 +140,22 @@ export class AdminLateRegisterationPageComponent implements OnInit {
     )
   }
 
-  checkIfAcceptedOrRejected(index : number){
-    if(this.late_requests_list[index].request_status == 1 || this.late_requests_list[index].request_status == 2){
+  checkIfAcceptedOrRejected(lateRequest){
+    if(lateRequest.request_status == 1 || lateRequest.request_status == 2){
       return true;
     }
     else {return false;}
+  }
+
+
+  getInstanceID(){
+    this.late_requests_list.forEach((element, index) =>{
+      this.lateRegisterationService.getCourseInstanceByID(element.course_instance_id).subscribe(
+        data =>{
+          //console.log(data[0].course_code);
+          this.late_requests_list[index].course_instance_id = data[0].course_code;
+        }
+      )
+    })
   }
 }

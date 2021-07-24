@@ -45,12 +45,7 @@ export class LateRegisterationPageComponent implements OnInit {
         requests.forEach((element,index) => {
           this.late_requests_list.push(element)
         });
-        console.log(this.late_requests_list);
         this.getInstanceID();
-        this.late_requests_list.forEach((element, index) =>{
-          this.mapInstanceToCourse(index);
-        });
-        console.log('ok');
       },
       error =>{
         console.log(error.error);
@@ -123,20 +118,14 @@ export class LateRegisterationPageComponent implements OnInit {
   }
 
   getInstanceID(){
-    for(let i of this.late_requests_list){
-      this.lateRegisterationService.getCourseInstanceByID(i.course_instance_id).subscribe(
+    this.late_requests_list.forEach((element, index) =>{
+      this.lateRegisterationService.getCourseInstanceByID(element.course_instance_id).subscribe(
         data =>{
-          console.log(data);
-          console.log(data[0].course_code);
-          this.course_code_list.push(data[0].course_code);
+          //console.log(data[0].course_code);
+          this.late_requests_list[index].course_instance_id = data[0].course_code;
         }
       )
-      console.log(this.course_code_list);
-    }
-  }
-
-  mapInstanceToCourse(index : number){
-    this.late_requests_list[index].course_instance_id = this.course_code_list[index];
-    console.log(this.course_code_list[index]);
+    })
+    console.log(this.late_requests_list);
   }
 }

@@ -4,6 +4,28 @@
   
 </form>-->
 
+<table style="text-align: center;">
+  <tr>
+      <th></th> <!--remove deh ya mina lw na ma sheltha4-->
+      <th>Academic Year</th>
+      <th>Course Code</th>
+      <th>Course Description</th>
+      <th>Course Name</th>
+      <th>Department Code</th>
+      <th>Is Archived</th>
+      <th>Is Read only</th>
+  </tr>
+
+  <tr *ngFor="let courses of objectValues(available_courses_list);let courseIndex = index">
+
+      <td>{{ courseIndex }}</td>
+      <td *ngFor="let course of courses | keyvalue">{{ course.value }}</td>
+      <td><button>Select</button></td>
+
+  </tr>
+
+</table>
+
 
 <form [formGroup]="submitLateCourseRegisterationForm" (ngSubmit)="submitRequest()">
   <label>Course ID: </label>
@@ -21,8 +43,8 @@
 
 <table style="text-align: center;">
   <tr>
-      <th>Index</th> <!--remove deh ya mina lw na ma sheltha4-->
-      <th>Course Instance ID</th>
+      <th></th> <!--remove deh ya mina lw na ma sheltha4-->
+      <th>Course Code</th>
       <th>Request Date</th>
       <th>Request ID</th>
       <th>Request Status</th>
