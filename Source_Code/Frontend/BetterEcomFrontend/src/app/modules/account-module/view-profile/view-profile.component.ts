@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { GetProfileDataService } from '../services/get-profile-data.service';
 import { SaveProfileChangesService } from '../services/save-profile-changes.service';
+import { CourseInstanceService } from '../../course-module/services/course-instance.service';
 
 //"let property of user | keyvalue
 @Component({
@@ -27,9 +28,12 @@ export class ViewProfileComponent implements OnInit {
   constructor(
     private getProfileDataService:GetProfileDataService,
     private activatedRoute:ActivatedRoute,
-    private saveProfileChangesService:SaveProfileChangesService
+    private saveProfileChangesService:SaveProfileChangesService,
+    private courseInstanceService:CourseInstanceService
     ) { }
 
+    student_gpa : number
+    hasGpa : boolean
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe((params:ParamMap)=>{
 
@@ -96,6 +100,22 @@ export class ViewProfileComponent implements OnInit {
         alert("failed to save changes!")
       }
     )
+  }
+
+  getStudentGpa(){
+
+    this.courseInstanceService.getStudentGPA(+this.id).subscribe(
+      respone =>{
+        console.log(respone);
+        this.student_gpa = respone.gpa;
+        if (this.student_gpa != null) {this.hasGpa = true;}
+        else {this.hasGpa = false;}
+      },
+      error =>{
+        alert(error.error);
+      }
+    )
+
   }
 
 

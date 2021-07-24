@@ -38,4 +38,8 @@ export class StudentGradeComponent implements OnInit {
     )
   }
 
+  getStudentGpa(){
+      
+  }
+
 }

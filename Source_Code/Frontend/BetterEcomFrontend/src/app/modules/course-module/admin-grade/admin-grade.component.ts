@@ -34,9 +34,13 @@ export class AdminGradeComponent implements OnInit {
       return this.setGradeForm.get('Grade');
     }
 
-    studentGpaForm = new FormControl({
+    studentGpaForm = new FormGroup({
       StudentID : new FormControl('', Validators.required)
     })
+
+    get studentGpa_id_get(){
+      return this.studentGpaForm.get('StudentID');
+    }
 
     studentCourseInstanceGrades : Array<string> = ['APlus',
       'A',
@@ -48,6 +52,8 @@ export class AdminGradeComponent implements OnInit {
       'D',
       'F']
 
+    student_gpa : number
+    hasGpa : boolean = false
   ngOnInit(): void {
   }
 
@@ -66,6 +72,18 @@ export class AdminGradeComponent implements OnInit {
   }
 
   getStudentGpa(){
+
+    this.courseInstanceService.getStudentGPA(this.studentGpa_id_get.value).subscribe(
+      respone =>{
+        console.log(respone);
+        this.student_gpa = respone.gpa;
+        if (this.student_gpa != null) {this.hasGpa = true;}
+        else {this.hasGpa = false;}
+      },
+      error =>{
+        alert(error.error);
+      }
+    )
 
   }
 

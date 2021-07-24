@@ -24,5 +24,14 @@
 </form>
 
 <form [formGroup]="studentGpaForm" (ngSubmit)="getStudentGpa()">
-    
+    <label>Student ID: </label>
+    <input type="number" name="StudnetID" id="StudentID" formControlName="StudentID">
+    <p *ngIf="studentGpa_id_get.invalid && studentGpa_id_get.touched" style="color: red;">student id is required</p>
+
+    <br>
+
+    <button type="submit" [disabled]="studentGpaForm.invalid">Get Student Gpa</button>
 </form>
+
+<label [hidden]="!hasGpa">Student Gpa:</label>
+<label [hidden]="!hasGpa">{{ student_gpa }}</label>
