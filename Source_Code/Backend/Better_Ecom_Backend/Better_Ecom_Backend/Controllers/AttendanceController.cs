@@ -203,6 +203,43 @@ namespace Better_Ecom_Backend.Controllers
         }
 
 
+        [Authorize(Roles = "instructor, admin")]
+        [HttpDelete("DeleteCourseInstanceAttendanceItem/{CourseInstanceID:int}/{ItemID:int}")]
+        public IActionResult DeleteCourseInstanceAttendanceItem([FromHeader] string Authorization, int courseInstanceID, int itemID)
+        {
+
+            if(ExistanceFunctions.IsCourseInstanceExists(_config,_data,courseInstanceID) == false)
+            {
+                return BadRequest(new { Message = MessageFunctions.GetCourseInstanceNotFoundMessage() });
+            }
+
+            TokenInfo tokenInfo = HelperFunctions.GetIdAndTypeFromToken(Authorization);
+            if (tokenInfo.Type == "instructor")
+            {
+                if (RegistrationFunctions.IsInstructorRegisteredToCourseInstance(_config, _data, tokenInfo.UserID, courseInstanceID) == false)
+                {
+                    return BadRequest(new { Message = MessageFunctions.GetInstructorNotRegisteredToCourseInstanceMessage() });
+                }
+            }
+
+            string deleteAttendanceItemSql = "DELETE FROM attendance_item WHERE item_id = @itemID; ";
+
+            int status = _data.SaveData(deleteAttendanceItemSql, new { itemID }, _config.GetConnectionString("Default"));
+
+            if(status >= 0 )
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+
+        }
+
+
+
+
         private List<int> getAttendanceItemID(int courseInstanceID, string itemName)
         {
             return _data.LoadData<int, dynamic>("SELECT item_id FROM attendance_item WHERE course_instance_id = @courseInstanceID AND item_name = @itemName;",
