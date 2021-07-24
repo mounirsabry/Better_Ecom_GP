@@ -1,5 +1,6 @@
 ﻿using Better_Ecom_Backend.Entities;
 using Better_Ecom_Backend.Helpers;
+using Better_Ecom_Backend.Models;
 using DataLibrary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -103,7 +104,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 StudentID = studentID,
                 CourseInstanceID = courseInstanceID,
-                Grade = grade
+                Grade = Enum.GetName(grade)
             };
 
             int state = _data.SaveData<dynamic>(sql, parameters, _config.GetConnectionString("Default"));
@@ -157,13 +158,77 @@ namespace Better_Ecom_Backend.Controllers
             return false;
         }
 
-        private static bool RecalculateStudentGPA(int studentID)
+        private bool RecalculateStudentGPA(int studentID)
         {
             /*
             Return false in case the operation failed.
             Otherwise return true.
             */
-            return true;
+            string getGpaDataSql = "SELECT credit_hours, student_course_instance_grade FROM course_instance" + "\n" +
+                " INNER JOIN student_course_instance_registration ON student_course_instance_registration.course_instance_id = course_instance.instance_id" + "\n" +
+                " WHERE student_id = @studentID AND student_course_instance_status = \'Passed\';";
+            List<dynamic> Data = _data.LoadData<dynamic, dynamic>(getGpaDataSql, new { studentID }, _config.GetConnectionString("Default"));
+            if (Data is null)
+            {
+                return false;
+            }
+            List<GpaData> gpaData = new();
+            foreach(dynamic row in Data)
+            {
+                gpaData.Add(new GpaData(row.credit_hours, Enum.Parse<StudentCourseInstanceGrade>(row.student_course_instance_grade)));
+            }
+
+            double nCreditHours = 0.0;
+            double gpaWeightedAverage = 0.0;
+
+            foreach(GpaData data in gpaData)
+            {
+                nCreditHours += data.Credit_hours;
+                gpaWeightedAverage += GetGpaFromGrade(data.Student_course_instance_grade) * data.Credit_hours;
+            }
+
+            double newGpa = gpaWeightedAverage / nCreditHours;
+
+            string saveNewGpaSql = "UPDATE student SET gpa = @newGpa WHERE student_id = @studentID";
+
+            int status = _data.SaveData(saveNewGpaSql, new { newGpa, studentID }, _config.GetConnectionString("Default"));
+
+            if(status >= 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        double GetGpaFromGrade(StudentCourseInstanceGrade grade)
+        {
+            switch (grade)
+            {
+                case StudentCourseInstanceGrade.APlus:
+                    return 4.0;
+                case StudentCourseInstanceGrade.A:
+                    return 3.7;
+                case StudentCourseInstanceGrade.BPlus:
+                    return 3.3;
+                case StudentCourseInstanceGrade.B:
+                    return 3.0;
+                case StudentCourseInstanceGrade.CPlus:
+                    return 2.7;
+                case StudentCourseInstanceGrade.C:
+                    return 2.4;
+                case StudentCourseInstanceGrade.DPlus:
+                    return 2.2;
+                case StudentCourseInstanceGrade.D:
+                    return 2.0;
+                case StudentCourseInstanceGrade.F:
+                    return 0.0;
+                case StudentCourseInstanceGrade.Not_Specified:
+                    break;
+                default:
+                    break;
+            }
+            return 0;
         }
     }
 }
