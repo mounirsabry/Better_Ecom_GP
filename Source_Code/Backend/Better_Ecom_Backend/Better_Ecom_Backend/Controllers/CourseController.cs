@@ -736,9 +736,10 @@ namespace Better_Ecom_Backend.Controllers
             }
 
             string getRegisteredCourseInstanceIdsSql = "SELECT course_instance_id FROM instructor_course_instance_registration WHERE instructor_id = @instructorID ";
-            string getCourseCodesSql = $"SELECT DISTINCT course_code FROM course_instance WHERE instance_id IN ({getRegisteredCourseInstanceIdsSql});";
+            string getCourseCodesSql = $"SELECT DISTINCT course_code FROM course_instance WHERE instance_id IN ({getRegisteredCourseInstanceIdsSql})";
+            string getCoursesSql = $"SELECT * FROM course WHERE course_code in ({getCourseCodesSql});";
 
-            List<string> courseCodes = _data.LoadData<string, dynamic>(getCourseCodesSql, new { instructorID }, _config.GetConnectionString("Default"));
+            List<Course> courseCodes = _data.LoadData<Course, dynamic>(getCoursesSql, new { instructorID }, _config.GetConnectionString("Default"));
 
             if (courseCodes is null)
             {
@@ -777,9 +778,9 @@ namespace Better_Ecom_Backend.Controllers
                 return BadRequest(new { Message = MessageFunctions.GetInstructorNotFoundMessage() });
             }
 
-            string getRegisteredCourseInstanceIdsSql = "SELECT course_instance_id FROM instructor_course_instance_registration WHERE instructor_id = @instructorID ";
+            string getRegisteredCourseInstanceIdsSql = "SELECT * FROM instructor_course_instance_registration WHERE instructor_id = @instructorID ";
 
-            List<string> courseInstancesIds = _data.LoadData<string, dynamic>(getRegisteredCourseInstanceIdsSql, new { instructorID }, _config.GetConnectionString("Default"));
+            List<Course_instance> courseInstancesIds = _data.LoadData<Course_instance, dynamic>(getRegisteredCourseInstanceIdsSql, new { instructorID }, _config.GetConnectionString("Default"));
 
             if (courseInstancesIds is null)
             {
@@ -819,9 +820,9 @@ namespace Better_Ecom_Backend.Controllers
 
             string getInstructorRegisteredCourseInstanceIdsSql = "SELECT instance_id FROM instructor_course_instance_registration WHERE intructor_id = @instructorID";
 
-            string getInstructorRegisteredCourseCodesSql = $"SELECT instance_id FROM course_instance WHERE instance_id IN ({getInstructorRegisteredCourseInstanceIdsSql}) AND course_code = @courseCode;";
+            string getInstructorRegisteredCourseCodesSql = $"SELECT * FROM course_instance WHERE instance_id IN ({getInstructorRegisteredCourseInstanceIdsSql}) AND course_code = @courseCode;";
 
-            List<string> instanceIds = _data.LoadData<string, dynamic>(getInstructorRegisteredCourseCodesSql, new { instructorID, courseCode }, _config.GetConnectionString("Default"));
+            List<Course_instance> instanceIds = _data.LoadData<Course_instance, dynamic>(getInstructorRegisteredCourseCodesSql, new { instructorID, courseCode }, _config.GetConnectionString("Default"));
 
             if (instanceIds is null)
             {
