@@ -12,6 +12,8 @@ export class RegisterStudentInstructorInACourseComponent implements OnInit {
 
   type:string
 
+  logedInUser:string
+
   instanceId:number = -2
   registerStudentCourseForm = new FormGroup({
     CourseCode: new FormControl('',[Validators.required]),
@@ -26,6 +28,7 @@ export class RegisterStudentInstructorInACourseComponent implements OnInit {
       console.log(this.type)
     })
 
+    this.logedInUser = localStorage.getItem('type')
     if(this.type == 'student')
       this.registerStudentCourseForm.addControl('StudentID',new FormControl('',[Validators.required]))
     else

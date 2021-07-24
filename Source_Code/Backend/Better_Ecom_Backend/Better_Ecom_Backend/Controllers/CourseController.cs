@@ -54,8 +54,8 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult GetCourseAvailableCourseInstances([FromHeader] string Authorization, string courseCode)
         {
             //STUDENT, INSTRUCTOR, ADMIN FUNCTION.
-
             return Ok(new { Message = MessageFunctions.GetNotImplementedString() });
+
         }
 
         /// <summary>
