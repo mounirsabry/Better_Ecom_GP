@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-course-instance-page',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CourseInstancePageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private activatedRoute:ActivatedRoute) { }
 
+  instanceID:string
   ngOnInit(): void {
+    this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
+      this.instanceID = params.get('instanceID')
+    })
   }
 
 }
