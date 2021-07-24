@@ -762,8 +762,6 @@ namespace Better_Ecom_Backend.Controllers
 
         }
 
-
-
         [Authorize(Roles = "admin")]
         [HttpPatch("RemoveClosedForRegistratiolnMarkFromCourseInstance")]
         public IActionResult RemoveClosedForRegistratiolnMarkFromCourseInstance([FromBody] JsonElement jsonInput)
