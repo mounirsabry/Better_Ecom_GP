@@ -22,7 +22,7 @@
 
     <form class="row">
         <!-- make cs dynamic, according to chosen department-->
-        <a class="col-6 btn btn-outline-dark text-light" *ngIf="isAdmin()" [routerLink]="['/addCourseToDepartment/cs']">Add Course</a>
-        <a class="col-6 btn btn-outline-dark text-light" [routerLink]="['/courseInfo']">Search for Course</a>
+        <a class="col-12 btn btn-outline-dark text-light" *ngIf="isAdmin()" [routerLink]="['/addCourseToDepartment/cs']">Add Course</a>
+        <a class="col-12 btn btn-outline-dark text-light my-2" [routerLink]="['/courseInfo']">Search for Course</a>
     </form>
 </div>
