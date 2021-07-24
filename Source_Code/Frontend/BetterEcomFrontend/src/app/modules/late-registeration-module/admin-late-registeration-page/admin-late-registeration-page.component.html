@@ -1,44 +1,37 @@
+<div class="gradient container-fluid p-3">
+    <hr class="row my-2">
 
-<form [formGroup]="getLateRegisterationRequestsForm" (ngSubmit)="getAllRequests()">
-    <button type="submit">Get All Requests</button>
-</form>
-
-<br>
-
-<form [formGroup]="searchForRequestByCourseCodeForm" (ngSubmit)="getCourseRequests()">
-    <label>Search by Course Code: </label>
-    <input type="text" name="CourseCode" formControlName="Course_code">
-    <br>
-    <button type="submit" [disabled]="searchForRequestByCourseCodeForm.invalid">Get Course Requests</button>
-</form>
-
-<br>
-
-<form [formGroup]="searchForRequestByStudentIDForm" (ngSubmit)="getStudentRequests()">
-    <label>Search by Student ID: </label>
-    <input type="text" name="StudentID" formControlName="Student_ID">
-    <br>
-    <button type="submit" [disabled]="searchForRequestByStudentIDForm.invalid">Get Course Requests</button>
-</form>
+    <form class="row my-2" [formGroup]="getLateRegisterationRequestsForm" (ngSubmit)="getAllRequests()">
+        <button class="col-12 btn btn-outline-dark text-light" type="submit">Get All Requests</button>
+    </form>
 
 
-<table style="text-align: center;">
-    <tr>
-        <th>Index</th> <!--remove deh ya mina lw na ma sheltha4-->
-        <th>Course Code</th>
-        <th>Request Date</th>
-        <th>Request ID</th>
-        <th>Request Status</th>
-        <th>Student ID</th>
-    </tr>
+    <form class="row my-2" [formGroup]="searchForRequestByCourseCodeForm" (ngSubmit)="getCourseRequests()">
+        <label class="col-4">Search by Course Code: </label>
+        <input class="col-4" type="text" name="CourseCode" formControlName="Course_code">
+        <button class="col-4 btn btn-outline-dark text-light" type="submit" [disabled]="searchForRequestByCourseCodeForm.invalid">Get Course Requests</button>
+    </form>
 
-    <tr *ngFor="let requests of objectValues(late_requests_list);let requestIndex = index">
+    <form class="row my-2" [formGroup]="searchForRequestByStudentIDForm" (ngSubmit)="getStudentRequests()">
+        <label class="col-4">Search by Student ID: </label>
+        <input class="col-4" type="text" name="StudentID" formControlName="Student_ID">
+        <button class="col-4 btn btn-outline-dark text-light" type="submit" [disabled]="searchForRequestByStudentIDForm.invalid">Get Course Requests</button>
+    </form>
 
-        <td>{{ requestIndex }}</td>
-        <td *ngFor="let request of requests | keyvalue">{{ request.value }}</td>
-        <td><button (click)="acceptRequest(requestIndex)">Accept</button></td>
-        <td><button (click)="rejectRequest(requestIndex)">Reject</button></td>
-
-    </tr>
-
-</table>
+    <div class="row container-fluid my-2" [hidden]="!showTable">
+        <div class="row my-1 fw-bold text-dark">
+            <label class="col-2">Course Code</label>
+            <label class="col-2">Request Date</label>
+            <label class="col-2">Request ID</label>
+            <label class="col-2">Request Status</label>
+            <label class="col-2">Student ID</label>
+        </div>
+    
+        <div class="row my-1" *ngFor="let requests of objectValues(late_requests_list);let requestIndex = index">
+            <label class="col-2" *ngFor="let request of requests | keyvalue">{{ request.value }}</label>
+            <button class="col-1 btn btn-outline-success text-light" (click)="acceptRequest(requestIndex)">Accept</button>
+            <button class="col-1 btn btn-outline-danger text-light" (click)="rejectRequest(requestIndex)">Reject</button>
+    
+        </div>
+    </div>
+</div>
