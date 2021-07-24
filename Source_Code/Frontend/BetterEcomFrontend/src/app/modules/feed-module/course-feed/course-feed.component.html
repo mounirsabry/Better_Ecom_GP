@@ -1,0 +1,23 @@
+<!--course_instance_id-->
+
+<div *ngFor="let itemObj of courseFeedElements | keyvalue">
+    <div *ngFor="let item of itemObj.value | keyvalue">
+
+      <div *ngIf="item.key != 'course_instance_id'">
+          {{ (item.key == 'feed_id')?'ID: ':'' }} {{item.value}}
+      </div>
+
+      <button *ngIf="logedInType == 'instructor' && item.key =='feed_id'" (click)="delete((item.key == 'feed_id')? item.value : null)" >delete</button>
+
+    </div>
+</div>
+<button type="button" *ngIf="logedInType == 'instructor'" (click)="(showEditText == 'visible')?showEditText = 'hidden':showEditText = 'visible'">{{(showEditText == 'hidden')?'add To Feed' : 'close add' }}</button>
+
+<form [style.visibility] = 'showEditText' [formGroup]="courseFeedForm" (ngSubmit)="addToFeed()">
+
+  <textarea  formControlName="Content"></textarea>
+  <p class="row text-danger fw-bold" *ngIf="getContent.invalid && getContent.touched">You are required to enter text</p>
+
+  <button  type="submit" *ngIf="logedInType == 'instructor'" [disabled]="courseFeedForm.invalid">add</button>
+
+</form>
