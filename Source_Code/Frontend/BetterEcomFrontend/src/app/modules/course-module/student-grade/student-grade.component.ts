@@ -14,6 +14,7 @@ export class StudentGradeComponent implements OnInit {
 
   instance_id : number
   student_id : number
+  
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       console.log(params);
