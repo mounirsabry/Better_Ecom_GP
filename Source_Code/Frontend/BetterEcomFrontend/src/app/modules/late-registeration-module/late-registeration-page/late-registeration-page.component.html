@@ -4,7 +4,9 @@
   
 </form>-->
 
-<table style="text-align: center;">
+<button type="button" (click)="getAvailableCourses()">Get Available Courses</button>
+
+<table style="text-align: center;" [hidden]="!showAvailableCoursesTable">
   <tr>
       <th></th> <!--remove deh ya mina lw na ma sheltha4-->
       <th>Academic Year</th>
@@ -20,19 +22,39 @@
 
       <td>{{ courseIndex }}</td>
       <td *ngFor="let course of courses | keyvalue">{{ course.value }}</td>
-      <td><button>Select</button></td>
+      <td><button type="button" (click)="getAvailableCourseInstances(courseIndex)">Select</button></td>
 
   </tr>
 
 </table>
 
 
-<form [formGroup]="submitLateCourseRegisterationForm" (ngSubmit)="submitRequest()">
+<table style="text-align: center;" [hidden]="!showAvailableInstancesTable">
+  <tr>
+      <th></th> <!--remove deh ya mina lw na ma sheltha4-->
+      <th>Course Code</th>
+      <th>Course Term</th>
+      <th>Course Year</th>
+      <th>Credit Hours</th>
+      <th>Instance ID</th>
+  </tr>
+
+  <tr *ngFor="let instances of objectValues(available_coures_instance_list);let instanceIndex = index">
+
+      <td>{{ instanceIndex }}</td>
+      <td *ngFor="let instance of instances | keyvalue">{{ instance.value }}</td>
+      <td><button type="button" (click)="submitRequest(instanceIndex)">Register in Course</button></td>
+
+  </tr>
+
+</table>
+
+<!--<form [formGroup]="submitLateCourseRegisterationForm" (ngSubmit)="submitRequest()">
   <label>Course ID: </label>
   <input type="number" name="CourseInstanceID" formControlName="CourseInstanceID">
   <br>
   <button type="submit" [disabled]="submitLateCourseRegisterationForm.invalid">Submit Request</button>
-</form>
+</form>-->
 
 <!--<form [formGroup]="deleteLateRegisterationRequestForm" (ngSubmit)="deleteRequest()">
   <label>Request ID: </label>
@@ -60,6 +82,3 @@
   </tr>
 
 </table>
-
-<button type="button" (click)="getAvailableCourses()">Get Available Courses</button>
-

@@ -32,14 +32,22 @@ export class LateRegisterationPageComponent implements OnInit {
 
   late_requests_list : Array<any> = []
   available_courses_list : Array<any> = []
+  available_coures_instance_list : Array<any> = []
   studentID : number = +localStorage.getItem('ID');
   course_code_list : Array<string> = []
+  showAvailableCoursesTable : boolean = false;
+  showAvailableInstancesTable : boolean =false;
 
 
   ngOnInit(): void {
     this.submitLateCourseRegisterationForm.controls.StudentID.setValue(this.studentID);
     this.late_requests_list = [];
     //console.log(this.student_id_get.value)
+    this.getStudentRequests();
+  }
+
+  getStudentRequests(){
+    this.late_requests_list = []
     this.lateRegisterationService.getStudentLateCourseInstanceRegistrationRequests(this.studentID).subscribe(
       requests =>{
         requests.forEach((element,index) => {
@@ -58,6 +66,7 @@ export class LateRegisterationPageComponent implements OnInit {
       data =>{
         this.available_courses_list = data;
         console.log(this.available_courses_list);
+        this.showAvailableCoursesTable = true;
       },
       error =>{
         console.log(error.error);
@@ -65,9 +74,30 @@ export class LateRegisterationPageComponent implements OnInit {
     )
   }
 
-  submitRequest(){
+  getAvailableCourseInstances(index : number){
+    var course_code : string = this.available_courses_list[index].course_code;
+    this.lateRegisterationService.getCourseAvailableCourseInstances(course_code).subscribe(
+      data =>{
+        if(data.length < 1) {alert("No Course Instances were found")}
+
+        this.available_coures_instance_list = data;
+        console.log(this.available_coures_instance_list);
+        this.showAvailableInstancesTable = true;
+      },
+      error =>{
+        console.log(error.error);
+      }
+    )
+  }
+
+  submitRequest(index : number){
+    console.log(index)
+    var instance_id : number = this.available_coures_instance_list[index].instance_id;
+    this.submitLateCourseRegisterationForm.controls['CourseInstanceID'].setValue(instance_id);
+    console.log(this.submitLateCourseRegisterationForm.value);
     this.lateRegisterationService.submitLateCourseInstanceRegistrationRequest(this.submitLateCourseRegisterationForm.value).subscribe(
       response =>{
+        this.getStudentRequests();
         alert("Registeration submited");
       },
       error =>{
@@ -91,23 +121,6 @@ export class LateRegisterationPageComponent implements OnInit {
       }
     )
   }
-
-  /*getStudentRequests(){
-    this.late_requests_list = [];
-    //console.log(this.student_id_get.value);
-    var student_id : number = +this.student_id_get.value;
-    this.lateRegisterationService.getStudentLateCourseInstanceRegistrationRequests(student_id).subscribe(
-      requests =>{
-        requests.forEach((element,index) => {
-          this.late_requests_list.push(element)
-        });
-        console.log(this.late_requests_list);
-      },
-      error =>{
-        console.log(error.error);
-      }
-    )
-  }*/
 
   objectValues(obj){
     return Object.values(obj);
