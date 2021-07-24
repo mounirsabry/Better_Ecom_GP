@@ -62,7 +62,7 @@ namespace Better_Ecom_Backend.Controllers
             string authenticationMessage = AuthenticateUser(userID, password, type);
             if (authenticationMessage == "query failed.")
             {
-                return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
             else if (authenticationMessage == "no user found with such id." || authenticationMessage == "password is wrong.")
             {
@@ -112,7 +112,7 @@ namespace Better_Ecom_Backend.Controllers
 
             if (students == null)
             {
-                return BadRequest(new { message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
+                return BadRequest(new { message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
             else if (students.Count == 0)
             {
@@ -164,7 +164,7 @@ namespace Better_Ecom_Backend.Controllers
 
             if (instructors == null)
             {
-                return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
             else if (instructors.Count == 0)
             {
@@ -260,7 +260,7 @@ namespace Better_Ecom_Backend.Controllers
 
             if (dbResult == null)
             {
-                return BadRequest(new { Message = HelperFunctions.GetMaybeDatabaseIsDownMessage() });
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
             else if (dbResult.Count == 0)
             {

@@ -377,7 +377,7 @@ namespace Better_Ecom_Backend.Controllers
                                        + "@Nationality, @National_id, @Birth_date, @Gender, @Additional_info);";
 
             string studentInsertionSQL = "INSERT INTO student" + "\n"
-                                       + "VALUES(@Student_id, @Department_code, @High_school_type, @Entrance_year, @GPA, @Academic_year);";
+                                       + "VALUES(@Student_id, @Department_code, @High_school_type, @Entrance_year, NULL, @Academic_year);";
 
             List<string> insertionQueries = new()
             {

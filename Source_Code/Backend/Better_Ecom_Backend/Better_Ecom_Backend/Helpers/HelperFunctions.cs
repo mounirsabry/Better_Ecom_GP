@@ -10,29 +10,6 @@ namespace Better_Ecom_Backend.Helpers
 {
     public class HelperFunctions
     {
-        public static string GetNotImplementedString()
-        {
-            return "not implemented yet.";
-        }
-
-        public static string GetMaybeDatabaseIsDownMessage()
-        {
-            return "unknown error, maybe database is down.";
-        }
-        public static string GetRequiredDataMissingOrInvalidMessage()
-        {
-            return "required data missing or invalid.";
-        }
-
-        public static TokenInfo GetIdAndTypeFromToken(string tokenString)
-        {
-            JwtSecurityTokenHandler handler = new();
-            tokenString = tokenString[7..];
-            JwtSecurityToken token = handler.ReadJwtToken(tokenString);
-
-            return new TokenInfo(int.Parse(token.Claims.ToList()[1].Value), token.Claims.ToList()[0].Value);
-        }
-
         public static int GetFirstDigit(int number)
         {
             return (int)number.ToString()[0] - 48;
@@ -82,6 +59,15 @@ namespace Better_Ecom_Backend.Helpers
             }
         }
 
+        public static TokenInfo GetIdAndTypeFromToken(string tokenString)
+        {
+            JwtSecurityTokenHandler handler = new();
+            tokenString = tokenString[7..];
+            JwtSecurityToken token = handler.ReadJwtToken(tokenString);
+
+            return new TokenInfo(int.Parse(token.Claims.ToList()[1].Value), token.Claims.ToList()[0].Value);
+        }
+
         public static bool IsDepartmentCodeValid(IConfiguration _config, IDataAccess _data, string departmentCode)
         {
             if (departmentCode == null)
@@ -124,6 +110,24 @@ namespace Better_Ecom_Backend.Helpers
                 }
             }
             return true;
+        }
+
+        public static List<bool> GetCourseInstanceReadOnlyStatusList(IConfiguration _config, IDataAccess _data, int courseInstanceID)
+        {
+            string sql = "SELECT is_read_only FROM course_instance WHERE instance_id = @InstanceID;";
+            List<bool> statusList = _data.LoadData<bool, dynamic>(sql, new { InstanceID = courseInstanceID }, _config.GetConnectionString("Default"));
+            return statusList;
+        }
+
+        public static bool GetCourseInstanceReadOnlyStatus(IConfiguration _config, IDataAccess _data, int courseInstanceID)
+        {
+            string sql = "SELECT is_read_only FROM course_instance WHERE instance_id = @InstanceID;";
+            List<bool> statusList = _data.LoadData<bool, dynamic>(sql, new { InstanceID = courseInstanceID }, _config.GetConnectionString("Default"));
+            if (statusList is null || statusList.Count == 0)
+            {
+                return false;
+            }
+            return statusList[0];
         }
     }
 }

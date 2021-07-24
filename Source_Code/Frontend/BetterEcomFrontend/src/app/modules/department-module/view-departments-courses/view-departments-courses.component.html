@@ -1,43 +1,28 @@
+<div class="gradient p-3 container-fluid">
+    <hr class="row">
+    <form class="row container-fluid" [formGroup]="viewDepartmentCoursesForm" (ngSubmit)="viewCourses()">
+        <div class="row">
+            <label class="col-4">Select Department Name</label>
+            <select class="col-8" name="DepartmentCourses" id="DepartmentCourses" #Departments formControlName="DepartmentCode">
+            <option *ngFor="let dep of department_code_list; let i = index" value="{{ dep }}">{{ dep }}</option>
+            </select>
+        </div>
+        <p class="row text-danger fw-bold" *ngIf="departmentGet.invalid && departmentGet.touched">Please select a department</p>
+        <br>
+        <button class="row btn btn-outline-dark text-light my-2" type="submit" [disabled]="viewDepartmentCoursesForm.invalid">View Courses</button>
+    </form>
 
-<form [formGroup]="viewDepartmentCoursesForm" (ngSubmit)="viewCourses()">
-  <label>select department Name</label>
-  <select name="DepartmentCourses" id="DepartmentCourses" #Departments formControlName="DepartmentCode">
-    <option *ngFor="let dep of department_code_list; let i = index" 
-    value="{{ dep }}">{{ dep }}</option>
-  </select>
-  <p *ngIf="departmentGet.invalid && departmentGet.touched" style="color: red;">please select a department</p>
-  <br>
-  <button type="submit" [disabled]="viewDepartmentCoursesForm.invalid" style="color: black;">View Courses</button>
-</form>
+    <div class="row container-fluid" *ngFor="let course of objectValues(courses)">
+        <div class="row" *ngFor="let info of course | keyvalue">
+            <label class="col-4">{{ info.key }}: </label>
+            <label class="col-8">{{ info.value }}</label>
+        </div>
+        <hr class="row">
+    </div>
 
-  <!--courses are displayed here-->
-  <!--
-  <table style="width: 100%;">
-        <tr>
-          <th>Course Code</th>
-          <th>Department Code</th>
-          <th>Course Name</th>
-          <th>Academic Year</th>
-          <th>Course Description</th>
-          <th>Read only</th>
-          <th>Arhcived</th>
-        </tr>
-        <tr *ngFor="let course of objectValues(courses)">
-          <td *ngFor="let value of objectValues(course)">{{ value }}</td>
-        </tr>
-  </table>
--->
-<div *ngFor="let course of objectValues(courses)">
-  <div *ngFor="let info of course | keyvalue">
-      <label>{{ info.key }}: </label>
-      <label>{{ info.value }}</label>
-  </div>
-  <hr>
+    <form class="row">
+        <!-- make cs dynamic, according to chosen department-->
+        <a class="col-6 btn btn-outline-dark text-light" *ngIf="isAdmin()" [routerLink]="['/addCourseToDepartment/cs']">Add Course</a>
+        <a class="col-6 btn btn-outline-dark text-light" [routerLink]="['/courseInfo']">Search for Course</a>
+    </form>
 </div>
-
-<form>
-  <!-- make cs dynamic, according to chosen department-->
-  <a *ngIf="type == 'admin'" [routerLink]="['/addCourseToDepartment/cs']" >add course</a>
-  <br>
-  <a [routerLink]="['/courseInfo']">Search for Course</a>
-</form>

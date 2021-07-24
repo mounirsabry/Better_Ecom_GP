@@ -5,6 +5,7 @@ using DataLibrary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -88,7 +89,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 for (int i = 1; i <= 5; i++)
                 {
-                    sqlList.Add($"UPDATE student_department_priority_list SET priority = @priority WHERE student_id = @studentID AND department_code = @department_code");
+                    sqlList.Add($"UPDATE student_department_priority SET priority = @priority WHERE student_id = @studentID AND department_code = @department_code");
                     parameterList.Add(new { studentID, department_code = jsonData.GetProperty($"DepartmentCode{i}").GetString(), priority = i });
                 }
             }
@@ -96,7 +97,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 for (int i = 1; i <= 5; i++)
                 {
-                    sqlList.Add($"INSERT INTO student_department_priority_list VALUES(@studentID, @department_code, @priority)");
+                    sqlList.Add($"INSERT INTO student_department_priority VALUES(@studentID, @department_code, @priority)");
                     parameterList.Add(new { studentID, department_code = jsonData.GetProperty($"DepartmentCode{i}").GetString(), priority = i });
                 }
             }
@@ -132,15 +133,11 @@ namespace Better_Ecom_Backend.Controllers
                 return BadRequest("invalid student id.");
             }
 
-            string sql = "SELECT department_code, priority FROM student_department_priority_list WHERE student_id = @id;";
+            string sql = "SELECT department_code, priority FROM student_department_priority WHERE student_id = @id;";
             dynamic rows = _data.LoadData<dynamic, dynamic>(sql, new { id = studentID }, _config.GetConnectionString("Default"));
             if (rows == null)
             {
                 return BadRequest(new { Message = "unknown error, maybe database server is down." });
-            }
-            else if (rows.Count == 0)
-            {
-                return Ok(new { Message = "student did not sumbit any priority list." });
             }
             else
             {
@@ -459,7 +456,7 @@ namespace Better_Ecom_Backend.Controllers
             string courseCode = jsonData.GetProperty("Course_code").GetString();
 
             List<string> prerequisites = new();
-            foreach (JsonElement element in jsonData.GetProperty("prerequisites").EnumerateArray())
+            foreach (JsonElement element in jsonData.GetProperty("Prerequisites").EnumerateArray())
             {
                 prerequisites.Add(element.GetString());
             }
@@ -516,7 +513,7 @@ namespace Better_Ecom_Backend.Controllers
             List<string> departmentApplicability = new();
 
             List<string> availableDepartments = GetDepartmentsCodes();
-            foreach (JsonElement element in jsonData.GetProperty("departmentApplicability").EnumerateArray())
+            foreach (JsonElement element in jsonData.GetProperty("DepartmentApplicability").EnumerateArray())
             {
                 string departmentCode = element.GetString();
                 if (!availableDepartments.Contains(departmentCode))
@@ -558,24 +555,12 @@ namespace Better_Ecom_Backend.Controllers
         /// <param name="jsonData">json object containing the course id admin with to archive.</param>
         /// <returns></returns>
         [Authorize(Roles = "admin")]
-        [HttpDelete("ArchiveCourse")]
-        public IActionResult ArchiveCourse([FromBody] dynamic jsonData)
+        [HttpDelete("ArchiveCourse/{CourseCode}")]
+        public IActionResult ArchiveCourse(string courseCode)
         {
             //ADMIN ONLY FUNCTION.
-            if (!jsonData.TryGetProperty("UserID", out JsonElement temp) || !CheckAdminExists(temp.GetInt32()))
-            {
-                return BadRequest(new { Message = "user id is invalid." });
-            }
 
-            string courseCode;
-            if (jsonData.TryGetProperty("Course_code", out temp))
-            {
-                courseCode = temp.GetString();
-            }
-            else
-            {
-                return BadRequest(new { Message = "course code was not provided." });
-            }
+
 
             List<Course> course = CheckCourseArchiveStatus(courseCode);
 
@@ -583,7 +568,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 string archiveCourseSql = "UPDATE course SET is_archived = TRUE WHERE course_code = @courseCode;";
                 int status = _data.SaveData(archiveCourseSql, new { courseCode }, _config.GetConnectionString("Default"));
-                if (status > 0)
+                if (status >= 0)
                 {
                     return Ok(new { Message = "course archived." });
                 }
@@ -730,7 +715,22 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult GetIsCourseInstanceOpenForRegistration(int courseInstanceID)
         {
             //STUDENT, INSTRUCTOR, ADMIN FUNCTION.
-            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+
+            if (ExistanceFunctions.IsCourseInstanceExists(_config, _data, courseInstanceID) == false)
+            {
+                return BadRequest(new { Message = MessageFunctions.GetCourseInstanceNotFoundMessage() });
+            }
+
+            List<bool> availabilities = GetCourseInstanceClosedForRegistration(courseInstanceID);
+
+            if (availabilities is null)
+            {
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+
+            return Ok(!availabilities.First());
+
+
         }
 
         [Authorize(Roles = "admin")]
@@ -738,15 +738,58 @@ namespace Better_Ecom_Backend.Controllers
         public IActionResult MarkCourseInstanceAsClosedForRegistration([FromBody] JsonElement jsonInput)
         {
             //ADMIN ONLY FUNCTION.
-            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+            if (!jsonInput.TryGetProperty("CourseInstanceID", out JsonElement temp) || !temp.TryGetInt32(out int courseInstanceID))
+            {
+                return BadRequest(new { Message = MessageFunctions.GetRequiredDataMissingOrInvalidMessage() });
+            }
+            if (ExistanceFunctions.IsCourseInstanceExists(_config, _data, courseInstanceID) == false)
+            {
+                return BadRequest(new { Message = MessageFunctions.GetCourseInstanceNotFoundMessage() });
+            }
+
+            string markCourseInstanceClosedSql = "UPDATE course_instance SET is_closed_for_registration = TRUE WHERE instance_id = @courseInstanceID;";
+
+            int status = _data.SaveData(markCourseInstanceClosedSql, new { courseInstanceID }, _config.GetConnectionString("Default"));
+
+            if (status >= 0)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+
         }
+
+
 
         [Authorize(Roles = "admin")]
         [HttpPatch("RemoveClosedForRegistratiolnMarkFromCourseInstance")]
         public IActionResult RemoveClosedForRegistratiolnMarkFromCourseInstance([FromBody] JsonElement jsonInput)
         {
             //ADMIN ONLY FUNCTION.
-            return Ok(new { Message = HelperFunctions.GetNotImplementedString() });
+            if (!jsonInput.TryGetProperty("CourseInstanceID", out JsonElement temp) || !temp.TryGetInt32(out int courseInstanceID))
+            {
+                return BadRequest(new { Message = MessageFunctions.GetRequiredDataMissingOrInvalidMessage() });
+            }
+            if (ExistanceFunctions.IsCourseInstanceExists(_config, _data, courseInstanceID) == false)
+            {
+                return BadRequest(new { Message = MessageFunctions.GetCourseInstanceNotFoundMessage() });
+            }
+
+            string markCourseInstanceClosedSql = "UPDATE course_instance SET is_closed_for_registration = FALSE WHERE instance_id = @courseInstanceID;";
+
+            int status = _data.SaveData(markCourseInstanceClosedSql, new { courseInstanceID }, _config.GetConnectionString("Default"));
+
+            if (status >= 0)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
         }
 
         private static bool CheckUpdateCourseInfoExist(JsonElement jsonData)
@@ -767,18 +810,18 @@ namespace Better_Ecom_Backend.Controllers
         private static bool CheckUpdateCoursePrerequisitiesRequiredDataValid(JsonElement jsonData)
         {
             return jsonData.TryGetProperty("Course_code", out JsonElement temp) && temp.ValueKind == JsonValueKind.String
-                && jsonData.TryGetProperty("prerequisites", out temp) && temp.ValueKind == JsonValueKind.Array;
+                && jsonData.TryGetProperty("Prerequisites", out temp) && temp.ValueKind == JsonValueKind.Array;
         }
 
         private static bool CheckUpdateDepartmentApplicabilityDataExist(JsonElement jsonData)
         {
             return jsonData.TryGetProperty("Course_code", out JsonElement temp) && temp.ValueKind == JsonValueKind.String
-                && jsonData.TryGetProperty("departmentApplicability", out temp) && temp.ValueKind == JsonValueKind.Array;
+                && jsonData.TryGetProperty("DepartmentApplicability", out temp) && temp.ValueKind == JsonValueKind.Array;
         }
 
         private bool CheckUserHasPriorities(int studentID)
         {
-            string loadPrioritiesSql = "SELECT * FROM student_department_priority_list WHERE student_id = @studentID;";
+            string loadPrioritiesSql = "SELECT * FROM student_department_priority WHERE student_id = @studentID;";
             List<Student_department_priority> priorities = _data.LoadData<Student_department_priority, dynamic>(loadPrioritiesSql, new { studentID }, _config.GetConnectionString("Default"));
 
             if (priorities is null || priorities.Count == 0)
@@ -829,7 +872,7 @@ namespace Better_Ecom_Backend.Controllers
         private bool AddCourseToDepartmentRequiredDataValid(JsonElement sentData)
         {
             return sentData.TryGetProperty("Course_code", out JsonElement temp) && temp.ValueKind == JsonValueKind.String
-                && sentData.TryGetProperty("departmentApplicability", out temp) && temp.ValueKind == JsonValueKind.Array
+                && sentData.TryGetProperty("DepartmentApplicability", out temp) && temp.ValueKind == JsonValueKind.Array
                 && (sentData.TryGetProperty("Department_code", out temp) && temp.ValueKind == JsonValueKind.String && GetDepartmentsCodes().Contains(temp.GetString()))
                 && sentData.TryGetProperty("Course_name", out temp) && temp.ValueKind == JsonValueKind.String;
         }
@@ -840,6 +883,13 @@ namespace Better_Ecom_Backend.Controllers
             List<Course> courses = _data.LoadData<Course, dynamic>(checkCourseSql, new { code }, _config.GetConnectionString("Default"));
 
             return courses;
+        }
+
+        private List<bool> GetCourseInstanceClosedForRegistration(int courseInstanceID)
+        {
+            string getRegistrationAvailabilitySql = "SELECT is_closed_for_registration FROM course_instance WHERE instance_id = @courseInstanceID;";
+            List<bool> availablilityList = _data.LoadData<bool, dynamic>(getRegistrationAvailabilitySql, new { courseInstanceID }, _config.GetConnectionString("Default"));
+            return availablilityList;
         }
 
         private List<string> GetDepartmentsCodes()

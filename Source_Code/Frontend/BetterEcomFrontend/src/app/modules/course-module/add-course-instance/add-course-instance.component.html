@@ -1,1 +1,32 @@
-<p>add-course-instance works!</p>
+<div class="gradient container-fluid p-3">
+
+    <hr class="row">
+    <form class="row container-fluid" [formGroup]="addCourseInstanceForm" (ngSubmit)="addCourseInstance()">
+
+        <div class="row my-1">
+            <label class="col-4">Enter Course Code: </label>
+            <input class="col-8" type="text" name="CourseCode" id="CourseCode" #CourseCode formControlName="Course_code">
+        </div>
+        <p class="row text-danger fw-bold" *ngIf="course_code_get.invalid && course_code_get.touched">Course Code is required</p>
+
+        <div class="row my-1">
+            <label class="col-4">Enter Course Year: </label>
+            <input class="col-8" type="number" name="CourseYear" id="CourseYear" #CourseYear formControlName="Course_year">
+        </div>
+
+        <div class="row my-1">
+            <label class="col-4">Enter Course Term: </label>
+            <input class="col-8" type="number" name="CourseTerm" id="CourseTerm" #CourseTerm formControlName="Course_term">
+        </div>
+        <p class="row text-danger fw-bold" *ngIf="course_term_get.invalid && course_term_get.touched">Course Term is required</p>
+
+        <div class="row my-1">
+            <label class="col-4">Enter Course Credit Hours: </label>
+            <input class="col-8" type="number" name="CreditHours" id="CreditHours" #CreditHours formControlName="Credit_hours">
+        </div>
+        <p class="row text-danger fw-bold" *ngIf="credit_hours_get.invalid && credit_hours_get.touched" >Credit Hours is required</p>
+
+
+        <button class="row my-1 btn btn-outline-dark text-light" type="submit" [disabled]="addCourseInstanceForm.invalid">Add Course</button>
+    </form>
+</div>
