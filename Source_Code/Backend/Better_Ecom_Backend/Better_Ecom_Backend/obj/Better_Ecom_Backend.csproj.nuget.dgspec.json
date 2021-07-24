@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj": {}
+    "C:\\Users\\gkari\\OneDrive\\Documents\\GitHub\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj": {}
   },
   "projects": {
-    "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj": {
+    "C:\\Users\\gkari\\OneDrive\\Documents\\GitHub\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj",
+        "projectUniqueName": "C:\\Users\\gkari\\OneDrive\\Documents\\GitHub\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj",
         "projectName": "Better_Ecom_Backend",
-        "projectPath": "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj",
-        "packagesPath": "C:\\Users\\king_\\.nuget\\packages\\",
-        "outputPath": "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\obj\\",
+        "projectPath": "C:\\Users\\gkari\\OneDrive\\Documents\\GitHub\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj",
+        "packagesPath": "C:\\Users\\gkari\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\gkari\\OneDrive\\Documents\\GitHub\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\king_\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\gkari\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -31,8 +31,8 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj": {
-                "projectPath": "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj"
+              "C:\\Users\\gkari\\OneDrive\\Documents\\GitHub\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj": {
+                "projectPath": "C:\\Users\\gkari\\OneDrive\\Documents\\GitHub\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj"
               }
             }
           }
@@ -94,24 +94,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj": {
+    "C:\\Users\\gkari\\OneDrive\\Documents\\GitHub\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj",
+        "projectUniqueName": "C:\\Users\\gkari\\OneDrive\\Documents\\GitHub\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj",
         "projectName": "DataLibrary",
-        "projectPath": "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj",
-        "packagesPath": "C:\\Users\\king_\\.nuget\\packages\\",
-        "outputPath": "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\obj\\",
+        "projectPath": "C:\\Users\\gkari\\OneDrive\\Documents\\GitHub\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj",
+        "packagesPath": "C:\\Users\\gkari\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\gkari\\OneDrive\\Documents\\GitHub\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\king_\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\gkari\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -161,7 +161,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }
