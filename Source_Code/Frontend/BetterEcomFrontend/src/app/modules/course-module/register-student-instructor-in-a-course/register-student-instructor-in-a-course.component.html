@@ -1,36 +1,44 @@
 
 <form [formGroup]="registerStudentCourseForm" (ngSubmit)="register()">
 
-  <label>{{type}} ID</label>
-  <br>
-  <div *ngIf="type == 'student'">
-    <input  type="number" formControlName="StudentID">
+  <div *ngIf="logedInUser != 'student'">
+    <label>{{type}} ID</label>
+    <br>
+    <div *ngIf="type == 'student'">
+      <input  type="number" formControlName="StudentID">
 
-    <p style="color: red;" *ngIf="GetStudentID.invalid && GetStudentID.touched"> Student ID is required</p>
+      <p style="color: red;" *ngIf="GetStudentID.invalid && GetStudentID.touched"> Student ID is required</p>
+    </div>
+
+    <div *ngIf="type == 'instructor'">
+      <input type="number" *ngIf="type == 'instructor'" formControlName="InstructorID">
+
+      <p style="color: red;" *ngIf="GetInstructorID.invalid && GetInstructorID.touched"> Instructor ID is required</p>
+    </div>
+
+
+    <label>Course Code</label>
+    <input type="text" formControlName="CourseCode" >
+    <p style="color: red;" *ngIf="GetCourseCode.invalid && GetCourseCode.touched"> Course Code is required</p>
+
+    <br>
+
+    <label>Current Term</label>
+    <select formControlName="CurrentTerm">
+      <option>First</option>
+      <option>Second</option>
+      <option>Summer</option>
+    </select>
+    <p style="color: red;" *ngIf="GetCurrentTerm.invalid && GetCurrentTerm.touched"> Current Term is required</p>
+
+    <br>
   </div>
 
-  <div *ngIf="type == 'instructor'">
-    <input type="number" *ngIf="type == 'instructor'" formControlName="InstructorID">
+  <!--if the loged in is student-->
 
-    <p style="color: red;" *ngIf="GetInstructorID.invalid && GetInstructorID.touched"> Instructor ID is required</p>
-  </div>
-
-
-  <label>Course Code</label>
-  <input type="text" formControlName="CourseCode" >
-  <p style="color: red;" *ngIf="GetCourseCode.invalid && GetCourseCode.touched"> Course Code is required</p>
-
-  <br>
-
-  <label>Current Term</label>
-  <select formControlName="CurrentTerm">
-    <option>First</option>
-    <option>Second</option>
-    <option>Summer</option>
+  <select >
+    <option></option>
   </select>
-  <p style="color: red;" *ngIf="GetCurrentTerm.invalid && GetCurrentTerm.touched"> Current Term is required</p>
-
-  <br>
 
 
 
