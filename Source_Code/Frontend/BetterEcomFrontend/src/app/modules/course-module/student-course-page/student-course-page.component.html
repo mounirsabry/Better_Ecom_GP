@@ -3,4 +3,13 @@
     <button class="col-12 my-2 btn btn-outline-dark text-light" [routerLink]="['/registerStudentInstructorInACourse/student']" *ngIf="isNormalRegisteration">Course Registeration</button>
     <button class="col-12 my-2 btn btn-outline-dark text-light" [routerLink]="['/lateRegisterationPage']" *ngIf="isLateRegisteration">Late Course Registeration</button>
     <!--<a class="row my-2" [routerLink]="['/']" *ngIf="isDropRegisteration">Drop Course Registeration</a>-->
+    <br>
+    <br>
+    <div *ngFor="let course of courses_list; let courseIndex = index">
+        <label *ngFor="let c of course | keyvalue">{{ c.value }}</label>
+        <br>
+        <div *ngFor="let instance of filterListByCode(courses_list, courseIndex)">
+            <label *ngFor="let i of instance | keyvalue">{{ i.value }}</label>
+        </div>
+    </div>
 </div>
