@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LateRegisterationService } from '../../late-registeration-module/services/late-registeration.service';
 
 @Component({
   selector: 'app-admin-course-page',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminCoursePageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private lateRegisterationServic : LateRegisterationService) { }
 
   ngOnInit(): void {
   }

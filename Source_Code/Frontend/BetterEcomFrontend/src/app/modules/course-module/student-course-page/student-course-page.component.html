@@ -1,0 +1,6 @@
+<div class="gradient container-fluid p-3">
+    <hr class="row">
+    <button class="col-12 my-2 btn btn-outline-dark text-light" [routerLink]="['/registerStudentInstructorInACourse/student']" *ngIf="isNormalRegisteration">Course Registeration</button>
+    <button class="col-12 my-2 btn btn-outline-dark text-light" [routerLink]="['/lateRegisterationPage']" *ngIf="isLateRegisteration">Late Course Registeration</button>
+    <!--<a class="row my-2" [routerLink]="['/']" *ngIf="isDropRegisteration">Drop Course Registeration</a>-->
+</div>

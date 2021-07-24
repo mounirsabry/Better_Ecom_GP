@@ -33,15 +33,15 @@ export class AdminDepartmentComponent implements OnInit {
 
   getStudentList() {
     this.departmentService.getStudentPriorityList(this.studentIdGet.value).subscribe(
-      priority_list => {
-        if (priority_list.length > 0) {
+      priority_list =>{
+        if(priority_list.length > 0){
           console.log(priority_list);
-          var list = priority_list.sort(function (a, b) {
+          var list = priority_list.sort(function(a, b){
             return a.priority - b.priority;
           })
-          this.view_priority_list = list.map(function (obj) { return obj.department_code });
+          this.view_priority_list = list.map(function(obj) {return obj.department_code});
         }
-        else { alert("Student has not submited any priority list"); }
+        else {alert("Student has not submited any priority list");}
       }
     )
   }
