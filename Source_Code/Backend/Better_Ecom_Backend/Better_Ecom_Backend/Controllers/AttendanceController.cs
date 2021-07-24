@@ -122,7 +122,7 @@ namespace Better_Ecom_Backend.Controllers
             }
 
 
-            List<int> itemIds = getAttendanceItemID(courseInstanceID, item.Item_name);
+            List<int> itemIds = GetAttendanceItemID(courseInstanceID, item.Item_name);
 
             if( itemIds is null || itemIds.Count == 0)
             {
@@ -240,7 +240,7 @@ namespace Better_Ecom_Backend.Controllers
 
 
 
-        private List<int> getAttendanceItemID(int courseInstanceID, string itemName)
+        private List<int> GetAttendanceItemID(int courseInstanceID, string itemName)
         {
             return _data.LoadData<int, dynamic>("SELECT item_id FROM attendance_item WHERE course_instance_id = @courseInstanceID AND item_name = @itemName;",
                 new { courseInstanceID, itemName }, _config.GetConnectionString("Default"));
