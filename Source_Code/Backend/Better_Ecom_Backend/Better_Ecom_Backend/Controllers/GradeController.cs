@@ -68,7 +68,7 @@ namespace Better_Ecom_Backend.Controllers
             {
                 return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
-            return Ok(gradeList[0]);
+            return Ok(new { result = gradeList[0] });
         }
 
         [Authorize(Roles = "admin")]
@@ -201,7 +201,7 @@ namespace Better_Ecom_Backend.Controllers
             return false;
         }
 
-        double GetGpaFromGrade(StudentCourseInstanceGrade grade)
+        static double GetGpaFromGrade(StudentCourseInstanceGrade grade)
         {
             switch (grade)
             {

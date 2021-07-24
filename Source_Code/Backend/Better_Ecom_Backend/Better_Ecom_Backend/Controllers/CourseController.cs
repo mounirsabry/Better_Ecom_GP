@@ -984,11 +984,23 @@ namespace Better_Ecom_Backend.Controllers
                 }
             }
 
+            string setCourseInstanceReadOnlySql = "UPDATE course_instance SET is_read_only = @readOnlyStatus WHERE instance_id = @courseInstanceID; ";
+
+            int status = _data.SaveData(setCourseInstanceReadOnlySql, new { readOnlyStatus, courseInstanceID }, _config.GetConnectionString("Default"));
+
+            if(status >= 0)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+
             //Extract the id from the token, if the user is an instructor, then he must be registered to the course instance.
             //Check the status provided.
             //update the row with the new status.
             //return an error or return course instance status updated successfully.
-            return Ok(new { Message = MessageFunctions.GetNotImplementedString() });
         }
 
         private List<Course> GetStudentAvailableCoursesList(int studentID)
