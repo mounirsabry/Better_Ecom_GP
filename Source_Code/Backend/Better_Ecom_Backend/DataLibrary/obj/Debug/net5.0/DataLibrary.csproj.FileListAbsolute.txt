@@ -22,9 +22,6 @@ E:\FCI\Graduation Project\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\ob
 E:\FCI\Graduation Project\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\DataLibrary.dll
 E:\FCI\Graduation Project\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\ref\DataLibrary.dll
 E:\FCI\Graduation Project\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\DataLibrary.pdb
-E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\DataLibrary.dll
-E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\ref\DataLibrary.dll
-E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\DataLibrary.pdb
 D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\bin\Debug\net5.0\DataLibrary.deps.json
 D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\bin\Debug\net5.0\DataLibrary.dll
 D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\bin\Debug\net5.0\ref\DataLibrary.dll
@@ -37,3 +34,15 @@ D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\B
 D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\DataLibrary.dll
 D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\ref\DataLibrary.dll
 D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\DataLibrary.pdb
+E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\bin\Debug\net5.0\DataLibrary.deps.json
+E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\bin\Debug\net5.0\DataLibrary.dll
+E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\bin\Debug\net5.0\ref\DataLibrary.dll
+E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\bin\Debug\net5.0\DataLibrary.pdb
+E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\DataLibrary.csprojAssemblyReference.cache
+E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\DataLibrary.GeneratedMSBuildEditorConfig.editorconfig
+E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\DataLibrary.AssemblyInfoInputs.cache
+E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\DataLibrary.AssemblyInfo.cs
+E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\DataLibrary.csproj.CoreCompileInputs.cache
+E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\DataLibrary.dll
+E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\ref\DataLibrary.dll
+E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\DataLibrary.pdb
