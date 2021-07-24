@@ -143,7 +143,7 @@ namespace Better_Ecom_Backend.Controllers
                 return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
 
-            return Ok(gpaList[0]);
+            return Ok(new { gpa = gpaList[0] });
         }
 
         private static bool IsSetStudentCourseInstanceGradeDataValid(JsonElement jsonInput)
@@ -168,7 +168,7 @@ namespace Better_Ecom_Backend.Controllers
                 " INNER JOIN student_course_instance_registration ON student_course_instance_registration.course_instance_id = course_instance.instance_id" + "\n" +
                 " WHERE student_id = @studentID AND student_course_instance_status = \'Passed\';";
             List<dynamic> Data = _data.LoadData<dynamic, dynamic>(getGpaDataSql, new { studentID }, _config.GetConnectionString("Default"));
-            if (Data is null)
+            if (Data is null || Data.Count == 0)
             {
                 return false;
             }
