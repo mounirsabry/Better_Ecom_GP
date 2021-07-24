@@ -1,0 +1,35 @@
+
+<!--here goes the feed-->
+<div *ngFor="let index of generalFeedElements">
+
+  <div *ngFor="let item of index | keyvalue">
+
+    <p *ngIf="item.key == 'content'">
+      {{item.value}}
+    </p>
+
+    <p *ngIf="item.key == 'insertion_date'">
+      {{item.value}}
+    </p>
+
+
+    <p *ngIf="item.key == 'feed_id'">
+      ID: {{item.value}}
+    </p>
+
+    <!--item.value == 'feed_id', to make it render only 1 time, instead of 3-->
+    <button *ngIf="type == 'admin' && item.key == 'feed_id'" (click)="delete((item.key == 'feed_id')? item.value : null)" > Delete</button>
+
+  </div>
+
+</div>
+
+<button *ngIf="type == 'admin'" (click) = "(showEditText == 'visible')?showEditText = 'hidden':showEditText = 'visible'">{{(showEditText == 'hidden')?'add To General Feed' : 'close add' }} </button>
+
+<form [formGroup]="feedBoxForm" [style.visibility] = 'showEditText' (ngSubmit)="addToGeneralFeed()">
+
+  <input type="text" formControlName="Content">
+  <p style="color: red;" *ngIf="getContent.invalid && getContent.touched">you need to enter some text</p>
+  <button type="submit" [disabled]="feedBoxForm.invalid">Add</button>
+</form>
+
