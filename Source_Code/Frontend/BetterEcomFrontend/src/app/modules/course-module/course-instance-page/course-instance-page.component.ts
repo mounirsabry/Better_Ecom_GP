@@ -9,10 +9,12 @@ import { ActivatedRoute } from '@angular/router';
 export class CourseInstancePageComponent implements OnInit {
 
   constructor(private route : ActivatedRoute) { }
-
+  instance_id : number
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       console.log(params);
+      this.instance_id = params.instanceID;
+      console.log(this.instance_id);
     })
   }
 
