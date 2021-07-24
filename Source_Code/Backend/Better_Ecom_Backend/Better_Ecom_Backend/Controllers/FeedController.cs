@@ -111,7 +111,7 @@ namespace Better_Ecom_Backend.Controllers
             TokenInfo tokenInfo = HelperFunctions.GetIdAndTypeFromToken(Authorization);
             if (tokenInfo.Type == "student")
             {
-                if (ExistanceFunctions.IsStudentExistInCourseInstance(_config,_data,tokenInfo.UserID, courseInstanceID) == false)
+                if (RegistrationFunctions.IsStudentRegisteredToCourseInstance(_config,_data,tokenInfo.UserID, courseInstanceID) == false)
                 {
                     return Forbid("student must be registered in course.");
                 }
@@ -119,7 +119,7 @@ namespace Better_Ecom_Backend.Controllers
 
             if (tokenInfo.Type == "instructor")
             {
-                if (ExistanceFunctions.IsInstructorExistInCourseInstance(_config,_data,tokenInfo.UserID, courseInstanceID) == false)
+                if (RegistrationFunctions.IsStudentRegisteredToCourseInstance(_config,_data,tokenInfo.UserID, courseInstanceID) == false)
                 {
                     return Forbid("instructor must be registered in course.");
                 }
@@ -162,7 +162,7 @@ namespace Better_Ecom_Backend.Controllers
             TokenInfo tokenInfo = HelperFunctions.GetIdAndTypeFromToken(Authorization);
             if (tokenInfo.Type == "instructor")
             {
-                if (ExistanceFunctions.IsInstructorExistInCourseInstance(_config,_data,tokenInfo.UserID, courseInstanceID) == false)
+                if (RegistrationFunctions.IsInstructorRegisteredToCourseInstance(_config,_data,tokenInfo.UserID, courseInstanceID) == false)
                 {
                     return Forbid("instructor must be registered in course.");
                 }
@@ -203,7 +203,7 @@ namespace Better_Ecom_Backend.Controllers
             TokenInfo tokenInfo = HelperFunctions.GetIdAndTypeFromToken(Authorization);
             if (tokenInfo.Type == "instructor")
             {
-                if (ExistanceFunctions.IsInstructorExistInCourseInstance(_config, _data, tokenInfo.UserID, courseInstanceID) == false)
+                if (RegistrationFunctions.IsInstructorRegisteredToCourseInstance(_config, _data, tokenInfo.UserID, courseInstanceID) == false)
                 {
                     return Forbid("instructor must be registered in course.");
                 }

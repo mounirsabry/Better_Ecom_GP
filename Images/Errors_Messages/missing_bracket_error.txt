@@ -1,0 +1,41 @@
+System.ArgumentException
+  HResult=0x80070057
+  Message=There is an incomplete parameter in the route template. Check that each '{' character has a matching '}' character. Arg_ParamName_Name
+  Source=Microsoft.AspNetCore.Routing
+  StackTrace:
+   at Microsoft.AspNetCore.Routing.Template.TemplateParser.Parse(String routeTemplate)
+   at Microsoft.AspNetCore.Mvc.ApplicationModels.InferParameterBindingInfoConvention.ParameterExistsInAnyRoute(ActionModel action, String parameterName)
+   at Microsoft.AspNetCore.Mvc.ApplicationModels.InferParameterBindingInfoConvention.InferBindingSourceForParameter(ParameterModel parameter)
+   at Microsoft.AspNetCore.Mvc.ApplicationModels.InferParameterBindingInfoConvention.InferParameterBindingSources(ActionModel action)
+   at Microsoft.AspNetCore.Mvc.ApplicationModels.InferParameterBindingInfoConvention.Apply(ActionModel action)
+   at Microsoft.AspNetCore.Mvc.ApplicationModels.ApiBehaviorApplicationModelProvider.OnProvidersExecuting(ApplicationModelProviderContext context)
+   at Microsoft.AspNetCore.Mvc.ApplicationModels.ApplicationModelFactory.CreateApplicationModel(IEnumerable`1 controllerTypes)
+   at Microsoft.AspNetCore.Mvc.ApplicationModels.ControllerActionDescriptorProvider.GetDescriptors()
+   at Microsoft.AspNetCore.Mvc.ApplicationModels.ControllerActionDescriptorProvider.OnProvidersExecuting(ActionDescriptorProviderContext context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.DefaultActionDescriptorCollectionProvider.UpdateCollection()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.DefaultActionDescriptorCollectionProvider.Initialize()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.DefaultActionDescriptorCollectionProvider.GetChangeToken()
+   at Microsoft.AspNetCore.Mvc.Routing.ActionEndpointDataSourceBase.<>c__DisplayClass11_0.<Subscribe>b__0()
+   at Microsoft.Extensions.Primitives.ChangeToken.OnChange(Func`1 changeTokenProducer, Action changeTokenConsumer)
+   at Microsoft.AspNetCore.Mvc.Routing.ActionEndpointDataSourceBase.Subscribe()
+   at Microsoft.AspNetCore.Mvc.Routing.ControllerActionEndpointDataSource..ctor(ControllerActionEndpointDataSourceIdProvider dataSourceIdProvider, IActionDescriptorCollectionProvider actions, ActionEndpointFactory endpointFactory, OrderedEndpointsSequenceProvider orderSequence)
+   at Microsoft.AspNetCore.Builder.ControllerEndpointRouteBuilderExtensions.GetOrCreateDataSource(IEndpointRouteBuilder endpoints)
+   at Microsoft.AspNetCore.Builder.ControllerEndpointRouteBuilderExtensions.MapControllers(IEndpointRouteBuilder endpoints)
+   at Better_Ecom_Backend.Startup.<>c.<Configure>b__5_1(IEndpointRouteBuilder endpoints) in D:\Mounir_Study\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\Startup.cs:line 64
+   at Microsoft.AspNetCore.Builder.EndpointRoutingApplicationBuilderExtensions.UseEndpoints(IApplicationBuilder builder, Action`1 configure)
+   at Better_Ecom_Backend.Startup.Configure(IApplicationBuilder app, IWebHostEnvironment env) in D:\Mounir_Study\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\Startup.cs:line 62
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor, Boolean wrapExceptions)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.AspNetCore.Hosting.ConfigureBuilder.Invoke(Object instance, IApplicationBuilder builder)
+   at Microsoft.AspNetCore.Hosting.ConfigureBuilder.<>c__DisplayClass4_0.<Build>b__0(IApplicationBuilder builder)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostBuilder.<>c__DisplayClass15_0.<UseStartup>b__1(IApplicationBuilder app)
+   at Microsoft.AspNetCore.Mvc.Filters.MiddlewareFilterBuilderStartupFilter.<>c__DisplayClass0_0.<Configure>g__MiddlewareFilterBuilder|0(IApplicationBuilder builder)
+   at Microsoft.AspNetCore.Server.IIS.Core.IISServerSetupFilter.<>c__DisplayClass2_0.<Configure>b__0(IApplicationBuilder app)
+   at Microsoft.AspNetCore.HostFilteringStartupFilter.<>c__DisplayClass0_0.<Configure>b__0(IApplicationBuilder app)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.<StartAsync>d__31.MoveNext()
+
+  This exception was originally thrown at this call stack:
+    [External Code]
+
+Inner Exception 1:
+RoutePatternException: There is an incomplete parameter in the route template. Check that each '{' character has a matching '}' character.

@@ -1,0 +1,18 @@
+﻿check instructor profile
+check admin profile
+
+student
+is profile available for students
+
+instructor
+is profile available for students
+is profile available for instructors
+
+admin
+is profile available for students
+is profile available for instructors
+is student contact available
+is instructor contact available 
+
+Instead of hard coding the current term, why not have a method that set the current term in the appsettings file for example
+and we can fetch it, that can be helpful to allow the term range to change dynamically.

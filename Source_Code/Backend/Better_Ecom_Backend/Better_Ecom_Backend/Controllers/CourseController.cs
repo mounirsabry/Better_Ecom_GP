@@ -965,7 +965,7 @@ namespace Better_Ecom_Backend.Controllers
             TokenInfo tokenInfo = HelperFunctions.GetIdAndTypeFromToken(Authorization);
             if(tokenInfo.Type == "instructor")
             {
-                if (ExistanceFunctions.IsInstructorExistInCourseInstance(_config, _data, tokenInfo.UserID, courseInstanceID) == false)
+                if (RegistrationFunctions.IsInstructorRegisteredToCourseInstance(_config, _data, tokenInfo.UserID, courseInstanceID) == false)
                 {
                     return BadRequest(new { Message = "instructor must be registered in course instance." });
                 }
