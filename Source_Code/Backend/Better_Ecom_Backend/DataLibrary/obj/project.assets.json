@@ -867,23 +867,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\gkari\\.nuget\\packages\\": {},
+    "C:\\Users\\king_\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\gkari\\OneDrive\\Documents\\GitHub\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj",
+      "projectUniqueName": "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj",
       "projectName": "DataLibrary",
-      "projectPath": "C:\\Users\\gkari\\OneDrive\\Documents\\GitHub\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj",
-      "packagesPath": "C:\\Users\\gkari\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\gkari\\OneDrive\\Documents\\GitHub\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\obj\\",
+      "projectPath": "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj",
+      "packagesPath": "C:\\Users\\king_\\.nuget\\packages\\",
+      "outputPath": "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\gkari\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\king_\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -933,7 +933,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   }
