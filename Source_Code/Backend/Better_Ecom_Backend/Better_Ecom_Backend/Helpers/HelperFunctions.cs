@@ -1,4 +1,5 @@
-﻿using Better_Ecom_Backend.Models;
+﻿using Better_Ecom_Backend.Entities;
+using Better_Ecom_Backend.Models;
 using DataLibrary;
 using Microsoft.Extensions.Configuration;
 using System;

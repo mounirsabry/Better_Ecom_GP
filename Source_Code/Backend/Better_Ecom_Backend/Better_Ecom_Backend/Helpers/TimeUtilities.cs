@@ -1,4 +1,4 @@
-﻿using Better_Ecom_Backend.Models;
+﻿using Better_Ecom_Backend.Entities;
 using System;
 using System.Collections.Generic;
 

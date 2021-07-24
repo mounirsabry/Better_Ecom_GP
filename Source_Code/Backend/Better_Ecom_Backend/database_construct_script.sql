@@ -149,6 +149,7 @@ CREATE TABLE IF NOT EXISTS student_course_instance_registration (
     course_instance_id INT NOT NULL,
     registration_date DATETIME NOT NULL,
     student_course_instance_status ENUM('Undertaking', 'Passed', 'Failed') NOT NULL,
+    student_course_instance_grade ENUM('APlus', 'A', 'BPlus', 'B', 'CPlus', 'C', 'DPlus', 'D', 'F', 'Not_Specified') NOT NULL,
     CONSTRAINT student_course_registration_combination_unique UNIQUE (student_id , course_instance_id),
     CONSTRAINT student_course_registration_student_id FOREIGN KEY (student_id)
         REFERENCES student (student_id)

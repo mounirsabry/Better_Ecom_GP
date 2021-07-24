@@ -66,5 +66,25 @@ namespace Better_Ecom_Backend.Helpers
         {
             return "the course is read only.";
         }
+
+        public static string GetStudentNotRegisteredToCourseMessage()
+        {
+            return "the student is not registered to the specified course.";
+        }
+
+        public static string GetStudentNotRegisteredToCourseInstanceMessage()
+        {
+            return "the student is not registered to the specified course instance.";
+        }
+
+        public static string GetInstructorNotRegisteredToCourseMessage()
+        {
+            return "the instructor is not registered to the specified course.";
+        }
+
+        public static string GetInstructorNotRegisteredToCourseInstanceMessage()
+        {
+            return "the instructor is not registered to the specified course instance.";
+        }
     }
 }

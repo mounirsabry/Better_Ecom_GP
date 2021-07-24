@@ -1,4 +1,4 @@
-﻿namespace Better_Ecom_Backend.Models
+﻿namespace Better_Ecom_Backend.Entities
 {
     public enum LateRegistrationRequestStatus
     {

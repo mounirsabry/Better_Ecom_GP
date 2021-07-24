@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Better_Ecom_Backend.Entities;
+using System;
 using System.Text.Json;
 
 namespace Better_Ecom_Backend.Models

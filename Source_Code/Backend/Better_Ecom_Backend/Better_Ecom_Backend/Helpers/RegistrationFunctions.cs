@@ -21,11 +21,7 @@ namespace Better_Ecom_Backend.Helpers
 
             List<bool> ids = _data.LoadData<bool, dynamic>(getInstructorIDFromCourseInstance, new { StudentID = studentID, CourseInstanceID = courseInstanceID }, _config.GetConnectionString("Default"));
 
-            if (ids is null)
-            {
-                return false;
-            }
-            else if (ids.Count == 0)
+            if (ids is null || ids.Count == 0)
             {
                 return false;
             }
@@ -47,11 +43,7 @@ namespace Better_Ecom_Backend.Helpers
 
             List<bool> ids = _data.LoadData<bool, dynamic>(getInstructorIDFromCourseInstance, new { InstructorID = instructorID, CourseInstanceID = courseInstanceID }, _config.GetConnectionString("Default"));
 
-            if (ids is null)
-            {
-                return false;
-            }
-            else if (ids.Count == 0)
+            if (ids is null || ids.Count == 0)
             {
                 return false;
             }
