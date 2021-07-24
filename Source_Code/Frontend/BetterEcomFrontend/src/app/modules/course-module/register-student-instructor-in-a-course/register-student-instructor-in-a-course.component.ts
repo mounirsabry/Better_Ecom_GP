@@ -88,8 +88,6 @@ export class RegisterStudentInstructorInACourseComponent implements OnInit {
 
         let currentYear = new Date().getFullYear()
 
-        // for some reason, the enum in db current_term, returns number intead of string,
-        //i.e 0 instead of first, 1 instead of second etc.
         let TermToNumber:number
 
         if(this.registerStudentCourseForm.value['CurrentTerm'] == 'First'){
@@ -146,16 +144,6 @@ export class RegisterStudentInstructorInACourseComponent implements OnInit {
         alert('Registeration Failed! server may be down')
       }
     )
-
-    /*this.registerStdInsCourseService.registerInCourse(this.type,this.registerStudentCourseForm.value).subscribe(
-
-      response => {
-        alert("registeration Successfull!")
-      },
-      error =>{
-        alert("registeration Failed!")
-      }
-    )*/
 
   }
 
