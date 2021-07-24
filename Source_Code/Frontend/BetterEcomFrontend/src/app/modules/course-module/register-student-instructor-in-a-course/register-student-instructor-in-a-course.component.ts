@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { LateRegisterationService } from '../../late-registeration-module/services/late-registeration.service';
 import { RegisterStudentInstructorCourseService } from '../services/register-student-instructor-course.service';
 
 @Component({
@@ -14,19 +15,27 @@ export class RegisterStudentInstructorInACourseComponent implements OnInit {
 
   logedInUser:string
 
+  availableCourses : Array<any> = []
+  availableCouresInstances : Array<any> = []
+  showAvailableInstancesTable = false
+
   instanceId:number = -2
   registerStudentCourseForm = new FormGroup({
     CourseCode: new FormControl('',[Validators.required]),
     CurrentTerm : new FormControl('',[Validators.required])
   })
   constructor(private activatedRoute:ActivatedRoute,
-              private registerStdInsCourseService:RegisterStudentInstructorCourseService) { }
+              private registerStdInsCourseService:RegisterStudentInstructorCourseService,
+              private registerService: LateRegisterationService) { }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
       this.type = params.get('type')
-      console.log(this.type)
+
+
     })
+
+
 
     this.logedInUser = localStorage.getItem('type')
     if(this.type == 'student')
@@ -35,8 +44,43 @@ export class RegisterStudentInstructorInACourseComponent implements OnInit {
       this.registerStudentCourseForm.addControl('InstructorID',new FormControl('',[Validators.required]))
 
 
+      this.registerService.getStudentAvailableCourses(parseInt(localStorage.getItem('ID'))).subscribe(
+        response =>{
+          this.availableCourses = response;
+          console.log(this.availableCourses)
+        },
+        error =>{
+
+
+        }
+      )
+
   }
 
+  registerIfUserStudent(index :number){
+    var instance_id : number = this.availableCouresInstances[index].instance_id;
+
+    let idsObj = {}
+
+    idsObj['StudentID'] = parseInt(localStorage.getItem('ID'))
+    idsObj['CourseInstanceID'] = instance_id
+
+    console.log('instance id')
+    console.log(instance_id)
+
+    this.registerStdInsCourseService.registerInCourse(this.type,idsObj).subscribe(
+
+      response => {
+        alert('registeration Successful!')
+      },
+      error => {
+
+        alert('registeration Failed! The Registeration Time could be over, or you are already registered in this course')
+
+      }
+      )
+
+  }
   register(){
 
     this.registerStdInsCourseService.getCourseInstance(this.registerStudentCourseForm.value['CourseCode']).subscribe(
@@ -132,4 +176,69 @@ export class RegisterStudentInstructorInACourseComponent implements OnInit {
     return this.registerStudentCourseForm.get('CurrentTerm')
   }
 
+  objectValues(obj){
+    return Object.values(obj);
+  }
+
+  getAvailableCourseInstances(courseIndex){
+    var course_code : string = this.availableCourses[courseIndex].course_code;
+    this.registerService.getCourseAvailableCourseInstances(course_code).subscribe(
+      data =>{
+        if(data.length < 1) {alert("No Course Instances were found")}
+
+        this.availableCouresInstances.push(...data) ;
+        this.showAvailableInstancesTable = true;
+      },
+      error =>{
+        console.log(error.error);
+      }
+    )
+
+  }
+
 }
+/*
+<table style="text-align: center;" [hidden]="!showAvailableCoursesTable">
+  <tr>
+      <th></th> <!--remove deh ya mina lw na ma sheltha4-->
+      <th>Academic Year</th>
+      <th>Course Code</th>
+      <th>Course Description</th>
+      <th>Course Name</th>
+      <th>Department Code</th>
+      <th>Is Archived</th>
+      <th>Is Read only</th>
+  </tr>
+
+  <tr *ngFor="let courses of objectValues(available_courses_list);let courseIndex = index">
+
+      <td>{{ courseIndex }}</td>
+      <td *ngFor="let course of courses | keyvalue">{{ course.value }}</td>
+      <td><button type="button" (click)="getAvailableCourseInstances(courseIndex)">Select</button></td>
+
+  </tr>
+
+</table>
+
+
+<table style="text-align: center;" [hidden]="!showAvailableInstancesTable">
+  <tr>
+      <th></th> <!--remove deh ya mina lw na ma sheltha4-->
+      <th>Course Code</th>
+      <th>Course Term</th>
+      <th>Course Year</th>
+      <th>Credit Hours</th>
+      <th>Instance ID</th>
+  </tr>
+
+  <tr *ngFor="let instances of objectValues(available_coures_instance_list);let instanceIndex = index">
+
+      <td>{{ instanceIndex }}</td>
+      <td *ngFor="let instance of instances | keyvalue">{{ instance.value }}</td>
+      <td><button type="button" (click)="submitRequest(instanceIndex)">Register in Course</button></td>
+
+  </tr>
+
+</table>
+
+*/
