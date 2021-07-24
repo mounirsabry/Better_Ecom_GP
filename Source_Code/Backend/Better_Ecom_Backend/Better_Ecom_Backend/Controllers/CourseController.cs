@@ -55,7 +55,20 @@ namespace Better_Ecom_Backend.Controllers
         {
             //STUDENT, INSTRUCTOR, ADMIN FUNCTION.
 
-            return Ok(new { Message = MessageFunctions.GetNotImplementedString() });
+            if(ExistanceFunctions.IsCourseExists(_config,_data, courseCode) == false)
+            {
+                return BadRequest(new { Message = MessageFunctions.GetCourseNotFoundMessage() });
+            }
+
+            List<Course_instance> instances = GetCourseAvailableCourseInstancesList(courseCode);
+
+            if(instances is null)
+            {
+                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
+            }
+
+            return Ok(instances);
+
         }
 
         /// <summary>
@@ -937,7 +950,7 @@ namespace Better_Ecom_Backend.Controllers
 
         [Authorize(Roles = "admin, instructor")]
         [HttpPatch("SetCourseInstanceReadOnlyStatus/{CourseInstanceID:int}/{ReadOnlyStatus}")]
-        public IActionResult SetCourseInstanceReadOnlyStatus(int courseInstanceID, bool readOnlyStatus)
+        public IActionResult SetCourseInstanceReadOnlyStatus([FromHeader]string Authorization, int courseInstanceID, bool readOnlyStatus)
         {
             if (ExistanceFunctions.IsDBUpAndRunning(_config, _data) == false)
             {
@@ -947,6 +960,15 @@ namespace Better_Ecom_Backend.Controllers
             if (ExistanceFunctions.IsCourseInstanceExists(_config, _data, courseInstanceID) == false)
             {
                 return BadRequest(new { Message = MessageFunctions.GetCourseInstanceNotFoundMessage() });
+            }
+
+            TokenInfo tokenInfo = HelperFunctions.GetIdAndTypeFromToken(Authorization);
+            if(tokenInfo.Type == "instructor")
+            {
+                if (ExistanceFunctions.IsInstructorExistInCourseInstance(_config, _data, tokenInfo.UserID, courseInstanceID) == false)
+                {
+                    return BadRequest(new { Message = "instructor must be registered in course instance." });
+                }
             }
 
             //Extract the id from the token, if the user is an instructor, then he must be registered to the course instance.
@@ -1086,7 +1108,7 @@ namespace Better_Ecom_Backend.Controllers
             return studentAvailableCourses;
         }
 
-        private static List<Course_instance> GetCourseAvailableCourseInstancesList(string courseCode)
+        private List<Course_instance> GetCourseAvailableCourseInstancesList(string courseCode)
         {
             //Take the course code, return all the available course instances for registration.
             /*
@@ -1103,14 +1125,19 @@ namespace Better_Ecom_Backend.Controllers
 
             string sql = "SELECT * FROM course_instance" + "\n"
                     + "WHERE course_code = @Coursecode" + "\n"
-                    + "AND course_year = @WorkingYear" + "\n"
-                    + "AND course_term = @CurrentTerm" + "\n"
+                    + "AND course_year = @workingYear" + "\n"
+                    + "AND course_term = @currentTerm" + "\n"
                     + "OR course_term = 'Other'" + "\n"
                     + "AND is_closed_for_registration = FALSE;";
+
+            List<Course_instance> instances = _data.LoadData<Course_instance, dynamic>(sql, new { courseCode, workingYear, currentTerm }, _config.GetConnectionString("Default"));
+
+
+
             Console.WriteLine(workingYear);
             Console.WriteLine(sql);
 
-            return null;
+            return instances;
         }
 
         private static bool IsFromStudentAvailableCoursesList(int userID, string courseCode)

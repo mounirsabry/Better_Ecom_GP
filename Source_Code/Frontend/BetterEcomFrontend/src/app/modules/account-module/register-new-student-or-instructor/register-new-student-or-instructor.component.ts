@@ -112,7 +112,7 @@ export class RegisterNewStudentOrInstructorComponent implements OnInit {
         alert('registeration successfull!')
       },
       error =>{
-        alert('registeration failed!')
+        alert('registeration failed! ' + this.type + ' maybe already registered or birth date is unrealistic')
       }
     )
 
