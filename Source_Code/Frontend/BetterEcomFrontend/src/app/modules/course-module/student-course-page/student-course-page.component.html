@@ -1,0 +1,4 @@
+
+<a class="row my-2" [routerLink]="['/registerStudentInstructorInACourse/student']" *ngIf="isNormalRegisteration">Course Registeration</a>
+<a class="row my-2" [routerLink]="['/lateRegisterationPage']" *ngIf="isLateRegisteration">Late Course Registeration</a>
+<a class="row my-2" [routerLink]="['/']" *ngIf="isDropRegisteration">Drop Course Registeration</a>
