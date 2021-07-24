@@ -249,10 +249,16 @@ namespace Better_Ecom_Backend.Controllers
 
             DateTime registrationDate = DateTime.Now;
             Student_course_instance_registration registration = new(-1, studentID, courseInstanceID, registrationDate, StudentCourseInstanceRegistrationStatus.Undertaking);
+            var parameters = new
+            {
+                studentID ,
+                courseInstanceID ,
+                registrationDate ,
+                studentCourseInstanceStatus = nameof(StudentCourseInstanceRegistrationStatus.Undertaking)
+            };
+            string insertCourseRegistrationSql = "INSERT INTO student_course_instance_registration VALUES(NULL, @studentID, @courseInstanceID, @registrationDate, @studentCourseInstanceStatus);";
 
-            string insertCourseRegistrationSql = "INSERT INTO student_course_instance_registration VALUES(NULL, @student_id, @course_instance_id, @registration_date, @student_course_intance_status);";
-
-            int status = _data.SaveData(insertCourseRegistrationSql, registration, _config.GetConnectionString("Default"));
+            int status = _data.SaveData(insertCourseRegistrationSql, parameters, _config.GetConnectionString("Default"));
 
             if (status > 0)
             {
