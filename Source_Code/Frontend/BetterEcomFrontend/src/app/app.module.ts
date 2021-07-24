@@ -30,6 +30,7 @@ import { CourseInstancePageComponent } from './modules/course-module/course-inst
 import { InstructorCoursePageComponent } from './modules/course-module/instructor-course-page/instructor-course-page.component';
 import { DropCourseComponent } from './modules/course-module/drop-course/drop-course.component';
 import { StudentGradeComponent } from './modules/course-module/student-grade/student-grade.component';
+import { AdminGradeComponent } from './modules/course-module/admin-grade/admin-grade.component';
 @NgModule({
 
   declarations: [
@@ -53,7 +54,8 @@ import { StudentGradeComponent } from './modules/course-module/student-grade/stu
     CourseInstancePageComponent,
     InstructorCoursePageComponent,
     DropCourseComponent,
-    StudentGradeComponent
+    StudentGradeComponent,
+    AdminGradeComponent
 
 
   ],
