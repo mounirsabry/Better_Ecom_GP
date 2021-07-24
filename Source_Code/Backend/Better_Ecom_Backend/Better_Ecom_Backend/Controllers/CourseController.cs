@@ -628,7 +628,7 @@ namespace Better_Ecom_Backend.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpGet("GetStudentCourseInstanceStatus/{StudentID:int}/{CourseInstanceID:int}")]
-        public IActionResult GetStudentCourseInstanceStatus([FromBody] string Authorization, int studentID, int courseInstanceID)
+        public IActionResult GetStudentCourseInstanceStatus([FromHeader] string Authorization, int studentID, int courseInstanceID)
         {
             //ALL USERS.
             TokenInfo info = HelperFunctions.GetIdAndTypeFromToken(Authorization);
@@ -637,7 +637,7 @@ namespace Better_Ecom_Backend.Controllers
                 return Forbid("students can only get their own data.");
             }
 
-            string getStudentCourseInstanceStatusSql = "SELECT student_course_intance_status FROM student_course_instance_registration WHERE student_id = @studentID AND course_instance_id = @courseInstanceID;";
+            string getStudentCourseInstanceStatusSql = "SELECT student_course_instance_status FROM student_course_instance_registration WHERE student_id = @studentID AND course_instance_id = @courseInstanceID;";
 
             List<StudentCourseInstanceRegistrationStatus> registrationStatuses = _data.LoadData<StudentCourseInstanceRegistrationStatus, dynamic>(getStudentCourseInstanceStatusSql,
                 new { studentID, courseInstanceID }, _config.GetConnectionString("Default"));
