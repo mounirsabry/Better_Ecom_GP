@@ -1,8 +1,5 @@
 <div class="gradient container-fluid p-3">
-    <hr class="row">
-    <!--<a class="row my-2" [routerLink]="['/']" *ngIf="isDropRegisteration">Drop Course Registeration</a>-->
-    <br>
-    <br>
+    <hr class="row my-2">
     
     <button class="col-12 my-2 btn btn-outline-dark text-light" *ngFor="let course of combined_list; let courseIndex = index" [routerLink] = "['/courseInstancePage', course.Instance_ID]">
         <div  *ngFor="let c of course | keyvalue">
