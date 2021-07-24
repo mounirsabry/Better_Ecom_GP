@@ -2,7 +2,7 @@
 {
     public enum StudentCourseInstanceRegistrationStatus
     {
-        Undertaking = 1,
+        Undertaking,
         Passed,
         Failed
     }
