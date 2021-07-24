@@ -9,7 +9,11 @@ export class RegisterStudentInstructorCourseService {
   constructor(private httpClient:HttpClient) { }
 
   registerInCourse(type:string, IDsObj:any){
-    return this.httpClient.post("https://localhost:44361/Course/RegisterToCourseInstance",IDsObj)
+
+    if(type == 'student')
+      return this.httpClient.post("https://localhost:44361/Course/RegisterToCourseInstance",IDsObj)
+    else
+      return this.httpClient.post("https://localhost:44361/Course/RegisterInstructorToCourseInstance",IDsObj)
   }
 
   getCourseInstance(courseCode:string){

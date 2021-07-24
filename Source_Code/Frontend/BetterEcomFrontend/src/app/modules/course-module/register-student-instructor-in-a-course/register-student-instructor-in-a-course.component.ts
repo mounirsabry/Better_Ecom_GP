@@ -12,7 +12,7 @@ export class RegisterStudentInstructorInACourseComponent implements OnInit {
 
   type:string
 
-  instanceId:number
+  instanceId:number = -2
   registerStudentCourseForm = new FormGroup({
     CourseCode: new FormControl('',[Validators.required]),
     CurrentTerm : new FormControl('',[Validators.required])
@@ -38,6 +38,7 @@ export class RegisterStudentInstructorInACourseComponent implements OnInit {
 
     this.registerStdInsCourseService.getCourseInstance(this.registerStudentCourseForm.value['CourseCode']).subscribe(
       response =>{
+
         let currentYear = new Date().getFullYear()
 
         // for some reason, the enum in db current_term, returns number intead of string,
@@ -63,27 +64,39 @@ export class RegisterStudentInstructorInACourseComponent implements OnInit {
           }
         }
 
-        let idsObj = {}
-        idsObj['StudentID'] = this.registerStudentCourseForm.value['StudentID']
-        idsObj['CourseInstanceID'] = this.instanceId
-        this.registerStdInsCourseService.registerInCourse(this.type,idsObj).subscribe(
 
-          response => {
-            alert('registeration Successful!')
-          },
-          error => {
-            alert('registeration Failed!')
+        console.log(this.instanceId)
+        if(this.instanceId != -2){
+          let idsObj = {}
+          if(this.type == 'student')
+            idsObj['StudentID'] = this.registerStudentCourseForm.value['StudentID']
+          else
+            idsObj['InstructorID'] = this.registerStudentCourseForm.value['InstructorID']
 
 
-          }
-        )
+          idsObj['CourseInstanceID'] = this.instanceId
+          this.registerStdInsCourseService.registerInCourse(this.type,idsObj).subscribe(
+
+            response => {
+              alert('registeration Successful!')
+            },
+            error => {
+
+              alert('registeration Failed!'+ ((this.type == 'student')?'The Registeration Time could be over, or ':'')+ this.type + 'ID is not registered in the faculty or ' + this.type + 'ID is already registered in this course')
+
+            }
+            )
+        }else{
+          alert('no course was found with the specified info!')
+        }
+
 
 
       },
 
 
       error => {
-        alert('Registeration Failed!')
+        alert('Registeration Failed! server may be down')
       }
     )
 

@@ -29,6 +29,7 @@ D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\B
 D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\bin\Debug\net5.0\DataLibrary.dll
 D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\bin\Debug\net5.0\ref\DataLibrary.dll
 D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\bin\Debug\net5.0\DataLibrary.pdb
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\DataLibrary.csprojAssemblyReference.cache
 D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\DataLibrary.GeneratedMSBuildEditorConfig.editorconfig
 D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\DataLibrary.AssemblyInfoInputs.cache
 D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\DataLibrary.AssemblyInfo.cs
