@@ -120,7 +120,7 @@ namespace Better_Ecom_Backend.Controllers
 
             if (tokenInfo.Type == "instructor")
             {
-                if (RegistrationFunctions.IsStudentRegisteredToCourseInstance(_config,_data,tokenInfo.UserID, courseInstanceID) == false)
+                if (RegistrationFunctions.IsInstructorRegisteredToCourseInstance(_config,_data,tokenInfo.UserID, courseInstanceID) == false)
                 {
                     return Forbid("instructor must be registered in course.");
                 }

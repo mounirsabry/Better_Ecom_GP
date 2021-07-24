@@ -14,7 +14,8 @@ export class StudentGradeComponent implements OnInit {
 
   instance_id : number
   student_id : number
-  
+  grade : string
+
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       console.log(params);
@@ -29,6 +30,7 @@ export class StudentGradeComponent implements OnInit {
     this.courseInstanceService.getStudentCourseInstanceGrade(this.student_id, this.instance_id).subscribe(
       data =>{
         console.log(data);
+        this.grade = data.result;
       },
       error =>{
         console.log(error.error);

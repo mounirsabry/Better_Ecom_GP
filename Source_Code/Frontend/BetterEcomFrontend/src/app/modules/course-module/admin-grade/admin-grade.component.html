@@ -1,1 +1,28 @@
-<p>admin-grade works!</p>
+<form [formGroup]="setGradeForm" (ngSubmit)="setGrade()">
+
+    <label>Student ID: </label>
+    <input type="number" name="StudnetID" id="StudentID" formControlName="StudentID">
+    <p *ngIf="student_id_get.invalid && student_id_get.touched" style="color: red;">student id is required</p>
+
+    <br>
+
+    <label>Course Instance ID:</label>
+    <input type="number" name="CourseInstanceID" id="CourseInstanceID" formControlName="CourseInstanceID">
+    <p *ngIf="course_intance_id_get.invalid && course_intance_id_get.touched" style="color: red;">course instance id is required</p>
+
+    <br>
+
+    <label>Course Grade:</label>
+    <!--<input type="number" name="Grade" id="Grade" formControlName="Grade">-->
+    <select name="Grade" id="Grade" formControlName="Grade">
+        <option *ngFor="let grade of studentCourseInstanceGrades">{{ grade }}</option>
+    </select>
+    <p *ngIf="grade_get.invalid && grade_get.touched" style="color: red;">grade is required</p>
+
+    <button type="submit" [disabled]="setGradeForm.invalid">Add Grade</button>
+
+</form>
+
+<form [formGroup]="studentGpaForm" (ngSubmit)="getStudentGpa()">
+    
+</form>
