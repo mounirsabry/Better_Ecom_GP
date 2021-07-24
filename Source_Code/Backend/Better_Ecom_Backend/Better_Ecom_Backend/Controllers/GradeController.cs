@@ -201,7 +201,7 @@ namespace Better_Ecom_Backend.Controllers
             return false;
         }
 
-        double GetGpaFromGrade(StudentCourseInstanceGrade grade)
+        static double GetGpaFromGrade(StudentCourseInstanceGrade grade)
         {
             switch (grade)
             {

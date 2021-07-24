@@ -14,6 +14,7 @@ namespace Better_Ecom_Backend.Models
         public AttendanceType Attendance_type { get; set; }
         public DateTime Attendance_date { get; set; }
 
+
         public Attendance_item(int Item_id, int Course_instance_id, string Item_name, AttendanceType Attendance_type, DateTime Attendance_date)
         {
             this.Item_id = Item_id;

@@ -47,10 +47,11 @@ namespace Better_Ecom_Backend.Controllers
                 }
             }
 
-            string getAttendanceItemIds = "SELECT item_id FROM attendance_item WHERE course_instance_id = @courseInstanceID";
-            string getStudentAttendanceSql = $"SELECT * FROM student_attendance_item_attendance WHERE student_id = @studentID AND attendance_item_id IN ({getAttendanceItemIds});";
 
-            List<Student_attendance_item_attendance> attendances = _data.LoadData<Student_attendance_item_attendance, dynamic>(getStudentAttendanceSql, new { courseInstanceID, studentID },
+            string getStudentAttendanceSql = $"SELECT * FROM student_attendance_item_attendance INNER JOIN attendance_item ON attendance_item_id = item_id" + "\n" +
+                $" WHERE student_id = @studentID AND course_instance_id = @courseInstanceID;";
+
+            List<StudentAttendanceItemAndInfo> attendances = _data.LoadData<StudentAttendanceItemAndInfo, dynamic>(getStudentAttendanceSql, new { courseInstanceID, studentID },
                 _config.GetConnectionString("Default"));
 
             if (attendances is null)
