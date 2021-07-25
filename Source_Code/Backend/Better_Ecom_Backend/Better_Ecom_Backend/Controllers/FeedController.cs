@@ -79,7 +79,7 @@ namespace Better_Ecom_Backend.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = "admin")]
         [HttpDelete("DeleteFromGeneralFeeds/{FeedID:int}")]
         public IActionResult DeleteFromGeneralFeeds(int feedID)
         {
