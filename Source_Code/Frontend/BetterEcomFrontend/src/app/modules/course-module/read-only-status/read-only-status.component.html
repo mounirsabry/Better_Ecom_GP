@@ -1,0 +1,24 @@
+<form [formGroup]="getReadStatusForm">
+    <label>Enter Course Instance ID: </label>
+    <input type="number" name="CourseInstanceID" id="CourseInstanceID" formControlName="course_instance_id">
+    <br>
+    <button type="button" [disabled]="getReadStatusForm.invalid" (click)="getReadOnlyStatus()">Get Read Only Status</button>
+</form>
+
+<br>
+<label [hidden]="hide" *ngIf="status">Course Instance is Read only</label>
+<label [hidden]="hide" *ngIf="!status">Course Instance is not Read only</label>
+
+<form [formGroup]="setReadStatusForm" (ngSubmit)="setCourseInstanceStatus()">
+    <label>Enter Course Instance ID: </label>
+    <input type="number" name="CourseInstanceID" id="CourseInstanceID" formControlName="CourseInstanceID">
+    <br>
+
+    <select name="ReadOnlyStatus" id="ReadOnlyStatus" formControlName="ReadOnlyStatus">
+        <option value="0">Not Read Only</option>
+        <option value="1">Read Only</option>
+    </select>
+
+    <button type="submit" [disabled]="setReadStatusForm.invalid">Submit Read Status</button>
+</form>
+

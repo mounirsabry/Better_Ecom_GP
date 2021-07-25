@@ -28,6 +28,7 @@ import { InstructorCoursePageComponent } from './modules/course-module/instructo
 import { DropCourseComponent } from './modules/course-module/drop-course/drop-course.component';
 import { StudentGradeComponent } from './modules/course-module/student-grade/student-grade.component';
 import { AdminGradeComponent } from './modules/course-module/admin-grade/admin-grade.component';
+import { ReadOnlyStatusComponent } from './modules/course-module/read-only-status/read-only-status.component';
 
 const routes: Routes = [
   // i did redirecto to startPage instead of normal cuz you can't pass optional paramters to '' url.
@@ -64,6 +65,7 @@ const routes: Routes = [
   {path:'dropCoursePage/:type',component:DropCourseComponent},
   {path:'studentGradePage/:instanceID',component:StudentGradeComponent},
   {path:'adminGradePage',component:AdminGradeComponent},
+  {path:'readStatusPage',component:ReadOnlyStatusComponent},
   {path:'**', redirectTo:'pageNotFound',pathMatch:'full'}
 
 ];
