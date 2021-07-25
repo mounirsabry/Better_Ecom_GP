@@ -31,6 +31,7 @@ import { InstructorCoursePageComponent } from './modules/course-module/instructo
 import { DropCourseComponent } from './modules/course-module/drop-course/drop-course.component';
 import { StudentGradeComponent } from './modules/course-module/student-grade/student-grade.component';
 import { AdminGradeComponent } from './modules/course-module/admin-grade/admin-grade.component';
+import { ReadOnlyStatusComponent } from './modules/course-module/read-only-status/read-only-status.component';
 @NgModule({
 
   declarations: [
@@ -55,7 +56,8 @@ import { AdminGradeComponent } from './modules/course-module/admin-grade/admin-g
     InstructorCoursePageComponent,
     DropCourseComponent,
     StudentGradeComponent,
-    AdminGradeComponent
+    AdminGradeComponent,
+    ReadOnlyStatusComponent
 
 
   ],

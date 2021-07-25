@@ -18,6 +18,8 @@ export class DropCourseServiceService {
     return this.httpclient.delete<any>("https://localhost:44361/course/DropInstructorFromCourseInstance/" + course_instance_id + "/" + instructor_id);
   }
 
-  
+  handleError(error : HttpErrorResponse){
+    return throwError(error);
+  }
 
 }
