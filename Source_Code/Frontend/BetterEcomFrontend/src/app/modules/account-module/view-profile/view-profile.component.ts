@@ -60,7 +60,7 @@ export class ViewProfileComponent implements OnInit {
 
   inputType(key){
       if(key == "mobile_number" || key == "phone_number"){
-        return "number"
+        return "text"
       }else{
         return "text"
       }
