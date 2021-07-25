@@ -13,6 +13,8 @@
                     <p class="text-danger row" *ngIf="emailGet.invalid && property.key == 'email'">please enter a valid email</p>
                 </div>
             </div>
+            <label class="col-3 my-1" [hidden]="!hasGpa">Student Gpa:</label>
+            <label class="col-3 my-1" [hidden]="!hasGpa">{{ student_gpa }}</label>
             <button class="row btn btn-outline-dark btn-lg my-2" type="submit" [disabled]="profileForm.invalid"> Save Changes </button>
         </form>
         <button class="row col-12 btn btn-outline-dark btn-lg my-2" [routerLink]="['/changePassword']">Change Password</button>

@@ -66,10 +66,9 @@ export class LateRegisterationService {
     return this.httpclient.get<any>("https://localhost:44361/department/GetCourseInstanceByID/" + instance_id);
   }
 
-  getRegisteredCoursesStudent() { } //courseController
+
   dropStudent() { }
   dropInstructor() { }
-  getRegisteredCoursesInstructor() { }
   setCourseInstanceReadOnly() { }
 
   handleError(error: HttpErrorResponse) {
