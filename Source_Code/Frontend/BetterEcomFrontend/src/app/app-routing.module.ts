@@ -25,6 +25,9 @@ import { AdminLateRegisterationPageComponent } from './modules/late-registeratio
 import { StudentCoursePageComponent } from './modules/course-module/student-course-page/student-course-page.component';
 import { CourseInstancePageComponent } from './modules/course-module/course-instance-page/course-instance-page.component';
 import { InstructorCoursePageComponent } from './modules/course-module/instructor-course-page/instructor-course-page.component';
+import { DropCourseComponent } from './modules/course-module/drop-course/drop-course.component';
+import { StudentGradeComponent } from './modules/course-module/student-grade/student-grade.component';
+import { AdminGradeComponent } from './modules/course-module/admin-grade/admin-grade.component';
 
 const routes: Routes = [
   // i did redirecto to startPage instead of normal cuz you can't pass optional paramters to '' url.
@@ -58,6 +61,9 @@ const routes: Routes = [
   {path:'studentCoursePage',component:StudentCoursePageComponent},
   {path:'instructorCoursePage',component:InstructorCoursePageComponent},
   {path:'courseInstancePage/:instanceID',component:CourseInstancePageComponent},
+  {path:'dropCoursePage/:type',component:DropCourseComponent},
+  {path:'studentGradePage/:instanceID',component:StudentGradeComponent},
+  {path:'adminGradePage',component:AdminGradeComponent},
   {path:'**', redirectTo:'pageNotFound',pathMatch:'full'}
 
 ];
