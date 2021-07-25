@@ -28,7 +28,7 @@ namespace Better_Ecom_Backend.Controllers
             _data = data;
         }
 
-        [Authorize]
+      
         [HttpGet("GetGeneralFeeds")]
         public IActionResult GetGeneralFeeds()
         {
@@ -79,7 +79,7 @@ namespace Better_Ecom_Backend.Controllers
             }
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles ="admin")]
         [HttpDelete("DeleteFromGeneralFeeds/{FeedID:int}")]
         public IActionResult DeleteFromGeneralFeeds(int feedID)
         {

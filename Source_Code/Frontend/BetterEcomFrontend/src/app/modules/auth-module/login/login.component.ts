@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit {
 
   login(ID, password) {
 
+
     this.authService.login(parseInt(ID), password, this.type).subscribe(
       // token => this.token = token,
       response => {

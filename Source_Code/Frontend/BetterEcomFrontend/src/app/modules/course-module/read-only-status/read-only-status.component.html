@@ -1,24 +1,29 @@
-<form [formGroup]="getReadStatusForm">
-    <label>Enter Course Instance ID: </label>
-    <input type="number" name="CourseInstanceID" id="CourseInstanceID" formControlName="course_instance_id">
-    <br>
-    <button type="button" [disabled]="getReadStatusForm.invalid" (click)="getReadOnlyStatus()">Get Read Only Status</button>
-</form>
+<div class="gradient container-fluid p-3">
 
-<br>
-<label [hidden]="hide" *ngIf="status">Course Instance is Read only</label>
-<label [hidden]="hide" *ngIf="!status">Course Instance is not Read only</label>
+    <hr class="row my-2">
 
-<form [formGroup]="setReadStatusForm" (ngSubmit)="setCourseInstanceStatus()">
-    <label>Enter Course Instance ID: </label>
-    <input type="number" name="CourseInstanceID" id="CourseInstanceID" formControlName="CourseInstanceID">
-    <br>
-
-    <select name="ReadOnlyStatus" id="ReadOnlyStatus" formControlName="ReadOnlyStatus">
-        <option value="0">Not Read Only</option>
-        <option value="1">Read Only</option>
-    </select>
-
-    <button type="submit" [disabled]="setReadStatusForm.invalid">Submit Read Status</button>
-</form>
-
+    <form class="row container-fluid my-2" [formGroup]="getReadStatusForm">
+        <div class="row">
+            <label class="col-4">Enter Course Instance ID: </label>
+            <input class="col-8" type="number" name="CourseInstanceID" id="CourseInstanceID" formControlName="course_instance_id">
+        </div>
+        <button class="row btn btn-outline-dark text-light my-1" type="button" [disabled]="getReadStatusForm.invalid" (click)="getReadOnlyStatus()">Get Read Only Status</button>
+    </form>
+    
+    <div class="row my-2 text-center">
+        <label class="col-12 fw-bold text-dark" [hidden]="hide" *ngIf="status">Course Instance is Read only</label>
+        <label class="col-12 fw-bold text-dark" [hidden]="hide" *ngIf="!status">Course Instance is not Read only</label>
+    </div>
+    
+    <form class="row container-fluid my-2" [formGroup]="setReadStatusForm" (ngSubmit)="setCourseInstanceStatus()">
+        <div class="row">
+            <label class="col-4">Enter Course Instance ID: </label>
+            <input class="col-4" type="number" name="CourseInstanceID" id="CourseInstanceID" formControlName="CourseInstanceID">
+            <select class="col-4" name="ReadOnlyStatus" id="ReadOnlyStatus" formControlName="ReadOnlyStatus">
+            <option value="0">Not Read Only</option>
+            <option value="1">Read Only</option>
+            </select>
+        </div>
+        <button class="row btn btn-outline-dark text-light my-1" type="submit" [disabled]="setReadStatusForm.invalid">Submit Read Status</button>
+    </form>
+</div>
