@@ -294,19 +294,20 @@ namespace Better_Ecom_Backend.Controllers
                 return Forbid("students can only get their own data.");
             }
 
-            string getTargetCourseInstanceYearAndTermSql = "SELECT course_year, course_term FROM course_instance WHERE instance_id = @courseInstanceID;";
 
-            var term = _data.LoadData<dynamic, dynamic>(getTargetCourseInstanceYearAndTermSql, new { courseInstanceID }, _config.GetConnectionString("Default"));
 
-            if (term is null)
+            var courseInstanceClosedForRegistration = GetCourseInstanceClosedForRegistration(courseInstanceID);
+
+            if (courseInstanceClosedForRegistration is null)
             {
                 return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
-            else if (term.Count == 0)
+            else if (courseInstanceClosedForRegistration.Count == 0)
             {
                 return BadRequest(new { Message = "instance doesn't exist." });
             }
-            else if (term[0].course_year != TimeUtilities.GetCurrentYear() || term[0].course_term != TimeUtilities.GetCurrentTerm())
+            
+            else if (GetCourseInstanceClosedForRegistration(courseInstanceID)[0])
             {
                 return BadRequest(new { Message = "can't drop from old course" });
             }
