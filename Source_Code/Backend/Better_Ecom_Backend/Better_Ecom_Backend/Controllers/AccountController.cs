@@ -40,7 +40,7 @@ namespace Better_Ecom_Backend.Controllers
         {
             if (!LoginRequiredDataValid(loginData))
             {
-                return BadRequest(new { Message = "required data missing or invalid." });
+                return Unauthorized(new { Message = "required data missing or invalid." });
             }
 
             int userID = loginData.GetProperty("UserID").GetInt32();
@@ -49,21 +49,21 @@ namespace Better_Ecom_Backend.Controllers
 
             if (type != "student" && type != "instructor" && type != "admin")
             {
-                return BadRequest(new { Message = "invalid user type." });
+                return Unauthorized(new { Message = "invalid user type." });
             }
             else if (HelperFunctions.CheckUserIDAndType(userID, type) == false)
             {
-                return BadRequest(new { Message = "invalid user id or type." });
+                return Unauthorized(new { Message = "invalid user id or type." });
             }
             else if (string.IsNullOrEmpty(password))
             {
-                return BadRequest(new { Message = "password cannot by empty or null." });
+                return Unauthorized(new { Message = "password cannot by empty or null." });
             }
 
             string authenticationMessage = AuthenticateUser(userID, password, type);
             if (authenticationMessage == "query failed.")
             {
-                return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
+                return Unauthorized(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
             else if (authenticationMessage == "no user found with such id." || authenticationMessage == "password is wrong.")
             {
@@ -71,7 +71,7 @@ namespace Better_Ecom_Backend.Controllers
             }
             else if (authenticationMessage == "invalid user type.")
             {
-                return BadRequest(new { Message = "invalid user type." });
+                return Unauthorized(new { Message = "invalid user type." });
             }
             else
             {
