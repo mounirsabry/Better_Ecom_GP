@@ -14,12 +14,8 @@ export class ReadOnlyStatusService {
     return this.httpclient.get<any>("https://localhost:44361/course/GetCourseInstanceReadOnlyStatus/" + course_instance_id);
   }
 
-  setCourseInstanceReadOnlyStatus(course_instance_id : number, readOnlyStatus : boolean) {
-    var obj = {
-      'CourseInstanceID' : course_instance_id,
-      'ReadOnlyStatus' : readOnlyStatus
-    }
-    return this.httpclient.patch<any>("https://localhost:44361/course/SetCourseInstanceReadOnlyStatus", obj);
+  setCourseInstanceReadOnlyStatus(obj : any) {
+    return this.httpclient.patch<any>("https://localhost:44361/course/SetCourseInstanceReadOnlyStatus/", obj);
   }
 
   handleError(error : HttpErrorResponse){

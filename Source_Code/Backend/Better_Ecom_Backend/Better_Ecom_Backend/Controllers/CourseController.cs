@@ -963,7 +963,7 @@ namespace Better_Ecom_Backend.Controllers
         }
 
         [Authorize(Roles = "admin, instructor")]
-        [HttpPatch("SetCourseInstanceReadOnlyStatus/{CourseInstanceID:int}/{ReadOnlyStatus}")]
+        [HttpPatch("SetCourseInstanceReadOnlyStatus")]
         public IActionResult SetCourseInstanceReadOnlyStatus([FromHeader]string Authorization,[FromBody] JsonElement jsonInput)
         {
             if (ExistanceFunctions.IsDBUpAndRunning(_config, _data) == false)
