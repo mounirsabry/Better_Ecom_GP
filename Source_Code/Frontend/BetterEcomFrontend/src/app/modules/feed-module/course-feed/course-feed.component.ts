@@ -9,55 +9,56 @@ import { CourseFeedService } from '../services/course-feed.service';
 })
 export class CourseFeedComponent implements OnInit {
 
-  @Input() public instanceID:string
+  @Input() public instanceID: string
 
   courseFeedElements = {}
   logedInType: string = localStorage.getItem('type')
-  showEditText:string = 'hidden'
+  showEditText: string = 'hidden'
+  temp = "ay 7aga"
 
   courseFeedForm = new FormGroup({
-    Content: new FormControl('',Validators.required)
+    Content: new FormControl('', Validators.required)
   })
-  constructor(private courseFeedService:CourseFeedService) { }
+  constructor(private courseFeedService: CourseFeedService) { }
 
   ngOnInit(): void {
     this.courseFeedService.getInstanceFeed(parseInt(this.instanceID)).subscribe(
-      response =>{
+      response => {
         this.courseFeedElements = response
 
       },
-      error =>{
+      error => {
 
       }
     )
   }
 
-  get getContent(){
+  get getContent() {
     return this.courseFeedForm.get('Content')
   }
 
-  addToFeed(){
+  addToFeed() {
 
     let obj = this.courseFeedForm.value
     obj['CourseInstanceID'] = parseInt(this.instanceID)
 
     console.log(obj)
     this.courseFeedService.addToFeed(obj).subscribe(
-      response =>{
+      response => {
         location.reload()
 
       },
-      error =>{
+      error => {
         alert('Failed To Add! instructor maybe not registered in This Course')
       }
     )
 
   }
 
-  delete(feedID:any){
+  delete(feedID: any) {
 
     console.log(feedID)
-    this.courseFeedService.delete(parseInt(this.instanceID),parseInt(feedID)).subscribe(
+    this.courseFeedService.delete(parseInt(this.instanceID), parseInt(feedID)).subscribe(
       response => {
         location.reload()
       },

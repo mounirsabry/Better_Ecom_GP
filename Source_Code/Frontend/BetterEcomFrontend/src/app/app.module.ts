@@ -32,6 +32,7 @@ import { DropCourseComponent } from './modules/course-module/drop-course/drop-co
 import { StudentGradeComponent } from './modules/course-module/student-grade/student-grade.component';
 import { AdminGradeComponent } from './modules/course-module/admin-grade/admin-grade.component';
 import { ReadOnlyStatusComponent } from './modules/course-module/read-only-status/read-only-status.component';
+import { CourseFeedComponent } from './modules/feed-module/course-feed/course-feed.component';
 @NgModule({
 
   declarations: [
@@ -57,7 +58,8 @@ import { ReadOnlyStatusComponent } from './modules/course-module/read-only-statu
     DropCourseComponent,
     StudentGradeComponent,
     AdminGradeComponent,
-    ReadOnlyStatusComponent
+    ReadOnlyStatusComponent,
+    CourseFeedComponent
 
 
   ],

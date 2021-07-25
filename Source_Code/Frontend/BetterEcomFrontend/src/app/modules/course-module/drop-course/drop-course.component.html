@@ -1,23 +1,28 @@
+<div class="gradient container-fluid p-3">
+    <hr class="row my-2">
 
-<form [formGroup]="adminDropForm" (ngSubmit)="dropUser()" [hidden]="!isAdmin()">
-    <label>Select User Type: </label>
-    <select name="UserType" id="UserType" formControlName="selectType">
-        <option value="student">Student</option>
-        <option value="instructor">Instructor</option>
-    </select>
-    <p *ngIf="type_get.invalid && type_get.touched" style="color: red;"> type is required</p>
+    <form class="row container-fluid my-2" [formGroup]="adminDropForm" (ngSubmit)="dropUser()" [hidden]="!isAdmin()">
+        <div class="row my-2">
+            <label class="col-4">Select User Type: </label>
+            <select class="col-4" name="UserType" id="UserType" formControlName="selectType">
+            <option value="student">Student</option>
+            <option value="instructor">Instructor</option>
+            </select>
+            <p class="col-4 text-danger fw-bold" *ngIf="type_get.invalid && type_get.touched"> type is required</p>
+        </div>
 
-    <br>
-
-    <label>Enter User ID: </label>
-    <input type="number" name="UserID" id="UserID" formControlName="user_id">
-    <p *ngIf="user_id_get.invalid && user_id_get.touched" style="color: red;"> user id is required</p>
-
-    <br>
-
-    <label>Enter Course Instance Id: </label>
-    <input type="number" name="InstanceID" id="Instance" formControlName="course_instance_id">
-    <p *ngIf="course_instance_id_get.invalid && course_instance_id_get.touched" style="color: red;"> course id is required</p>
-
-    <button type="submit" [disabled]="adminDropForm.invalid">Drop Course</button>
-</form>
+        <div class="row my-2">
+            <label class="col-4">Enter User ID: </label>
+            <input class="col-4" type="number" name="UserID" id="UserID" formControlName="user_id">
+            <p class="col-4 text-danger fw-bold" *ngIf="user_id_get.invalid && user_id_get.touched"> user id is required</p>
+        </div>
+    
+        <div class="row my-2">
+            <label class="col-4">Enter Course Instance Id: </label>
+            <input class="col-4" type="number" name="InstanceID" id="Instance" formControlName="course_instance_id">
+            <p class="col-4 text-danger fw-bold" *ngIf="course_instance_id_get.invalid && course_instance_id_get.touched"> course id is required</p>
+        </div>
+    
+        <button class="row btn btn-outline-dark text-light my-2" type="submit" [disabled]="adminDropForm.invalid">Drop Course</button>
+    </form>
+</div>
