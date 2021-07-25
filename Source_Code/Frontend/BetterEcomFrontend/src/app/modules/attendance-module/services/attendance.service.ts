@@ -12,4 +12,9 @@ export class AttendanceService {
 
     return this.httpClient.post("https://localhost:44361/Attendance/AddCourseInstanceAttendanceItem",attendanceItem)
   }
+
+  getAttendanceInfo(intanceID:number,studentID:number){
+
+    return this.httpClient.get<any>("https://localhost:44361/Attendance/GetStudentCourseInstanceAttendance/"+intanceID+"/"+studentID)
+  }
 }

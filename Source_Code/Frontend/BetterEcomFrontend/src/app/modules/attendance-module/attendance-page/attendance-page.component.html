@@ -1,3 +1,46 @@
+{{attendanceInfoList | json}}
+
+<form *ngIf="logedInType == 'instructor' || logedInType == 'instructor'" [formGroup]="viewAttendanceForm" (ngSubmit)="viewStudentAttendance()">
+  <label>Student ID</label>
+  <input type="number" formControlName="StudentID">
+  <p class="row text-danger fw-bold" *ngIf="getStudentID.invalid && getStudentID.touched "> Student ID is Required</p>
+  <button [disabled]="viewAttendanceForm.invalid">View Attendance</button>
+</form>
+
+<!--<form *ngIf="logedInType == 'instructor || logedInType == 'instructor'">
+
+  <label>Student ID</label>
+  <input type="number">
+
+  <label >Item ID</label>
+  <input type="number">
+
+  <button>Set Attendance Status</button>
+  <button>Delete Attendance Item</button>
+</form>-->
+
+<table style="text-align: center;">
+  <tr>
+    <td>Attendance Date</td>
+    <td>Attendance Status</td>
+    <td>Attendance Type</td>
+    <td>Item ID</td>
+    <td>Name</td>
+  </tr>
+
+  <tr style="text-align: center;" *ngFor="let attendanceIfos of objectValues(attendanceInfoList);let courseIndex = index">
+    <td *ngFor="let attendanceObj of attendanceIfos | keyvalue">
+      <div *ngIf="attendanceObj.key != 'course_instance_id' && attendanceObj.key != 'student_id'" >{{attendanceObj.value}}</div>
+    </td>
+
+    <button type="button" (click)="setStatus()"> Set Attendance Status</button>
+    <button type="button" (click)= "deleteItem()" > Delete Attendance Item</button>
+
+  </tr>
+</table>
+
+
+
 
 
 <form *ngIf="logedInType == 'instructor' || logedInType == 'admin'" [formGroup]="attendanceForm" (ngSubmit)="addAttendaceItem()">
@@ -7,6 +50,10 @@
     <option>Lab</option>
     <option>Section</option>
   </select>
+  <p class="row text-danger fw-bold" *ngIf="getAttendanceType.invalid && getAttendanceType.touched "> Attendance Type is Required</p>
+
+
+  <br>
 
   <p class="row text-danger fw-bold" *ngIf="getAttendanceType.invalid && getAttendanceType.touched "> Attendance Type is Required</p>
 
@@ -14,12 +61,14 @@
   <input type="text" formControlName="ItemName">
   <p class="row text-danger fw-bold" *ngIf="getItemName.invalid && getItemName.touched "> Item Name is Required</p>
 
+  <br>
 
 
   <label>Attendance Date</label>
   <input type="date" formControlName="AttendanceDate" >
   <p class="row text-danger fw-bold" *ngIf="getAttendanceDate.invalid && getAttendanceDate.touched "> Attendance Date is Required</p>
 
+  <br>
 
   <button [disabled]="attendanceForm.invalid" >Add Attendance Item</button>
 </form>
