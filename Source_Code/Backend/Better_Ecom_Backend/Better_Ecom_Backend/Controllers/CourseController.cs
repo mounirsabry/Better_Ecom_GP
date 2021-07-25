@@ -964,17 +964,25 @@ namespace Better_Ecom_Backend.Controllers
 
         [Authorize(Roles = "admin, instructor")]
         [HttpPatch("SetCourseInstanceReadOnlyStatus/{CourseInstanceID:int}/{ReadOnlyStatus}")]
-        public IActionResult SetCourseInstanceReadOnlyStatus([FromHeader]string Authorization, int courseInstanceID, bool readOnlyStatus)
+        public IActionResult SetCourseInstanceReadOnlyStatus([FromHeader]string Authorization,[FromBody] JsonElement jsonInput)
         {
             if (ExistanceFunctions.IsDBUpAndRunning(_config, _data) == false)
             {
                 return BadRequest(new { Message = MessageFunctions.GetMaybeDatabaseIsDownMessage() });
             }
+            if(SetCourseInstanceReadOnlyStatusDataValid(jsonInput) == false)
+            {
+                return BadRequest(new { Message = MessageFunctions.GetRequiredDataMissingOrInvalidMessage() });
+            }
+
+            int courseInstanceID = jsonInput.GetProperty("CourseInstanceID").GetInt32();
+            bool readOnlyStatus = jsonInput.GetProperty("ReadOnlyStatus").GetBoolean();
 
             if (ExistanceFunctions.IsCourseInstanceExists(_config, _data, courseInstanceID) == false)
             {
                 return BadRequest(new { Message = MessageFunctions.GetCourseInstanceNotFoundMessage() });
             }
+
 
             TokenInfo tokenInfo = HelperFunctions.GetIdAndTypeFromToken(Authorization);
             if(tokenInfo.Type == "instructor")
@@ -1003,6 +1011,8 @@ namespace Better_Ecom_Backend.Controllers
             //update the row with the new status.
             //return an error or return course instance status updated successfully.
         }
+
+
 
         private List<Course> GetStudentAvailableCoursesList(int studentID)
         {
@@ -1261,6 +1271,12 @@ namespace Better_Ecom_Backend.Controllers
         {
             return jsonInput.TryGetProperty("InstructorID", out JsonElement temp) && temp.TryGetInt32(out _)
                 && jsonInput.TryGetProperty("CourseInstanceID", out temp) && temp.TryGetInt32(out _);
+        }
+
+        private bool SetCourseInstanceReadOnlyStatusDataValid(JsonElement jsonInput)
+        {
+            return jsonInput.TryGetProperty("CourseInstanceID", out JsonElement temp) && temp.TryGetInt32(out _)
+                && jsonInput.TryGetProperty("ReadOnlyStatus", out temp) && (temp.ValueKind == JsonValueKind.False || temp.ValueKind == JsonValueKind.True);
         }
     }
 }
