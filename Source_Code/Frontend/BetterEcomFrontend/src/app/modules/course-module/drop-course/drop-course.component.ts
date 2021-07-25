@@ -24,7 +24,7 @@ export class DropCourseComponent implements OnInit {
   }
 
   get user_id_get(){
-    return this.adminDropForm.get('user_id_get');
+    return this.adminDropForm.get('user_id');
   }
 
   get course_instance_id_get(){
@@ -81,6 +81,40 @@ export class DropCourseComponent implements OnInit {
   }
 
   dropUser(){
+    var type = this.type_get.value;
+    console.log(type);
 
+    var user_id = this.user_id_get.value;
+    var course_instance_ID = this.course_instance_id_get.value;
+
+    console.log(user_id);
+    console.log(course_instance_ID);
+
+    if(type === 'instructor'){
+      this.dropCourseService.dropInstructorFromCourseInstance(course_instance_ID, user_id).subscribe(
+        response =>{
+          console.log(response);
+          alert("Course dropped for Instructor");
+
+        },
+        error =>{
+          console.log(error.error);
+          alert("failed");
+        }
+      )
+    }
+    else if(type === 'student'){
+      this.dropCourseService.dropStudentFromCourseInstance(course_instance_ID, user_id).subscribe(
+        response =>{
+          console.log(response);
+          alert("Course dropped for Student");
+
+        },
+        error =>{
+          console.log(error.error);
+          alert("failed");
+        }
+      )
+    }
   }
 }
