@@ -1,0 +1,23 @@
+
+<form [formGroup]="adminDropForm" (ngSubmit)="dropUser()" [hidden]="!isAdmin()">
+    <label>Select User Type: </label>
+    <select name="UserType" id="UserType" formControlName="selectType">
+        <option value="student">Student</option>
+        <option value="instructor">Instructor</option>
+    </select>
+    <p *ngIf="type_get.invalid && type_get.touched" style="color: red;"> type is required</p>
+
+    <br>
+
+    <label>Enter User ID: </label>
+    <input type="number" name="UserID" id="UserID" formControlName="user_id">
+    <p *ngIf="user_id_get.invalid && user_id_get.touched" style="color: red;"> user id is required</p>
+
+    <br>
+
+    <label>Enter Course Instance Id: </label>
+    <input type="number" name="InstanceID" id="Instance" formControlName="course_instance_id">
+    <p *ngIf="course_instance_id_get.invalid && course_instance_id_get.touched" style="color: red;"> course id is required</p>
+
+    <button type="submit" [disabled]="adminDropForm.invalid">Drop Course</button>
+</form>

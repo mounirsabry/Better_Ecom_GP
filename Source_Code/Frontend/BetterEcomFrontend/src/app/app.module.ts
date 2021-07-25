@@ -28,7 +28,10 @@ import { StudentCoursePageComponent } from './modules/course-module/student-cour
 import { GeneralFeedComponent } from './modules/feed-module/general-feed/general-feed.component';
 import { CourseInstancePageComponent } from './modules/course-module/course-instance-page/course-instance-page.component';
 import { InstructorCoursePageComponent } from './modules/course-module/instructor-course-page/instructor-course-page.component';
-import { CourseFeedComponent } from './modules/feed-module/course-feed/course-feed.component';
+import { DropCourseComponent } from './modules/course-module/drop-course/drop-course.component';
+import { StudentGradeComponent } from './modules/course-module/student-grade/student-grade.component';
+import { AdminGradeComponent } from './modules/course-module/admin-grade/admin-grade.component';
+import { ReadOnlyStatusComponent } from './modules/course-module/read-only-status/read-only-status.component';
 @NgModule({
 
   declarations: [
@@ -51,7 +54,10 @@ import { CourseFeedComponent } from './modules/feed-module/course-feed/course-fe
     GeneralFeedComponent,
     CourseInstancePageComponent,
     InstructorCoursePageComponent,
-    CourseFeedComponent
+    DropCourseComponent,
+    StudentGradeComponent,
+    AdminGradeComponent,
+    ReadOnlyStatusComponent
 
 
   ],
