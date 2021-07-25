@@ -440,7 +440,7 @@ namespace Better_Ecom_Backend.Controllers
         /// </summary>
         /// <param name="jsonInput"></param>
         /// <returns>The registration request.</returns>
-        [Authorize]
+        [Authorize(Roles ="student")]
         [HttpPost("SubmitLateCourseInstanceRegistrationRequest")]
         public IActionResult SubmitLateCourseInstanceRegistrationRequest([FromBody] JsonElement jsonInput)
         {
