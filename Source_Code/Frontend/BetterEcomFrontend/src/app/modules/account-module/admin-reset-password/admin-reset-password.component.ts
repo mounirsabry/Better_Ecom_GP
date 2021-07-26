@@ -22,7 +22,7 @@ export class AdminResetPasswordComponent implements OnInit {
 
   resetPasswordForm = new FormGroup({
     Type : new FormControl('', [Validators.required]),
-    ID: new FormControl('', [Validators.required]),
+    UserID: new FormControl('', [Validators.required]),
     NationalID: new FormControl('', [Validators.required])
   })
 
@@ -31,7 +31,7 @@ export class AdminResetPasswordComponent implements OnInit {
   }
 
   get idGet() {
-    return this.resetPasswordForm.get("ID")
+    return this.resetPasswordForm.get("UserID")
   }
 
   get nationalIDGet() {
