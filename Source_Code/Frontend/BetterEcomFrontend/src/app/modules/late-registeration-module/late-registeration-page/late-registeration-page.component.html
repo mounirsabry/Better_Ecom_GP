@@ -43,9 +43,9 @@
             <label class="col-2">Student ID</label>
         </div>
 
-        <div class="row my-2" *ngFor="let requests of objectValues(late_requests_list);let requestIndex = index">
+        <div class="row my-2" *ngFor="let requests of objectValues(late_requests_list);let requestIndex = index" style="color: black;">
             <label class="col-2" *ngFor="let request of requests | keyvalue">{{ request.value }}</label>
-            <button class="col-2 btn btn-outline-primary text-light" (click)="deleteRequest(requestIndex)">Register in Course</button>
+            <button class="col-2 btn btn-outline-primary text-light" (click)="deleteRequest(requestIndex)">Delete request</button>
         </div>
     </div>
 </div>
