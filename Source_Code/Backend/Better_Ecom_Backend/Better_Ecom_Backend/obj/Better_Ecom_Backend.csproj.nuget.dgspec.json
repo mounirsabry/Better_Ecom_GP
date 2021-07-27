@@ -1,23 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj": {}
+    "D:\\Mounir_Study\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj": {}
   },
   "projects": {
-    "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj": {
+    "D:\\Mounir_Study\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj",
+        "projectUniqueName": "D:\\Mounir_Study\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj",
         "projectName": "Better_Ecom_Backend",
-        "projectPath": "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj",
-        "packagesPath": "C:\\Users\\king_\\.nuget\\packages\\",
-        "outputPath": "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\obj\\",
+        "projectPath": "D:\\Mounir_Study\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\Better_Ecom_Backend.csproj",
+        "packagesPath": "C:\\Users\\Mounir\\.nuget\\packages\\",
+        "outputPath": "D:\\Mounir_Study\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\Better_Ecom_Backend\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\king_\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Mounir\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -31,8 +32,8 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj": {
-                "projectPath": "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj"
+              "D:\\Mounir_Study\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj": {
+                "projectPath": "D:\\Mounir_Study\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj"
               }
             }
           }
@@ -98,20 +99,21 @@
         }
       }
     },
-    "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj": {
+    "D:\\Mounir_Study\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj",
+        "projectUniqueName": "D:\\Mounir_Study\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj",
         "projectName": "DataLibrary",
-        "projectPath": "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj",
-        "packagesPath": "C:\\Users\\king_\\.nuget\\packages\\",
-        "outputPath": "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\obj\\",
+        "projectPath": "D:\\Mounir_Study\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj",
+        "packagesPath": "C:\\Users\\Mounir\\.nuget\\packages\\",
+        "outputPath": "D:\\Mounir_Study\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\king_\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Mounir\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

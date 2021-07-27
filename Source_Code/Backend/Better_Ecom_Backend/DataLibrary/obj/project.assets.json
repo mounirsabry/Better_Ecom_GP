@@ -867,23 +867,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\king_\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\Mounir\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj",
+      "projectUniqueName": "D:\\Mounir_Study\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj",
       "projectName": "DataLibrary",
-      "projectPath": "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj",
-      "packagesPath": "C:\\Users\\king_\\.nuget\\packages\\",
-      "outputPath": "E:\\Faculty Of Computers and Information\\Level 4\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\obj\\",
+      "projectPath": "D:\\Mounir_Study\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\DataLibrary.csproj",
+      "packagesPath": "C:\\Users\\Mounir\\.nuget\\packages\\",
+      "outputPath": "D:\\Mounir_Study\\GP\\Better_Ecom_GP\\Source_Code\\Backend\\Better_Ecom_Backend\\DataLibrary\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\king_\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Mounir\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
