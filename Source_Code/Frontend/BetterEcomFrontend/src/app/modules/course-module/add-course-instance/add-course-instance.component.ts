@@ -11,6 +11,7 @@ export class AddCourseInstanceComponent implements OnInit {
 
   constructor(private courseInstanceService: CourseInstanceService) { }
 
+  coursTerm = ['First','Second','Summer','Other']
   addCourseInstanceForm = new FormGroup({
     UserID: new FormControl('',),
     //Instance_id : new FormControl('', Validators.required),
@@ -47,6 +48,9 @@ export class AddCourseInstanceComponent implements OnInit {
   }
 
   addCourseInstance() {
+    console.log(this.addCourseInstanceForm.value['Course_term'])
+    console.log(this.coursTerm.indexOf(this.addCourseInstanceForm.value['Course_term']))
+    this.addCourseInstanceForm.value['Course_term'] = this.coursTerm.indexOf(this.addCourseInstanceForm.value['Course_term'])
     this.courseInstanceService.addCourseInstance(this.addCourseInstanceForm.value).subscribe(
       data => {
         alert("Course Instance added");

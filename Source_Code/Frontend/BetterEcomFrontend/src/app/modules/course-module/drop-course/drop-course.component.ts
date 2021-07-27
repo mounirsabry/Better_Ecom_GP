@@ -94,12 +94,12 @@ export class DropCourseComponent implements OnInit {
       this.dropCourseService.dropInstructorFromCourseInstance(course_instance_ID, user_id).subscribe(
         response =>{
           console.log(response);
-          alert("Course dropped for Instructor");
+          alert("Course dropped for Instructor (if user is not registered in course nothing will happen)");
 
         },
         error =>{
           console.log(error.error);
-          alert("failed");
+          alert("failed, course maybe be closed");
         }
       )
     }
@@ -107,12 +107,12 @@ export class DropCourseComponent implements OnInit {
       this.dropCourseService.dropStudentFromCourseInstance(course_instance_ID, user_id).subscribe(
         response =>{
           console.log(response);
-          alert("Course dropped for Student");
+          alert("Course dropped for Student (if user is not registered in course nothing will happen)");
 
         },
         error =>{
           console.log(error.error);
-          alert("failed");
+          alert("failed,course maybe be closed");
         }
       )
     }

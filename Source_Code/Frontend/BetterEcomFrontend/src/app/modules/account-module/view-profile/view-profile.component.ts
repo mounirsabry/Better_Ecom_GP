@@ -88,7 +88,12 @@ export class ViewProfileComponent implements OnInit {
     for(let key of Object.keys(this.profileForm.value)){
       let captitalKey = key.charAt(0).toUpperCase() + key.slice(1);
 
-      obj[captitalKey] = this.profileForm.value[key]
+      if(this.profileForm.value[key] == null){
+        obj[captitalKey] = ""
+
+      }else{
+        obj[captitalKey] = this.profileForm.value[key]
+      }
     }
 
    // console.log(this.user)

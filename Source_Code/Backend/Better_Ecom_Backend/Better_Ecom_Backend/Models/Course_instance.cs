@@ -42,7 +42,7 @@ namespace Better_Ecom_Backend.Models
                 Course_year = -1;
 
             if (jsonData.TryGetProperty(nameof(Course_term), out temp))
-                Course_term = (Term)temp.GetInt32();
+                Course_term = (Term)temp.GetInt32() + 1;
             else
                 Course_term = Term.Other;
 

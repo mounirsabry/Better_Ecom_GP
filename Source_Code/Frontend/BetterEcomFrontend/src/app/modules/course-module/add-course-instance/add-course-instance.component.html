@@ -16,7 +16,13 @@
 
         <div class="row my-1">
             <label class="col-4">Enter Course Term: </label>
-            <input class="col-8" type="number" name="CourseTerm" id="CourseTerm" #CourseTerm formControlName="Course_term">
+            <!--<input class="col-8" type="text" name="CourseTerm" id="CourseTerm" #CourseTerm formControlName="Course_term">-->
+            <select class="col-8" formControlName="Course_term">
+              <option>First</option>
+              <option>Second</option>
+              <option>Summer</option>
+              <option>Other</option>
+            </select>
         </div>
         <p class="row text-danger fw-bold" *ngIf="course_term_get.invalid && course_term_get.touched">Course Term is required</p>
 

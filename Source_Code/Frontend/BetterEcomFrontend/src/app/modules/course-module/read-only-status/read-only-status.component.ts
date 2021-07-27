@@ -66,7 +66,7 @@ export class ReadOnlyStatusComponent implements OnInit {
       },
       error =>{
         console.log(error.error);
-        alert("failed");
+        alert("failed, instructor maybe not registered in the course");
       }
     )
   }

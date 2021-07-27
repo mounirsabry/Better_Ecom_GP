@@ -4,18 +4,19 @@
 
     <div class="row container-fluid my-3" [hidden]="!showAvailableCoursesTable">
         <div class="row my-1 fw-bold text-dark">
-            <label class="col-1">Academic Year</label>
-            <label class="col-1">Course Code</label>
-            <label class="col-1">Course Description</label>
-            <label class="col-1">Course Name</label>
-            <label class="col-1">Department Code</label>
-            <label class="col-1">Is Archived</label>
-            <label class="col-1">Is Read Only</label>
+            <label class="col-2">Academic Year</label>
+            <label class="col-2">Course Code</label>
+            <label class="col-2">Course Description</label>
+            <label class="col-2">Course Name</label>
+            <label class="col-2">Department Code</label>
+            <!--<label class="col-1">Is Archived</label>
+            <label class="col-1">Is Read Only</label>-->
         </div>
 
         <div class="row my-2" *ngFor="let courses of objectValues(available_courses_list);let courseIndex = index">
-            <label class="col-1" *ngFor="let course of courses | keyvalue">{{ course.value }}</label>
-            <button class="col-1 btn btn-outline-primary text-light" type="button" (click)="getAvailableCourseInstances(courseIndex)">Select</button>
+            <!--<div class="col-2 container-fluid" *ngFor="let course of courses | keyvalue"><label class="row" *ngIf="course.key !='is_archived' && course.key !='is_read_only' ">{{ course.value }}</label></div>-->
+            <div class="col-2 container-fluid" *ngFor="let course of courses | keyvalue">{{ course.value }}</div>
+            <button class="col-2 btn btn-outline-primary text-light" type="button" (click)="getAvailableCourseInstances(courseIndex)">Select</button>
         </div>
     </div>
 

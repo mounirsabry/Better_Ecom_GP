@@ -1,12 +1,10 @@
 <div class="container-fluid p-3 justify-content-center">
 
-    <div class="row container-fluid my-2" *ngFor="let index of generalFeedElements">
+    <div class="row container-fluid my-2 border border-light" *ngFor="let index of generalFeedElements">
 
         <div class="row container-fluid" *ngFor="let item of index | keyvalue">
 
-            <div class="row">
-                <label *ngIf="item.key == 'feed_id'">ID: {{item.value}}</label>
-            </div>
+
 
             <div class="row">
                 <label *ngIf="item.key == 'insertion_date'">{{item.value}}</label>

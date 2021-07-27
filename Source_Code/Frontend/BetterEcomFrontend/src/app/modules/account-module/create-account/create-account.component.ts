@@ -38,7 +38,7 @@ export class CreateAccountComponent implements OnInit {
        // this.router.navigate(['/adminHomePage/'])
       },
       error => {
-        alert("no matching id was found")
+        alert("no matching id was found or account already created")
       }
     )
   }

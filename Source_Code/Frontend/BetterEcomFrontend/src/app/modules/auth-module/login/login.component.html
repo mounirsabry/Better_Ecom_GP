@@ -12,11 +12,11 @@
 
         <div class="container-fluid my-3 justify-content-center row">
             <div class="row">
-                <label class="col-4 fs-3 fw-bold">Password</label>
-                <input class="col-8" type="password" name="Password" id="Password" #password formControlName="password">
+                <label class="col-3 fs-5 fw-bold">Password</label>
+                <input class="col-9 " type="password" name="Password" id="Password" #password formControlName="password">
             </div>
             <p class="text-danger row" *ngIf="passwordGet.invalid && passwordGet.touched"> password is required</p>
-        </div> 
+        </div>
 
         <button class="btn btn-outline-dark row col-12 my-5" type="submit" (click)="login(ID.value, password.value)" [disabled]="loginForm.invalid"> Login </button>
 

@@ -255,9 +255,10 @@ namespace Better_Ecom_Backend.Controllers
                 studentID ,
                 courseInstanceID ,
                 registrationDate ,
-                studentCourseInstanceStatus = nameof(StudentCourseInstanceRegistrationStatus.Undertaking)
+                studentCourseInstanceStatus = nameof(StudentCourseInstanceRegistrationStatus.Undertaking),
+                grade = Enum.GetName(StudentCourseInstanceGrade.Not_Specified)
             };
-            string insertCourseRegistrationSql = "INSERT INTO student_course_instance_registration VALUES(NULL, @studentID, @courseInstanceID, @registrationDate, @studentCourseInstanceStatus);";
+            string insertCourseRegistrationSql = "INSERT INTO student_course_instance_registration VALUES(NULL, @studentID, @courseInstanceID, @registrationDate, @studentCourseInstanceStatus,@grade);";
 
             int status = _data.SaveData(insertCourseRegistrationSql, parameters, _config.GetConnectionString("Default"));
 
@@ -583,13 +584,14 @@ namespace Better_Ecom_Backend.Controllers
 
             if (requestStatus == LateRegistrationRequestStatus.Accepted && registration.Request_status != LateRegistrationRequestStatus.Accepted)
             {
-                string insertCourseRegistration = "INSERT INTO student_course_instance_registration VALUES(NULL, @studentID, @courseInstanceID, @registrationDate, @studentCourseInstanceStatus);";
+                string insertCourseRegistration = "INSERT INTO student_course_instance_registration VALUES(NULL, @studentID, @courseInstanceID, @registrationDate, @studentCourseInstanceStatus,@grade);";
                 var parameters = new
                 {
                     studentID = registration.Student_id,
                     courseInstanceID = registration.Course_instance_id,
                     registrationDate = DateTime.Now,
-                    studentCourseInstanceStatus = nameof(StudentCourseInstanceRegistrationStatus.Undertaking)
+                    studentCourseInstanceStatus = nameof(StudentCourseInstanceRegistrationStatus.Undertaking),
+                    grade = Enum.GetName(StudentCourseInstanceGrade.Not_Specified) 
                 };
                 sqlList.Add(insertCourseRegistration);
                 parametersList.Add(parameters);
@@ -963,7 +965,7 @@ namespace Better_Ecom_Backend.Controllers
         }
 
         [Authorize(Roles = "admin, instructor")]
-        [HttpPatch("SetCourseInstanceReadOnlyStatus/{CourseInstanceID:int}/{ReadOnlyStatus}")]
+        [HttpPatch("SetCourseInstanceReadOnlyStatus")]
         public IActionResult SetCourseInstanceReadOnlyStatus([FromHeader]string Authorization,[FromBody] JsonElement jsonInput)
         {
             if (ExistanceFunctions.IsDBUpAndRunning(_config, _data) == false)

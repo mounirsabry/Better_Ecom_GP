@@ -7,7 +7,15 @@
         <input class="row" type="text" name="UserID" id="UserID" #UserID formControlName="UserID" value="{{ userID }}" hidden>
         <div class="row my-1">
             <label class="col-4">Department Code: </label>
-            <input class="col-8" type="text" name="DepartmentCode" id="DepartmentCode" #DepartmentCode formControlName="Department_code">
+            <!--<input class="col-8" type="text" name="DepartmentCode" id="DepartmentCode" #DepartmentCode formControlName="Department_code">-->
+            <select class="col-8" formControlName="Department_code">
+              <option>CS</option>
+              <option>DS</option>
+              <option>IS</option>
+              <option>IT</option>
+              <option>AI</option>
+              <option>GE</option>
+            </select>
         </div>
         <p class="row text-danger fw-bold" *ngIf="department_code_get.invalid && department_code_get.touched">department code is required</p>
 
@@ -52,13 +60,21 @@
         <div class="row container-fluid my-1">
             <div class="row">
                 <label class="col-4">Department Applicability: </label>
-                <input class="col-4" type="text" name="DepartmentApplicability" id="DepartmentApplicability" #DepartmentApplicability formControlName="departmentApplicability">
+                <!--<input class="col-4" type="text" name="DepartmentApplicability" id="DepartmentApplicability" #DepartmentApplicability formControlName="departmentApplicability">-->
+                <select class="col-4" formControlName="departmentApplicability">
+                  <option>CS</option>
+                  <option>DS</option>
+                  <option>IS</option>
+                  <option>IT</option>
+                  <option>AI</option>
+                  <option>GE</option>
+                </select>
                 <select class="col-4" name="DepAppList" id="DepAppList" #DepAppList>
                 <option *ngFor="let depAppList of departmentApplicability_list">{{ depAppList }}</option>
                 </select>
             </div>
-            <p class="row text-danger fw-bold" *ngIf="isDepAppEmpty && departmentApplicability_get.touched">department applicability get is required</p>
-            
+            <!--<p class="row text-danger fw-bold" *ngIf="isDepAppEmpty && departmentApplicability_get.touched">department applicability get is required</p>-->
+
             <div class="row">
                 <button class="btn btn-outline-success text-light col-6" type="button" (click)="addDepartmentApplicability()">Add Department</button>
                 <button class="btn btn-outline-danger text-light col-6" type="button" (click)="removeDepartmentApplicability(DepAppList.value)">Remove Department</button>

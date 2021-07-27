@@ -15,6 +15,7 @@ export class RegisterStudentInstructorInACourseComponent implements OnInit {
 
   logedInUser:string
 
+  CourseTerm = ['First','Second','Summer','Other']
   availableCourses : Array<any> = []
   availableCouresInstances : Array<any> = []
   showAvailableInstancesTable = false
@@ -46,7 +47,24 @@ export class RegisterStudentInstructorInACourseComponent implements OnInit {
 
       this.registerService.getStudentAvailableCourses(parseInt(localStorage.getItem('ID'))).subscribe(
         response =>{
-          this.availableCourses = response;
+          //this.availableCourses = response;
+
+
+          for(let value of Object.values(response)){
+            let obj = {}
+            for(let subkey of Object.keys(value)){
+                console.log(subkey)
+                if(subkey != 'is_archived' && subkey != 'is_read_only'){
+                // console.log(key)
+                obj[subkey] = value[subkey]
+
+              }
+          }
+          this.availableCourses.push(obj)
+
+        }
+
+
           console.log(this.availableCourses)
         },
         error =>{
@@ -175,6 +193,14 @@ export class RegisterStudentInstructorInACourseComponent implements OnInit {
         if(data.length < 1) {alert("No Course Instances were found")}
 
         this.availableCouresInstances.push(...data) ;
+
+        for(let value of Object.values(this.availableCouresInstances)){
+          for(let key of Object.keys(value)){
+            if(key == 'course_term'){
+              value[key] = this.CourseTerm[value[key]]
+            }
+          }
+        }
         this.showAvailableInstancesTable = true;
       },
       error =>{

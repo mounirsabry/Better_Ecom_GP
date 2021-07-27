@@ -9,6 +9,7 @@ import { LateRegisterationService } from '../services/late-registeration.service
 })
 export class LateRegisterationPageComponent implements OnInit {
 
+  CourseTerm = ['First','Second','Summer','Other']
   constructor(private lateRegisterationService: LateRegisterationService) { }
 
   submitLateCourseRegisterationForm = new FormGroup({
@@ -64,7 +65,20 @@ export class LateRegisterationPageComponent implements OnInit {
   getAvailableCourses() {
     this.lateRegisterationService.getStudentAvailableCourses(this.studentID).subscribe(
       data => {
-        this.available_courses_list = data;
+        //this.available_courses_list = data;
+        for(let value of Object.values(data)){
+          let obj = {}
+          for(let subkey of Object.keys(value)){
+            console.log(subkey)
+            if(subkey != 'is_archived' && subkey != 'is_read_only'){
+             // console.log(key)
+             obj[subkey] = value[subkey]
+
+            }
+          }
+          this.available_courses_list.push(obj)
+
+        }
         console.log(this.available_courses_list);
         this.showAvailableCoursesTable = true;
       },
@@ -81,6 +95,14 @@ export class LateRegisterationPageComponent implements OnInit {
         if (data.length < 1) { alert("No Course Instances were found") }
 
         this.available_coures_instance_list = data;
+
+        for(let value of Object.values(this.available_coures_instance_list)){
+          for(let key of Object.keys(value)){
+            if(key == 'course_term'){
+              value[key] = this.CourseTerm[value[key]]
+            }
+          }
+        }
         console.log(this.available_coures_instance_list);
         this.showAvailableInstancesTable = true;
       },

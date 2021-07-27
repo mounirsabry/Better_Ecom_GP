@@ -8,24 +8,25 @@
             <input class="col-4" type="number" name="StudnetID" id="StudentID" formControlName="StudentID">
             <p class="col-4 text-danger fw-bold" *ngIf="student_id_get.invalid && student_id_get.touched">student id is required</p>
         </div>
-    
+
         <div class="row my-2">
             <label class="col-4">Course Instance ID:</label>
             <input class="col-4" type="number" name="CourseInstanceID" id="CourseInstanceID" formControlName="CourseInstanceID">
             <p class="col-4 text-danger fw-bold" *ngIf="course_intance_id_get.invalid && course_intance_id_get.touched">course instance id is required</p>
         </div>
-    
+
         <div class="row my-2">
             <label class="col-4">Course Grade:</label>
             <select class="col-4" name="Grade" id="Grade" formControlName="Grade">
-            <option *ngFor="let grade of studentCourseInstanceGrades">{{ grade }}</option>
+              <option *ngFor="let grade of studentCourseInstanceGrades">{{ grade }}</option>
+              <option hidden disabled selected value> -- select an grade -- </option>
             </select>
             <p class="col-4 text-danger fw-bold" *ngIf="grade_get.invalid && grade_get.touched">grade is required</p>
         </div>
-    
+
         <button class="row btn btn-outline-success text-light my-2" type="submit" [disabled]="setGradeForm.invalid">Add Grade</button>
     </form>
-    
+
     <hr class="row my-3">
 
     <form class="row container-fluid my-3" [formGroup]="studentGpaForm" (ngSubmit)="getStudentGpa()">
@@ -34,10 +35,10 @@
             <input class="col-4" type="number" name="StudnetID" id="StudentID" formControlName="StudentID">
             <p class="col-4 text-danger fw-bold" *ngIf="studentGpa_id_get.invalid && studentGpa_id_get.touched">student id is required</p>
         </div>
-    
+
         <button class="row btn btn-outline-dark text-light my-2" type="submit" [disabled]="studentGpaForm.invalid">Get Student GPA</button>
     </form>
-    
+
     <div class="row my-2">
         <label class="col-4 text-dark fw-bold" [hidden]="!hasGpa">Student GPA:</label>
         <label class="col-4" [hidden]="!hasGpa">{{ student_gpa }}</label>

@@ -12,6 +12,7 @@ export class GeneralFeedComponent implements OnInit {
   @Input() public type:string
   constructor(private generalFeedService:GeneralFeedService) { }
 
+  currentFeedId:number
   showEditText:string = 'hidden';
   generalFeedElements = []
 
@@ -24,6 +25,14 @@ export class GeneralFeedComponent implements OnInit {
     this.generalFeedService.getGeneralFeed().subscribe(
       response =>{
         this.generalFeedElements = response;
+
+        /*for(let key of Object.keys(response)){
+
+          if(key == 'insertion_date')
+            this.generalFeedElements[key] = new Date(response[key])
+          else
+            this.generalFeedElements[key] = response[key]
+        }*/
       },
       error =>{
 
@@ -65,5 +74,8 @@ export class GeneralFeedComponent implements OnInit {
     return this.feedBoxForm.get('Content')
   }
 
+  setCurrentFeedId(id:number){
+    this.currentFeedId = id
+  }
 
 }

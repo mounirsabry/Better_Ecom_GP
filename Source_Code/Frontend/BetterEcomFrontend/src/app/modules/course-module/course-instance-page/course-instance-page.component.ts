@@ -8,6 +8,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 })
 export class CourseInstancePageComponent implements OnInit {
 
+  logedInType = localStorage.getItem('type')
   constructor(private activatedRoute:ActivatedRoute) { }
 
   instanceID:string

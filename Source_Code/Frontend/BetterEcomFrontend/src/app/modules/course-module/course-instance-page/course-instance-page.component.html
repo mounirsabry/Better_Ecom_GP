@@ -3,5 +3,5 @@
     <h3 class="row p-3">Course Feed :</h3>
 
     <app-course-feed [instanceID]='instanceID'></app-course-feed>
-    <button class="col-12 my-2 btn btn-outline-dark text-light" [routerLink]="['/studentGradePage', 'instance_id']">Student Grades</button>
+    <button class="col-12 my-2 btn btn-outline-dark text-light" *ngIf="logedInType != 'instructor'" [routerLink]="['/studentGradePage', 'instance_id']">Student Grades</button>
 </div>

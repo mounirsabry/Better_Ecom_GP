@@ -63,10 +63,10 @@ export class AdminGradeComponent implements OnInit {
     console.log(this.setGradeForm.value);
     this.courseInstanceService.setStudentCourseInstanceGrade(this.setGradeForm.value).subscribe(
       respone =>{
-        alert(respone)
+        alert('grade set successfully')
       },
       error =>{
-        alert(error.error);
+        alert('failed, student maybe not registered in the course');
       }
     )
   }
