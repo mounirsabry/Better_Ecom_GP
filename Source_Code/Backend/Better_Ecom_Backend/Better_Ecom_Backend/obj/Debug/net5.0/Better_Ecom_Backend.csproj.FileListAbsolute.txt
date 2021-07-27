@@ -91,100 +91,6 @@ E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_
 E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\ref\Better_Ecom_Backend.dll
 E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.pdb
 E:\FCI\Graduation Project\Github\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.genruntimeconfig.cache
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\appsettings.Development.json
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\appsettings.json
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.exe
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.deps.json
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.runtimeconfig.json
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.runtimeconfig.dev.json
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\ref\Better_Ecom_Backend.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.pdb
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\BCrypt.Net-Next.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\BouncyCastle.Crypto.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Dapper.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Dapper.Contrib.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Google.Protobuf.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\K4os.Compression.LZ4.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\K4os.Compression.LZ4.Streams.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\K4os.Hash.xxHash.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Microsoft.IdentityModel.JsonWebTokens.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Microsoft.IdentityModel.Logging.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\MySql.Data.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Ubiety.Dns.Core.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Zstandard.Net.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\System.Configuration.ConfigurationManager.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\System.IdentityModel.Tokens.Jwt.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\System.Security.Cryptography.ProtectedData.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\DataLibrary.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\DataLibrary.pdb
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.csprojAssemblyReference.cache
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.GeneratedMSBuildEditorConfig.editorconfig
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.AssemblyInfoInputs.cache
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.AssemblyInfo.cs
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.csproj.CoreCompileInputs.cache
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.MvcApplicationPartsAssemblyInfo.cache
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\staticwebassets\Better_Ecom_Backend.StaticWebAssets.Manifest.cache
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\staticwebassets\Better_Ecom_Backend.StaticWebAssets.xml
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\scopedcss\bundle\Better_Ecom_Backend.styles.css
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.RazorTargetAssemblyInfo.cache
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.csproj.CopyComplete
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\ref\Better_Ecom_Backend.dll
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.pdb
-D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.genruntimeconfig.cache
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\appsettings.Development.json
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\appsettings.json
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.exe
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.deps.json
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.runtimeconfig.json
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.runtimeconfig.dev.json
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\ref\Better_Ecom_Backend.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.pdb
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\BCrypt.Net-Next.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\BouncyCastle.Crypto.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Dapper.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Dapper.Contrib.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Google.Protobuf.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\K4os.Compression.LZ4.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\K4os.Compression.LZ4.Streams.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\K4os.Hash.xxHash.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Microsoft.IdentityModel.JsonWebTokens.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Microsoft.IdentityModel.Logging.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\MySql.Data.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Ubiety.Dns.Core.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Zstandard.Net.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\System.Configuration.ConfigurationManager.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\System.IdentityModel.Tokens.Jwt.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\System.Security.Cryptography.ProtectedData.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\DataLibrary.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\DataLibrary.pdb
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.csproj.AssemblyReference.cache
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.GeneratedMSBuildEditorConfig.editorconfig
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.AssemblyInfoInputs.cache
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.AssemblyInfo.cs
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.csproj.CoreCompileInputs.cache
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.MvcApplicationPartsAssemblyInfo.cache
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\staticwebassets\Better_Ecom_Backend.StaticWebAssets.Manifest.cache
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\staticwebassets\Better_Ecom_Backend.StaticWebAssets.xml
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\scopedcss\bundle\Better_Ecom_Backend.styles.css
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.RazorTargetAssemblyInfo.cache
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.csproj.CopyComplete
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\ref\Better_Ecom_Backend.dll
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.pdb
-E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.genruntimeconfig.cache
 D:\Mounir_Study\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\appsettings.Development.json
 D:\Mounir_Study\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\appsettings.json
 D:\Mounir_Study\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.exe
@@ -232,3 +138,97 @@ D:\Mounir_Study\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better
 D:\Mounir_Study\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\ref\Better_Ecom_Backend.dll
 D:\Mounir_Study\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.pdb
 D:\Mounir_Study\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.genruntimeconfig.cache
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\appsettings.Development.json
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\appsettings.json
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.exe
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.deps.json
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.runtimeconfig.json
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.runtimeconfig.dev.json
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\ref\Better_Ecom_Backend.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.pdb
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\BCrypt.Net-Next.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\BouncyCastle.Crypto.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Dapper.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Dapper.Contrib.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Google.Protobuf.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\K4os.Compression.LZ4.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\K4os.Compression.LZ4.Streams.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\K4os.Hash.xxHash.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Microsoft.IdentityModel.JsonWebTokens.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Microsoft.IdentityModel.Logging.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\MySql.Data.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Ubiety.Dns.Core.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Zstandard.Net.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\System.Configuration.ConfigurationManager.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\System.IdentityModel.Tokens.Jwt.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\System.Security.Cryptography.ProtectedData.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\DataLibrary.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\DataLibrary.pdb
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.csproj.AssemblyReference.cache
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.GeneratedMSBuildEditorConfig.editorconfig
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.AssemblyInfoInputs.cache
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.AssemblyInfo.cs
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.csproj.CoreCompileInputs.cache
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.MvcApplicationPartsAssemblyInfo.cache
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\staticwebassets\Better_Ecom_Backend.StaticWebAssets.Manifest.cache
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\staticwebassets\Better_Ecom_Backend.StaticWebAssets.xml
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\scopedcss\bundle\Better_Ecom_Backend.styles.css
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.RazorTargetAssemblyInfo.cache
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.csproj.CopyComplete
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\ref\Better_Ecom_Backend.dll
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.pdb
+E:\Faculty Of Computers and Information\Level 4\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.genruntimeconfig.cache
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\appsettings.Development.json
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\appsettings.json
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.exe
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.deps.json
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.runtimeconfig.json
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.runtimeconfig.dev.json
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\ref\Better_Ecom_Backend.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Better_Ecom_Backend.pdb
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\BCrypt.Net-Next.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\BouncyCastle.Crypto.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Dapper.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Dapper.Contrib.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Google.Protobuf.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\K4os.Compression.LZ4.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\K4os.Compression.LZ4.Streams.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\K4os.Hash.xxHash.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Microsoft.IdentityModel.Logging.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\MySql.Data.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Ubiety.Dns.Core.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\Zstandard.Net.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\System.Configuration.ConfigurationManager.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\System.IdentityModel.Tokens.Jwt.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\System.Security.Cryptography.ProtectedData.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\DataLibrary.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\bin\Debug\net5.0\DataLibrary.pdb
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.csprojAssemblyReference.cache
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.GeneratedMSBuildEditorConfig.editorconfig
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.AssemblyInfoInputs.cache
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.AssemblyInfo.cs
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.csproj.CoreCompileInputs.cache
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.MvcApplicationPartsAssemblyInfo.cache
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\staticwebassets\Better_Ecom_Backend.StaticWebAssets.Manifest.cache
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\staticwebassets\Better_Ecom_Backend.StaticWebAssets.xml
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\scopedcss\bundle\Better_Ecom_Backend.styles.css
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.RazorTargetAssemblyInfo.cache
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.csproj.CopyComplete
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\ref\Better_Ecom_Backend.dll
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.pdb
+D:\lecturesMaterial\year4\term2\gp\projects\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\Better_Ecom_Backend\obj\Debug\net5.0\Better_Ecom_Backend.genruntimeconfig.cache
