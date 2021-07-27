@@ -1,5 +1,5 @@
 <div class="body container-fluid justify-content-center my-5">
-    <div [formGroup]="loginForm" class="gradient p-5 container-fluid justify-content-center">
+    <div [formGroup]="loginForm" class="gradient p-5 container-fluid">
         <p class="text-danger row">{{errorMessage}}</p>
 
         <div class="container-fluid my-3 justify-content-center row">
@@ -7,7 +7,7 @@
                 <label class="col-3 fs-3 fw-bold">ID</label>
                 <input class="col-9" type="number" name="ID" id="ID" #ID formControlName="ID">
             </div>
-            <p class="text-danger row" *ngIf="IDget.invalid && IDget.touched"> ID is required</p>
+            <p class="text-danger row my-1" *ngIf="IDget.invalid && IDget.touched"> ID is required</p>
         </div>
 
         <div class="container-fluid my-3 justify-content-center row">
@@ -15,7 +15,7 @@
                 <label class="col-3 fs-5 fw-bold">Password</label>
                 <input class="col-9 " type="password" name="Password" id="Password" #password formControlName="password">
             </div>
-            <p class="text-danger row" *ngIf="passwordGet.invalid && passwordGet.touched"> password is required</p>
+            <p class="text-danger row my-1" *ngIf="passwordGet.invalid && passwordGet.touched"> password is required</p>
         </div>
 
         <button class="btn btn-outline-dark row col-12 my-5" type="submit" (click)="login(ID.value, password.value)" [disabled]="loginForm.invalid"> Login </button>

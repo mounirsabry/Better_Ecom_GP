@@ -1,11 +1,11 @@
 div.body {
-  min-height: 100vh;
+  min-height: 150vh;
 }
 
 div.gradient{
   width: 40vw;
   border-radius: 10%;
-  height: 30vh;
+  height: 40vh;
 }
 
 
