@@ -62,7 +62,6 @@ D:\Mounir_Study\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLi
 D:\Mounir_Study\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\bin\Debug\net5.0\DataLibrary.dll
 D:\Mounir_Study\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\bin\Debug\net5.0\ref\DataLibrary.dll
 D:\Mounir_Study\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\bin\Debug\net5.0\DataLibrary.pdb
-D:\Mounir_Study\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\DataLibrary.csproj.AssemblyReference.cache
 D:\Mounir_Study\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\DataLibrary.GeneratedMSBuildEditorConfig.editorconfig
 D:\Mounir_Study\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\DataLibrary.AssemblyInfoInputs.cache
 D:\Mounir_Study\GP\Better_Ecom_GP\Source_Code\Backend\Better_Ecom_Backend\DataLibrary\obj\Debug\net5.0\DataLibrary.AssemblyInfo.cs
